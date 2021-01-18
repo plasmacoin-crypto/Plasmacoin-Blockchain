@@ -16,7 +16,9 @@ class Node;
 
 class Transaction {
 public:
-	// Node m_Sender, m_Recipient;
+	const Node& m_Sender;
+	Node& m_Recipient;
+
 	float m_Amount;
 	string m_Content;
 
@@ -24,8 +26,8 @@ public:
 };
 
 Transaction::Transaction(const Node& sender, Node& recipient, string content, float amount):
-	// m_Sender(sender),
-	// m_Recipient(recipient),
+	m_Sender(sender),
+	m_Recipient(recipient),
 	m_Content(content),
 	m_Amount(amount)
 {}
