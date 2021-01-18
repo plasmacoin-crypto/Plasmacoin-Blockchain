@@ -7,4 +7,15 @@
 
 #include <iostream>
 
-int main() {}
+#include "node.hpp"
+
+int main() {
+	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
+	Node* node2 = new Node("John", "john", "4567", "192.168.1.7");
+
+	Transaction transaction = node1->MakeTransaction(*node2, 1.0, "Here's some money");
+
+	std::cout << transaction.m_Content << std::endl;
+
+	return 0;
+}
