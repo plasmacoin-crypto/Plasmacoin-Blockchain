@@ -34,6 +34,7 @@ Block::Block(int index, string prevHash, Transaction transaction):
 	m_PrevHash(prevHash),
 	m_Transaction(&transaction)
 {
+	// Get a timestamp for the block
 	time_t now = time(0);
 	m_Timestamp = ctime(&now);
 }
