@@ -1,7 +1,7 @@
 //
 // FILENAME: block.hpp | Plasmacoin Cryptocurrency
 // DESCRIPTION: An item that holds data about a transaction
-// CREATED: 2020-01-18 @ 9:37 PM
+// CREATED: 2020-01-17 @ 9:37 PM
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
 
