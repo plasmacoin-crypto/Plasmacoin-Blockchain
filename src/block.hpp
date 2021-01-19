@@ -20,7 +20,7 @@ using std::tuple;
 class Block {
 public:
 	// The block contents
-	int m_Index;
+	int m_Index, m_Nonce = 0;
 	const int DIFFICULTY = 5;
 	string m_PrevHash;
 	Transaction* m_Transaction;
