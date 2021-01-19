@@ -27,10 +27,14 @@ public:
 private:
 	set<Block*> m_Chain;
 	queue<Block*> m_Unconfirmed; // Blocks waiting to be mined
+
+	bool Consensus(Block block); // Evaluate Proof-of-Work
 };
 
 Blockchain::Blockchain() {
-	Add(&Block(0, "", nullptr));  // Add a Genesis block
+	// Add a Genesis block
+	Block* genesis = new Block(0, "", nullptr);
+	Add(genesis);
 }
 
 int Blockchain::Add(Block* block) {
@@ -46,6 +50,10 @@ int Blockchain::Mine() {
 	Block block = *m_Unconfirmed.front();
 	m_Unconfirmed.pop();
 
+	Consensus(block);
+}
+
+bool Blockchain::Consensus(Block block) {
 
 }
 
