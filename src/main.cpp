@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "node.hpp"
+#include "blockchain.hpp"
 
 int main() {
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
