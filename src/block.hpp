@@ -26,13 +26,13 @@ public:
 	Transaction* m_Transaction;
 	char* m_Timestamp;
 
-	Block(int index, string prevHash, Transaction transaction);
+	Block(int index, string prevHash, Transaction* transaction);
 };
 
-Block::Block(int index, string prevHash, Transaction transaction):
+Block::Block(int index, string prevHash, Transaction* transaction):
 	m_Index(index),
 	m_PrevHash(prevHash),
-	m_Transaction(&transaction)
+	m_Transaction(transaction)
 {
 	// Get a timestamp for the block
 	time_t now = time(0);
