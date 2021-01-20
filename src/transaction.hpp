@@ -1,7 +1,7 @@
 //
 // FILENAME: transaction.hpp | Plasmacoin Cryptocurrency
 // DESCRIPTION: A transaction between nodes
-// CREATED: 2020-01-17 @ 10:01 PM
+// CREATED: 2021-01-17 @ 10:01 PM
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
 
