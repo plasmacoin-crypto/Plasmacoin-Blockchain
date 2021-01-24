@@ -18,8 +18,8 @@ uint32_t tohex(int dec) {
 	char* str[10000]; // Arbitrarily allocate 10000 characters
 	sprintf(*str, "%d", dec); // Convert the decimal to a string
 
-	for (int i = 0; str[i] != "\0"; i++) {
-		
+	for (int i = 0; str[i] != "\0"; i += 1) {
+
 	}
 }
 
