@@ -8,5 +8,10 @@
 #ifndef SHA256_HELPERS_H
 #define SHA256_HELPERS_H
 
+// Concatenate two bytes
+int concat(int b1, int b2) {
+    return (b1 << 8) | b2;
+};
+
 #endif // SHA256_HELPERS_H
 
