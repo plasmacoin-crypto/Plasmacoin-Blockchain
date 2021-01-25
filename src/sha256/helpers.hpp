@@ -10,9 +10,11 @@
 
 #include <string>
 #include <bitset>
+#include <vector>
 
 using std::string;
 using std::bitset;
+using std::vector;
 
 // Concatenate two bytes
 int concat(int b1, int b2) {
@@ -22,8 +24,20 @@ int concat(int b1, int b2) {
 // Concatenate two 8-bit (1 byte) bitsets and return the
 // result as a string
 string strconcat(bitset<8> b1, bitset<8> b2) {
-    ulong combo = (b1.to_ulong() << 8) | b2.to_ulong(); // Get the integer representation of the two bytes
-	return bitset<16>(combo).to_string();
+    ulong combined = (b1.to_ulong() << 8) | b2.to_ulong(); // Get the integer representation of the two bytes
+	return bitset<16>(combined).to_string();
+}
+
+// Convert a byte array represented as a vector if 8-bit bitsets to a string
+string stringify(vector<bitset<8>> bytearray) {
+    vector<bitset<8>>::iterator iter;
+    string bytestr = "";
+
+    for (iter = bytearray.begin(); iter != bytearray.end(); iter++) {
+        bytestr += strconcat(*iter, *(iter + 1));
+    }
+
+    return bytestr;
 }
 
 #endif // SHA256_HELPERS_H
