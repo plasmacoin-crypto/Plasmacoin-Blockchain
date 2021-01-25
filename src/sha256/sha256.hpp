@@ -13,15 +13,13 @@
 #include <bitset>
 #include <vector>
 
+#include "constants.h"
+
 using std::string;
 using std::bitset;
 using std::vector;
 
-#include "constants.h"
-
-using std::string;
-
-bitset<8> preprocessor(string text) {
+auto preprocessor(string text) {
 	vector<bitset<8>> bytearray; // The byte array to return
 
 	const int SIZE_IN_BITS = text.size() * 8;
@@ -55,8 +53,7 @@ bitset<8> preprocessor(string text) {
 	// Pad the byte array
     bytearray.push_back(EXTRA_BIT); // Append a single bit
     bytearray.insert(bytearray.end(), k, 0); // Append K empty bits
-
-    bytearray.push_back(static_cast<uint64_t>(text.size() * 8));
+    bytearray.push_back(static_cast<uint64_t>(SIZE_IN_BITS)); // Append the data size
 }
 
 string sha256Encrypt(string text) {
