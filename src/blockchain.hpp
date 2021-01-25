@@ -39,6 +39,7 @@ Blockchain::Blockchain() {
 
 int Blockchain::Add(Block* block) {
 	m_Chain.insert(block);
+	return -1;
 }
 
 set<Block*> Blockchain::Get() const {
@@ -51,10 +52,12 @@ int Blockchain::Mine() {
 	m_Unconfirmed.pop();
 
 	Consensus(block);
+
+	return -1;
 }
 
 bool Blockchain::Consensus(Block block) {
-
+	return false;
 }
 
 #endif // BLOCKCHAIN_HPP
