@@ -20,7 +20,8 @@ int concat(int b1, int b2) {
 };
 
 string strconcat(bitset<8> b1, bitset<8> b2) {
-	return ((b1 << 8) | b2).to_string();
+    ulong combo = (b1.to_ulong() << 8) | b2.to_ulong();
+	return bitset<16>(combo).to_string();
 }
 
 #endif // SHA256_HELPERS_H
