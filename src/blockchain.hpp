@@ -39,7 +39,7 @@ Blockchain::Blockchain() {
 
 int Blockchain::Add(Block* block) {
 	m_Chain.insert(block);
-	return -1;
+	return -1; // tmp
 }
 
 set<Block*> Blockchain::Get() const {
@@ -53,11 +53,11 @@ int Blockchain::Mine() {
 
 	Consensus(block);
 
-	return -1;
+	return -1; // tmp
 }
 
 bool Blockchain::Consensus(Block block) {
-	return false;
+	return false; // tmp
 }
 
 #endif // BLOCKCHAIN_HPP
