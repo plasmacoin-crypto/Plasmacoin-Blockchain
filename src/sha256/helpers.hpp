@@ -24,14 +24,13 @@ using std::vector;
 // Perform a circular right shift `n` times on a byte
 bitset<8> rotateRight(bitset<8> byte, int n = 1) {
 	bitset<8> modByte = byte;
-	auto b0 = bitset<8>()[0]; // Give an initial value
 	int i = 0;
 
 	while (i < n) {
-		b0 = modByte[0]; // Save the bit in the first position
+		auto b0 = modByte.test(0); // Save the bit in the first position
 
 		modByte >>= 1; 	 // Shift everything to the right
-		modByte[7] = b0; // Circle around the first bit
+		modByte[7] = b0;
 
 		i++;
 	}
