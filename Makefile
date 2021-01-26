@@ -26,8 +26,7 @@ $(TARGET): src/$(SOURCE)
 # `make clean`
 clean:
 	# This removes the binary from this directory and from /usr/bin
-	sudo $(RM) --verbose $(TARGET) $(INSTALL_LOC)/$(TARGET) /src/sha256/*.gch
-
+	sudo $(RM) --verbose $(TARGET) $(INSTALL_LOC)/$(TARGET)
 # `make install`
 install:
 	sudo install --verbose --owner $(USER) $(TARGET) --target-directory $(INSTALL_LOC)
