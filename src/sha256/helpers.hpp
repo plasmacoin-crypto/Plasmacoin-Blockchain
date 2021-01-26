@@ -22,7 +22,7 @@ using std::vector;
 //
 
 // Perform a circular right shift `n` times on a byte
-bitset<8> rotateRight(bitset<8> byte, int n) {
+bitset<8> rotateRight(bitset<8> byte, int n = 1) {
 	bitset<8> modByte = byte;
 	auto b0 = bitset<8>()[0]; // Give an initial value
 	int i = 0;
@@ -40,7 +40,7 @@ bitset<8> rotateRight(bitset<8> byte, int n) {
 }
 
 // Shift a byte `n` places to the right
-bitset<8> shiftRight(bitset<8>& byte, int n) {
+bitset<8> shiftRight(bitset<8>& byte, int n = 1) {
 	return byte >> n;
 }
 
