@@ -12,7 +12,8 @@
 
 int main() {
 	bitset<8> byte = std::bitset<8>(35);
-	std::cout << rotateRight(byte);
+	std::cout << rotateRight(byte) << std::endl;
+	std::cout << choice(1, 2, 3) << std::endl;
 
 	return 0;
 }
