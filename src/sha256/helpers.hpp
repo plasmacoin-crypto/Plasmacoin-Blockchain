@@ -18,12 +18,14 @@ using std::bitset;
 using std::vector;
 
 // Perform a circular right shift on a byte
-bitset<8> rotateRight(bitset<8>& byte) {
+bitset<8> rotateRight(bitset<8> byte) {
+	bitset<8> modByte = byte;
 	auto b0 = byte[0]; // Save the bit in the first position
-	byte >>= 1; // Shift everything to the right
-	byte[7] = b0; // Circle around the first bit
 
-	return byte;
+	modByte >>= 1; // Shift everything to the right
+	modByte[7] = b0; // Circle around the first bit
+
+	return modByte;
 }
 
 // Concatenate two bytes
