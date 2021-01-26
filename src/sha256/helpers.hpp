@@ -17,8 +17,6 @@ using std::string;
 using std::bitset;
 using std::vector;
 
-#define choice(x, y, z) ((x & y) ^ (~x & z))
-
 //
 // ---[ Byte rotation and shifting ]---
 //
@@ -54,6 +52,33 @@ string strconcat(bitset<8> b1, bitset<8> b2) {
     uint64_t combined = (b1.to_ulong() << 8) | b2.to_ulong(); // Get the integer representation of the two bytes
 	return bitset<16>(combined).to_string();
 }
+
+//
+// ---[ Functions needed to help calculate the SHA-256 hash ]---
+//
+
+//
+// For definitions of the following functions, see the PDF available from craft-crypto.com.
+//
+// Article (contains download link):
+// https://craft-crypto.com/how-does-sha-256-work/
+//
+// Download Link:
+// https://www.researchgate.net/file.PostFileLoader.html?id=534b393ad3df3e04508b45ad&assetKey=AS%3A273514844622849%401442222429260
+//
+
+// Implement Ch(X, Y, Z)
+bitset<8> choice(bitset<8> b1, bitset<8> b2, bitset<8> b3) {
+	return ((b1 & b2) ^ (~b1 & b3));
+}
+
+// Implement Maj(X, Y, Z)
+bitset<8> majority(bitset<8> b1, bitset<8> b2, bitset<8> b3) {
+	return ((b1 & b2) | (b1 & b3) | (b2 & b3));
+}
+
+// Implement Σ_0(X)
+bitset<8> sigma_0
 
 //
 // ---[ Other ]---
