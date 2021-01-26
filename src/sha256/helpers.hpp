@@ -17,6 +17,12 @@ using std::string;
 using std::bitset;
 using std::vector;
 
+#define choice(x, y, z) ((x & y) ^ (~x & z))
+
+//
+// ---[ Byte rotation and shifting ]---
+//
+
 // Perform a circular right shift on a byte
 bitset<8> rotateRight(bitset<8> byte) {
 	bitset<8> modByte = byte;
@@ -33,6 +39,10 @@ bitset<8> shiftRight(bitset<8>& byte, int n) {
 	return byte >> n;
 }
 
+//
+// ---[ Byte concatenation ]---
+//
+
 // Concatenate two bytes
 int concat(int b1, int b2) {
     return (b1 << 8) | b2;
@@ -44,6 +54,10 @@ string strconcat(bitset<8> b1, bitset<8> b2) {
     uint64_t combined = (b1.to_ulong() << 8) | b2.to_ulong(); // Get the integer representation of the two bytes
 	return bitset<16>(combined).to_string();
 }
+
+//
+// ---[ Other ]---
+//
 
 // Convert a byte array represented as a vector if 8-bit bitsets to a string
 string stringify(vector<bitset<8>> bytearray) {
