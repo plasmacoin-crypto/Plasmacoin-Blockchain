@@ -28,6 +28,11 @@ bitset<8> rotateRight(bitset<8> byte) {
 	return modByte;
 }
 
+// Shift a byte `n` places to the right
+bitset<8> shiftRight(bitset<8>& byte, int n) {
+	return byte >> n;
+}
+
 // Concatenate two bytes
 int concat(int b1, int b2) {
     return (b1 << 8) | b2;
