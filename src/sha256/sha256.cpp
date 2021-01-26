@@ -11,9 +11,10 @@
 #include "helpers.hpp"
 
 int main() {
-	bitset<8> byte = std::bitset<8>(35);
-	std::cout << rotateRight(byte) << std::endl;
-	std::cout << choice(1, 2, 3) << std::endl;
+	bitset<8> byte = std::bitset<8>(12);
+	std::cout << byte << std::endl;
+	std::cout << "\n" << rotateRight(byte, 3) << std::endl;
+	//std::cout << choice(bitset<8>(2), bitset<8>(2), bitset<8>(3)) << std::endl;
 
 	return 0;
 }
