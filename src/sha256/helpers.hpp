@@ -68,17 +68,17 @@ string strconcat(bitset<8> b1, bitset<8> b2) {
 //
 
 // Implement Ch(X, Y, Z)
-bitset<8> choice(bitset<8> b1, bitset<8> b2, bitset<8> b3) {
-	return ((b1 & b2) ^ (~b1 & b3));
+bitset<8> choice(bitset<8> x, bitset<8> y, bitset<8> z) {
+	return ((x & y) ^ (~x & z));
 }
 
 // Implement Maj(X, Y, Z)
-bitset<8> majority(bitset<8> b1, bitset<8> b2, bitset<8> b3) {
-	return ((b1 & b2) | (b1 & b3) | (b2 & b3));
+bitset<8> majority(bitset<8> x, bitset<8> y, bitset<8> z) {
+	return ((x & y) | (x & z) | (y & z));
 }
 
 // Implement Σ_0(X)
-bitset<8> sigma_0
+bitset<8> sigma_0(bitset<8> x)
 
 //
 // ---[ Other ]---
