@@ -1,5 +1,5 @@
 //
-// FILENAME: helpers.h | Plasmacoin Cryptocurrency
+// FILENAME: helpers.hpp | Plasmacoin Cryptocurrency
 // DESCRIPTION: Functions to aid the SHA-256 algorithm
 // CREATED: 2021-01-23 @ 11:56 PM
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
@@ -30,7 +30,7 @@ bitset<8> rotateRight(bitset<8> byte, int n = 1) {
 		bool b0 = modByte.test(0); // Save the bit in the first position
 
 		modByte >>= 1; 	 // Shift everything to the right
-		modByte[7] = b0;
+		modByte[7] = b0; // Circle around the stored bit
 
 		i++;
 	}
