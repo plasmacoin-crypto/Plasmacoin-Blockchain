@@ -27,7 +27,7 @@ auto preprocessor(string text) {
 	const int EXTRA_BIT = 1;
 
 	//
-    // The equation L + 1 + K + 64 is used to find the correct number of bits to append,
+    	// The equation L + 1 + K + 64 is used to find the correct number of bits to append,
 	// where:
 	// * L is the length in bits of the text to encrypt
 	// * K is the smallest number >= 0 that makes the equation a multiple of 512
