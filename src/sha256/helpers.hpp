@@ -27,7 +27,7 @@ bitset<8> rotateRight(bitset<8> byte, int n = 1) {
 	int i = 0;
 
 	while (i < n) {
-		auto b0 = modByte.test(0); // Save the bit in the first position
+		bool b0 = modByte.test(0); // Save the bit in the first position
 
 		modByte >>= 1; 	 // Shift everything to the right
 		modByte[7] = b0;
