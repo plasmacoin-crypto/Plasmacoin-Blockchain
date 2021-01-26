@@ -94,6 +94,16 @@ bitset<8> Sigma_1(bitset<8> x) {
 	return (rotateRight(x, 6) | rotateRight(x, 11) | rotateRight(x, 25));
 }
 
+// Implement σ_0(X)
+bitset<8> sigma_0(bitset<8> x) {
+	return (rotateRight(x, 7) | rotateRight(x, 18) | shiftRight(x, 3));
+}
+
+// Implement σ_1(X)
+bitset<8> sigma_1(bitset<8> x) {
+	return (rotateRight(x, 17) | rotateRight(x, 19) | shiftRight(x, 10));
+}
+
 //
 // ---[ Other ]---
 //
