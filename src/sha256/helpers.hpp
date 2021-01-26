@@ -50,7 +50,7 @@ bitset<8> shiftRight(bitset<8>& byte, int n = 1) {
 // Concatenate two bytes
 int concat(int b1, int b2) {
     return (b1 << 8) | b2;
-};
+}
 
 // Concatenate two 8-bit (1 byte) bitsets and return the
 // result as a string
