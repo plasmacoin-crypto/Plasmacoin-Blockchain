@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "constants.h"
+#include "helpers.hpp"
 
 using std::string;
 using std::bitset;
