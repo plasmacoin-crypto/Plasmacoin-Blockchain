@@ -28,8 +28,8 @@ public:
 Transaction::Transaction(const Node& sender, Node& recipient, string content, float amount):
 	m_Sender(sender),
 	m_Recipient(recipient),
-	m_Content(content),
-	m_Amount(amount)
+	m_Amount(amount),
+	m_Content(content)
 {}
 
 #endif // TRANSACTION_HPP
