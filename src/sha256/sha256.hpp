@@ -39,7 +39,7 @@ auto preprocessor(string text) {
     // Solve for K
     int k = 0;
     while (512 % (target + k) != 0) {
-        k++;
+        ++k;
     }
 
     target += k;
