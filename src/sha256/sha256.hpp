@@ -12,6 +12,7 @@
 #include <ios>
 #include <bitset>
 #include <vector>
+#include <cassert>
 
 #include "constants.h"
 #include "helpers.hpp"
@@ -20,21 +21,25 @@ using std::string;
 using std::bitset;
 using std::vector;
 
-auto preprocessor(string text) {
-	vector<bitset<8>> bytearray; // The byte array to return
+// This will ensure the name is the same on all compilers
+#define UINT64_SIZE 64 
+
+auto preprocess(string text) {
+	// The padded string to return. The size will be some multiple of 512.
+	string padded = "";
 
 	const int SIZE_IN_BITS = text.size() * 8;
-	const int EXTRA_BIT = 1;
+	const char EXTRA_BIT = '1';
 
 	//
-    	// The equation L + 1 + K + 64 is used to find the correct number of bits to append,
+    // The equation L + 1 + K + 64 is used to find the correct number of bits to append,
 	// where:
 	// * L is the length in bits of the text to encrypt
 	// * K is the smallest number >= 0 that makes the equation a multiple of 512
 	// * 1 is an extra bit that is always appended
 	// * 64 is the set size in bits of appending L
 	//
-	int target = SIZE_IN_BITS + 1 + /* K */ + UINT64_WIDTH; // K must be solved for
+	int target = SIZE_IN_BITS + 1 + /* K */ + UINT64_SIZE; // K must be solved for
 
     // Solve for K
     int k = 0;
@@ -43,22 +48,26 @@ auto preprocessor(string text) {
     }
 
     target += k;
+    
 
-    bytearray.reserve(target); // Try to avoid some overhead
-
-    // Convert the string to binary
+    // Store the string to binary
     for (char c: text) {
-        bytearray.push_back(bitset<8>(c));
+        padded += bitset<8>(c).to_string();
     }
 
 	// Pad the byte array
-    bytearray.push_back(EXTRA_BIT); // Append a single bit
-    bytearray.insert(bytearray.end(), k, 0); // Append K empty bits
-    bytearray.push_back(static_cast<uint64_t>(SIZE_IN_BITS)); // Append the data size
+    padded += EXTRA_BIT; // Append a single bit
+    padded.insert(padded.end(), k, '0'); // Append K empty bits
+    padded += bitset<UINT64_SIZE>(static_cast<uint64_t>(SIZE_IN_BITS)).to_string(); // Append the data size
+    
+    assert(padded.size() == target); // Make sure everything was padded correctly
+    assert(512 % padded.size() == 0); // Make sure the padded word's size in bits is a multiple of 512
+    
+    return padded;
 }
 
 string sha256Encrypt(string text) {
-
+    preprocess(text);
 }
 
 #endif // SHA256_HPP
