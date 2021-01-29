@@ -107,26 +107,23 @@ bitset<8> sigma_1(bitset<8> x) {
 // ---[ Block decomposition functions ]---
 //
 
-bitset<32> decompose(string text) {
+vector<bitset<32>> decompose(string text) {
     string textcpy = text;
     int i = 0;
     vector<bitset<32>> blocks;
     
-    blocks.push_back(bitset<32>(text.substr(0, 32)));
-    textcpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
-    return blocks.front();
-    //iter += 32;
-    
-    // while (i < 63) {
-    //     if (i < 16) {
-    //         // Save a 32-bit chink of data to the vector
-    //         blocks.push_back(bitset<32>(0, 32);
-    //         iter += 32;
-    //     }
-    //     else {
+    while (i < 63) {
+        if (i < 16) { // Chunks 1-16
+            // Save a 32-bit chink of data to the vector
+            blocks.push_back(bitset<32>(text.substr(0, 32)));
+            textcpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
+        }
+        else { // Chunks 17-63 
             
-    //     }
-    // }
+        }
+    }
+    
+    return blocks;
 }
 
 //
