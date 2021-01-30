@@ -22,7 +22,7 @@ using std::bitset;
 using std::vector;
 
 // This will ensure the name is the same on all compilers
-#define UINT64_SIZE 64 
+#define UINT64_SIZE 64
 
 auto preprocess(string text) {
 	// The padded string to return. The size will be some multiple of 512.
@@ -48,7 +48,7 @@ auto preprocess(string text) {
     }
 
     target += k;
-    
+
 
     // Store the string to binary
     for (char c: text) {
@@ -59,15 +59,17 @@ auto preprocess(string text) {
     padded += EXTRA_BIT; // Append a single bit
     padded.insert(padded.end(), k, '0'); // Append K empty bits
     padded += bitset<UINT64_SIZE>(static_cast<uint64_t>(SIZE_IN_BITS)).to_string(); // Append the data size
-    
-    assert(padded.size() == target); // Make sure everything was padded correctly
+
+    assert(static_cast<ulong>(padded.size()) == target); // Make sure everything was padded correctly
     assert(512 % padded.size() == 0); // Make sure the padded word's size in bits is a multiple of 512
-    
+
     return padded;
 }
 
 string sha256Encrypt(string text) {
     preprocess(text);
+
+    return "";
 }
 
 #endif // SHA256_HPP
