@@ -39,7 +39,7 @@ bitset<8> rotateRight(bitset<8> byte, int n = 1) {
 }
 
 // Shift a byte `n` places to the right
-bitset<8> shiftRight(bitset<8>& byte, int n = 1) {
+bitset<8> shiftRight(bitset<8> byte, int n = 1) {
 	return byte >> n;
 }
 
@@ -119,7 +119,34 @@ vector<bitset<32>> decompose(string text) {
             textcpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
         }
         else { // Chunks 17-63 
+            // Calculate the remaining chunks using the following
+            // formula:
+            //
+            // W_i = σ_1(W_(i − 2)) + W_(i − 7) + σ_0(W_(i − 15)) + W_(i − 16)
+            //
+            string blockstr = "";
             
+            // A place to store string versions of bytes from the 32-bit
+            // block that is currently being processed.
+            string inp1, inp2, inp3, inp4;
+            
+            // Process the 32 bits in chunks of 8 bits (1 byte) each
+            for (unsigned int j = 0; j < block.size(); j += 8) {
+                blockstr += (
+                    //
+                    // Each access of the vector will get the bytes from
+                    // j to j + 7 upper-bound exclusive (i.e., [j, j + 7) in 
+                    // interval notation).
+                    //
+                    // 4 total bytes will be processed:
+                    // indices [0, 8), [8, 16), [16, 24), and [24, 32)
+                    // 
+                    sigma_1(blocks[i - 2].to_string().substr(j, j + 8)) + \
+                    blocks[i - 7].to_string().substr(j, j + 8)) + \
+                    sigma_0(blocks[i - 15].to_string().substr(j, j + 8))) + \
+                    blocks[i - 16].to_string().substr(j, j + 8))
+                ).to_string();
+            }
         }
     }
     
