@@ -157,6 +157,21 @@ vector<bitset<32>> decompose(string text) {
 	return blocks;
 }
 
+
+// Split the data up into 512-bit chunks
+vector<bitset<512>> split(string text) {
+	vector<bitset<512>> chunks;
+	string textcpy = text;
+
+	while (!textcpy.empty()) {
+		// Store a chunk of the message
+		chunks.push_back(bitset<512>(text.substr(0, 511)));
+		textcpy.erase(0, 511);
+	}
+
+	return chunks;
+}
+
 //
 // ---[ Other ]---
 //
