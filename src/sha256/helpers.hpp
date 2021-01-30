@@ -145,12 +145,7 @@ vector<bitset<32>> decompose(string text) {
 				// 4 total bytes will be processed:
 				// indices [0, 8), [8, 16), [16, 24), and [24, 32)
 				//
-				blockstr += (
-					 + \
-					 + \
-					 + \
-
-				);
+				blockstr += (inp1 + inp2 + inp3 + inp4);
 			}
 		}
 	}
