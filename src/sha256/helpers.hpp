@@ -11,11 +11,13 @@
 #include <string>
 #include <bitset>
 #include <vector>
+#include <array>
 #include <iostream>
 
 using std::string;
 using std::bitset;
 using std::vector;
+using std::array;
 
 //
 // ---[ Byte rotation and shifting ]---
@@ -107,15 +109,15 @@ bitset<8> sigma_1(bitset<8> x) {
 // ---[ Block decomposition functions ]---
 //
 
-vector<bitset<32>> decompose(string text) {
+array<bitset<32>, 64> decompose(string text) {
 	int i = 0;
 	string textcpy = text;
-	vector<bitset<32>> blocks;
+	array<bitset<32>, 64> blocks;
 
 	while (i < 63) {
 		if (i < 16) { // Chunks 1-16
 			// Save a 32-bit chink of data to the vector
-			blocks.push_back(bitset<32>(textcpy.substr(0, 32)));
+			blocks[i] = bitset<32>(textcpy.substr(0, 32));
 			textcpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
 		}
 		else { // Chunks 17-63
@@ -148,7 +150,7 @@ vector<bitset<32>> decompose(string text) {
 				blockstr += (inp1 + inp2 + inp3 + inp4);
 			}
 
-			blocks.push_back(bitset<32>(blockstr)); // Add the string as a 32-bit bitset
+			blocks[i] = bitset<32>(blockstr); // Add the string as a 32-bit bitset
 		}
 
 		i++;
