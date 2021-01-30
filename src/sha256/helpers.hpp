@@ -150,6 +150,8 @@ vector<bitset<32>> decompose(string text) {
 
 			blocks.push_back(bitset<32>(blockstr)); // Add the string as a 32-bit bitset
 		}
+
+		i++;
 	}
 
 	return blocks;
