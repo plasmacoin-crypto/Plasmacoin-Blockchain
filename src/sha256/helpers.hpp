@@ -48,7 +48,7 @@ bitset<8> shiftRight(bitset<8> byte, int n = 1) {
 //
 
 // Concatenate two bytes
-int concat(int b1, int b2) {
+bitset<8> concat(bitset<8> b1, bitset<8> b2) {
 	return (b1 << 8) | b2;
 }
 
@@ -108,14 +108,14 @@ bitset<8> sigma_1(bitset<8> x) {
 //
 
 vector<bitset<32>> decompose(string text) {
-	string textcpy = text;
 	int i = 0;
+	string textcpy = text;
 	vector<bitset<32>> blocks;
 
 	while (i < 63) {
 		if (i < 16) { // Chunks 1-16
 			// Save a 32-bit chink of data to the vector
-			blocks.push_back(bitset<32>(text.substr(0, 32)));
+			blocks.push_back(bitset<32>(textcpy.substr(0, 32)));
 			textcpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
 		}
 		else { // Chunks 17-63
