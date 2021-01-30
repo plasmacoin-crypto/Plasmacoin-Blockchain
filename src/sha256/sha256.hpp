@@ -67,9 +67,60 @@ string preprocess(string text) {
 }
 
 string sha256Encrypt(string text) {
-    preprocess(text);
+    string data = preprocess(text);
+    vector<bitset<32>> blocks;
 
-    return "";
+    blocks = decompose(data); // Block decomposition
+
+    // Initialize working varibales
+    uint32_t a = ROOT_HASHES[0],
+             b = ROOT_HASHES[1],
+             c = ROOT_HASHES[2],
+             d = ROOT_HASHES[3],
+             e = ROOT_HASHES[4],
+             f = ROOT_HASHES[5],
+             g = ROOT_HASHES[6],
+             h = ROOT_HASHES[7];
+
+    int i = 0;
+    bitset<8> temp1, temp2;
+
+    // Compression functionality
+    while (i < 63) {
+        temp1 = bitset<8>(h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + blocks[i].to_ulong());
+        temp2 = bitset<8>(Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong());
+
+        // Reassign the working variables
+        h = g;
+        g = f;
+        f = e;
+        e = d + temp1.to_ulong();
+        d = c;
+        c = b;
+        b = a;
+        a = temp1.to_ulong() + temp2.to_ulong();
+
+        i++;
+    }
+
+    // Add the compressed chunk to the current hashes
+    ROOT_HASHES[0] += a;
+    ROOT_HASHES[1] += b;
+    ROOT_HASHES[2] += c;
+    ROOT_HASHES[3] += d;
+    ROOT_HASHES[4] += e;
+    ROOT_HASHES[5] += f;
+    ROOT_HASHES[6] += g;
+    ROOT_HASHES[7] += h;
+
+    string hash = "";
+
+    // Compute the has by concatenating all of the root hashes
+    for (ulong i = 0; i < sizeof(ROOT_HASHES); i += 2) {
+        hash += concat(ROOT_HASHES[i], ROOT_HASHES[i + 1]).to_string();
+    }
+
+    return hash;
 }
 
 #endif // SHA256_HPP
