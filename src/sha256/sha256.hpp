@@ -12,6 +12,7 @@
 #include <ios>
 #include <bitset>
 #include <vector>
+#include <array>
 #include <cassert>
 
 #include "constants.h"
@@ -20,6 +21,7 @@
 using std::string;
 using std::bitset;
 using std::vector;
+using std::array;
 
 // This will ensure the name is the same on all compilers
 #define UINT64_SIZE 64
@@ -68,9 +70,9 @@ string preprocess(string text) {
 
 string sha256Encrypt(string text) {
     string data = preprocess(text);
-    vector<bitset<32>> blocks;
 
-    blocks = decompose(data); // Block decomposition
+    vector<bitset<512>> chunks;
+    array<bitset<32>, 64> blocks;
 
     // Initialize working varibales
     uint32_t a = ROOT_HASHES[0],
@@ -85,37 +87,43 @@ string sha256Encrypt(string text) {
     int i = 0;
     bitset<8> temp1, temp2;
 
-    // Compression functionality
-    while (i < 63) {
-        temp1 = bitset<8>(h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + blocks[i].to_ulong());
-        temp2 = bitset<8>(Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong());
+    chunks = split(data);
 
-        // Reassign the working variables
-        h = g;
-        g = f;
-        f = e;
-        e = d + temp1.to_ulong();
-        d = c;
-        c = b;
-        b = a;
-        a = temp1.to_ulong() + temp2.to_ulong();
+    for (auto chunk: chunks) {
+        blocks = decompose(chunk.to_string()); // Block decomposition
 
-        i++;
+        // Compression functionality
+        while (i < 63) {
+            temp1 = bitset<8>(h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + blocks[i].to_ulong());
+            temp2 = bitset<8>(Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong());
+
+            // Reassign the working variables
+            h = g;
+            g = f;
+            f = e;
+            e = d + temp1.to_ulong();
+            d = c;
+            c = b;
+            b = a;
+            a = temp1.to_ulong() + temp2.to_ulong();
+
+            i++;
+        }
+
+        // Add the compressed chunk to the current hashes
+        ROOT_HASHES[0] += a;
+        ROOT_HASHES[1] += b;
+        ROOT_HASHES[2] += c;
+        ROOT_HASHES[3] += d;
+        ROOT_HASHES[4] += e;
+        ROOT_HASHES[5] += f;
+        ROOT_HASHES[6] += g;
+        ROOT_HASHES[7] += h;
     }
-
-    // Add the compressed chunk to the current hashes
-    ROOT_HASHES[0] += a;
-    ROOT_HASHES[1] += b;
-    ROOT_HASHES[2] += c;
-    ROOT_HASHES[3] += d;
-    ROOT_HASHES[4] += e;
-    ROOT_HASHES[5] += f;
-    ROOT_HASHES[6] += g;
-    ROOT_HASHES[7] += h;
 
     string hash = "";
 
-    // Compute the has by concatenating all of the root hashes
+    // Compute the hash by concatenating all of the root hashes
     for (ulong i = 0; i < sizeof(ROOT_HASHES); i += 2) {
         hash += concat(ROOT_HASHES[i], ROOT_HASHES[i + 1]).to_string();
     }
