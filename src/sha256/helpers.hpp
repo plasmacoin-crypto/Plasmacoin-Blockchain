@@ -153,7 +153,7 @@ array<bitset<32>, 64> decompose(string text) {
 				blockstr += (inp1 + inp2 + inp3 + inp4);
 			}
 
-			blocks[i] = bitset<32>(blockstr); // Add the string as a 32-bit bitset
+			blocks[i] = bitset<32>(bitset<32>(blockstr).to_ulong() % MOD_ADD); // Add the string as a 32-bit bitset
 		}
 
 		i++;

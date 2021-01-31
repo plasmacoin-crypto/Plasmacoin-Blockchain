@@ -94,18 +94,18 @@ string sha256Encrypt(string text) {
 
         // Compression functionality
         while (i < 63) {
-            temp1 = bitset<8>(h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + blocks[i].to_ulong());
-            temp2 = bitset<8>(Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong());
+            temp1 = bitset<8>((h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + blocks[i].to_ulong()) % MOD_ADD);
+            temp2 = bitset<8>((Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong()) % MOD_ADD);
 
             // Reassign the working variables
             h = g;
             g = f;
             f = e;
-            e = d + temp1.to_ulong();
+            e = (d + temp1.to_ulong()) % MOD_ADD;
             d = c;
             c = b;
             b = a;
-            a = temp1.to_ulong() + temp2.to_ulong();
+            a = (temp1.to_ulong() + temp2.to_ulong()) % MOD_ADD;
 
             i++;
         }
