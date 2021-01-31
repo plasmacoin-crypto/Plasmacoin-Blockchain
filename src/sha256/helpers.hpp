@@ -137,10 +137,10 @@ array<bitset<32>, 64> decompose(string text) {
 
 			// Process the 32 bits in chunks of 8 bits (1 byte) each
 			for (unsigned int j = 0; j < blocks[i].size(); j += 8) {
-				inp1 = sigma_1(bitset<8>(blocks[i - 2].to_string().substr(j, j + 8))).to_string();
-				inp2 = blocks[i - 7].to_string().substr(j, j + 8);
-				inp3 = sigma_0(bitset<8>(blocks[i - 15].to_string().substr(j, j + 8))).to_string();
-				inp4 = blocks[i - 16].to_string().substr(j, j + 8);
+				inp1 = sigma_1(bitset<8>(blocks[i - 2].to_string().substr(j, 8))).to_string();
+				inp2 = blocks[i - 7].to_string().substr(j, 8);
+				inp3 = sigma_0(bitset<8>(blocks[i - 15].to_string().substr(j, 8))).to_string();
+				inp4 = blocks[i - 16].to_string().substr(j, 8);
 
 				//
 				// Each access of the vector will get the bytes from
@@ -169,8 +169,8 @@ vector<bitset<512>> split(string text) {
 
 	while (!textcpy.empty()) {
 		// Store a chunk of the message
-		chunks.push_back(bitset<512>(text.substr(0, 511)));
-		textcpy.erase(0, 511);
+		chunks.push_back(bitset<512>(text.substr(0, 512)));
+		textcpy.erase(0, 512);
 	}
 
 	return chunks;
