@@ -12,7 +12,7 @@
 
 // The fractional parts of the square roots of the first 8 prime numbers (2-19)
 // multilied by 2^32.
-uint32_t ROOT_HASHES[8] = {
+const uint32_t ROOT_HASHES[8] = {
 	0x6a09e667, 0xbb67ae85,
 	0x3c6ef372, 0xa54ff53a,
 	0x510e527f, 0x9b05688c,
