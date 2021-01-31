@@ -14,6 +14,7 @@
 #include <vector>
 #include <array>
 #include <cassert>
+#include <cstring>
 
 #include "constants.h"
 #include "helpers.hpp"
@@ -74,15 +75,19 @@ string sha256Encrypt(string text) {
     vector<bitset<512>> chunks;
     array<bitset<32>, 64> blocks;
 
+    // Make a mutable copy of the root hashes
+    uint32_t hashes[8];
+    std::memcpy(hashes, ROOT_HASHES, sizeof(ROOT_HASHES));
+
     // Initialize working varibales
-    uint32_t a = ROOT_HASHES[0],
-             b = ROOT_HASHES[1],
-             c = ROOT_HASHES[2],
-             d = ROOT_HASHES[3],
-             e = ROOT_HASHES[4],
-             f = ROOT_HASHES[5],
-             g = ROOT_HASHES[6],
-             h = ROOT_HASHES[7];
+    uint32_t a = hashes[0],
+             b = hashes[1],
+             c = hashes[2],
+             d = hashes[3],
+             e = hashes[4],
+             f = hashes[5],
+             g = hashes[6],
+             h = hashes[7];
 
     int i = 0;
     bitset<8> temp1, temp2;
@@ -111,14 +116,14 @@ string sha256Encrypt(string text) {
         }
 
         // Add the compressed chunk to the current hashes
-        ROOT_HASHES[0] += a;
-        ROOT_HASHES[1] += b;
-        ROOT_HASHES[2] += c;
-        ROOT_HASHES[3] += d;
-        ROOT_HASHES[4] += e;
-        ROOT_HASHES[5] += f;
-        ROOT_HASHES[6] += g;
-        ROOT_HASHES[7] += h;
+        hashes[0] += a;
+        hashes[1] += b;
+        hashes[2] += c;
+        hashes[3] += d;
+        hashes[4] += e;
+        hashes[5] += f;
+        hashes[6] += g;
+        hashes[7] += h;
     }
 
     string hash = "";
