@@ -12,12 +12,15 @@
 #include <bitset>
 #include <vector>
 #include <array>
+#include <cmath>
 #include <iostream>
 
 using std::string;
 using std::bitset;
 using std::vector;
 using std::array;
+
+#define MOD_ADD static_cast<int>(pow(2, 32))
 
 //
 // ---[ Byte rotation and shifting ]---
@@ -37,12 +40,12 @@ bitset<8> rotateRight(bitset<8> byte, int n = 1) {
 		i++;
 	}
 
-	return modByte;
+	return bitset<8>(modByte.to_ulong() % MOD_ADD);
 }
 
 // Shift a byte `n` places to the right
 bitset<8> shiftRight(bitset<8> byte, int n = 1) {
-	return byte >> n;
+	return bitset<8>((byte >> n).to_ulong() % MOD_ADD);
 }
 
 //
@@ -158,7 +161,6 @@ array<bitset<32>, 64> decompose(string text) {
 
 	return blocks;
 }
-
 
 // Split the data up into 512-bit chunks
 vector<bitset<512>> split(string text) {
