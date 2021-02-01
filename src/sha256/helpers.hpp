@@ -144,8 +144,9 @@ array<bitset<32>, 64> decompose(string text) {
 
 				// Process the 32 bits in chunks of 8 bits (1 byte) each
 				for (unsigned int k = 0; k < blocks[j].size(); k += 8) {
+					// std::out_of_range thrown here
 					inp1 = sigma_1(bitset<8>(blocks[j - 2].to_string().substr(k, 8))).to_string();
-					inp2 = blocks[j - 7].to_string().substr(j, 8);
+					inp2 = blocks[j - 7].to_string().substr(k, 8);
 					inp3 = sigma_0(bitset<8>(blocks[j - 15].to_string().substr(k, 8))).to_string();
 					inp4 = blocks[j - 16].to_string().substr(k, 8);
 
