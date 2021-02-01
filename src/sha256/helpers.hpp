@@ -113,47 +113,57 @@ bitset<8> sigma_1(bitset<8> x) {
 //
 
 array<bitset<32>, 64> decompose(string text) {
-	int i = 0;
+	unsigned int i = 0, j = 0;
 	string textcpy = text;
 	array<bitset<32>, 64> blocks;
 
-	while (i < 63) {
-		if (i < 16) { // Chunks 1-16
-			// Save a 32-bit chink of data to the vector
-			blocks[i] = bitset<32>(textcpy.substr(0, 32));
-			textcpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
-		}
-		else { // Chunks 17-63
-			// Calculate the remaining chunks using the following
-			// formula:
-			//
-			// W_i = σ_1(W_(i − 2)) + W_(i − 7) + σ_0(W_(i − 15)) + W_(i − 16)
-			//
-			string blockstr = "";
+	while (i < text.size()) {
+		while (j < 63) {
+			if (j < 16) { // Chunks 1-16
+				// Save a 32-bit chink of data to the vector
+				blocks[j] = bitset<32>(textcpy.substr(0, 32));
 
-			// A place to store string versions of bytes from the 32-bit
-			// block that is currently being processed.
-			string inp1, inp2, inp3, inp4;
+				if (textcpy.size() < 32) {
+					textcpy.clear();
+				}
+				else {
+					textcpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
+				}
+			}
+			else { // Chunks 17-63
+				// Calculate the remaining chunks using the following
+				// formula:
+				//
+				// W_i = σ_1(W_(i − 2)) + W_(i − 7) + σ_0(W_(i − 15)) + W_(i − 16)
+				//
+				string blockstr = "";
 
-			// Process the 32 bits in chunks of 8 bits (1 byte) each
-			for (unsigned int j = 0; j < blocks[i].size(); j += 8) {
-				inp1 = sigma_1(bitset<8>(blocks[i - 2].to_string().substr(j, 8))).to_string();
-				inp2 = blocks[i - 7].to_string().substr(j, 8);
-				inp3 = sigma_0(bitset<8>(blocks[i - 15].to_string().substr(j, 8))).to_string();
-				inp4 = blocks[i - 16].to_string().substr(j, 8);
+				// A place to store string versions of bytes from the 32-bit
+				// block that is currently being processed.
+				string inp1, inp2, inp3, inp4;
 
-				//
-				// Each access of the vector will get the bytes from
-				// j to j + 7 upper-bound exclusive (i.e., [j, j + 7) in
-				// interval notation).
-				//
-				// 4 total bytes will be processed:
-				// indices [0, 8), [8, 16), [16, 24), and [24, 32)
-				//
-				blockstr += (inp1 + inp2 + inp3 + inp4);
+				// Process the 32 bits in chunks of 8 bits (1 byte) each
+				for (unsigned int k = 0; k < blocks[j].size(); k += 8) {
+					inp1 = sigma_1(bitset<8>(blocks[j - 2].to_string().substr(k, 8))).to_string();
+					inp2 = blocks[j - 7].to_string().substr(j, 8);
+					inp3 = sigma_0(bitset<8>(blocks[j - 15].to_string().substr(k, 8))).to_string();
+					inp4 = blocks[j - 16].to_string().substr(k, 8);
+
+					//
+					// Each access of the vector will get the bytes from
+					// j to j + 7 upper-bound exclusive (i.e., [j, j + 7) in
+					// interval notation).
+					//
+					// 4 total bytes will be processed:
+					// indices [0, 8), [8, 16), [16, 24), and [24, 32)
+					//
+					blockstr += (inp1 + inp2 + inp3 + inp4);
+				}
+
+				blocks[j] = bitset<32>(bitset<32>(blockstr).to_ulong() % MOD_ADD); // Add the string as a 32-bit bitset
 			}
 
-			blocks[i] = bitset<32>(bitset<32>(blockstr).to_ulong() % MOD_ADD); // Add the string as a 32-bit bitset
+			j++;
 		}
 
 		i++;
