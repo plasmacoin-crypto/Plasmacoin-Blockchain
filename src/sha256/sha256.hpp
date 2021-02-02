@@ -97,6 +97,20 @@ string sha256Encrypt(string text) {
     for (auto chunk: chunks) {
         blocks = decompose(chunk.to_string()); // Block decomposition
 
+        for (auto block: blocks) {
+            std::cout << block << std::endl;
+        }
+
+        // Set the working variables to the current hash value
+        a = hashes[0],
+        b = hashes[1],
+        c = hashes[2],
+        d = hashes[3],
+        e = hashes[4],
+        f = hashes[5],
+        g = hashes[6],
+        h = hashes[7];
+
         // Compression functionality
         while (i < 63) {
             temp1 = bitset<8>((h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + blocks[i].to_ulong()) % MOD_ADD);
