@@ -69,7 +69,7 @@ string preprocess(string text) {
     return padded;
 }
 
-string sha256Encrypt(string text) {
+string sha256Hash(string text) {
     string data = preprocess(text);
 
     vector<bitset<512>> chunks;
