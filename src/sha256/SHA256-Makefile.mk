@@ -15,7 +15,7 @@ remake: clean default
 # `make`
 $(TARGET): $(SOURCE)
 	# Build the blockchain
-	$(CC) $(CFLAGS) $(SOURCE) -o $(TARGET)
+	$(CC) $(CFLAGS) $(SOURCE) -g -o $(TARGET)
 
 # `make clean`
 clean:
