@@ -117,18 +117,13 @@ array<bitset<32>, 64> decompose(string text) {
 	string textcpy = text;
 	array<bitset<32>, 64> blocks;
 
-	while (i < text.size()) {
+	//while (i < text.size()) {
 		while (j < 63) {
 			if (j < 16) { // Chunks 1-16
-				// Save a 32-bit chink of data to the vector
+				// Save a 32-bit chink of data to the array
 				blocks[j] = bitset<32>(textcpy.substr(0, 32));
-
-				if (textcpy.size() < 32) {
-					textcpy.clear();
-				}
-				else {
-					textcpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
-				}
+				std::cout << textcpy.substr(0, 32);
+				textcpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
 			}
 			else { // Chunks 17-63
 				// Calculate the remaining chunks using the following
@@ -167,22 +162,50 @@ array<bitset<32>, 64> decompose(string text) {
 			j++;
 		}
 
-		i++;
-	}
+		//i++;
+	//}
 
 	return blocks;
 }
 
 // Split the data up into 512-bit chunks
-vector<bitset<512>> split(string text) {
-	vector<bitset<512>> chunks;
+auto split(string text) {
+	// Figure out how many 512-bit chunks need to be allocated
+	// Formulas from: https://www.movable-type.co.uk/scripts/sha256.html
+	int length = (text.size() / 4) + 2;
+	int needed = ceilf(length / 16);
+
+	array<array<bitset<32>, 16>, 1 /* Needs to be constant */> chunks; // Switch to a vector of arrays instead?
+
+	//bitset<32> chunks[needed][16];
+	//std::cout << sizeof(chunks);
+
 	string textcpy = text;
 
-	while (!textcpy.empty()) {
-		// Store a chunk of the message
-		chunks.push_back(bitset<512>(text.substr(0, 512)));
-		textcpy.erase(0, 512);
+	for (unsigned int i = 0; i < chunks.size(); i++) {
+		for (unsigned int j = 0; j < chunks[i].size(); j++) {
+			if (!textcpy.empty()) {
+				chunks[i][j] = bitset<32>(text.substr(0, 32));
+				textcpy.erase(0, 32);
+			}
+		}
 	}
+
+	// for (unsigned int i = 0; i < sizeof(chunks); i++) {
+	// 	for (unsigned int j = 0; j < (*chunks[i]).size(); j++) {
+	// 		if (!textcpy.empty()) {
+	// 			chunks[i][j] = bitset<32>(text.substr(0, 32));
+	// 			textcpy.erase(0, 32);
+	// 		}
+	// 	}
+	// }
+
+	// int i = 0, j = 0;
+	// while (!textcpy.empty()) {
+	// 	// Store a chunk of the message
+	// 	chunks[i][j] = bitset<32>(text.substr(0, 32));
+	// 	textcpy.erase(0, 32);
+	// }
 
 	return chunks;
 }
