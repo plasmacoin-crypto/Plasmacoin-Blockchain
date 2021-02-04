@@ -7,14 +7,21 @@
 
 #include <bitset>
 #include <iostream>
+#include <string>
 
 #include "helpers.hpp"
+#include "sha256.hpp"
 
 int main() {
-	bitset<8> byte = std::bitset<8>(12);
-	std::cout << byte << std::endl;
-	std::cout << "\n" << rotateRight(byte, 3) << std::endl;
-	//std::cout << choice(bitset<8>(2), bitset<8>(2), bitset<8>(3)) << std::endl;
+	// std::cout << bits.to_string();
+	//std::cout << sha256Hash("abc");
+	//auto arr = decompose(preprocess("abc"));
+	for (auto item: split(preprocess("abc"))[0])
+		std::cout << item << std::endl;
+
+	// for (auto item: arr) {
+	// 	std::cout << item << std::endl;
+	// }
 
 	return 0;
 }
