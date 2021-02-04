@@ -33,6 +33,7 @@ string preprocess(string text) {
 
 	const int SIZE_IN_BITS = text.size() * 8;
 	const char EXTRA_BIT = '1';
+    const int K = 448 /* (512 - UINT64_SIZE) */ - (SIZE_IN_BITS + 1);
 
 	//
     // The equation L + 1 + K + 64 is used to find the correct number of bits to append,
@@ -42,16 +43,7 @@ string preprocess(string text) {
 	// * 1 is an extra bit that is always appended
 	// * 64 is the set size in bits of appending L
 	//
-	uint64_t target = SIZE_IN_BITS + 1 + /* K */ + UINT64_SIZE; // K must be solved for
-
-    // Solve for K
-    int k = 0;
-    while (512 % (target + k) != 0) {
-        ++k;
-    }
-
-    target += k;
-
+	const uint64_t TARGET = SIZE_IN_BITS + 1 + K + UINT64_SIZE;
 
     // Store the string to binary
     for (char c: text) {
@@ -60,10 +52,10 @@ string preprocess(string text) {
 
 	// Pad the byte array
     padded += EXTRA_BIT; // Append a single bit
-    padded.insert(padded.end(), k, '0'); // Append K empty bits
+    padded.insert(padded.end(), K, '0'); // Append K empty bits
     padded += bitset<UINT64_SIZE>(static_cast<uint64_t>(SIZE_IN_BITS)).to_string(); // Append the data size
 
-    assert(padded.size() == target); // Make sure everything was padded correctly
+    assert(padded.size() == TARGET); // Make sure everything was padded correctly
     assert(512 % padded.size() == 0); // Make sure the padded word's size in bits is a multiple of 512
 
     return padded;
@@ -71,8 +63,6 @@ string preprocess(string text) {
 
 string sha256Hash(string text) {
     string data = preprocess(text);
-
-    vector<bitset<512>> chunks;
     array<bitset<32>, 64> blocks;
 
     // Make a mutable copy of the root hashes
@@ -92,10 +82,17 @@ string sha256Hash(string text) {
     int i = 0;
     bitset<8> temp1, temp2;
 
-    chunks = split(data);
+    auto chunks = split(data);
 
-    for (auto chunk: chunks) {
-        blocks = decompose(chunk.to_string()); // Block decomposition
+    // for (unsigned int i = 0; i < sizeof(chunks); i++) {
+    //     std::cout << chunks[i] << std::endl;
+    // }
+
+    exit(0); // For testing purposes
+
+
+    for (unsigned int i = 0; i < sizeof(chunks); i++) {
+        blocks = decompose(chunks[0][i].to_string()); // Block decomposition
 
         for (auto block: blocks) {
             std::cout << block << std::endl;
