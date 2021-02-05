@@ -112,18 +112,18 @@ bitset<8> sigma_1(bitset<8> x) {
 // ---[ Block decomposition functions ]---
 //
 
-array<bitset<32>, 64> decompose(string text) {
+array<bitset<32>, 64> decompose(string data) {
 	unsigned int i = 0, j = 0;
-	string textcpy = text;
+	string datacpy = data;
 	array<bitset<32>, 64> blocks;
 
-	//while (i < text.size()) {
+	//while (i < data.size()) {
 		while (j < 63) {
 			if (j < 16) { // Chunks 1-16
 				// Save a 32-bit chink of data to the array
-				blocks[j] = bitset<32>(textcpy.substr(0, 32));
-				std::cout << textcpy.substr(0, 32);
-				textcpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
+				blocks[j] = bitset<32>(datacpy.substr(0, 32));
+				std::cout << datacpy.substr(0, 32);
+				datacpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
 			}
 			else { // Chunks 17-63
 				// Calculate the remaining chunks using the following
@@ -169,10 +169,10 @@ array<bitset<32>, 64> decompose(string text) {
 }
 
 // Split a bytestring into 512-bit chunks
-auto split(string data) {
+auto split(string text) {
 	// Figure out how many 512-bit chunks need to be allocated
 	// Formulas from: https://www.movable-type.co.uk/scripts/sha256.html
-	int length = (data.size() / 4) + 2;
+	int length = (text.size() / 4) + 2;
 	int needed = ceilf(length / 16);
 
 	vector<array<bitset<32>, 16>> chunks;
@@ -181,13 +181,13 @@ auto split(string data) {
 	//bitset<32> chunks[needed][16];
 	//std::cout << sizeof(chunks);
 
-	string datacpy = data;
+	string textcpy = text;
 
 	for (int i = 0; i < needed; i++) {
 		for (unsigned int j = 0; j < chunks[i].size(); j++) {
-			if (!datacpy.empty()) {
-				chunks[i][j] = bitset<32>(datacpy.substr(0, 32));
-				datacpy.erase(0, 32);
+			if (!textcpy.empty()) {
+				chunks[i][j] = bitset<32>(textcpy.substr(0, 32));
+				textcpy.erase(0, 32);
 			}
 		}
 	}
