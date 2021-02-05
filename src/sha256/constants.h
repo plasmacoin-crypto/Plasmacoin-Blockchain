@@ -10,7 +10,8 @@
 
 #include <stdint.h>
 
-// This will ensure the name is the same on all compilers
+// This will ensure the name is the same on all compilers;
+// effectively a redefinition of UINT64_WIDTH.
 #define UINT64_SIZE 64
 
 // The fractional parts of the square roots of the first 8 prime numbers (2-19)
