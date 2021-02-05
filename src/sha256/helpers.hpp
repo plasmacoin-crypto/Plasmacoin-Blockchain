@@ -175,37 +175,22 @@ auto split(string text) {
 	int length = (text.size() / 4) + 2;
 	int needed = ceilf(length / 16);
 
-	array<array<bitset<32>, 16>, 1 /* Needs to be constant */> chunks; // Switch to a vector of arrays instead?
+	vector<array<bitset<32>, 16>> chunks;
+	chunks.reserve(needed); // Hopefully save some overhead
 
 	//bitset<32> chunks[needed][16];
 	//std::cout << sizeof(chunks);
 
 	string textcpy = text;
-
-	for (unsigned int i = 0; i < chunks.size(); i++) {
+    
+	for (unsigned int i = 0; i < needed; i++) {
 		for (unsigned int j = 0; j < chunks[i].size(); j++) {
 			if (!textcpy.empty()) {
-				chunks[i][j] = bitset<32>(text.substr(0, 32));
+				chunks[i][j] = bitset<32>(textcpy.substr(0, 32));
 				textcpy.erase(0, 32);
 			}
 		}
 	}
-
-	// for (unsigned int i = 0; i < sizeof(chunks); i++) {
-	// 	for (unsigned int j = 0; j < (*chunks[i]).size(); j++) {
-	// 		if (!textcpy.empty()) {
-	// 			chunks[i][j] = bitset<32>(text.substr(0, 32));
-	// 			textcpy.erase(0, 32);
-	// 		}
-	// 	}
-	// }
-
-	// int i = 0, j = 0;
-	// while (!textcpy.empty()) {
-	// 	// Store a chunk of the message
-	// 	chunks[i][j] = bitset<32>(text.substr(0, 32));
-	// 	textcpy.erase(0, 32);
-	// }
 
 	return chunks;
 }
