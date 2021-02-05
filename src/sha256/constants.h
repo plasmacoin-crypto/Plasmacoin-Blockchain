@@ -10,6 +10,9 @@
 
 #include <stdint.h>
 
+// This will ensure the name is the same on all compilers
+#define UINT64_SIZE 64
+
 // The fractional parts of the square roots of the first 8 prime numbers (2-19)
 // multilied by 2^32.
 const uint32_t ROOT_HASHES[8] = {
