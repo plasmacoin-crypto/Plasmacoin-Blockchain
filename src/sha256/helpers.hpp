@@ -182,8 +182,8 @@ auto split(string text) {
 	//std::cout << sizeof(chunks);
 
 	string textcpy = text;
-    
-	for (unsigned int i = 0; i < needed; i++) {
+
+	for (int i = 0; i < needed; i++) {
 		for (unsigned int j = 0; j < chunks[i].size(); j++) {
 			if (!textcpy.empty()) {
 				chunks[i][j] = bitset<32>(textcpy.substr(0, 32));
