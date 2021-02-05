@@ -15,6 +15,7 @@
 #include <array>
 #include <cassert>
 #include <cstring>
+#include <cmath> 
 
 #include "constants.h"
 #include "helpers.hpp"
@@ -28,22 +29,33 @@ using std::array;
 #define UINT64_SIZE 64
 
 string preprocess(string text) {
-	// The padded string to return. The size will be some multiple of 512.
+	// The padded string to return. The resulting length will be some multiple of 
+	// 512, or in the case of a multi-block result, some length `l` where `l % 512 = 0`.
 	string padded = "";
 
-	const int SIZE_IN_BITS = text.size() * 8;
+	const int SIZE_IN_BITS = text.size() * 8; // The size of the input string in bits
 	const char EXTRA_BIT = '1';
-    const int K = 448 /* (512 - UINT64_SIZE) */ - (SIZE_IN_BITS + 1);
+
+	int k;
+
+	// Use a larger, non-constant final padding size instead of
+	// 448 when the input requires multiple blocks
+	const int blockNum = (SIZE_IN_BITS == 448)? 2 : std::ceil(SIZE_IN_BITS / 448);
+	k = ((SIZE_IN_BITS >= 448)? ((512 * blockNum) - UINT64_SIZE) : 448 /* 448 mod 512 */) - (SIZE_IN_BITS + 1);
+
+	if (SIZE_IN_BITS >= 448) {
+		//k -= UINT64_SIZE; // Free some space for the size at the end
+	}
 
 	//
-    // The equation L + 1 + K + 64 is used to find the correct number of bits to append,
+	// The equation L + 1 + K + 64 is used to find the correct total number of bits to append,
 	// where:
 	// * L is the length in bits of the text to encrypt
 	// * K is the smallest number >= 0 that makes the equation a multiple of 512
 	// * 1 is an extra bit that is always appended
-	// * 64 is the set size in bits of appending L
+	// * 64 is the set size in bits of the number L
 	//
-	const uint64_t TARGET = SIZE_IN_BITS + 1 + K + UINT64_SIZE;
+    const uint64_t TARGET = SIZE_IN_BITS + 1 + k + UINT64_SIZE;
 
     // Store the string to binary
     for (char c: text) {
@@ -52,17 +64,40 @@ string preprocess(string text) {
 
 	// Pad the byte array
     padded += EXTRA_BIT; // Append a single bit
-    padded.insert(padded.end(), K, '0'); // Append K empty bits
+    
+    padded.insert(padded.end(), k, '0'); // Append K empty (0) bits
+    
+    // if (SIZE_IN_BITS >= 448) {
+    //     // PROBLEM: 1 byte short
+    //     //int new_k = 512 - k;
+    //     //std::cout << "New k: " << new_k << std::endl;
+        
+    // }
+    // else {
+    //     padded.insert(padded.end(), k, '0'); // Append K empty (0) bits
+    // }
+    
+    std::cout << padded.size() << std::endl;
+    std::cout << k << std::endl;
+    
+    // Only single-block inputs (or the last of a multi-block input)
+    // will have the final 64 bits on the end.
     padded += bitset<UINT64_SIZE>(static_cast<uint64_t>(SIZE_IN_BITS)).to_string(); // Append the data size
+    // if (SIZE_IN_BITS < 448) {
+        
+    // }
 
-    assert(padded.size() == TARGET); // Make sure everything was padded correctly
-    assert(512 % padded.size() == 0); // Make sure the padded word's size in bits is a multiple of 512
+    //assert(padded.size() == TARGET); // Make sure everything was padded correctly
+    //assert(512 % padded.size() == 0); // Make sure the padded word's size in bits is a multiple of 512
 
     return padded;
 }
 
 string sha256Hash(string text) {
+    // This will need to run multile times for strings longer than
+    // 512 bits padded (>= 448 bits unpadded).
     string data = preprocess(text);
+    
     array<bitset<32>, 64> blocks;
 
     // Make a mutable copy of the root hashes
@@ -79,7 +114,7 @@ string sha256Hash(string text) {
              g = hashes[6],
              h = hashes[7];
 
-    int i = 0;
+    //int i = 0;
     bitset<8> temp1, temp2;
 
     auto chunks = split(data);
@@ -91,7 +126,7 @@ string sha256Hash(string text) {
     exit(0); // For testing purposes
 
 
-    for (unsigned int i = 0; i < sizeof(chunks); i++) {
+    for (unsigned int i = 0; i < chunks.size(); i++) {
         blocks = decompose(chunks[0][i].to_string()); // Block decomposition
 
         for (auto block: blocks) {
@@ -140,7 +175,7 @@ string sha256Hash(string text) {
     string hash = "";
 
     // Compute the hash by concatenating all of the root hashes
-    for (ulong i = 0; i < sizeof(ROOT_HASHES); i += 2) {
+    for (unsigned long i = 0; i < sizeof(ROOT_HASHES); i += 2) {
         hash += concat(ROOT_HASHES[i], ROOT_HASHES[i + 1]).to_string();
     }
 
