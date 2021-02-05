@@ -19,9 +19,9 @@ int main() {
   	//for (auto item: split(preprocess("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"))[0]) {
     //    std::cout << item << std::endl;
     //}
-    //auto arr = split(preprocess("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"))[1];
+    auto arr = split(preprocess("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"))[1];
     //std::cout << preprocess("abc");
-    
+
     std::cout << arr.size() << std::endl;
 	for (uint i = 0; i < arr.size(); i++) {
 		std::cout << i << ": " << arr[i] << std::endl;
