@@ -112,6 +112,9 @@ bitset<8> sigma_1(bitset<8> x) {
 // ---[ Block decomposition functions ]---
 //
 
+// Assign a 512-bit chunk of data to a message schedule array. The chunk
+// will be split into 32-bit blocks (or words) across 64 elements, which
+// will account for all 512 bits (32 * 16 = 512).
 array<bitset<32>, 64> decompose(string data) {
 	unsigned int i = 0, j = 0;
 	string datacpy = data;
@@ -168,7 +171,8 @@ array<bitset<32>, 64> decompose(string data) {
 	return blocks;
 }
 
-// Split a bytestring into 512-bit chunks
+// Split a bytestring into 512-bit chunks. The data will be returned as
+// a vector of 16-element arrays containing 32-bit bitsets.
 auto split(string text) {
 	// Figure out how many 512-bit chunks need to be allocated
 	// Formulas from: https://www.movable-type.co.uk/scripts/sha256.html
