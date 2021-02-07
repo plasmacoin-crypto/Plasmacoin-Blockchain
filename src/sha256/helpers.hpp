@@ -142,7 +142,6 @@ array<bitset<32>, 64> decompose(string data) {
 
 				// Process the 32 bits in chunks of 8 bits (1 byte) each
 				for (unsigned int k = 0; k < blocks[j].size(); k += 8) {
-					// std::out_of_range thrown here
 					inp1 = sigma_1(bitset<8>(blocks[j - 2].to_string().substr(k, 8))).to_string();
 					inp2 = blocks[j - 7].to_string().substr(k, 8);
 					inp3 = sigma_0(bitset<8>(blocks[j - 15].to_string().substr(k, 8))).to_string();
@@ -174,10 +173,7 @@ array<bitset<32>, 64> decompose(string data) {
 // Split a bytestring into 512-bit chunks. The data will be returned as
 // a vector of 16-element arrays containing 32-bit bitsets.
 auto split(string text) {
-	// Figure out how many 512-bit chunks need to be allocated
-	// Formulas from: https://www.movable-type.co.uk/scripts/sha256.html
-	int length = (text.size() / 4) + 2;
-	int needed = ceilf(length / 16.0F);
+	int needed = ceilf(text.size() / 512.0); // Figure out how many 512-bit chunks need to be allocated
 	std::cout << needed << std::endl;
 
 	vector<array<bitset<32>, 16>> chunks;
@@ -199,6 +195,7 @@ auto split(string text) {
 		chunks.push_back(chunk); // Add the 512-bit chunk
 	}
 
+	std::cout << chunks.size() << std::endl;
 	return chunks;
 }
 
