@@ -151,26 +151,25 @@ array<bitset<32>, 64> decompose(string data) {
 				// Calculate the remaining blocks using the following
 				// formula:
 				//
+				//				1			   2			  3				 4
+				// ---------------------------------------------------------------
 				// W_i = σ_1(W_(i − 2)) + W_(i − 7) + σ_0(W_(i − 15)) + W_(i − 16)
 				//
 				// Where:
 				// W is the new block being created
 				// i is the index of the block
 				// σ_0 and σ_1 are predefined functions to manipulate a block
-				string blockstr = "";
 
 				// A place to store string versions of bytes from the 32-bit
 				// block that is currently being processed.
-				string inp1, inp2, inp3, inp4;
+				unsigned long inp1, inp2, inp3, inp4;
 
-				inp1 = sigma_1(blocks[j - 2]).to_string();
-				inp2 = blocks[j - 7].to_string();
-				inp3 = sigma_0(blocks[j - 15]).to_string();
-				inp4 = blocks[j - 16].to_string();
+				inp1 = sigma_1(blocks[j - 2]).to_ulong(); 	// 1
+				inp2 = blocks[j - 7].to_ulong();		  	// 2
+				inp3 = sigma_0(blocks[j - 15]).to_ulong();	// 3
+				inp4 = blocks[j - 16].to_ulong();			// 4
 
-				blockstr += (inp1 + inp2 + inp3 + inp4);
-
-				blocks[j] = bitset<32>(bitset<32>(blockstr).to_ulong() % MOD_ADD); // Add the string as a 32-bit bitset
+				blocks[j] = bitset<32>((inp1 + inp2 + inp3 + inp4) % MOD_ADD); // Add the next block
 			}
 
 			j++;
