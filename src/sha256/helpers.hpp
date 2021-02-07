@@ -13,6 +13,7 @@
 #include <vector>
 #include <array>
 #include <cmath>
+#include <algorithm>
 #include <iostream>
 
 using std::string;
@@ -177,23 +178,26 @@ auto split(string text) {
 	// Figure out how many 512-bit chunks need to be allocated
 	// Formulas from: https://www.movable-type.co.uk/scripts/sha256.html
 	int length = (text.size() / 4) + 2;
-	int needed = ceilf(length / 16);
+	int needed = static_cast<int>(ceil(text.size() / 512));
+	std::cout << text.size() << std::endl;
 
 	vector<array<bitset<32>, 16>> chunks;
-	chunks.reserve(needed); // Hopefully save some overhead
-
-	//bitset<32> chunks[needed][16];
-	//std::cout << sizeof(chunks);
+	chunks.reserve(needed);
 
 	string textcpy = text;
 
+	array<bitset<32>, 16> chunk;
+	std::fill(chunk.begin(), chunk.end(), 0);
+
 	for (int i = 0; i < needed; i++) {
-		for (unsigned int j = 0; j < chunks[i].size(); j++) {
+		for (unsigned int j = 0; j < chunk.size(); j++) {
 			if (!textcpy.empty()) {
-				chunks[i][j] = bitset<32>(textcpy.substr(0, 32));
+				chunk[j] = bitset<32>(textcpy.substr(0, 32));
 				textcpy.erase(0, 32);
 			}
 		}
+
+		chunks.push_back(chunk);
 	}
 
 	return chunks;
