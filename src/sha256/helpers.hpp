@@ -43,9 +43,29 @@ bitset<8> rotateRight(bitset<8> byte, int n = 1) {
 	return bitset<8>(modByte.to_ulong() % MOD_ADD);
 }
 
+bitset<32> rotateRight(bitset<32> byte, int n = 1) {
+	bitset<32> modByte = byte;
+	int i = 0;
+
+	while (i < n) {
+		bool b0 = modByte.test(0); // Save the bit in the first position
+
+		modByte >>= 1; 	 // Shift everything to the right
+		modByte[7] = b0; // Circle around the stored bit
+
+		i++;
+	}
+
+	return bitset<32>(modByte.to_ulong() % MOD_ADD);
+}
+
 // Shift a byte `n` places to the right
 bitset<8> shiftRight(bitset<8> byte, int n = 1) {
 	return bitset<8>((byte >> n).to_ulong() % MOD_ADD);
+}
+
+bitset<32> shiftRight(bitset<32> byte, int n = 1) {
+	return bitset<32>((byte >> n).to_ulong() % MOD_ADD);
 }
 
 //
@@ -99,12 +119,12 @@ bitset<8> Sigma_1(bitset<8> x) {
 }
 
 // Implement σ_0(X)
-bitset<8> sigma_0(bitset<8> x) {
-	return (rotateRight(x, 7) | rotateRight(x, 18) | shiftRight(x, 3));
+bitset<32> sigma_0(bitset<32> x) {
+	return (rotateRight(x, 7) | rotateRight(x, 132) | shiftRight(x, 3));
 }
 
 // Implement σ_1(X)
-bitset<8> sigma_1(bitset<8> x) {
+bitset<32> sigma_1(bitset<32> x) {
 	return (rotateRight(x, 17) | rotateRight(x, 19) | shiftRight(x, 10));
 }
 
@@ -143,23 +163,12 @@ array<bitset<32>, 64> decompose(string data) {
 				// block that is currently being processed.
 				string inp1, inp2, inp3, inp4;
 
-				// Process the 32 bits in chunks of 8 bits (1 byte) each
-				for (unsigned int k = 0; k < blocks[j].size(); k += 8) {
-					inp1 = sigma_1(bitset<8>(blocks[j - 2].to_string().substr(k, 8))).to_string();
-					inp2 = blocks[j - 7].to_string().substr(k, 8);
-					inp3 = sigma_0(bitset<8>(blocks[j - 15].to_string().substr(k, 8))).to_string();
-					inp4 = blocks[j - 16].to_string().substr(k, 8);
+				inp1 = sigma_1(blocks[j - 2]).to_string();
+				inp2 = blocks[j - 7].to_string();
+				inp3 = sigma_0(blocks[j - 15]).to_string();
+				inp4 = blocks[j - 16].to_string();
 
-					//
-					// Each access of the vector will get the bytes from
-					// j to j + 7 upper-bound exclusive (i.e., [j, j + 7) in
-					// interval notation).
-					//
-					// 4 total bytes will be processed:
-					// indices [0, 8), [8, 16), [16, 24), and [24, 32)
-					//
-					blockstr += (inp1 + inp2 + inp3 + inp4);
-				}
+				blockstr += (inp1 + inp2 + inp3 + inp4);
 
 				blocks[j] = bitset<32>(bitset<32>(blockstr).to_ulong() % MOD_ADD); // Add the string as a 32-bit bitset
 			}
