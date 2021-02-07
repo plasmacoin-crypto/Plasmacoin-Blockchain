@@ -122,18 +122,22 @@ array<bitset<32>, 64> decompose(string data) {
 
 	//while (i < data.size()) {
 		while (j < 63) {
-			if (j < 16) { // Chunks 1-16
-				// Save a 32-bit chink of data to the array
+			if (j < 16) { // Blocks 1-16
+				// Save a 32-bit chunk of data to the array
 				blocks[j] = bitset<32>(datacpy.substr(0, 32));
 				std::cout << datacpy.substr(0, 32);
 				datacpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
 			}
-			else { // Chunks 17-63
-				// Calculate the remaining chunks using the following
+			else { // Blocks 17-63
+				// Calculate the remaining blocks using the following
 				// formula:
 				//
 				// W_i = σ_1(W_(i − 2)) + W_(i − 7) + σ_0(W_(i − 15)) + W_(i − 16)
 				//
+				// Where:
+				// W is the new block being created
+				// i is the index of the block
+				// σ_0 and σ_1 are predefined functions to manipulate a block
 				string blockstr = "";
 
 				// A place to store string versions of bytes from the 32-bit
