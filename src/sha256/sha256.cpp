@@ -13,19 +13,23 @@
 #include "sha256.hpp"
 
 int main() {
-	// std::cout << bits.to_string();
-	std::cout << sha256Hash("abc");
+	//std::cout << sha256Hash("abc");
+
 	//auto arr = decompose(preprocess("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"));
-  	//for (auto item: split(preprocess("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"))[0]) {
+
+	//for (auto item: split(preprocess("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"))[0]) {
     //    std::cout << item << std::endl;
     //}
-    //auto arr = split(preprocess("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopqa"))[0];
-    //auto arr = split(preprocess("abc"))[0];
 
-    // std::cout << arr.size() << std::endl;
-	// for (uint i = 0; i < arr.size(); i++) {
-	// 	std::cout << i << ": " << arr[i] << std::endl;
-	// }
+	//auto arr = split(preprocess("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopqa"))[0];
+    auto arr = decompose(split(preprocess("abc")).at(0).at(0).to_string());
+
+    std::cout << arr.size() << std::endl;
+	for (uint i = 0; i < arr.size(); i++) {
+		std::cout << i << ": " << arr[i] << std::endl;
+	}
+
+	//std::cout << preprocess("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopqa");
 
 	return 0;
 }
