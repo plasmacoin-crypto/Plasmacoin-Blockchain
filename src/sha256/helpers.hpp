@@ -133,19 +133,15 @@ bitset<32> sigma_1(bitset<32> x) {
 //
 
 // Assign a 512-bit chunk of data to a message schedule array. The chunk
-// will be split into 32-bit blocks (or words) across 64 elements, which
-// will account for all 512 bits (32 * 16 = 512).
-array<bitset<32>, 64> decompose(string data) {
+// will contain 64 32-bit words.
+array<bitset<32>, 64> decompose(array<bitset<32>, 16> data) {
 	unsigned int i = 0, j = 0;
-	string datacpy = data;
 	array<bitset<32>, 64> blocks;
 
 	//while (i < data.size()) {
 		while (j < blocks.size()) {
 			if (j < 16) { // Blocks 1-16
-				// Save a 32-bit chunk of data to the array
-				blocks[j] = bitset<32>(datacpy.substr(0, 32));
-				datacpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
+				blocks[j] = data[j]; // Save a 32-bit chunk of data to the array
 			}
 			else { // Blocks 17-64
 				// Calculate the remaining blocks using the following
