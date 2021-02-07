@@ -33,10 +33,10 @@ string preprocess(string text) {
 	const int SIZE_IN_BITS = text.size() * 8; // The size of the input string in bits
 	const char EXTRA_BIT = '1';
 
-	// Use a larger, non-constant final padding size instead of
-	// 448 when the input requires multiple blocks
-	const int blockNum = (SIZE_IN_BITS == 448)? 2 : std::ceil(SIZE_IN_BITS / 448);
-	const int K = ((SIZE_IN_BITS >= 448)? ((512 * blockNum) - UINT64_SIZE) : (448 /* 448 mod 512 */) - (SIZE_IN_BITS + 1));
+	// Use a larger, non-constant final padding size instead of 448 when the input
+    // requires
+	const int BLOCK_NUM = (SIZE_IN_BITS == 448)? 2 : static_cast<int>(ceilf(SIZE_IN_BITS / 448.0F));
+	const int K = ((SIZE_IN_BITS >= 448)? ((512 * BLOCK_NUM) - UINT64_SIZE) : 448 /* 448 mod 512 */) - (SIZE_IN_BITS + 1);
 
 	//
 	// The equation L + 1 + K + 64 is used to find the correct total number of bits to append,
@@ -46,7 +46,7 @@ string preprocess(string text) {
 	// * 1 is an extra bit that is always appended
 	// * 64 is the set size in bits of the number L
 	//
-    const uint64_t TARGET = SIZE_IN_BITS + 1 + K + UINT64_SIZE;
+    //const uint64_t TARGET = SIZE_IN_BITS + 1 + K + UINT64_SIZE;
 
     // Store the string to binary
     for (char c: text) {
@@ -69,9 +69,7 @@ string preprocess(string text) {
 }
 
 string sha256Hash(string text) {
-    // This will need to run multile times for strings longer than
-    // 512 bits padded (>= 448 bits unpadded).
-    string data = preprocess(text);
+    string padded = preprocess(text);
 
     array<bitset<32>, 64> blocks;
 
@@ -89,69 +87,73 @@ string sha256Hash(string text) {
              g = hashes[6],
              h = hashes[7];
 
-    //int i = 0;
     bitset<8> temp1, temp2;
 
-    auto chunks = split(data);
+    std::cout << padded << std::endl;
+    auto chunks = split(padded);
 
-    // for (unsigned int i = 0; i < sizeof(chunks); i++) {
-    //     std::cout << chunks[i] << std::endl;
+    // for (unsigned int i = 0; i < chunks.size(); i++) {
+    //     for (unsigned int j = 0; j < chunks[i].size(); j++) {
+    //         std::cout << chunks[i][j] << std::endl;
+    //     }
     // }
 
+    std::cout << chunks.size() << std::endl;
     exit(0); // For testing purposes
-
-
     for (unsigned int i = 0; i < chunks.size(); i++) {
-        blocks = decompose(chunks[0][i].to_string()); // Block decomposition
+        for (auto chunk: chunks[i]) {
+            blocks = decompose(chunk.to_string());
+            std::cout << blocks[0] << std::endl;
 
-        for (auto block: blocks) {
-            std::cout << block << std::endl;
+            for (auto block: blocks) {
+                std::cout << block << std::endl;
+            }
+
+            // Set the working variables to the current hash value
+            a = hashes[0],
+            b = hashes[1],
+            c = hashes[2],
+            d = hashes[3],
+            e = hashes[4],
+            f = hashes[5],
+            g = hashes[6],
+            h = hashes[7];
+
+            // Compression functionality
+            while (i < 63) {
+                temp1 = bitset<8>((h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + blocks[i].to_ulong()) % MOD_ADD);
+                temp2 = bitset<8>((Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong()) % MOD_ADD);
+
+                // Reassign the working variables
+                h = g;
+                g = f;
+                f = e;
+                e = (d + temp1.to_ulong()) % MOD_ADD;
+                d = c;
+                c = b;
+                b = a;
+                a = (temp1.to_ulong() + temp2.to_ulong()) % MOD_ADD;
+
+                i++;
+            }
+
+            // Add the compressed chunk to the current hashes
+            hashes[0] += a;
+            hashes[1] += b;
+            hashes[2] += c;
+            hashes[3] += d;
+            hashes[4] += e;
+            hashes[5] += f;
+            hashes[6] += g;
+            hashes[7] += h;
         }
-
-        // Set the working variables to the current hash value
-        a = hashes[0],
-        b = hashes[1],
-        c = hashes[2],
-        d = hashes[3],
-        e = hashes[4],
-        f = hashes[5],
-        g = hashes[6],
-        h = hashes[7];
-
-        // Compression functionality
-        while (i < 63) {
-            temp1 = bitset<8>((h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + blocks[i].to_ulong()) % MOD_ADD);
-            temp2 = bitset<8>((Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong()) % MOD_ADD);
-
-            // Reassign the working variables
-            h = g;
-            g = f;
-            f = e;
-            e = (d + temp1.to_ulong()) % MOD_ADD;
-            d = c;
-            c = b;
-            b = a;
-            a = (temp1.to_ulong() + temp2.to_ulong()) % MOD_ADD;
-
-            i++;
-        }
-
-        // Add the compressed chunk to the current hashes
-        hashes[0] += a;
-        hashes[1] += b;
-        hashes[2] += c;
-        hashes[3] += d;
-        hashes[4] += e;
-        hashes[5] += f;
-        hashes[6] += g;
-        hashes[7] += h;
     }
 
     string hash = "";
 
     // Compute the hash by concatenating all of the root hashes
-    for (unsigned long i = 0; i < sizeof(ROOT_HASHES); i += 2) {
-        hash += concat(ROOT_HASHES[i], ROOT_HASHES[i + 1]).to_string();
+    for (unsigned long i = 0; i < sizeof(hashes); i += 2) {
+        hash += concat(hashes[i], hashes[i + 1]).to_string();
     }
 
     return hash;
