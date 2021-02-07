@@ -121,14 +121,13 @@ array<bitset<32>, 64> decompose(string data) {
 	array<bitset<32>, 64> blocks;
 
 	//while (i < data.size()) {
-		while (j < 63) {
+		while (j < blocks.size()) {
 			if (j < 16) { // Blocks 1-16
 				// Save a 32-bit chunk of data to the array
 				blocks[j] = bitset<32>(datacpy.substr(0, 32));
-				std::cout << datacpy.substr(0, 32);
 				datacpy.erase(0, 32); // Will erase indices 0-31 (Interval notation: [0, 32))
 			}
-			else { // Blocks 17-63
+			else { // Blocks 17-64
 				// Calculate the remaining blocks using the following
 				// formula:
 				//
