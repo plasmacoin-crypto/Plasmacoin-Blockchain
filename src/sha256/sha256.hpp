@@ -71,7 +71,7 @@ string preprocess(string text) {
 string sha256Hash(string text) {
     string padded = preprocess(text);
 
-    array<bitset<32>, 64> blocks;
+    array<bitset<32>, 64> schedule;
 
     // Make a mutable copy of the root hashes
     uint32_t hashes[8];
@@ -101,52 +101,49 @@ string sha256Hash(string text) {
     std::cout << chunks.size() << std::endl;
     exit(0); // For testing purposes
     for (unsigned int i = 0; i < chunks.size(); i++) {
-        for (auto chunk: chunks[i]) {
-            blocks = decompose(chunk.to_string());
-            std::cout << blocks[0] << std::endl;
+        schedule = decompose(chunks[i]);
 
-            for (auto block: blocks) {
-                std::cout << block << std::endl;
-            }
-
-            // Set the working variables to the current hash value
-            a = hashes[0],
-            b = hashes[1],
-            c = hashes[2],
-            d = hashes[3],
-            e = hashes[4],
-            f = hashes[5],
-            g = hashes[6],
-            h = hashes[7];
-
-            // Compression functionality
-            while (i < 63) {
-                temp1 = bitset<8>((h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + blocks[i].to_ulong()) % MOD_ADD);
-                temp2 = bitset<8>((Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong()) % MOD_ADD);
-
-                // Reassign the working variables
-                h = g;
-                g = f;
-                f = e;
-                e = (d + temp1.to_ulong()) % MOD_ADD;
-                d = c;
-                c = b;
-                b = a;
-                a = (temp1.to_ulong() + temp2.to_ulong()) % MOD_ADD;
-
-                i++;
-            }
-
-            // Add the compressed chunk to the current hashes
-            hashes[0] += a;
-            hashes[1] += b;
-            hashes[2] += c;
-            hashes[3] += d;
-            hashes[4] += e;
-            hashes[5] += f;
-            hashes[6] += g;
-            hashes[7] += h;
+        for (auto block: schedule) {
+            std::cout << block << std::endl;
         }
+
+        // Set the working variables to the current hash value
+        a = hashes[0],
+        b = hashes[1],
+        c = hashes[2],
+        d = hashes[3],
+        e = hashes[4],
+        f = hashes[5],
+        g = hashes[6],
+        h = hashes[7];
+
+        // Compression functionality
+        while (i < 63) {
+            temp1 = bitset<8>((h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + schedule[i].to_ulong()) % MOD_ADD);
+            temp2 = bitset<8>((Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong()) % MOD_ADD);
+
+            // Reassign the working variables
+            h = g;
+            g = f;
+            f = e;
+            e = (d + temp1.to_ulong()) % MOD_ADD;
+            d = c;
+            c = b;
+            b = a;
+            a = (temp1.to_ulong() + temp2.to_ulong()) % MOD_ADD;
+
+            i++;
+        }
+
+        // Add the compressed chunk to the current hashes
+        hashes[0] += a;
+        hashes[1] += b;
+        hashes[2] += c;
+        hashes[3] += d;
+        hashes[4] += e;
+        hashes[5] += f;
+        hashes[6] += g;
+        hashes[7] += h;
     }
 
     string hash = "";
