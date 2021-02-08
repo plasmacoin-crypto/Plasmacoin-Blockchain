@@ -99,7 +99,7 @@ string sha256Hash(string text) {
     // }
 
     std::cout << chunks.size() << std::endl;
-    exit(0); // For testing purposes
+    //exit(0); // For testing purposes
     for (unsigned int i = 0; i < chunks.size(); i++) {
         schedule = decompose(chunks[i]);
 
@@ -118,7 +118,7 @@ string sha256Hash(string text) {
         h = hashes[7];
 
         // Compression functionality
-        while (i < 63) {
+        //while (i < 63) {
             temp1 = bitset<8>((h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + schedule[i].to_ulong()) % MOD_ADD);
             temp2 = bitset<8>((Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong()) % MOD_ADD);
 
@@ -133,17 +133,26 @@ string sha256Hash(string text) {
             a = (temp1.to_ulong() + temp2.to_ulong()) % MOD_ADD;
 
             i++;
-        }
+            std::cout << a << std::endl;
+            std::cout << b << std::endl;
+            std::cout << c << std::endl;
+            std::cout << d << std::endl;
+            std::cout << e << std::endl;
+            std::cout << f << std::endl;
+            std::cout << g << std::endl;
+            std::cout << h << std::endl;
+            exit(0);
+        //}
 
         // Add the compressed chunk to the current hashes
-        hashes[0] += a;
-        hashes[1] += b;
-        hashes[2] += c;
-        hashes[3] += d;
-        hashes[4] += e;
-        hashes[5] += f;
-        hashes[6] += g;
-        hashes[7] += h;
+        // hashes[0] += a;
+        // hashes[1] += b;
+        // hashes[2] += c;
+        // hashes[3] += d;
+        // hashes[4] += e;
+        // hashes[5] += f;
+        // hashes[6] += g;
+        // hashes[7] += h;
     }
 
     string hash = "";
