@@ -34,7 +34,7 @@ string preprocess(string text) {
 	const char EXTRA_BIT = '1';
 
 	// Use a larger, non-constant final padding size instead of 448 when the input
-    // requires
+	// requires
 	const int BLOCK_NUM = (SIZE_IN_BITS == 448)? 2 : static_cast<int>(ceilf(SIZE_IN_BITS / 448.0F));
 	const int K = ((SIZE_IN_BITS >= 448)? ((512 * BLOCK_NUM) - UINT64_SIZE) : 448 /* 448 mod 512 */) - (SIZE_IN_BITS + 1);
 
@@ -46,26 +46,26 @@ string preprocess(string text) {
 	// * 1 is an extra bit that is always appended
 	// * 64 is the set size in bits of the number L
 	//
-    //const uint64_t TARGET = SIZE_IN_BITS + 1 + K + UINT64_SIZE;
+	//const uint64_t TARGET = SIZE_IN_BITS + 1 + K + UINT64_SIZE;
 
-    // Store the string to binary
-    for (char c: text) {
-        padded += bitset<8>(c).to_string();
-    }
+	// Store the string to binary
+	for (char c: text) {
+		padded += bitset<8>(c).to_string();
+	}
 
 	// Pad the byte array
-    padded += EXTRA_BIT; // Append a single bit
+	padded += EXTRA_BIT; // Append a single bit
 
-    padded.insert(padded.end(), K, '0'); // Append K empty (0) bits
+	padded.insert(padded.end(), K, '0'); // Append K empty (0) bits
 
-    // Only single-block inputs (or the last of a multi-block input)
-    // will have the final 64 bits on the end.
-    padded += bitset<UINT64_SIZE>(static_cast<uint64_t>(SIZE_IN_BITS)).to_string(); // Append the data size
+	// Only single-block inputs (or the last of a multi-block input)
+	// will have the final 64 bits on the end.
+	padded += bitset<UINT64_SIZE>(static_cast<uint64_t>(SIZE_IN_BITS)).to_string(); // Append the data size
 
-    //assert(padded.size() == TARGET); // Make sure everything was padded correctly
-    //assert(512 % padded.size() == 0); // Make sure the padded word's size in bits is a multiple of 512
+	//assert(padded.size() == TARGET); // Make sure everything was padded correctly
+	//assert(512 % padded.size() == 0); // Make sure the padded word's size in bits is a multiple of 512
 
-    return padded;
+	return padded;
 }
 
 string sha256Hash(string text) {
@@ -114,7 +114,7 @@ string sha256Hash(string text) {
         f = hashes[5],
         g = hashes[6],
         h = hashes[7];
-        
+
         int j = 0;
         unsigned long temp1, temp2;
 
