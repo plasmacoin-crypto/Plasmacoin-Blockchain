@@ -27,7 +27,7 @@ using std::array;
 //
 
 // Perform a circular right shift `n` times on a byte
-bitset<8> rotateRight(bitset<8> byte, int n = 1) {
+int rotateRight(int byte, int n = 1) {
 	// bitset<8> modByte = byte;
 	// int i = 0;
 
@@ -45,24 +45,25 @@ bitset<8> rotateRight(bitset<8> byte, int n = 1) {
 }
 
 bitset<32> rotateRight(bitset<32> byte, int n = 1) {
-	bitset<32> modByte = byte;
-	int i = 0;
-
-	while (i < n) {
-		bool b0 = modByte.test(0); // Save the bit in the first position
-
-		modByte >>= 1; 	 // Shift everything to the right
-		modByte[7] = b0; // Circle around the stored bit
-
-		i++;
-	}
-
-	return bitset<32>(modByte.to_ulong() % MOD_ADD);
+    // 	bitset<32> modByte = byte;
+    // 	int i = 0;
+        
+    // 	while (i < n) {
+    // 		bool b0 = modByte.test(0); // Save the bit in the first position
+    
+    // 		modByte >>= 1; 	 // Shift everything to the right
+    // 		modByte[7] = b0; // Circle around the stored bit
+    
+    // 		i++;
+    // 	}
+    
+    // 	return bitset<32>(modByte.to_ulong() % MOD_ADD);
+    return (byte >> n | byte << (32 - n));
 }
 
 // Shift a byte `n` places to the right
-bitset<8> shiftRight(bitset<8> byte, int n = 1) {
-	return bitset<8>((byte >> n).to_ulong() % MOD_ADD);
+int shiftRight(int byte, int n = 1) {
+	return (byte >> n) % MOD_ADD;
 }
 
 bitset<32> shiftRight(bitset<32> byte, int n = 1) {
@@ -100,33 +101,33 @@ string strconcat(bitset<8> b1, bitset<8> b2) {
 //
 
 // Implement Ch(X, Y, Z)
-bitset<8> choice(bitset<8> x, bitset<8> y, bitset<8> z) {
+int choice(int x, int y, int z) {
 	return ((x & y) ^ (~x & z));
 }
 
 // Implement Maj(X, Y, Z)
-bitset<8> majority(bitset<8> x, bitset<8> y, bitset<8> z) {
-	return ((x & y) | (x & z) | (y & z));
+int majority(int x, int y, int z) {
+	return ((x & y) ^ (x & z) ^ (y & z));
 }
 
 // Implement Σ_0(X)
-bitset<8> Sigma_0(bitset<8> x) {
-	return (rotateRight(x, 2) | rotateRight(x, 13) | rotateRight(x, 22));
+int Sigma_0(int x) {
+	return (rotateRight(x, 2) ^ rotateRight(x, 13) ^ rotateRight(x, 22));
 }
 
 // Implement Σ_1(X)
-bitset<8> Sigma_1(bitset<8> x) {
-	return (rotateRight(x, 6) | rotateRight(x, 11) | rotateRight(x, 25));
+int Sigma_1(int x) {
+	return (rotateRight(x, 6) ^ rotateRight(x, 11) ^ rotateRight(x, 25));
 }
 
 // Implement σ_0(X)
 bitset<32> sigma_0(bitset<32> x) {
-	return (rotateRight(x, 7) | rotateRight(x, 132) | shiftRight(x, 3));
+	return (rotateRight(x, 7) ^ rotateRight(x, 132) ^ shiftRight(x, 3));
 }
 
 // Implement σ_1(X)
 bitset<32> sigma_1(bitset<32> x) {
-	return (rotateRight(x, 17) | rotateRight(x, 19) | shiftRight(x, 10));
+	return (rotateRight(x, 17) ^ rotateRight(x, 19) ^ shiftRight(x, 10));
 }
 
 //
