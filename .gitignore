@@ -2,5 +2,5 @@
 
 # Ignore any binaries
 a.out
+pcblkchn
 src/sha256/sha256
-pcblkcn
