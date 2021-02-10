@@ -41,33 +41,12 @@ int rotateRight(int byte, int n = 1) {
 	// }
 
 	// return bitset<8>(modByte.to_ulong() % MOD_ADD);
-	return (byte >> n | byte << (32 - n));
-}
-
-bitset<32> rotateRight(bitset<32> byte, int n = 1) {
-	// 	bitset<32> modByte = byte;
-	// 	int i = 0;
-
-	// 	while (i < n) {
-	// 		bool b0 = modByte.test(0); // Save the bit in the first position
-
-	// 		modByte >>= 1; 	 // Shift everything to the right
-	// 		modByte[7] = b0; // Circle around the stored bit
-
-	// 		i++;
-	// 	}
-
-	// 	return bitset<32>(modByte.to_ulong() % MOD_ADD);
-	return (byte >> n | byte << (32 - n));
+	return ((byte >> n) | (byte << (32 - n)));
 }
 
 // Shift a byte `n` places to the right
 int shiftRight(int byte, int n = 1) {
 	return (byte >> n) % MOD_ADD;
-}
-
-bitset<32> shiftRight(bitset<32> byte, int n = 1) {
-	return bitset<32>((byte >> n).to_ulong() % MOD_ADD);
 }
 
 //
@@ -121,12 +100,12 @@ int Sigma_1(int x) {
 }
 
 // Implement σ_0(X)
-bitset<32> sigma_0(bitset<32> x) {
-	return (rotateRight(x, 7) ^ rotateRight(x, 132) ^ shiftRight(x, 3));
+int sigma_0(int x) {
+	return (rotateRight(x, 7) ^ rotateRight(x, 18) ^ shiftRight(x, 3));
 }
 
 // Implement σ_1(X)
-bitset<32> sigma_1(bitset<32> x) {
+int sigma_1(int x) {
 	return (rotateRight(x, 17) ^ rotateRight(x, 19) ^ shiftRight(x, 10));
 }
 
@@ -136,14 +115,14 @@ bitset<32> sigma_1(bitset<32> x) {
 
 // Assign a 512-bit chunk of data to a message schedule array. The chunk
 // will contain 64 32-bit words.
-array<bitset<32>, 64> decompose(array<bitset<32>, 16> data) {
+array<int, 64> decompose(array<bitset<32>, 16> data) {
 	unsigned int i = 0, j = 0;
-	array<bitset<32>, 64> blocks;
+	array<int, 64> blocks;
 
 	//while (i < data.size()) {
 		while (j < blocks.size()) {
 			if (j < 16) { // Blocks 1-16
-				blocks[j] = data[j]; // Save a 32-bit chunk of data to the array
+				blocks[j] = data[j].to_ulong(); // Save a 32-bit chunk of data to the array
 			}
 			else { // Blocks 17-64
 				// Calculate the remaining blocks using the following
@@ -162,12 +141,12 @@ array<bitset<32>, 64> decompose(array<bitset<32>, 16> data) {
 				// block that is currently being processed.
 				unsigned long inp1, inp2, inp3, inp4;
 
-				inp1 = sigma_1(blocks[j - 2]).to_ulong(); 	// 1
-				inp2 = blocks[j - 7].to_ulong();		  	// 2
-				inp3 = sigma_0(blocks[j - 15]).to_ulong();	// 3
-				inp4 = blocks[j - 16].to_ulong();			// 4
+				inp1 = sigma_1(blocks[j - 2]); 	// 1
+				inp2 = blocks[j - 7];		  	// 2
+				inp3 = sigma_0(blocks[j - 15]);	// 3
+				inp4 = blocks[j - 16];			// 4
 
-				blocks[j] = bitset<32>((inp1 + inp2 + inp3 + inp4) % MOD_ADD); // Add the next block
+				blocks[j] = (inp1 + inp2 + inp3 + inp4) % MOD_ADD; // Add the next block
 			}
 
 			j++;
@@ -183,7 +162,6 @@ array<bitset<32>, 64> decompose(array<bitset<32>, 16> data) {
 // a vector of 16-element arrays containing 32-bit bitsets.
 auto split(string text) {
 	int needed = ceilf(text.size() / 512.0); // Figure out how many 512-bit chunks need to be allocated
-	std::cout << needed << std::endl;
 
 	vector<array<bitset<32>, 16>> chunks;
 	chunks.reserve(needed); // Avoid some overhead
