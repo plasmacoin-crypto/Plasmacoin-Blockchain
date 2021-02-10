@@ -87,8 +87,6 @@ string sha256Hash(string text) {
              g = hashes[6],
              h = hashes[7];
 
-    bitset<8> temp1, temp2;
-
     std::cout << padded << std::endl;
     auto chunks = split(padded);
 
@@ -116,23 +114,26 @@ string sha256Hash(string text) {
         f = hashes[5],
         g = hashes[6],
         h = hashes[7];
+        
+        int j = 0;
+        unsigned long temp1, temp2;
 
         // Compression functionality
-        //while (i < 63) {
-            temp1 = bitset<8>((h + Sigma_1(e).to_ulong() + choice(e, f, g).to_ulong() + CUBES_OF_PRIMES[i] + schedule[i].to_ulong()) % MOD_ADD);
-            temp2 = bitset<8>((Sigma_0(a).to_ulong() + majority(a, b, c).to_ulong()) % MOD_ADD);
+        while (j < 1) {
+            temp1 = (h + Sigma_1(e) + choice(e, f, g) + CUBES_OF_PRIMES[j] + schedule[j].to_ulong()) % MOD_ADD;
+            temp2 = (Sigma_0(a) + majority(a, b, c)) % MOD_ADD;
 
             // Reassign the working variables
             h = g;
             g = f;
             f = e;
-            e = (d + temp1.to_ulong()) % MOD_ADD;
+            e = (d + temp1) % MOD_ADD;
             d = c;
             c = b;
             b = a;
-            a = (temp1.to_ulong() + temp2.to_ulong()) % MOD_ADD;
+            a = (temp1 + temp2) % MOD_ADD;
 
-            i++;
+            j++;
             std::cout << a << std::endl;
             std::cout << b << std::endl;
             std::cout << c << std::endl;
@@ -142,7 +143,7 @@ string sha256Hash(string text) {
             std::cout << g << std::endl;
             std::cout << h << std::endl;
             exit(0);
-        //}
+        }
 
         // Add the compressed chunk to the current hashes
         // hashes[0] += a;
