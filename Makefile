@@ -35,7 +35,7 @@ uninstall: clean
 remake: clean default
 remake-all: clean-all all
 
-# `make` (or more specifically, `make pcblkchn`)
+# `make` (or `make pcblkchn`)
 $(TARGET): src/$(SOURCE)
 	# Build the blockchain
 	$(CC) $(CFLAGS) src/$(SOURCE) -o $(TARGET)
@@ -56,4 +56,5 @@ clean-all: clean
 
 # `make install`
 install:
+	# Only the blockchain executable can be installed
 	sudo install --verbose --owner $(USER) $(TARGET) --target-directory $(INSTALL_LOC)
