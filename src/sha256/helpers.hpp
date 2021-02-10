@@ -45,20 +45,20 @@ int rotateRight(int byte, int n = 1) {
 }
 
 bitset<32> rotateRight(bitset<32> byte, int n = 1) {
-    // 	bitset<32> modByte = byte;
-    // 	int i = 0;
-        
-    // 	while (i < n) {
-    // 		bool b0 = modByte.test(0); // Save the bit in the first position
-    
-    // 		modByte >>= 1; 	 // Shift everything to the right
-    // 		modByte[7] = b0; // Circle around the stored bit
-    
-    // 		i++;
-    // 	}
-    
-    // 	return bitset<32>(modByte.to_ulong() % MOD_ADD);
-    return (byte >> n | byte << (32 - n));
+	// 	bitset<32> modByte = byte;
+	// 	int i = 0;
+
+	// 	while (i < n) {
+	// 		bool b0 = modByte.test(0); // Save the bit in the first position
+
+	// 		modByte >>= 1; 	 // Shift everything to the right
+	// 		modByte[7] = b0; // Circle around the stored bit
+
+	// 		i++;
+	// 	}
+
+	// 	return bitset<32>(modByte.to_ulong() % MOD_ADD);
+	return (byte >> n | byte << (32 - n));
 }
 
 // Shift a byte `n` places to the right

@@ -69,101 +69,101 @@ string preprocess(string text) {
 }
 
 string sha256Hash(string text) {
-    string padded = preprocess(text);
+	string padded = preprocess(text);
 
-    array<bitset<32>, 64> schedule;
+	array<bitset<32>, 64> schedule;
 
-    // Make a mutable copy of the root hashes
-    uint32_t hashes[8];
-    std::memcpy(hashes, ROOT_HASHES, sizeof(ROOT_HASHES));
+	// Make a mutable copy of the root hashes
+	uint32_t hashes[8];
+	std::memcpy(hashes, ROOT_HASHES, sizeof(ROOT_HASHES));
 
-    // Initialize working varibales
-    uint32_t a = hashes[0],
-             b = hashes[1],
-             c = hashes[2],
-             d = hashes[3],
-             e = hashes[4],
-             f = hashes[5],
-             g = hashes[6],
-             h = hashes[7];
+	// Initialize working varibales
+	uint32_t a = hashes[0],
+			 b = hashes[1],
+			 c = hashes[2],
+			 d = hashes[3],
+			 e = hashes[4],
+			 f = hashes[5],
+			 g = hashes[6],
+			 h = hashes[7];
 
-    std::cout << padded << std::endl;
-    auto chunks = split(padded);
+	std::cout << padded << std::endl;
+	auto chunks = split(padded);
 
-    // for (unsigned int i = 0; i < chunks.size(); i++) {
-    //     for (unsigned int j = 0; j < chunks[i].size(); j++) {
-    //         std::cout << chunks[i][j] << std::endl;
-    //     }
-    // }
+	// for (unsigned int i = 0; i < chunks.size(); i++) {
+	//     for (unsigned int j = 0; j < chunks[i].size(); j++) {
+	//         std::cout << chunks[i][j] << std::endl;
+	//     }
+	// }
 
-    std::cout << chunks.size() << std::endl;
-    //exit(0); // For testing purposes
-    for (unsigned int i = 0; i < chunks.size(); i++) {
-        schedule = decompose(chunks[i]);
+	std::cout << chunks.size() << std::endl;
+	//exit(0); // For testing purposes
+	for (unsigned int i = 0; i < chunks.size(); i++) {
+		schedule = decompose(chunks[i]);
 
-        for (auto block: schedule) {
-            std::cout << block << std::endl;
-        }
+		for (auto block: schedule) {
+			std::cout << block << std::endl;
+		}
 
-        // Set the working variables to the current hash value
-        a = hashes[0],
-        b = hashes[1],
-        c = hashes[2],
-        d = hashes[3],
-        e = hashes[4],
-        f = hashes[5],
-        g = hashes[6],
-        h = hashes[7];
+		// Set the working variables to the current hash value
+		a = hashes[0],
+		b = hashes[1],
+		c = hashes[2],
+		d = hashes[3],
+		e = hashes[4],
+		f = hashes[5],
+		g = hashes[6],
+		h = hashes[7];
 
-        int j = 0;
-        unsigned long temp1, temp2;
+		int j = 0;
+		unsigned long temp1, temp2;
 
-        // Compression functionality
-        while (j < 1) {
-            temp1 = (h + Sigma_1(e) + choice(e, f, g) + CUBES_OF_PRIMES[j] + schedule[j].to_ulong()) % MOD_ADD;
-            temp2 = (Sigma_0(a) + majority(a, b, c)) % MOD_ADD;
+		// Compression functionality
+		while (j < 1) {
+			temp1 = (h + Sigma_1(e) + choice(e, f, g) + CUBES_OF_PRIMES[j] + schedule[j].to_ulong()) % MOD_ADD;
+			temp2 = (Sigma_0(a) + majority(a, b, c)) % MOD_ADD;
 
-            // Reassign the working variables
-            h = g;
-            g = f;
-            f = e;
-            e = (d + temp1) % MOD_ADD;
-            d = c;
-            c = b;
-            b = a;
-            a = (temp1 + temp2) % MOD_ADD;
+			// Reassign the working variables
+			h = g;
+			g = f;
+			f = e;
+			e = (d + temp1) % MOD_ADD;
+			d = c;
+			c = b;
+			b = a;
+			a = (temp1 + temp2) % MOD_ADD;
 
-            j++;
-            std::cout << a << std::endl;
-            std::cout << b << std::endl;
-            std::cout << c << std::endl;
-            std::cout << d << std::endl;
-            std::cout << e << std::endl;
-            std::cout << f << std::endl;
-            std::cout << g << std::endl;
-            std::cout << h << std::endl;
-            exit(0);
-        }
+			j++;
+			std::cout << a << std::endl;
+			std::cout << b << std::endl;
+			std::cout << c << std::endl;
+			std::cout << d << std::endl;
+			std::cout << e << std::endl;
+			std::cout << f << std::endl;
+			std::cout << g << std::endl;
+			std::cout << h << std::endl;
+			exit(0);
+		}
 
-        // Add the compressed chunk to the current hashes
-        // hashes[0] += a;
-        // hashes[1] += b;
-        // hashes[2] += c;
-        // hashes[3] += d;
-        // hashes[4] += e;
-        // hashes[5] += f;
-        // hashes[6] += g;
-        // hashes[7] += h;
-    }
+		// Add the compressed chunk to the current hashes
+		// hashes[0] += a;
+		// hashes[1] += b;
+		// hashes[2] += c;
+		// hashes[3] += d;
+		// hashes[4] += e;
+		// hashes[5] += f;
+		// hashes[6] += g;
+		// hashes[7] += h;
+	}
 
-    string hash = "";
+	string hash = "";
 
-    // Compute the hash by concatenating all of the root hashes
-    for (unsigned long i = 0; i < sizeof(hashes); i += 2) {
-        hash += concat(hashes[i], hashes[i + 1]).to_string();
-    }
+	// Compute the hash by concatenating all of the root hashes
+	for (unsigned long i = 0; i < sizeof(hashes); i += 2) {
+		hash += concat(hashes[i], hashes[i + 1]).to_string();
+	}
 
-    return hash;
+	return hash;
 }
 
 #endif // SHA256_HPP
