@@ -27,7 +27,7 @@ using std::array;
 //
 
 // Perform a circular right shift `n` times on a byte
-int rotateRight(int byte, int n = 1) {
+uint rotateRight(int byte, int n = 1) {
 	// bitset<8> modByte = byte;
 	// int i = 0;
 
@@ -40,13 +40,13 @@ int rotateRight(int byte, int n = 1) {
 	// 	i++;
 	// }
 
-	// return bitset<8>(modByte.to_ulong() % MOD_ADD);
+	// return static_cast<int32_t>((modByte.to_ulong() % MOD_ADD);
 	return ((byte >> n) | (byte << (32 - n)));
 }
 
 // Shift a byte `n` places to the right
 int shiftRight(int byte, int n = 1) {
-	return (byte >> n) % MOD_ADD;
+	return (byte >> n);
 }
 
 //
@@ -66,7 +66,7 @@ string strconcat(bitset<8> b1, bitset<8> b2) {
 }
 
 //
-// ---[ Functions needed to help calculate the SHA-256 hash ]---
+// ---[ SHA-256 Logical Functions ]---
 //
 
 //
