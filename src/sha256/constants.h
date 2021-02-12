@@ -15,7 +15,7 @@
 // effectively a redefinition of UINT64_WIDTH.
 #define UINT64_SIZE 64
 
-#define MOD (int) pow(2, 32)
+#define MOD (int) (pow(2, 32) - 1)
 
 // The fractional parts of the square roots of the first 8 prime numbers (2-19)
 // multilied by 2^32.

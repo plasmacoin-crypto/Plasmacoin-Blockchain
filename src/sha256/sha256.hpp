@@ -119,7 +119,7 @@ string sha256Hash(string text) {
 		unsigned int temp1, temp2;
 
 		// Compression functionality
-		while (j < 2) {
+		while (j < 2 /* 64 */) {
 			std::cout << schedule[j] << std::endl;
 			temp1 = (h + Sigma_1(e) + choice(e, f, g) + CUBES_OF_PRIMES[j] + schedule[j]);
 			temp2 = (Sigma_0(a) + majority(a, b, c));
@@ -135,6 +135,7 @@ string sha256Hash(string text) {
 			a = (temp1 + temp2);
 
 			j++;
+
 			std::cout << "a: " << a << std::endl;
 			std::cout << b << std::endl;
 			std::cout << c << std::endl;
