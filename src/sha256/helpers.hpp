@@ -15,12 +15,12 @@
 #include <cmath>
 #include <iostream>
 
+#include "constants.h"
+
 using std::string;
 using std::bitset;
 using std::vector;
 using std::array;
-
-#define MOD_ADD static_cast<int>(pow(2, 32))
 
 //
 // ---[ Byte rotation and shifting ]---
@@ -40,7 +40,7 @@ uint rotateRight(int byte, int n = 1) {
 	// 	i++;
 	// }
 
-	// return static_cast<int32_t>((modByte.to_ulong() % MOD_ADD);
+	// return static_cast<int32_t>((modByte.to_ulong() & MOD);
 	return ((byte >> n) | (byte << (32 - n)));
 }
 
@@ -115,14 +115,15 @@ int sigma_1(int x) {
 
 // Assign a 512-bit chunk of data to a message schedule array. The chunk
 // will contain 64 32-bit words.
-array<int, 64> decompose(array<bitset<32>, 16> data) {
+array<int, 64> decompose(array<int, 16> data) {
 	unsigned int i = 0, j = 0;
 	array<int, 64> blocks;
 
 	//while (i < data.size()) {
 		while (j < blocks.size()) {
 			if (j < 16) { // Blocks 1-16
-				blocks[j] = data[j].to_ulong(); // Save a 32-bit chunk of data to the array
+				// Save the input to the array
+				blocks[j] = data[j];
 			}
 			else { // Blocks 17-64
 				// Calculate the remaining blocks using the following
@@ -139,14 +140,14 @@ array<int, 64> decompose(array<bitset<32>, 16> data) {
 
 				// A place to store string versions of bytes from the 32-bit
 				// block that is currently being processed.
-				unsigned long inp1, inp2, inp3, inp4;
+				int inp1, inp2, inp3, inp4;
 
 				inp1 = sigma_1(blocks[j - 2]); 	// 1
 				inp2 = blocks[j - 7];		  	// 2
 				inp3 = sigma_0(blocks[j - 15]);	// 3
 				inp4 = blocks[j - 16];			// 4
 
-				blocks[j] = (inp1 + inp2 + inp3 + inp4) % MOD_ADD; // Add the next block
+				blocks[j] = (inp1 + inp2 + inp3 + inp4) & MOD; // Add the next block
 			}
 
 			j++;
@@ -163,18 +164,18 @@ array<int, 64> decompose(array<bitset<32>, 16> data) {
 auto split(string text) {
 	int needed = ceilf(text.size() / 512.0); // Figure out how many 512-bit chunks need to be allocated
 
-	vector<array<bitset<32>, 16>> chunks;
+	vector<array<int, 16>> chunks;
 	chunks.reserve(needed); // Avoid some overhead
 
 	string textcpy = text;
 
-	array<bitset<32>, 16> chunk;
+	array<int, 16> chunk;
 
 	for (int i = 0; i < needed; i++) {
 		for (unsigned int j = 0; j < chunk.size(); j++) {
 			if (!textcpy.empty()) {
 				// Assign a 32-bit section of the input to the array
-				chunk[j] = bitset<32>(textcpy.substr(0, 32));
+				chunk[j] = std::stoi(textcpy.substr(0, 32), nullptr, 2);
 				textcpy.erase(0, 32);
 			}
 		}

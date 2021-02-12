@@ -121,18 +121,18 @@ string sha256Hash(string text) {
 		// Compression functionality
 		while (j < 2) {
 			std::cout << schedule[j] << std::endl;
-			temp1 = (h + Sigma_1(e) + choice(e, f, g) + CUBES_OF_PRIMES[j] + schedule[j]) >> 0;
-			temp2 = (Sigma_0(a) + majority(a, b, c)) >> 0;
+			temp1 = (h + Sigma_1(e) + choice(e, f, g) + CUBES_OF_PRIMES[j] + schedule[j]);
+			temp2 = (Sigma_0(a) + majority(a, b, c));
 
 			// Reassign the working variables
 			h = g;
 			g = f;
 			f = e;
-			e = (d + temp1) >> 0;
+			e = (d + temp1);
 			d = c;
 			c = b;
 			b = a;
-			a = (temp1 + temp2) >> 0/* % MOD_ADD*/;
+			a = (temp1 + temp2);
 
 			j++;
 			std::cout << "a: " << a << std::endl;
@@ -148,14 +148,14 @@ string sha256Hash(string text) {
 		exit(0);
 
 		// Add the compressed chunk to the current hashes
-		hashes[0] += a >> 0;
-		hashes[1] += b >> 0;
-		hashes[2] += c >> 0;
-		hashes[3] += d >> 0;
-		hashes[4] += e >> 0;
-		hashes[5] += f >> 0;
-		hashes[6] += g >> 0;
-		hashes[7] += h >> 0;
+		hashes[0] += a & MOD;
+		hashes[1] += b & MOD;
+		hashes[2] += c & MOD;
+		hashes[3] += d & MOD;
+		hashes[4] += e & MOD;
+		hashes[5] += f & MOD;
+		hashes[6] += g & MOD;
+		hashes[7] += h & MOD;
 	}
 
 	string hash = "";
