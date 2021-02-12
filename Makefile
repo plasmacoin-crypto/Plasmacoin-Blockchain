@@ -1,7 +1,7 @@
 # The Makefile for the Plasmacoin Blockchain
 #
 # Using this Makefile, you can build the blockchain source code as
-# well as tests for the SHA-256 library implemented for this project.
+# well as tests for the SHA-256 implementation for this project.
 #
 
 CC = g++
