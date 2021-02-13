@@ -1,8 +1,11 @@
 # The Makefile for the Plasmacoin Blockchain
-#
-# Using this Makefile, you can build the blockchain source code as
-# well as tests for the SHA-256 implementation for this project.
-#
+
+include(ExternalProject)
+
+ExternalProject_Add(SHA256
+  GIT_REPOSITORY    https://github.com/System-Glitch/SHA256.git
+  GIT_TAG           master
+)
 
 CC = g++
 
@@ -14,26 +17,26 @@ SOURCE = main.cpp
 INSTALL_LOC = /usr/bin
 
 # Stuff for building the SHA-256 Library
-SHA_256_LOC = src/sha256
+# SHA_256_LOC = src/sha256
 
-SHA_256 = $(SHA_256_LOC)/sha256
-SHA_256_SRC = $(SHA_256_LOC)/sha256.cpp
-SHA_256_MF = SHA256-Makefile.mk
+# SHA_256 = $(SHA_256_LOC)/sha256
+# SHA_256_SRC = $(SHA_256_LOC)/sha256.cpp
+# SHA_256_MF = SHA256-Makefile.mk
 
 # Used to take ownership of the binary
 USER = $(shell whoami)
 
 # Some aliases and defaults
 default: $(TARGET)
-sha256: $(SHA_256)
+#sha256: $(SHA_256)
 
 # This will make the blockchain and the SHA-256 library tests
-all: $(TARGET) $(SHA_256)
+all: $(TARGET) #$(SHA_256)
 
 uninstall: clean
 
 remake: clean default
-remake-all: clean-all all
+#remake-all: clean-all all
 
 # `make` (or `make pcblkchn`)
 $(TARGET): src/$(SOURCE)
@@ -41,8 +44,8 @@ $(TARGET): src/$(SOURCE)
 	$(CC) $(CFLAGS) src/$(SOURCE) -o $(TARGET)
 
 # `make sha256`
-$(SHA_256): $(SHA_256_SRC)
-	make -C $(SHA_256_LOC) -f $(SHA_256_MF)
+# $(SHA_256): $(SHA_256_SRC)
+# 	make -C $(SHA_256_LOC) -f $(SHA_256_MF)
 
 # `make clean`
 clean:
@@ -50,9 +53,9 @@ clean:
 	sudo $(RM) --verbose $(TARGET) $(INSTALL_LOC)/$(TARGET)
 
 # `make clean_all`
-clean-all: clean
-	# Clean the blockchain and the SHA-256 executables
-	make -C $(SHA_256_LOC) -f $(SHA_256_MF) clean
+# clean-all: clean
+# 	# Clean the blockchain and the SHA-256 executables
+# 	make -C $(SHA_256_LOC) -f $(SHA_256_MF) clean
 
 # `make install`
 install:
