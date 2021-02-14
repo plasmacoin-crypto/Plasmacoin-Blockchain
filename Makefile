@@ -1,16 +1,12 @@
 # The Makefile for the Plasmacoin Blockchain
 
-include(ExternalProject)
-
-ExternalProject_Add(SHA256
-  GIT_REPOSITORY    https://github.com/System-Glitch/SHA256.git
-  GIT_TAG           master
-)
-
 CC = g++
 
+CRYPTO_CPP = /usr/src/cryptocpp
+
 # Compiler flags
-CFLAGS = -Wall
+CFLAGS = -Wall -I$(CRYPTO_CPP) -L$(CRYPTO_CPP)
+LINKS = -lcryptopp
 
 TARGET = pcblkchn
 SOURCE = main.cpp
@@ -41,7 +37,7 @@ remake: clean default
 # `make` (or `make pcblkchn`)
 $(TARGET): src/$(SOURCE)
 	# Build the blockchain
-	$(CC) $(CFLAGS) src/$(SOURCE) -o $(TARGET)
+	$(CC) $(CFLAGS) src/$(SOURCE) $(LINKS) -o $(TARGET)
 
 # `make sha256`
 # $(SHA_256): $(SHA_256_SRC)
@@ -59,5 +55,4 @@ clean:
 
 # `make install`
 install:
-	# Only the blockchain executable can be installed
 	sudo install --verbose --owner $(USER) $(TARGET) --target-directory $(INSTALL_LOC)
