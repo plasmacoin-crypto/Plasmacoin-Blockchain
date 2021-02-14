@@ -23,6 +23,8 @@ public:
 	string m_Content;
 
 	Transaction(const Node& sender, Node& recipient, string content, float amount);
+
+	string Condense();
 };
 
 Transaction::Transaction(const Node& sender, Node& recipient, string content, float amount):
@@ -31,5 +33,11 @@ Transaction::Transaction(const Node& sender, Node& recipient, string content, fl
 	m_Amount(amount),
 	m_Content(content)
 {}
+
+// Condense the transaction data into a form that can be hashed
+// by the SHA-256 algorithm.
+string Transaction::Condense() {
+	
+}
 
 #endif // TRANSACTION_HPP
