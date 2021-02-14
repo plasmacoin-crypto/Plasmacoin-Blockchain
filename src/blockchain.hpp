@@ -11,7 +11,9 @@
 #include <set>
 #include <queue>
 
-#include "SHA256.h"
+// This header file groups thre Crypto++ headers to save space
+// and also provide them with a descriptive overall name.
+#include "cryptocpp-sha256-libs.h"
 
 #include "block.hpp"
 
@@ -29,8 +31,6 @@ public:
 private:
 	set<Block*> m_Chain;
 	queue<Block*> m_Unconfirmed; // Blocks waiting to be mined
-
-	SHA256 hasher;
 
 	bool Consensus(Block block); // Evaluate Proof-of-Work
 	string Hash(Transaction transaction);
@@ -65,16 +65,26 @@ bool Blockchain::Consensus(Block block) {
 	return false; // tmp
 }
 
+// Use Crypto++ to hash the transaction data
 string Blockchain::Hash(Transaction transaction) {
-	// Use the SHA-256 library to has the transaction data
-	hasher.update(transaction.Condense());
-	uint8_t* digest = hasher.digest();
+	CryptoPP::SHA256 hash;
+	string digest; // The result
+	string message = transaction.Condense();
 
-	string hash = SHA256::toString(digest);
+	// Use the library
+	//
+	// No objects have to be freed because of Crypto++'s pipelining
+	// functionality
+	//
+	CryptoPP::StringSource s(message, true,
+		new CryptoPP::HashFilter(hash,
+			new CryptoPP::HexEncoder(
+				new CryptoPP::StringSink(digest)
+			)
+		)
+	);
 
-	delete[] digest; // Free the digest
-
-	return hash;
+	return digest;
 }
 
 #endif // BLOCKCHAIN_HPP
