@@ -35,10 +35,15 @@ Node::Node(string name, string username, string passwd, string ip):
 {}
 
 Transaction Node::MakeTransaction(Node& recipient, float amount, string content) const {
+	// From Transaction::m_Condensed:
+	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>
+	string condensed = recipient.GetUsrName() + ": " + std::to_string(amount) +
+					   " Plasmacoins to " + recipient.GetUsrName();
+
 	// A new transaction between the current user and another user in the
 	// network.
 	return Transaction(Node(m_Name, m_Username, m_Password, m_IPAddr),
-					   recipient, content, amount);
+					   recipient, content, amount, condensed);
 }
 
 // Get the user's name
