@@ -29,6 +29,8 @@ public:
 
 	int Mine();
 private:
+	const int DIFFICULTY = 5;
+
 	set<Block*> m_Chain;
 	queue<Block*> m_Unconfirmed; // Blocks waiting to be mined
 
@@ -61,15 +63,34 @@ int Blockchain::Mine() {
 	return -1; // tmp
 }
 
+// Complete the Proof-of-Work consensus protocol on a block. Return true
+// if the correct hash was successfully found. The only way false would be
+// returned is if a node was able to complete the hash before another user.
 bool Blockchain::Consensus(Block block) {
-	return false; // tmp
+	// Get the nonce. If the difficulty is 5, the string representation
+	// of the nonce will be "00000".
+	string strNonce = string(DIFFICULTY, '0');
+	int nonce = block.m_Nonce; // Will start at 0
+
+	string hash = this->Hash(*block.m_Transaction); // Hash the block
+
+	while (hash.substr(0, strNonce.size()) != strNonce) {
+		// Increase the nonce and re-hash
+		nonce++;
+		hash = this->Hash(*block.m_Transaction);
+	}
+
+	block.m_Hash = hash;
+	block.m_Nonce = nonce;
+
+	return true;
 }
 
 // Use Crypto++ to hash the transaction data
 string Blockchain::Hash(Transaction transaction) {
 	CryptoPP::SHA256 hash;
 	string digest; // The result
-	string message = transaction.Condense();
+	string message = transaction.CONDENSED;
 
 	// Use the library
 	//
