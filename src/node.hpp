@@ -10,19 +10,20 @@
 
 #include <string>
 
-using std::string;
-
 #include "transaction.hpp"
+
+using std::string;
 
 class Node {
 public:
-	string m_Name, m_Username;
-
 	Node(string name, string username, string passwd, string ip);
 	Transaction MakeTransaction(Node& recipient, float amount, string content) const;
 
+	// Some getters
+	string GetName() const, GetUsrName() const, GetIP() const;
+
 private:
-	string m_Password, m_IPAddr;
+	string m_Name, m_Username, m_Password, m_IPAddr;
 };
 
 Node::Node(string name, string username, string passwd, string ip):
@@ -36,8 +37,23 @@ Node::Node(string name, string username, string passwd, string ip):
 Transaction Node::MakeTransaction(Node& recipient, float amount, string content) const {
 	// A new transaction between the current user and another user in the
 	// network.
-	return Transaction(Node(m_Name, m_Username, m_Password, m_IPAddr), 
+	return Transaction(Node(m_Name, m_Username, m_Password, m_IPAddr),
 					   recipient, content, amount);
+}
+
+// Get the user's name
+string Node::GetName() const {
+	return m_Name;
+}
+
+// Get the user's username
+string Node::GetUsrName() const {
+	return m_Username;
+}
+
+// Get the user's global IP address
+string Node::GetIP() const {
+	return m_IPAddr;
 }
 
 #endif // NODE_HPP
