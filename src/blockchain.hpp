@@ -76,7 +76,7 @@ string Blockchain::Hash(Transaction transaction) {
 	// No objects have to be freed because of Crypto++'s pipelining
 	// functionality
 	//
-	CryptoPP::StringSource s(message, true,
+	CryptoPP::StringSource ssource(message, true,
 		new CryptoPP::HashFilter(hash,
 			new CryptoPP::HexEncoder(
 				new CryptoPP::StringSink(digest)
