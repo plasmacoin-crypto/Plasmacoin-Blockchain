@@ -24,7 +24,10 @@ public:
 
 	Transaction(const Node& sender, Node& recipient, string content, float amount);
 
-	string Condense();
+	// A condensed version of the transaction in the form:
+	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>
+	const string CONDENSED = m_Sender.GetUsrName() + ": " + std::to_string(m_Amount) +
+							 " Plasmacoins to " + m_Recipient.GetUsrName();
 };
 
 Transaction::Transaction(const Node& sender, Node& recipient, string content, float amount):
@@ -33,11 +36,5 @@ Transaction::Transaction(const Node& sender, Node& recipient, string content, fl
 	m_Amount(amount),
 	m_Content(content)
 {}
-
-// Condense the transaction data into a form that can be hashed
-// by the SHA-256 algorithm.
-string Transaction::Condense() {
-	
-}
 
 #endif // TRANSACTION_HPP
