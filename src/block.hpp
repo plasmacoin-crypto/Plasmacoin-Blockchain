@@ -21,15 +21,14 @@ class Block {
 public:
 	// The block contents
 	int m_Index, m_Nonce = 0;
-	const int DIFFICULTY = 5;
-	string m_PrevHash;
+	string m_Hash, *m_PrevHash;
 	Transaction* m_Transaction;
 	char* m_Timestamp;
 
-	Block(int index, string prevHash, Transaction* transaction);
+	Block(int index, string* prevHash, Transaction* transaction);
 };
 
-Block::Block(int index, string prevHash, Transaction* transaction):
+Block::Block(int index, string* prevHash, Transaction* transaction):
 	m_Index(index),
 	m_PrevHash(prevHash),
 	m_Transaction(transaction)
