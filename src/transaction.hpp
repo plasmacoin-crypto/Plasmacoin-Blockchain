@@ -22,19 +22,19 @@ public:
 	float m_Amount;
 	string m_Content;
 
-	Transaction(const Node& sender, Node& recipient, string content, float amount);
+	Transaction(const Node& sender, Node& recipient, string content, float amount, string condensed);
 
 	// A condensed version of the transaction in the form:
 	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>
-	const string CONDENSED = m_Sender.GetUsrName() + ": " + std::to_string(m_Amount) +
-							 " Plasmacoins to " + m_Recipient.GetUsrName();
+	string m_Condensed;
 };
 
-Transaction::Transaction(const Node& sender, Node& recipient, string content, float amount):
+Transaction::Transaction(const Node& sender, Node& recipient, string content, float amount, string condensed):
 	m_Sender(sender),
 	m_Recipient(recipient),
 	m_Amount(amount),
-	m_Content(content)
+	m_Content(content),
+	m_Condensed(condensed)
 {}
 
 #endif // TRANSACTION_HPP
