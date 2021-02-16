@@ -41,10 +41,10 @@ Transaction::Transaction(const Node& sender, Node& recipient, string content, fl
 
 // Update the transaction to have the latest nonce value
 string Transaction::Update(int nonce) {
-	auto start = std::find(m_Condensed.begin(), m_Condensed.end(), ';'); // The nonce is after a semicolon
-	m_Condensed.erase(start, m_Condensed.end());
+	auto semicolon = std::find(m_Condensed.begin(), m_Condensed.end(), ';'); // The nonce is after a semicolon
+	m_Condensed.erase(semicolon, m_Condensed.end()); // Erase from the semicolon onward
 
-	m_Condensed += "; " + std::to_string(nonce);
+	m_Condensed += "; " + std::to_string(nonce); // Update the condensed data
 	return m_Condensed;
 }
 
