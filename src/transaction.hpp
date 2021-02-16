@@ -9,6 +9,7 @@
 #define TRANSACTION_HPP
 
 #include <string>
+#include <algorithm>
 
 using std::string;
 
@@ -23,9 +24,10 @@ public:
 	string m_Content;
 
 	Transaction(const Node& sender, Node& recipient, string content, float amount, string condensed);
+	string Update(int nonce);
 
 	// A condensed version of the transaction in the form:
-	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>
+	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>; <NONCE>
 	string m_Condensed;
 };
 
@@ -36,5 +38,14 @@ Transaction::Transaction(const Node& sender, Node& recipient, string content, fl
 	m_Content(content),
 	m_Condensed(condensed)
 {}
+
+// Update the transaction to have the latest nonce value
+string Transaction::Update(int nonce) {
+	auto start = std::find(m_Condensed.begin(), m_Condensed.end(), ';'); // The nonce is after a semicolon
+	m_Condensed.erase(start, m_Condensed.end());
+
+	m_Condensed += "; " + std::to_string(nonce);
+	return m_Condensed;
+}
 
 #endif // TRANSACTION_HPP
