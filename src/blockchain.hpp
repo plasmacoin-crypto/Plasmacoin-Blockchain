@@ -65,8 +65,6 @@ int Blockchain::Mine() {
 	else {
 		return -1;
 	}
-
-
 }
 
 // Complete the Proof-of-Work consensus protocol on a block. Return true
@@ -80,8 +78,10 @@ bool Blockchain::Consensus(Block& block) {
 	string hash = this->Hash(*block.m_Transaction); // Hash the block
 
 	while (hash.substr(0, strNonce.size()) != strNonce) {
-		// Increase the nonce and re-hash
+		// Increase the nonce and update the condensed block data
 		block.m_Nonce++;
+		block.m_Transaction->Update(block.m_Nonce);
+
 		hash = this->Hash(*block.m_Transaction);
 	}
 
