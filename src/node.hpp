@@ -36,9 +36,9 @@ Node::Node(string name, string username, string passwd, string ip):
 
 Transaction Node::MakeTransaction(Node& recipient, float amount, string content) const {
 	// From Transaction::m_Condensed:
-	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>
+	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>; <NONCE>
 	string condensed = recipient.GetUsrName() + ": " + std::to_string(amount) +
-					   " Plasmacoins to " + recipient.GetUsrName();
+					   " Plasmacoins to " + recipient.GetUsrName() + "; 0"; // Use 0 as the starting nonce
 
 	// A new transaction between the current user and another user in the
 	// network.
