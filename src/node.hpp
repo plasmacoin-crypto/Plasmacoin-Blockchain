@@ -16,7 +16,7 @@ using std::string;
 
 class Node {
 public:
-	Node(string name, string username, string passwd, string ip);
+	Node(string name, string username, string passwd, string ip, bool isMaster);
 	Transaction MakeTransaction(Node& recipient, float amount, string content) const;
 
 	// Some getters
@@ -24,14 +24,16 @@ public:
 
 private:
 	string m_Name, m_Username, m_Password, m_IPAddr;
+	bool isMaster;
 };
 
-Node::Node(string name, string username, string passwd, string ip):
+Node::Node(string name, string username, string passwd, string ip, bool isMaster = false):
 	// User data
 	m_Name(name),
 	m_Username(username),
 	m_Password(passwd),
-	m_IPAddr(ip)
+	m_IPAddr(ip),
+	isMaster(isMaster)
 {}
 
 Transaction Node::MakeTransaction(Node& recipient, float amount, string content) const {
