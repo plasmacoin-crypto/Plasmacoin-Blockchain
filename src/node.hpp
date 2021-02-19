@@ -9,10 +9,16 @@
 #define NODE_HPP
 
 #include <string>
+#include <exception>
 
 #include "transaction.hpp"
 
 using std::string;
+
+#include <cryptopp/rsa.h> 	// Use Crypto++'s RSA functionality
+#include <cryptopp/osrng.h> // Use AutoSeededRandomPool
+
+using CryptoPP::RSA;
 
 class Node {
 public:
@@ -21,6 +27,8 @@ public:
 
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const;
+
+	string GenerateKeys();
 
 private:
 	string m_Name, m_Username, m_Password, m_IPAddr;
@@ -61,6 +69,17 @@ string Node::GetUsrName() const {
 // Get the user's global IP address
 string Node::GetIP() const {
 	return m_IPAddr;
+}
+
+// Generate public and private RSA keys for signing transactions
+string Node::GenerateKeys() {
+	CryptoPP::Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9");
+
+	RSA::PrivateKey privKey;
+	privKey.Initialize(n, e, d);
+
+	RSA::PublicKey pubKey;
+	pubKey.Initialize(n, e);
 }
 
 #endif // NODE_HPP
