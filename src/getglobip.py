@@ -1,5 +1,5 @@
 #
-# FILENAME: transaction.hpp | Plasmacoin Cryptocurrency
+# FILENAME: getglobip.py | Plasmacoin Cryptocurrency
 # DESCRIPTION: Get the user's global IP address and save it to a file
 # CREATED: 2021-02-14 @ 5:38 PM
 # COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
