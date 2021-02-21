@@ -10,10 +10,12 @@
 
 #include <string>
 #include <exception>
+#include <utility>
 
 #include "transaction.hpp"
 
 using std::string;
+using std::pair;
 
 #include <cryptopp/rsa.h> 	// Use Crypto++'s RSA functionality
 #include <cryptopp/osrng.h> // Use AutoSeededRandomPool
@@ -28,7 +30,7 @@ public:
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const;
 
-	string GenerateKeys();
+	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
 
 private:
 	string m_Name, m_Username, m_Password, m_IPAddr;
@@ -72,14 +74,26 @@ string Node::GetIP() const {
 }
 
 // Generate public and private RSA keys for signing transactions
-string Node::GenerateKeys() {
-	CryptoPP::Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9");
+pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
+	typedef CryptoPP::RandomNumberGenerator CRPPRNG; // Make this long name a little easier to use
 
+	CryptoPP::Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
+	CRPPRNG rng = CRPPRNG(); // A random number generator
+
+	// Generate some RSA keys
 	RSA::PrivateKey privKey;
 	privKey.Initialize(n, e, d);
 
 	RSA::PublicKey pubKey;
 	pubKey.Initialize(n, e);
+
+	// Validate the private key that was generated. If this key passes, the
+	// public key does not need to be tested.
+	if (!privKey.Validate(rng, 3)) {
+		throw std::runtime_error("Private key validation failed. Aborting.");
+	}
+
+	return std::make_pair(pubKey, privKey);
 }
 
 #endif // NODE_HPP
