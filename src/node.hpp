@@ -9,7 +9,7 @@
 #define NODE_HPP
 
 #include <string>
-#include <exception>
+#include <stdexcept>
 #include <utility>
 
 #include "transaction.hpp"
