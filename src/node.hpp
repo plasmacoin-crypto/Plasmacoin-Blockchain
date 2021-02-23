@@ -16,6 +16,7 @@
 #include "cryptopp-sha256-libs.h"
 
 #include "transaction.hpp"
+#include "block.hpp"
 
 using std::string;
 using std::pair;
@@ -36,7 +37,7 @@ public:
 	string GetName() const, GetUsrName() const, GetIP() const;
 
 	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
-	Transaction Sign(string hash), Verify(string hash);
+	Block Sign(Block& block), Verify(Block& block);
 
 private:
 	string m_Name, m_Username, m_Password, m_IPAddr;
@@ -111,7 +112,7 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 // Sign a transaction (i.e., the transaction's hash) with the sender's private key
 Block Node::Sign(Block& block) {
 	// Get some data needed to apply the encryption function
-	CryptoPP::Integer m((const CryptoPP::byte*)hash.c_str(), hash.size());
+	CryptoPP::Integer m((const CryptoPP::byte*)block.m_Hash.c_str(), block.m_Hash.size());
 
 	// Convert the CryptoPP::Integer to a std::string
 	std::stringstream stream;
