@@ -13,7 +13,7 @@
 
 // This header file groups thre Crypto++ headers to save space
 // and also provide them with a descriptive overall name.
-#include "cryptocpp-sha256-libs.h"
+#include "cryptopp-sha256-libs.h"
 
 #include "block.hpp"
 
@@ -45,15 +45,18 @@ Blockchain::Blockchain() {
 	Add(genesis);
 }
 
+// Add a block to the blockchain
 int Blockchain::Add(Block* block) {
 	m_Chain.insert(block);
 	return -1; // tmp
 }
 
+// Return the blockchain
 set<Block*> Blockchain::Get() const {
 	return m_Chain;
 }
 
+// Mine a block
 int Blockchain::Mine() {
 	if (!m_Unconfirmed.empty()) {
 		// Get the block that the node will be mining
