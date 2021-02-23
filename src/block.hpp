@@ -21,7 +21,7 @@ class Block {
 public:
 	// The block contents
 	int m_Index, m_Nonce = 0;
-	string m_Hash, *m_PrevHash;
+	string m_Hash, *m_PrevHash, m_Signature;
 	Transaction* m_Transaction;
 	char* m_Timestamp;
 
