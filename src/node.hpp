@@ -11,6 +11,9 @@
 #include <string>
 #include <stdexcept>
 #include <utility>
+#include <sstream>
+
+#include "cryptopp-sha256-libs.h"
 
 #include "transaction.hpp"
 
@@ -23,6 +26,8 @@ using std::pair;
 using CryptoPP::RSA;
 
 class Node {
+	typedef CryptoPP::RandomNumberGenerator CRYPTOPP_RNG; // Make this long name a little easier to use
+
 public:
 	Node(string name, string username, string passwd, string ip, bool isMaster);
 	Transaction MakeTransaction(Node& recipient, float amount, string content) const;
@@ -31,10 +36,17 @@ public:
 	string GetName() const, GetUsrName() const, GetIP() const;
 
 	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
+	Transaction Sign(string hash), Verify(string hash);
 
 private:
 	string m_Name, m_Username, m_Password, m_IPAddr;
+
+	RSA::PublicKey 	m_PubKey;
+	RSA::PrivateKey m_PrivKey;
+
 	bool isMaster;
+
+	string Hash(Transaction transaction);
 };
 
 Node::Node(string name, string username, string passwd, string ip, bool isMaster = false):
@@ -44,7 +56,9 @@ Node::Node(string name, string username, string passwd, string ip, bool isMaster
 	m_Password(passwd),
 	m_IPAddr(ip),
 	isMaster(isMaster)
-{}
+{
+	std::tie(m_PubKey, m_PrivKey) = GenerateKeys(); // Generate a set of RSA keys for the user
+}
 
 Transaction Node::MakeTransaction(Node& recipient, float amount, string content) const {
 	// From Transaction::m_Condensed:
@@ -75,10 +89,8 @@ string Node::GetIP() const {
 
 // Generate public and private RSA keys for signing transactions
 pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
-	typedef CryptoPP::RandomNumberGenerator CRPPRNG; // Make this long name a little easier to use
-
 	CryptoPP::Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
-	CRPPRNG rng = CRPPRNG(); // A random number generator
+	CRYPTOPP_RNG rng = CRYPTOPP_RNG(); // A random number generator
 
 	// Generate some RSA keys
 	RSA::PrivateKey privKey;
@@ -94,6 +106,43 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 	}
 
 	return std::make_pair(pubKey, privKey);
+}
+
+// Sign a transaction (i.e., the transaction's hash) with the sender's private key
+Block Node::Sign(Block& block) {
+	// Get some data needed to apply the encryption function
+	CryptoPP::Integer m((const CryptoPP::byte*)hash.c_str(), hash.size());
+
+	// Convert the CryptoPP::Integer to a std::string
+	std::stringstream stream;
+	stream << std::hex << m_PubKey.ApplyFunction(m);
+
+	string signedHash = stream.str(); // Get the stringstream as a string
+
+	block.m_Signature = signedHash;
+	return block;
+}
+
+// Use Crypto++ to hash the transaction data
+string Node::Hash(Transaction transaction) {
+	CryptoPP::SHA256 hash;
+	string digest; // The result
+	string message = transaction.m_Condensed;
+
+	// Use the library
+	//
+	// No objects have to be freed because of Crypto++'s pipelining
+	// functionality
+	//
+	CryptoPP::StringSource ssource(message, true,
+		new CryptoPP::HashFilter(hash,
+			new CryptoPP::HexEncoder(
+				new CryptoPP::StringSink(digest)
+			)
+		)
+	);
+
+	return digest;
 }
 
 #endif // NODE_HPP
