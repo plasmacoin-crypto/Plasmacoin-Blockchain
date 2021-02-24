@@ -91,7 +91,7 @@ string Node::GetIP() const {
 // Generate public and private RSA keys for signing transactions
 pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 	CryptoPP::Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
-	CRYPTOPP_RNG rng = CRYPTOPP_RNG(); // A random number generator
+	CRYPTOPP_RNG randnum = CRYPTOPP_RNG(); // Use Crypto++'s random number generator
 
 	// Generate some RSA keys
 	RSA::PrivateKey privKey;
@@ -102,7 +102,7 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 
 	// Validate the private key that was generated. If this key passes, the
 	// public key does not need to be tested.
-	if (!privKey.Validate(rng, 3)) {
+	if (!privKey.Validate(randnum, 3)) {
 		throw std::runtime_error("Private key validation failed. Aborting.");
 	}
 
@@ -120,7 +120,22 @@ Block Node::Sign(Block& block) {
 
 	string signedHash = stream.str(); // Get the stringstream as a string
 
-	block.m_Signature = signedHash;
+	block.m_SSignature = signedHash;
+	return block;
+}
+
+// Verify a transaction with the sender's public key
+Block Node::Verify(Block& block) {
+	CRYPTOPP_RNG randnum = CRYPTOPP_RNG(); // Use Crypto++'s random number generator
+	CryptoPP::Integer encrmsg((const CryptoPP::byte*)block.m_Signature.c_str()), recovered;
+
+	recovered = CalculateInverse(randnum, encrmsg); // Reverse the encryption
+
+	// Round trip the message
+	size_t req = recovered.MinEncodedSize();
+	block.m_RSignature.resize(req);
+	recovered.Encode((CryptoPP::byte*)block.m_RSignature.data(), block.m_RSignature.size());
+
 	return block;
 }
 
