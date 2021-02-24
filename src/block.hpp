@@ -21,7 +21,11 @@ class Block {
 public:
 	// The block contents
 	int m_Index, m_Nonce = 0;
-	string m_Hash, *m_PrevHash, m_Signature;
+	string m_Hash, *m_PrevHash;
+
+	// Add a sender and reciever signature (these will be compared later)
+	string m_SSignature, m_RSignature;
+
 	Transaction* m_Transaction;
 	char* m_Timestamp;
 
