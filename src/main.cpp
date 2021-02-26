@@ -18,12 +18,18 @@ int main() {
 
 	Transaction transaction = node1->MakeTransaction(*node2, 1.0, "Here's some money");
 
-	Block block = Block(1, nullptr, &transaction);
+	Block block(1, nullptr, &transaction);
 
 	std::cout << transaction.m_Content << std::endl;
 
 	std::cout << chain->Consensus(block) << std::endl;
 	std::cout << block.m_Hash << std::endl;
+
+	//node1->GenerateKeys();
+	block = node1->Sign(block);
+	//block = node2->Verify(block);
+
+	std::cout << (block.m_SSignature == block.m_RSignature) << std::endl;
 
 	return 0;
 }
