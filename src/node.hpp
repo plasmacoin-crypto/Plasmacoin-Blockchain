@@ -9,9 +9,9 @@
 #define NODE_HPP
 
 #include <string>
-#include <stdexcept>
 #include <utility>
 #include <sstream>
+#include <functional>
 
 #include "cryptopp-sha256-libs.h"
 
@@ -21,10 +21,16 @@
 using std::string;
 using std::pair;
 
-#include <cryptopp/rsa.h> 	// Use Crypto++'s RSA functionality
-#include <cryptopp/osrng.h> // Use AutoSeededRandomPool
+#include <cryptopp/rsa.h> 		// Use Crypto++'s RSA functionality
+#include <cryptopp/osrng.h> 	// Use AutoSeededRandomPool
+#include <cryptopp/oaep.h>		// Use RSAES_OAEP_SHA_Encryptor
+#include <cryptopp/filters.h>	// Use PK_EncryptorFilter
+#include <cryptopp/cryptlib.h> 	// Use GenerateRandomWithKeySize
 
 using CryptoPP::RSA;
+using CryptoPP::Integer;
+
+Integer pop(Integer n);
 
 class Node {
 	typedef CryptoPP::RandomNumberGenerator CRYPTOPP_RNG; // Make this long name a little easier to use
@@ -47,6 +53,10 @@ private:
 
 	bool isMaster;
 
+	// Set some values Crypto++ needs to calculate the inverse of
+	// the RSA encryption
+	CryptoPP::InvertibleRSAFunction SetValues();
+
 	string Hash(Transaction transaction);
 };
 
@@ -58,7 +68,7 @@ Node::Node(string name, string username, string passwd, string ip, bool isMaster
 	m_IPAddr(ip),
 	isMaster(isMaster)
 {
-	std::tie(m_PubKey, m_PrivKey) = GenerateKeys(); // Generate a set of RSA keys for the user
+	//std::tie(m_PubKey, m_PrivKey) = GenerateKeys(); // Generate a set of RSA keys for the user
 }
 
 Transaction Node::MakeTransaction(Node& recipient, float amount, string content) const {
@@ -90,7 +100,7 @@ string Node::GetIP() const {
 
 // Generate public and private RSA keys for signing transactions
 pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
-	CryptoPP::Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
+	Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
 	CRYPTOPP_RNG randnum = CRYPTOPP_RNG(); // Use Crypto++'s random number generator
 
 	// Generate some RSA keys
@@ -102,41 +112,91 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 
 	// Validate the private key that was generated. If this key passes, the
 	// public key does not need to be tested.
-	if (!privKey.Validate(randnum, 3)) {
-		throw std::runtime_error("Private key validation failed. Aborting.");
-	}
+	// if (!privKey.Validate(randnum, 3)) {
+	// 	throw std::runtime_error("Private key validation failed. Aborting.");
+	// }
 
 	return std::make_pair(pubKey, privKey);
 }
 
 // Sign a transaction (i.e., the transaction's hash) with the sender's private key
 Block Node::Sign(Block& block) {
+	Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
+
+	CryptoPP::AutoSeededRandomPool& asrp(); // Use Crypto++'s random number generator
+	CryptoPP::InvertibleRSAFunction params;
+
+	params.GenerateRandomWithKeySize(asrp, 3072);
+
+	// Generate the RSA key
+	RSA::PrivateKey privKey(params);
+
+	string cipher;
+
+	// Sign the hash
+	// CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(privKey);
+	// CryptoPP::StringSource ss1(block.m_Hash.c_str(), true,
+	// 	new CryptoPP::PK_EncryptorFilter(rng, encryptor,
+	// 		new CryptoPP::StringSink(cipher)
+	// 	) // PK_EncryptorFilter
+	// ); // StringSource
+
+	//privKey.Initialize;
+
 	// Get some data needed to apply the encryption function
-	CryptoPP::Integer m((const CryptoPP::byte*)block.m_Hash.c_str(), block.m_Hash.size());
+	// Integer m((const CryptoPP::byte*)block.m_Hash.c_str(), block.m_Hash.size());
 
-	// Convert the CryptoPP::Integer to a std::string
-	std::stringstream stream;
-	stream << std::hex << m_PubKey.ApplyFunction(m);
+	// // Convert the Integer to a std::string
+	// std::stringstream stream;
+	// stream << std::hex << privKey.ApplyFunction(m);
 
-	string signedHash = stream.str(); // Get the stringstream as a string
+	// string signedHash = stream.str(); // Get the stringstream as a string
 
-	block.m_SSignature = signedHash;
+	// block.m_SSignature = signedHash;
 	return block;
 }
 
 // Verify a transaction with the sender's public key
 Block Node::Verify(Block& block) {
-	CRYPTOPP_RNG randnum = CRYPTOPP_RNG(); // Use Crypto++'s random number generator
-	CryptoPP::Integer encrmsg((const CryptoPP::byte*)block.m_Signature.c_str()), recovered;
+	Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
+	CRYPTOPP_RNG rng = CRYPTOPP_RNG(); // Use Crypto++'s random number generator
 
-	recovered = CalculateInverse(randnum, encrmsg); // Reverse the encryption
+	// Generate the RSA key
+	RSA::PrivateKey privKey;
+	privKey.Initialize(n, e, d);
+
+	// Get the encrypted message
+	Integer encrmsg((const CryptoPP::byte*)block.m_SSignature.c_str(), block.m_SSignature.size());
+	// std::cout << encrmsg << std::endl;
+	// encrmsg = pop(encrmsg);
+	// std::cout << encrmsg << std::endl;
+
+	//SetValues();
+
+	//Integer recovered(privKey.CalculateInverse(rng, encrmsg)); // Reverse the encryption
 
 	// Round trip the message
-	size_t req = recovered.MinEncodedSize();
-	block.m_RSignature.resize(req);
-	recovered.Encode((CryptoPP::byte*)block.m_RSignature.data(), block.m_RSignature.size());
+	//size_t req = recovered.MinEncodedSize();
+	//block.m_RSignature.resize(req);
+	//recovered.Encode((CryptoPP::byte*)block.m_RSignature.data(), block.m_RSignature.size());
 
 	return block;
+}
+
+CryptoPP::InvertibleRSAFunction Node::SetValues() {
+	CRYPTOPP_RNG rng = CRYPTOPP_RNG();
+	CryptoPP::InvertibleRSAFunction rsa;
+
+	rsa.GenerateRandomWithKeySize(rng, 3072);
+
+	// Do the calculations
+	const Integer& n = rsa.GetModulus();
+	const Integer& p = rsa.GetPrime1();
+	const Integer& q = rsa.GetPrime2();
+	const Integer& d = rsa.GetPrivateExponent();
+	const Integer& e = rsa.GetPublicExponent();
+
+	return rsa;
 }
 
 // Use Crypto++ to hash the transaction data
@@ -159,6 +219,20 @@ string Node::Hash(Transaction transaction) {
 	);
 
 	return digest;
+}
+
+// Remove the last digit in a CryptoPP::Integer
+Integer pop(Integer n) {
+	// Convert the Integer to a std::string
+	std::stringstream stream;
+	stream << n;
+
+	string str_stream = stream.str(); // Get the stringstream as an std::string
+	str_stream.pop_back(); // Remove the last character
+	std::cout << str_stream << std::endl;
+
+	// Convert back to a CryptoPP::Integer and return
+	return Integer((const CryptoPP::byte*)str_stream.c_str(), str_stream.size());
 }
 
 #endif // NODE_HPP
