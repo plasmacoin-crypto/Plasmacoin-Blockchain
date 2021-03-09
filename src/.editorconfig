@@ -1,7 +1,5 @@
 root = false
 
-[*.{cpp, h, hpp}]
-indent_style = tab
-indent_size = 4]
+[*.{cpp,h,hpp}]
 indent_style = tab
 indent_size = 4
