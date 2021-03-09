@@ -1,5 +1,5 @@
 root = false
 
-[{*.cpp, *.h, *.hpp, Makefile}]
+[{*cpp, *h, *hpp}]
 indent_style = tab
 indent_size = 4
