@@ -33,8 +33,6 @@ using CryptoPP::Integer;
 Integer pop(Integer n);
 
 class Node {
-	typedef CryptoPP::RandomNumberGenerator CRYPTOPP_RNG; // Make this long name a little easier to use
-
 public:
 	Node(string name, string username, string passwd, string ip, bool isMaster);
 	Transaction MakeTransaction(Node& recipient, float amount, string content) const;
@@ -42,7 +40,8 @@ public:
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const;
 
-	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
+	//pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
+
 	Block Sign(Block& block), Verify(Block& block);
 
 private:
@@ -55,7 +54,7 @@ private:
 
 	// Set some values Crypto++ needs to calculate the inverse of
 	// the RSA encryption
-	CryptoPP::InvertibleRSAFunction SetValues();
+	//CryptoPP::InvertibleRSAFunction SetValues();
 
 	string Hash(Transaction transaction);
 };
@@ -99,25 +98,25 @@ string Node::GetIP() const {
 }
 
 // Generate public and private RSA keys for signing transactions
-pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
-	Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
-	CRYPTOPP_RNG randnum = CRYPTOPP_RNG(); // Use Crypto++'s random number generator
+// pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
+// 	Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
+// 	CRYPTOPP_RNG randnum = CRYPTOPP_RNG(); // Use Crypto++'s random number generator
 
-	// Generate some RSA keys
-	RSA::PrivateKey privKey;
-	privKey.Initialize(n, e, d);
+// 	// Generate some RSA keys
+// 	RSA::PrivateKey privKey;
+// 	privKey.Initialize(n, e, d);
 
-	RSA::PublicKey pubKey;
-	pubKey.Initialize(n, e);
+// 	RSA::PublicKey pubKey;
+// 	pubKey.Initialize(n, e);
 
-	// Validate the private key that was generated. If this key passes, the
-	// public key does not need to be tested.
-	// if (!privKey.Validate(randnum, 3)) {
-	// 	throw std::runtime_error("Private key validation failed. Aborting.");
-	// }
+// 	// Validate the private key that was generated. If this key passes, the
+// 	// public key does not need to be tested.
+// 	// if (!privKey.Validate(randnum, 3)) {
+// 	// 	throw std::runtime_error("Private key validation failed. Aborting.");
+// 	// }
 
-	return std::make_pair(pubKey, privKey);
-}
+// 	return std::make_pair(pubKey, privKey);
+// }
 
 // Sign a transaction (i.e., the transaction's hash) with the sender's private key
 Block Node::Sign(Block& block) {
@@ -159,11 +158,16 @@ Block Node::Sign(Block& block) {
 // Verify a transaction with the sender's public key
 Block Node::Verify(Block& block) {
 	Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
-	CRYPTOPP_RNG rng = CRYPTOPP_RNG(); // Use Crypto++'s random number generator
 
-	// Generate the RSA key
-	RSA::PrivateKey privKey;
-	privKey.Initialize(n, e, d);
+	CryptoPP::AutoSeededRandomPool rng;
+	CryptoPP::InvertibleRSAFunction params;
+
+	// Generate the RSA keys
+	RSA::PrivateKey privKey(params);
+	privKey.GenerateRandomWithKeySize(rng, 3072);
+
+	RSA::PublicKey pubKey(privKey);
+	//pubKey.GenerateRandomWithKeySize(rng, 3072);
 
 	// Get the encrypted message
 	Integer encrmsg((const CryptoPP::byte*)block.m_SSignature.c_str(), block.m_SSignature.size());
@@ -173,31 +177,31 @@ Block Node::Verify(Block& block) {
 
 	//SetValues();
 
-	//Integer recovered(privKey.CalculateInverse(rng, encrmsg)); // Reverse the encryption
+	Integer recovered(privKey.CalculateInverse(rng, encrmsg)); // Reverse the encryption
 
 	// Round trip the message
-	//size_t req = recovered.MinEncodedSize();
-	//block.m_RSignature.resize(req);
-	//recovered.Encode((CryptoPP::byte*)block.m_RSignature.data(), block.m_RSignature.size());
+	size_t req = recovered.MinEncodedSize();
+	block.m_RSignature.resize(req);
+	recovered.Encode((CryptoPP::byte*)block.m_RSignature.data(), block.m_RSignature.size());
 
 	return block;
 }
 
-CryptoPP::InvertibleRSAFunction Node::SetValues() {
-	CRYPTOPP_RNG rng = CRYPTOPP_RNG();
-	CryptoPP::InvertibleRSAFunction rsa;
+// CryptoPP::InvertibleRSAFunction Node::SetValues() {
+// 	CRYPTOPP_RNG rng = CRYPTOPP_RNG();
+// 	CryptoPP::InvertibleRSAFunction rsa;
 
-	rsa.GenerateRandomWithKeySize(rng, 3072);
+// 	rsa.GenerateRandomWithKeySize(rng, 3072);
 
-	// Do the calculations
-	const Integer& n = rsa.GetModulus();
-	const Integer& p = rsa.GetPrime1();
-	const Integer& q = rsa.GetPrime2();
-	const Integer& d = rsa.GetPrivateExponent();
-	const Integer& e = rsa.GetPublicExponent();
+// 	// Do the calculations
+// 	const Integer& n = rsa.GetModulus();
+// 	const Integer& p = rsa.GetPrime1();
+// 	const Integer& q = rsa.GetPrime2();
+// 	const Integer& d = rsa.GetPrivateExponent();
+// 	const Integer& e = rsa.GetPublicExponent();
 
-	return rsa;
-}
+// 	return rsa;
+// }
 
 // Use Crypto++ to hash the transaction data
 string Node::Hash(Transaction transaction) {
