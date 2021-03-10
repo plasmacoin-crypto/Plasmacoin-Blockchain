@@ -123,36 +123,36 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 Block Node::Sign(Block& block) {
 	Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
 
-	CryptoPP::AutoSeededRandomPool& asrp(); // Use Crypto++'s random number generator
+	CryptoPP::AutoSeededRandomPool rng;
 	CryptoPP::InvertibleRSAFunction params;
-
-	params.GenerateRandomWithKeySize(asrp, 3072);
 
 	// Generate the RSA key
 	RSA::PrivateKey privKey(params);
+	privKey.GenerateRandomWithKeySize(rng, 3072);
 
 	string cipher;
 
 	// Sign the hash
-	// CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(privKey);
-	// CryptoPP::StringSource ss1(block.m_Hash.c_str(), true,
-	// 	new CryptoPP::PK_EncryptorFilter(rng, encryptor,
-	// 		new CryptoPP::StringSink(cipher)
-	// 	) // PK_EncryptorFilter
-	// ); // StringSource
+	CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(privKey);
+	CryptoPP::StringSource ss1(block.m_Hash.c_str(), true,
+		new CryptoPP::PK_EncryptorFilter(rng, encryptor,
+			new CryptoPP::StringSink(cipher)
+		) // PK_EncryptorFilter
+	); // StringSource
 
-	//privKey.Initialize;
+	privKey.Initialize(n, e, d);
 
 	// Get some data needed to apply the encryption function
-	// Integer m((const CryptoPP::byte*)block.m_Hash.c_str(), block.m_Hash.size());
+	Integer m((const CryptoPP::byte*)block.m_Hash.c_str(), block.m_Hash.size());
 
-	// // Convert the Integer to a std::string
-	// std::stringstream stream;
-	// stream << std::hex << privKey.ApplyFunction(m);
+	// Convert the Integer to a std::string
+	std::stringstream stream;
+	stream << std::hex << privKey.ApplyFunction(m);
 
-	// string signedHash = stream.str(); // Get the stringstream as a string
+	string signedHash = stream.str(); // Get the stringstream as a string
 
-	// block.m_SSignature = signedHash;
+	block.m_SSignature = signedHash;
+
 	return block;
 }
 
