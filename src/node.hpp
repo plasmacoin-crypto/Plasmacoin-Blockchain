@@ -93,7 +93,6 @@ string Node::GetIP() const {
 
 // Generate public and private RSA keys for signing transactions
 pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
-	//Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
 	CryptoPP::AutoSeededRandomPool rng; // Random number generator
 	CryptoPP::InvertibleRSAFunction params;
 
@@ -114,8 +113,6 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 
 // Sign a transaction (i.e., the transaction's hash) with the sender's private key
 Block Node::Sign(Block& block) {
-	// Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
-
 	CryptoPP::AutoSeededRandomPool rng;
 
 	string signature;
@@ -135,8 +132,6 @@ Block Node::Sign(Block& block) {
 
 // Verify a transaction with the sender's public key
 Block Node::Verify(Block& block, string signature) {
-	Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
-
 	CryptoPP::AutoSeededRandomPool rng;
 	CryptoPP::InvertibleRSAFunction params;
 
