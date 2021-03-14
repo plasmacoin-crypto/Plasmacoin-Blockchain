@@ -23,8 +23,7 @@ using std::pair;
 
 #include <cryptopp/rsa.h> 		// Use Crypto++'s RSA functionality
 #include <cryptopp/osrng.h> 	// Use AutoSeededRandomPool
-//#include <cryptopp/oaep.h>	// Use RSAES_OAEP_SHA_Encryptor
-#include <cryptopp/filters.h>	// Use PK_EncryptorFilter, SignerFilter, StringSink, SignatureVerificationFilter
+#include <cryptopp/filters.h>	// Use SignerFilter, StringSink, SignatureVerificationFilter, ArraySink
 #include <cryptopp/cryptlib.h> 	// Use GenerateRandomWithKeySize
 
 using CryptoPP::RSA;
@@ -99,7 +98,7 @@ string Node::GetIP() const {
 
 // Generate public and private RSA keys for signing transactions
 pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
-	Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
+	//Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
 	CryptoPP::AutoSeededRandomPool rng; // Random number generator
 	CryptoPP::InvertibleRSAFunction params;
 
@@ -107,11 +106,7 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 
 	// Generate some RSA keys
 	RSA::PrivateKey privKey(params);
-	//privKey.GenerateRandomWithKeySize(rng, 3072);
-	//privKey.Initialize(n, e, d);
-
 	RSA::PublicKey pubKey(params);
-	//pubKey.Initialize(n, e);
 
 	// Validate the private key that was generated. If this key passes, the
 	// public key does not need to be tested.
@@ -127,26 +122,11 @@ Block Node::Sign(Block& block) {
 	// Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
 
 	CryptoPP::AutoSeededRandomPool rng;
-	// CryptoPP::InvertibleRSAFunction params;
 
-	// // Generate the RSA key
-	// RSA::PrivateKey privKey(params);
-	// privKey.GenerateRandomWithKeySize(rng, 3072);
-
-	string signature/*cipher*/;
-
-	// // Sign the hash
-	// CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(m_PrivKey);
-	// CryptoPP::StringSource ss1(block.m_Hash.c_str(), true,
-	// 	new CryptoPP::PK_EncryptorFilter(rng, encryptor,
-	// 		new CryptoPP::StringSink(cipher)
-	// 	) // PK_EncryptorFilter
-	// ); // StringSource
-
-	//privKey.Initialize(n, e, d);
-
+	string signature;
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer signer(m_PrivKey);
 
+	// Sign the transaction
 	CryptoPP::StringSource ss1(block.m_Hash, true,
 		new CryptoPP::SignerFilter(rng, signer,
 			new CryptoPP::StringSink(signature), true
@@ -181,18 +161,12 @@ Block Node::Verify(Block& block, string signature) {
 	// RSA::PublicKey pubKey(params);
 	// //pubKey.GenerateRandomWithKeySize(rng, 3072);
 
-	string /*cipher,*/ recovered;
-
-	// CryptoPP::RSAES_OAEP_SHA_Decryptor decryptor(m_PubKey);
-	// CryptoPP::StringSource ss2(cipher, true,
-	// 	new CryptoPP::PK_DecryptorFilter(rng, decryptor,
-	// 		new CryptoPP::StringSink(recovered)
-	// 	) // PK_DecryptorFilter
-	// ); // StringSource
-
+	string recovered;
 	bool result = false;
+
 	CryptoPP::RSASSA_PKCS1v15_SHA_Verifier verifier(m_PubKey);
 
+	// Verify the transaction
 	CryptoPP::StringSource ss2(block.m_Hash + signature, true,
 		new CryptoPP::SignatureVerificationFilter(
 			verifier,
