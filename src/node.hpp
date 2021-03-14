@@ -30,8 +30,6 @@ using std::pair;
 using CryptoPP::RSA;
 using CryptoPP::Integer;
 
-Integer pop(Integer n);
-
 class Node {
 public:
 	Node(string name, string username, string passwd, string ip, bool isMaster);
@@ -51,10 +49,6 @@ private:
 	RSA::PrivateKey m_PrivKey;
 
 	bool isMaster;
-
-	// Set some values Crypto++ needs to calculate the inverse of
-	// the RSA encryption
-	//CryptoPP::InvertibleRSAFunction SetValues();
 
 	string Hash(Transaction transaction);
 };
@@ -134,15 +128,6 @@ Block Node::Sign(Block& block) {
 		) // SignerFilter
 	); // StringSource
 
-	// Get some data needed to apply the encryption function
-	// Integer m((const CryptoPP::byte*)signature.c_str(), signature.size());
-
-	// // Convert the Integer to a std::string
-	// std::stringstream stream;
-	// stream << std::hex << m_PrivKey.ApplyFunction(m);
-
-	// string signedHash = stream.str(); // Get the stringstream as a string
-
 	block.m_SSignature = signature;
 
 	return block;
@@ -181,29 +166,13 @@ Block Node::Verify(Block& block, string signature) {
 	return block;
 }
 
-// CryptoPP::InvertibleRSAFunction Node::SetValues() {
-// 	CRYPTOPP_RNG rng = CRYPTOPP_RNG();
-// 	CryptoPP::InvertibleRSAFunction rsa;
-
-// 	rsa.GenerateRandomWithKeySize(rng, 3072);
-
-// 	// Do the calculations
-// 	const Integer& n = rsa.GetModulus();
-// 	const Integer& p = rsa.GetPrime1();
-// 	const Integer& q = rsa.GetPrime2();
-// 	const Integer& d = rsa.GetPrivateExponent();
-// 	const Integer& e = rsa.GetPublicExponent();
-
-// 	return rsa;
-// }
-
 // Use Crypto++ to hash the transaction data
 string Node::Hash(Transaction transaction) {
 	CryptoPP::SHA256 hash;
 	string digest; // The result
 	string message = transaction.m_Condensed;
 
-	// Use the library
+	// Hash the transaction data
 	//
 	// No objects have to be freed because of Crypto++'s pipelining
 	// functionality
@@ -217,20 +186,6 @@ string Node::Hash(Transaction transaction) {
 	);
 
 	return digest;
-}
-
-// Remove the last digit in a CryptoPP::Integer
-Integer pop(Integer n) {
-	// Convert the Integer to a std::string
-	std::stringstream stream;
-	stream << n;
-
-	string str_stream = stream.str(); // Get the stringstream as an std::string
-	str_stream.pop_back(); // Remove the last character
-	std::cout << str_stream << std::endl;
-
-	// Convert back to a CryptoPP::Integer and return
-	return Integer((const CryptoPP::byte*)str_stream.c_str(), str_stream.size());
 }
 
 #endif // NODE_HPP
