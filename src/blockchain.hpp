@@ -29,6 +29,7 @@ public:
 	int AddToLedger(Block* block); // Add an unconfirmed block to the ledger
 
 	set<Block*> Get() const;
+	Block* GetLatest() const;
 
 	int Mine();
 private:
@@ -75,6 +76,10 @@ int AddToLedger(Block* block) {
 // Return the blockchain
 set<Block*> Blockchain::Get() const {
 	return m_Chain;
+}
+
+Block* Blockchain::GetLatest() const {
+	return m_Chain.back();
 }
 
 // Mine a block
