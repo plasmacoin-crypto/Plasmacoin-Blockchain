@@ -24,7 +24,10 @@ class Blockchain {
 public:
 	Blockchain();
 
-	int Add(Block* block); // Will return 0 on success
+	// Both will return 0 on success
+	int Add(Block* block); // Add a confirmed block to the blockchain
+	int AddToLedger(Block* block); // Add an unconfirmed block to the ledger
+
 	set<Block*> Get() const;
 
 	int Mine();
@@ -32,7 +35,7 @@ private:
 	const int DIFFICULTY = 5;
 
 	set<Block*> m_Chain;
-	queue<Block*> m_Unconfirmed; // Blocks waiting to be mined
+	queue<Block*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
 public:
 	bool Consensus(Block& block); // Evaluate Proof-of-Work
 private:
@@ -45,10 +48,28 @@ Blockchain::Blockchain() {
 	Add(genesis);
 }
 
-// Add a block to the blockchain
+// Add a confirmed block to the blockchain
 int Blockchain::Add(Block* block) {
-	m_Chain.insert(block);
-	return -1; // tmp
+	if (block == nullptr) {
+		return -1;
+	}
+	else {
+		m_Chain.insert(block);
+	}
+
+	return 0;
+}
+
+// Add an unconfirmed block to the ledger
+int AddToLedger(Block* block) {
+	if (block == nullptr) {
+		return -1;
+	}
+	else {
+		m_Unconfirmed.push(block);
+	}
+
+	return 0;
 }
 
 // Return the blockchain
