@@ -140,12 +140,7 @@ Block Node::Verify(Block& block, string signature) {
 	CryptoPP::AutoSeededRandomPool rng;
 	CryptoPP::InvertibleRSAFunction params;
 
-	params.GenerateRandomWithKeySize(rng, 3072);
-	RSA::PublicKey pubKey(params);
-
 	string recovered;
-	bool result = false;
-
 	CryptoPP::RSASS<CryptoPP::PSSR, CryptoPP::SHA256>::Verifier verifier(pubKey);
 
 	// Verify the transaction
