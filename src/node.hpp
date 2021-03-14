@@ -141,7 +141,7 @@ Block Node::Verify(Block& block, string signature) {
 	CryptoPP::InvertibleRSAFunction params;
 
 	string recovered;
-	CryptoPP::RSASS<CryptoPP::PSSR, CryptoPP::SHA256>::Verifier verifier(pubKey);
+	CryptoPP::RSASS<CryptoPP::PSSR, CryptoPP::SHA256>::Verifier verifier(m_PubKey);
 
 	// Verify the transaction
 	CryptoPP::StringSource ss2(signature, true,
