@@ -23,8 +23,9 @@ using std::pair;
 
 #include <cryptopp/rsa.h> 		// Use Crypto++'s RSA functionality
 #include <cryptopp/osrng.h> 	// Use AutoSeededRandomPool
-#include <cryptopp/filters.h>	// Use SignerFilter, StringSink, SignatureVerificationFilter, ArraySink
+#include <cryptopp/filters.h>	// Use SignerFilter, StringSink, SignatureVerificationFilter
 #include <cryptopp/cryptlib.h> 	// Use GenerateRandomWithKeySize
+#include <cryptopp/pssr.h>		// Use PSSR
 
 using CryptoPP::RSA;
 using CryptoPP::Integer;
@@ -124,7 +125,7 @@ Block Node::Sign(Block& block) {
 	CryptoPP::AutoSeededRandomPool rng;
 
 	string signature;
-	CryptoPP::RSASSA_PKCS1v15_SHA_Signer signer(m_PrivKey);
+	CryptoPP::RSASS<CryptoPP::PSSR, CryptoPP::SHA256>::Signer signer(m_PrivKey);
 
 	// Sign the transaction
 	CryptoPP::StringSource ss1(block.m_Hash, true,
@@ -152,36 +153,29 @@ Block Node::Verify(Block& block, string signature) {
 	Integer n("0xbeaadb3d839f3b5f"), e("0x11"), d("0x21a5ae37b9959db9"); // Numbers used in the calculations
 
 	CryptoPP::AutoSeededRandomPool rng;
-	// CryptoPP::InvertibleRSAFunction params;
+	CryptoPP::InvertibleRSAFunction params;
 
-	// // Generate the RSA keys
-	// RSA::PrivateKey privKey(params);
-	// privKey.GenerateRandomWithKeySize(rng, 3072);
-
-	// RSA::PublicKey pubKey(params);
-	// //pubKey.GenerateRandomWithKeySize(rng, 3072);
+	params.GenerateRandomWithKeySize(rng, 3072);
+	RSA::PublicKey pubKey(params);
 
 	string recovered;
 	bool result = false;
 
-	CryptoPP::RSASSA_PKCS1v15_SHA_Verifier verifier(m_PubKey);
+	CryptoPP::RSASS<CryptoPP::PSSR, CryptoPP::SHA256>::Verifier verifier(pubKey);
 
 	// Verify the transaction
-	CryptoPP::StringSource ss2(block.m_Hash + signature, true,
+	CryptoPP::StringSource ss2(signature, true,
 		new CryptoPP::SignatureVerificationFilter(
 			verifier,
-			new CryptoPP::ArraySink(
-				(CryptoPP::byte*)&result, sizeof(result)
-			), // ArraySink
-			CryptoPP::SignatureVerificationFilter::PUT_RESULT |
+			new CryptoPP::StringSink(
+            	recovered
+			), // StringSink
+			CryptoPP::SignatureVerificationFilter::PUT_MESSAGE |
 			CryptoPP::SignatureVerificationFilter::SIGNATURE_AT_END
 		) // SignatureVerificationFilter
 	); // StringSource
 
-	// Round trip the message
-	// size_t req = recovered.MinEncodedSize();
-	// block.m_RSignature.resize(req);
-	// recovered.Encode((CryptoPP::byte*)block.m_RSignature.data(), block.m_RSignature.size());
+	std::cout << "Result: " << recovered << std::endl;
 	block.m_RSignature = recovered;
 
 	return block;
