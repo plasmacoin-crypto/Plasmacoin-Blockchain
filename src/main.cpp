@@ -27,12 +27,12 @@ int main() {
 
 	//node1->GenerateKeys();
 	block = node1->Sign(block);
-	block = node2->Verify(block);
+	block = node2->Verify(block, block.m_SSignature);
 
-	std::cout << std::hex << block.m_SSignature << std::endl;
-	std::cout << std::hex << block.m_RSignature << std::endl;
+	std::cout << "Signed: " << std::hex << block.m_SSignature << std::endl;
+	std::cout << "Verified: " << std::hex << block.m_RSignature << std::endl;
 
-	std::cout << (block.m_SSignature == block.m_RSignature) << std::endl;
+	std::cout << (block.m_Hash == block.m_RSignature) << std::endl;
 
 	return 0;
 }
