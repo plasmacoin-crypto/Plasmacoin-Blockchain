@@ -13,6 +13,7 @@
 #include <tuple>
 
 #include "transaction.hpp"
+#include "blockchain.hpp"
 
 using std::string;
 using std::tuple;
@@ -23,13 +24,16 @@ public:
 	int m_Index, m_Nonce = 0;
 	string m_Hash, *m_PrevHash;
 
-	// Add a sender and reciever signature (these will be compared later)
+	// A sender and reciever signature used for verifying the transaction
+	// on the block
 	string m_SSignature, m_RSignature;
 
 	Transaction* m_Transaction;
 	char* m_Timestamp;
 
 	Block(int index, string* prevHash, Transaction* transaction);
+
+	bool Validate();
 };
 
 Block::Block(int index, string* prevHash, Transaction* transaction):
@@ -40,6 +44,16 @@ Block::Block(int index, string* prevHash, Transaction* transaction):
 	// Get a timestamp for the block
 	time_t now = time(0);
 	m_Timestamp = ctime(&now);
+}
+
+// Make sure the block is valid
+bool Block::Validate(Blockchain blockchain) {
+	return (
+		(m_PrevHash != nullptr) &&	// Check if the previous hash exists on the block
+		(blockchain.GetLatest().m_Hash == *m_PrevHash) &&	// Check if the previous hash is valid
+		(std::find(m_Hash.begin(), m_Hash.begin() + blockchain.DIFFICULTY,	// Check if the block hash is valid
+		 		   string(blockchain.DIFFICULTY, '0') != m_Hash.end()))
+	);
 }
 
 #endif // BLOCK_HPP
