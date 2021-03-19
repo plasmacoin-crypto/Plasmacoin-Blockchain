@@ -62,7 +62,7 @@ int Blockchain::Add(Block* block) {
 }
 
 // Add an unconfirmed block to the ledger
-int AddToLedger(Block* block) {
+int Blockchain::AddToLedger(Block* block) {
 	if (block == nullptr) {
 		return -1;
 	}
@@ -79,7 +79,7 @@ set<Block*> Blockchain::Get() const {
 }
 
 Block* Blockchain::GetLatest() const {
-	return m_Chain.back();
+	return *m_Chain.end();
 }
 
 // Mine a block
