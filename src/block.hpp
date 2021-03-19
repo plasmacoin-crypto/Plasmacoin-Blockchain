@@ -13,7 +13,6 @@
 #include <tuple>
 
 #include "transaction.hpp"
-#include "blockchain.hpp"
 
 using std::string;
 using std::tuple;
@@ -33,7 +32,7 @@ public:
 
 	Block(int index, string* prevHash, Transaction* transaction);
 
-	bool Validate();
+	bool Validate(string latestHash, const int& DIFFICULTY);
 };
 
 Block::Block(int index, string* prevHash, Transaction* transaction):
@@ -47,12 +46,11 @@ Block::Block(int index, string* prevHash, Transaction* transaction):
 }
 
 // Make sure the block is valid
-bool Block::Validate(Blockchain blockchain) {
+bool Block::Validate(string latestHash, const int& DIFFICULTY) {
 	return (
 		(m_PrevHash != nullptr) &&	// Check if the previous hash exists on the block
-		(blockchain.GetLatest().m_Hash == *m_PrevHash) &&	// Check if the previous hash is valid
-		(std::find(m_Hash.begin(), m_Hash.begin() + blockchain.DIFFICULTY,	// Check if the block hash is valid
-		 		   string(blockchain.DIFFICULTY, '0') != m_Hash.end()))
+		(latestHash == *m_PrevHash) &&	// Check if the previous hash is valid
+		(m_Hash.find(string(DIFFICULTY, '0')) != string::npos)	// Check if the block hash is valid
 	);
 }
 
