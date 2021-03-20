@@ -39,6 +39,7 @@ private:
 	queue<Block*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
 public:
 	bool Consensus(Block& block); // Evaluate Proof-of-Work
+	bool Validate();
 private:
 	string Hash(Transaction transaction);
 };
@@ -104,17 +105,33 @@ bool Blockchain::Consensus(Block& block) {
 	// of the nonce will be "00000".
 	string strNonce = string(DIFFICULTY, '0');
 
-	string hash = this->Hash(*block.m_Transaction); // Hash the block
+	string hash = Hash(*block.m_Transaction); // Hash the block
 
 	while (hash.substr(0, strNonce.size()) != strNonce) {
 		// Increase the nonce and update the condensed block data
 		block.m_Nonce++;
 		block.m_Transaction->Update(block.m_Nonce);
 
-		hash = this->Hash(*block.m_Transaction);
+		hash = Hash(*block.m_Transaction);
 	}
 
 	block.m_Hash = hash;
+
+	return true;
+}
+
+// Make sure the blockchain isn't corrupted
+bool Blockchain::Validate() {
+	string hash;
+
+	for (auto block: m_Chain) {
+		hash = Hash(block->m_Transaction); // Regenerate the block hash
+
+		// Make sure the block is valid
+		if (!block->Validate(hash, DIFFICULTY)) {
+			return false;
+		}
+	}
 
 	return true;
 }
