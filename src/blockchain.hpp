@@ -113,8 +113,6 @@ bool Blockchain::Consensus(Block& block) {
 		block.m_Nonce++;
 		block.m_Transaction->Update(block.m_Nonce);
 
-		std::cout << block.m_Nonce << std::endl;
-
 		hash = Hash(*block.m_Transaction);
 	}
 
