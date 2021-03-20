@@ -74,11 +74,12 @@ int Blockchain::AddToLedger(Block* block) {
 	return 0;
 }
 
-// Return the blockchain
+// Get the blockchain
 set<Block*> Blockchain::Get() const {
 	return m_Chain;
 }
 
+// Get the block that was most recently added to the blockchain
 Block* Blockchain::GetLatest() const {
 	return *m_Chain.end();
 }
@@ -111,6 +112,8 @@ bool Blockchain::Consensus(Block& block) {
 		// Increase the nonce and update the condensed block data
 		block.m_Nonce++;
 		block.m_Transaction->Update(block.m_Nonce);
+
+		std::cout << block.m_Nonce << std::endl;
 
 		hash = Hash(*block.m_Transaction);
 	}
