@@ -99,7 +99,7 @@ int Blockchain::Mine() {
 
 // Complete the Proof-of-Work consensus protocol on a block. Return true
 // if the correct hash was successfully found. The only way false would be
-// returned is if a node was able to complete the hash before another user.
+// returned is if a node was able to complete the hash before another.
 bool Blockchain::Consensus(Block& block) {
 	// Get the nonce. If the difficulty is 5, the string representation
 	// of the nonce will be "00000".
