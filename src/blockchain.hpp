@@ -125,7 +125,7 @@ bool Blockchain::Validate() {
 	string hash;
 
 	for (auto block: m_Chain) {
-		hash = Hash(block->m_Transaction); // Regenerate the block hash
+		hash = Hash(*block->m_Transaction); // Regenerate the block hash
 
 		// Make sure the block is valid
 		if (!block->Validate(hash, DIFFICULTY)) {
