@@ -3,4 +3,8 @@
 # Ignore any binaries
 a.out
 pcblkchn
+src/qt/build-plasmacoin-ui-Desktop-Debug/plasmacoin-ui
 src/sha256/sha256
+
+# Ignore object files
+*.o
