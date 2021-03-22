@@ -19,25 +19,56 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>171</width>
+      <width>791</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>791</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::North</enum>
+    </property>
+    <property name="tabShape">
+     <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
      <number>1</number>
     </property>
+    <property name="movable">
+     <bool>true</bool>
+    </property>
     <widget class="QWidget" name="Wallet">
      <attribute name="title">
-      <string>Tab 1</string>
+      <string>Wallet</string>
      </attribute>
     </widget>
     <widget class="QWidget" name="Mine">
      <attribute name="title">
-      <string>Tab 2</string>
+      <string> Mine Coins</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="AddressBook">
+     <attribute name="title">
+      <string>Address Book</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="Account">
+     <attribute name="title">
+      <string>Account</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="Transactions">
+     <attribute name="title">
+      <string>Transactions</string>
      </attribute>
     </widget>
    </widget>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -48,7 +79,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
