@@ -27,6 +27,8 @@ public:
     QWidget *Wallet;
     QWidget *Mine;
     QWidget *AddressBook;
+    QWidget *Account;
+    QWidget *Transactions;
     QStatusBar *statusbar;
     QMenuBar *menubar;
 
@@ -39,7 +41,10 @@ public:
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         tabWidget = new QTabWidget(centralwidget);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
-        tabWidget->setGeometry(QRect(0, 0, 271, 31));
+        tabWidget->setGeometry(QRect(0, 0, 791, 31));
+        tabWidget->setMaximumSize(QSize(791, 16777215));
+        tabWidget->setTabPosition(QTabWidget::North);
+        tabWidget->setTabShape(QTabWidget::Rounded);
         tabWidget->setMovable(true);
         Wallet = new QWidget();
         Wallet->setObjectName(QString::fromUtf8("Wallet"));
@@ -50,6 +55,12 @@ public:
         AddressBook = new QWidget();
         AddressBook->setObjectName(QString::fromUtf8("AddressBook"));
         tabWidget->addTab(AddressBook, QString());
+        Account = new QWidget();
+        Account->setObjectName(QString::fromUtf8("Account"));
+        tabWidget->addTab(Account, QString());
+        Transactions = new QWidget();
+        Transactions->setObjectName(QString::fromUtf8("Transactions"));
+        tabWidget->addTab(Transactions, QString());
         MainWindow->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -71,8 +82,10 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Wallet), QCoreApplication::translate("MainWindow", "Wallet", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(Mine), QCoreApplication::translate("MainWindow", "Mine", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Mine), QCoreApplication::translate("MainWindow", " Mine Coins", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(AddressBook), QCoreApplication::translate("MainWindow", "Address Book", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
     } // retranslateUi
 
 };
