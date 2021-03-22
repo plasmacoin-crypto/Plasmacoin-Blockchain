@@ -2,9 +2,9 @@
 
 MainWindow::MainWindow(QWidget *parent):
 	QMainWindow(parent)
-	{
-		setupUi(this);
-	}
+{
+	setupUi(this);
+}
 
 MainWindow::~MainWindow() {}
 
