@@ -83,6 +83,8 @@ void *MainWindow::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_MainWindow.stringdata0))
         return static_cast<void*>(this);
+    if (!strcmp(_clname, "Ui::MainWindow"))
+        return static_cast< Ui::MainWindow*>(this);
     return QMainWindow::qt_metacast(_clname);
 }
 

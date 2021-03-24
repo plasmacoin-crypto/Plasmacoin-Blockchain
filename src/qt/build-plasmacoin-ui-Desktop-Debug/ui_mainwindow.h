@@ -13,9 +13,11 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QWidget>
@@ -32,6 +34,10 @@ public:
     QWidget *AddressBook;
     QWidget *Account;
     QWidget *Transactions;
+    QStackedWidget *stackedWidget;
+    QWidget *page;
+    QLCDNumber *lcdNumber;
+    QWidget *page_2;
     QStatusBar *statusbar;
     QMenuBar *menubar;
     QMenu *menuPlasmacoinUI;
@@ -66,6 +72,22 @@ public:
         Transactions = new QWidget();
         Transactions->setObjectName(QString::fromUtf8("Transactions"));
         tabWidget->addTab(Transactions, QString());
+        stackedWidget = new QStackedWidget(centralwidget);
+        stackedWidget->setObjectName(QString::fromUtf8("stackedWidget"));
+        stackedWidget->setGeometry(QRect(0, 30, 801, 531));
+        page = new QWidget();
+        page->setObjectName(QString::fromUtf8("page"));
+        lcdNumber = new QLCDNumber(page);
+        lcdNumber->setObjectName(QString::fromUtf8("lcdNumber"));
+        lcdNumber->setGeometry(QRect(520, 60, 241, 71));
+        lcdNumber->setSmallDecimalPoint(false);
+        lcdNumber->setDigitCount(5);
+        lcdNumber->setMode(QLCDNumber::Dec);
+        lcdNumber->setSegmentStyle(QLCDNumber::Filled);
+        stackedWidget->addWidget(page);
+        page_2 = new QWidget();
+        page_2->setObjectName(QString::fromUtf8("page_2"));
+        stackedWidget->addWidget(page_2);
         MainWindow->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -88,7 +110,8 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(4);
+        tabWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
