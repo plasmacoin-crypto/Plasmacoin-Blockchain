@@ -10,8 +10,11 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
@@ -31,6 +34,8 @@ public:
     QWidget *Transactions;
     QStatusBar *statusbar;
     QMenuBar *menubar;
+    QMenu *menuPlasmacoinUI;
+    QMenu *menuPlasmaco;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -68,11 +73,22 @@ public:
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 800, 30));
+        menuPlasmacoinUI = new QMenu(menubar);
+        menuPlasmacoinUI->setObjectName(QString::fromUtf8("menuPlasmacoinUI"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("../assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
+        menuPlasmacoinUI->setIcon(icon);
+        menuPlasmacoinUI->setSeparatorsCollapsible(false);
+        menuPlasmaco = new QMenu(menubar);
+        menuPlasmaco->setObjectName(QString::fromUtf8("menuPlasmaco"));
         MainWindow->setMenuBar(menubar);
+
+        menubar->addAction(menuPlasmacoinUI->menuAction());
+        menubar->addAction(menuPlasmaco->menuAction());
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -86,6 +102,8 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(AddressBook), QCoreApplication::translate("MainWindow", "Address Book", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
+        menuPlasmacoinUI->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
+        menuPlasmaco->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
     } // retranslateUi
 
 };
