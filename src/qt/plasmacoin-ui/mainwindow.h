@@ -16,10 +16,6 @@ public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
-	// Cycle the QStackedWidget object to display the correct information
-	// on the correct tab
-	void UpdateWindow(); // Use name mangling to avoid multiple definition
-
 private:
 	QTabWidget* m_TabBar = Ui::MainWindow::tabWidget;
 
