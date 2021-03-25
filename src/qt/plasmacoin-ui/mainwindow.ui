@@ -76,11 +76,14 @@
       <height>531</height>
      </rect>
     </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="page">
-     <widget class="QLCDNumber" name="lcdNumber">
+    <widget class="QWidget" name="wallet">
+     <widget class="QLCDNumber" name="USDollars">
       <property name="geometry">
        <rect>
         <x>520</x>
@@ -102,8 +105,33 @@
        <enum>QLCDNumber::Filled</enum>
       </property>
      </widget>
+     <widget class="QLCDNumber" name="Plasmacoins">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>60</y>
+        <width>241</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="smallDecimalPoint">
+       <bool>false</bool>
+      </property>
+      <property name="digitCount">
+       <number>5</number>
+      </property>
+      <property name="mode">
+       <enum>QLCDNumber::Dec</enum>
+      </property>
+      <property name="segmentStyle">
+       <enum>QLCDNumber::Filled</enum>
+      </property>
+     </widget>
     </widget>
-    <widget class="QWidget" name="page_2"/>
+    <widget class="QWidget" name="mine_coins"/>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -116,7 +144,7 @@
      <height>30</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuPlasmacoinUI">
+   <widget class="QMenu" name="icon">
     <property name="title">
      <string>Plasmacoin UI</string>
     </property>
@@ -128,13 +156,13 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QMenu" name="menuPlasmaco">
+   <widget class="QMenu" name="text">
     <property name="title">
      <string>Plasmacoin UI</string>
     </property>
    </widget>
-   <addaction name="menuPlasmacoinUI"/>
-   <addaction name="menuPlasmaco"/>
+   <addaction name="icon"/>
+   <addaction name="text"/>
   </widget>
  </widget>
  <resources/>

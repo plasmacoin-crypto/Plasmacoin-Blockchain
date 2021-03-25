@@ -35,13 +35,14 @@ public:
     QWidget *Account;
     QWidget *Transactions;
     QStackedWidget *stackedWidget;
-    QWidget *page;
-    QLCDNumber *lcdNumber;
-    QWidget *page_2;
+    QWidget *wallet;
+    QLCDNumber *USDollars;
+    QLCDNumber *Plasmacoins;
+    QWidget *mine_coins;
     QStatusBar *statusbar;
     QMenuBar *menubar;
-    QMenu *menuPlasmacoinUI;
-    QMenu *menuPlasmaco;
+    QMenu *icon;
+    QMenu *text;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -75,19 +76,28 @@ public:
         stackedWidget = new QStackedWidget(centralwidget);
         stackedWidget->setObjectName(QString::fromUtf8("stackedWidget"));
         stackedWidget->setGeometry(QRect(0, 30, 801, 531));
-        page = new QWidget();
-        page->setObjectName(QString::fromUtf8("page"));
-        lcdNumber = new QLCDNumber(page);
-        lcdNumber->setObjectName(QString::fromUtf8("lcdNumber"));
-        lcdNumber->setGeometry(QRect(520, 60, 241, 71));
-        lcdNumber->setSmallDecimalPoint(false);
-        lcdNumber->setDigitCount(5);
-        lcdNumber->setMode(QLCDNumber::Dec);
-        lcdNumber->setSegmentStyle(QLCDNumber::Filled);
-        stackedWidget->addWidget(page);
-        page_2 = new QWidget();
-        page_2->setObjectName(QString::fromUtf8("page_2"));
-        stackedWidget->addWidget(page_2);
+        stackedWidget->setLayoutDirection(Qt::LeftToRight);
+        wallet = new QWidget();
+        wallet->setObjectName(QString::fromUtf8("wallet"));
+        USDollars = new QLCDNumber(wallet);
+        USDollars->setObjectName(QString::fromUtf8("USDollars"));
+        USDollars->setGeometry(QRect(520, 60, 241, 71));
+        USDollars->setSmallDecimalPoint(false);
+        USDollars->setDigitCount(5);
+        USDollars->setMode(QLCDNumber::Dec);
+        USDollars->setSegmentStyle(QLCDNumber::Filled);
+        Plasmacoins = new QLCDNumber(wallet);
+        Plasmacoins->setObjectName(QString::fromUtf8("Plasmacoins"));
+        Plasmacoins->setGeometry(QRect(30, 60, 241, 71));
+        Plasmacoins->setLayoutDirection(Qt::LeftToRight);
+        Plasmacoins->setSmallDecimalPoint(false);
+        Plasmacoins->setDigitCount(5);
+        Plasmacoins->setMode(QLCDNumber::Dec);
+        Plasmacoins->setSegmentStyle(QLCDNumber::Filled);
+        stackedWidget->addWidget(wallet);
+        mine_coins = new QWidget();
+        mine_coins->setObjectName(QString::fromUtf8("mine_coins"));
+        stackedWidget->addWidget(mine_coins);
         MainWindow->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -95,18 +105,18 @@ public:
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 800, 30));
-        menuPlasmacoinUI = new QMenu(menubar);
-        menuPlasmacoinUI->setObjectName(QString::fromUtf8("menuPlasmacoinUI"));
-        QIcon icon;
-        icon.addFile(QString::fromUtf8("../assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
-        menuPlasmacoinUI->setIcon(icon);
-        menuPlasmacoinUI->setSeparatorsCollapsible(false);
-        menuPlasmaco = new QMenu(menubar);
-        menuPlasmaco->setObjectName(QString::fromUtf8("menuPlasmaco"));
+        icon = new QMenu(menubar);
+        icon->setObjectName(QString::fromUtf8("icon"));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8("../assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon->setIcon(icon1);
+        icon->setSeparatorsCollapsible(false);
+        text = new QMenu(menubar);
+        text->setObjectName(QString::fromUtf8("text"));
         MainWindow->setMenuBar(menubar);
 
-        menubar->addAction(menuPlasmacoinUI->menuAction());
-        menubar->addAction(menuPlasmaco->menuAction());
+        menubar->addAction(icon->menuAction());
+        menubar->addAction(text->menuAction());
 
         retranslateUi(MainWindow);
 
@@ -125,8 +135,8 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(AddressBook), QCoreApplication::translate("MainWindow", "Address Book", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
-        menuPlasmacoinUI->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
-        menuPlasmaco->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
+        icon->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
+        text->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
     } // retranslateUi
 
 };
