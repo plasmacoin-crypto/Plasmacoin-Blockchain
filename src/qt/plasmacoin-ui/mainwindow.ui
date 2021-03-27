@@ -36,7 +36,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="movable">
      <bool>true</bool>
@@ -80,7 +80,7 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="wallet">
      <widget class="QLCDNumber" name="USDollars">
@@ -131,7 +131,21 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="mine_coins"/>
+    <widget class="QWidget" name="mine_coins">
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>690</x>
+        <y>470</y>
+        <width>88</width>
+        <height>34</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Mine</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -150,7 +164,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../assets/plasmacoin-logo.png</normaloff>../assets/plasmacoin-logo.png</iconset>
+      <normaloff>../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
     </property>
     <property name="separatorsCollapsible">
      <bool>false</bool>
