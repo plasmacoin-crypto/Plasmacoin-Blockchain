@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent):
 {
 	setupUi(this);
 
+	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
 }
 
