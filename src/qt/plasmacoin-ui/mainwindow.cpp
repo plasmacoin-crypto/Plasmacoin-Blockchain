@@ -1,7 +1,5 @@
 // The source file for mainwindow.h
 
-#include <thread>
-
 #include "mainwindow.h"
 
 using std::thread;
