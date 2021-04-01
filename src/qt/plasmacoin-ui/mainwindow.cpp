@@ -2,8 +2,6 @@
 
 #include "mainwindow.h"
 
-using std::thread;
-
 MainWindow::MainWindow(QWidget *parent):
 	QMainWindow(parent)
 {
