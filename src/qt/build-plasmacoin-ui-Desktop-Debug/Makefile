@@ -17,7 +17,7 @@ CXX           = clang++
 DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../plasmacoin-ui -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-clang
+INCPATH       = -I../plasmacoin-ui -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-clang -I../.. -I/usr/src/cryptopp
 QMAKE         = /bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -37,10 +37,10 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = plasmacoin-ui1.0.0
-DISTDIR = /home/rmsmith/Projects/Plasmacoin/Plasmacoin-Blockchain/src/gui/build-plasmacoin-ui-Desktop-Debug/.tmp/plasmacoin-ui1.0.0
+DISTDIR 	  = ./.tmp/plasmacoin-ui1.0.0
 LINK          = clang++
 LFLAGS        = -ccc-gcc-name g++
-LIBS          = $(SUBLIBS) /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Core.so -lGL -lpthread
+LIBS          = $(SUBLIBS) /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Core.so -lGL -lpthread -lcryptopp
 AR            = ar cqs
 RANLIB        =
 SED           = sed
@@ -53,10 +53,13 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../plasmacoin-ui/main.cpp \
-		../plasmacoin-ui/mainwindow.cpp moc_mainwindow.cpp
+		../plasmacoin-ui/mainwindow.cpp moc_mainwindow.cpp \
+		../plasmacoin-ui/transaction-list.cpp moc_transactionlist.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
-		moc_mainwindow.o
+		moc_mainwindow.o \
+		transaction-list.o \
+		moc_transactionlist.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -290,7 +293,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
 		../plasmacoin-ui/plasmacoin-ui.pro ../plasmacoin-ui/mainwindow.h ../plasmacoin-ui/main.cpp \
-		../plasmacoin-ui/mainwindow.cpp
+		../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/transaction-list.h ../plasmacoin-ui/transaction-list.cpp
 QMAKE_TARGET  = plasmacoin-ui
 DESTDIR       =
 TARGET        = plasmacoin-ui
@@ -820,12 +823,19 @@ moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_transactionlist.cpp
+
 moc_mainwindow.cpp: ../plasmacoin-ui/mainwindow.h \
 		ui_mainwindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/rmsmith/Projects/Plasmacoin/Plasmacoin-Blockchain/src/gui/build-plasmacoin-ui-Desktop-Debug/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I/home/rmsmith/Projects/Plasmacoin/Plasmacoin-Blockchain/src/gui/plasmacoin-ui -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include ../plasmacoin-ui/mainwindow.h -o moc_mainwindow.cpp
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I./plasmacoin-ui -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-ui/mainwindow.h -o moc_mainwindow.cpp
+
+moc_transactionlist.cpp: ../plasmacoin-ui/transaction-list.h \
+		ui_mainwindow.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-ui -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-ui/transaction-list.h -o moc_transactionlist.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -849,15 +859,22 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 main.o: ../plasmacoin-ui/main.cpp ../plasmacoin-ui/mainwindow.h \
-		ui_mainwindow.h
+		 ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../plasmacoin-ui/main.cpp
 
 mainwindow.o: ../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/mainwindow.h \
-		ui_mainwindow.h
+			  ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../plasmacoin-ui/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_transactionlist.o: moc_transactionlist.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_transactionlist.o moc_transactionlist.cpp
+
+transaction-list.o: ../plasmacoin-ui/transaction-list.cpp ../plasmacoin-ui/transaction-list.h \
+					ui_mainwindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction-list.o ../plasmacoin-ui/transaction-list.cpp
 
 ####### Install
 

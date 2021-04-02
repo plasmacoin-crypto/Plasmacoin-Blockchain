@@ -2,7 +2,7 @@
 
 CC = g++
 
-CRYPTO_CPP = /usr/src/cryptocpp
+CRYPTO_CPP = /usr/src/cryptopp
 
 # Compiler flags
 CFLAGS = -Wall -I$(CRYPTO_CPP) -L$(CRYPTO_CPP)
