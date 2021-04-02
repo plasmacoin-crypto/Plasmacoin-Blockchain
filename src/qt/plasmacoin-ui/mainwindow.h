@@ -4,20 +4,27 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtWidgets/QMainWindow>
+#include <QStringList>
+
 #include "ui_mainwindow.h"
 
-#include <QtWidgets/QMainWindow>
+#include "transaction-list.h"
 
-class MainWindow : public QMainWindow, public Ui::MainWindow
-{
+class MainWindow : public QMainWindow, public Ui::MainWindow {
 	Q_OBJECT
 
 public:
-	MainWindow(QWidget *parent = nullptr);
+	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
+
+	void LoadMiningVisuals(); // Load certain content during mining operations
+
+	QWidget* parent;
 
 private:
 	QTabWidget* m_TabBar = Ui::MainWindow::tabWidget;
+	TransactionList* m_TList;
 
 private slots:
 	void DisplayPage(int index); // Actually set the index of the stack widget
