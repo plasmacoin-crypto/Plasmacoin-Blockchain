@@ -14,9 +14,11 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLCDNumber>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
@@ -39,6 +41,8 @@ public:
     QLCDNumber *USDollars;
     QLCDNumber *Plasmacoins;
     QWidget *mine_coins;
+    QPushButton *pushButton;
+    QListWidget *transactionList;
     QStatusBar *statusbar;
     QMenuBar *menubar;
     QMenu *icon;
@@ -97,6 +101,12 @@ public:
         stackedWidget->addWidget(wallet);
         mine_coins = new QWidget();
         mine_coins->setObjectName(QString::fromUtf8("mine_coins"));
+        pushButton = new QPushButton(mine_coins);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setGeometry(QRect(30, 470, 88, 34));
+        transactionList = new QListWidget(mine_coins);
+        transactionList->setObjectName(QString::fromUtf8("transactionList"));
+        transactionList->setGeometry(QRect(30, 30, 311, 401));
         stackedWidget->addWidget(mine_coins);
         MainWindow->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(MainWindow);
@@ -121,7 +131,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -135,6 +145,7 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(AddressBook), QCoreApplication::translate("MainWindow", "Address Book", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
+        pushButton->setText(QCoreApplication::translate("MainWindow", "Mine", nullptr));
         icon->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
         text->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
     } // retranslateUi
