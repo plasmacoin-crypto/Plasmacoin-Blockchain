@@ -36,7 +36,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="movable">
      <bool>true</bool>
@@ -135,7 +135,7 @@
      <widget class="QPushButton" name="pushButton">
       <property name="geometry">
        <rect>
-        <x>690</x>
+        <x>30</x>
         <y>470</y>
         <width>88</width>
         <height>34</height>
@@ -143,6 +143,16 @@
       </property>
       <property name="text">
        <string>Mine</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="transactionList">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>30</y>
+        <width>311</width>
+        <height>401</height>
+       </rect>
       </property>
      </widget>
     </widget>
@@ -164,7 +174,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
+      <normaloff>../assets/plasmacoin-logo.png</normaloff>../assets/plasmacoin-logo.png</iconset>
     </property>
     <property name="separatorsCollapsible">
      <bool>false</bool>
