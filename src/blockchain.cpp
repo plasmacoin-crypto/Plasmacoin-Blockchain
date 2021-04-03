@@ -19,7 +19,7 @@ int Blockchain::Add(Block* block) {
 		return -1;
 	}
 	else {
-		m_Chain.insert(block);
+		m_Chain.push_back(block);
 	}
 
 	return 0;
@@ -38,13 +38,13 @@ int Blockchain::AddToLedger(Transaction* transaction) {
 }
 
 // Get the blockchain
-set<Block*> Blockchain::Get() const {
+vector<Block*> Blockchain::Get() const {
 	return m_Chain;
 }
 
 // Get the block that was most recently added to the blockchain
 Block* Blockchain::GetLatest() const {
-	return *m_Chain.end();
+	return m_Chain.back();
 }
 
 // Create a new block with an unconfirmed transaction and run Proof-of-Woork
@@ -57,7 +57,10 @@ bool Blockchain::Mine() {
 		Block newBlock(latest->m_Index + 1, &latest->m_Hash, m_Unconfirmed.front());
 		m_Unconfirmed.pop();
 
-		return Consensus(newBlock); // Run Proof-of-Woork on the block and return the result
+		bool result = Consensus(newBlock); // Run Proof-of-Woork on the block
+		Add(&newBlock); // Add it to the blockchain
+
+		return result;
 	}
 	else {
 		return false;
@@ -83,6 +86,7 @@ bool Blockchain::Consensus(Block& block) {
 	}
 
 	block.m_Hash = hash;
+	std::cout << hash << std::endl;
 
 	return true;
 }

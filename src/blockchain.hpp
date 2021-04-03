@@ -8,8 +8,9 @@
 #ifndef BLOCKCHAIN_HPP
 #define BLOCKCHAIN_HPP
 
-#include <set>
+#include <vector>
 #include <queue>
+#include <iostream>
 
 // This header file groups thre Crypto++ headers to save space
 // and also provide them with a descriptive overall name.
@@ -17,7 +18,7 @@
 
 #include "block.hpp"
 
-using std::set;
+using std::vector;
 using std::queue;
 
 class Blockchain {
@@ -28,14 +29,14 @@ public:
 	int Add(Block* block); // Add a block with a confirmed transaction to the blockchain
 	int AddToLedger(Transaction* transaction); // Add an unconfirmed transaction to the ledger
 
-	set<Block*> Get() const;
+	vector<Block*> Get() const;
 	Block* GetLatest() const;
 
 	bool Mine();
 private:
 	const int DIFFICULTY = 5;
 
-	set<Block*> m_Chain;
+	vector<Block*> m_Chain;
 	queue<Transaction*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
 public:
 	bool Consensus(Block& block); // Evaluate Proof-of-Work
