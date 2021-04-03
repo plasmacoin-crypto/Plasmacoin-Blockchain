@@ -25,8 +25,8 @@ public:
 	Blockchain();
 
 	// Both will return 0 on success
-	int Add(Block* block); // Add a confirmed block to the blockchain
-	int AddToLedger(Block* block); // Add an unconfirmed block to the ledger
+	int Add(Block* block); // Add a block with a confirmed transaction to the blockchain
+	int AddToLedger(Transaction* transaction); // Add an unconfirmed transaction to the ledger
 
 	set<Block*> Get() const;
 	Block* GetLatest() const;
@@ -36,7 +36,7 @@ private:
 	const int DIFFICULTY = 5;
 
 	set<Block*> m_Chain;
-	queue<Block*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
+	queue<Transaction*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
 public:
 	bool Consensus(Block& block); // Evaluate Proof-of-Work
 	bool Validate();

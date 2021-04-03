@@ -25,13 +25,13 @@ int Blockchain::Add(Block* block) {
 	return 0;
 }
 
-// Add an unconfirmed block to the ledger
-int Blockchain::AddToLedger(Block* block) {
-	if (block == nullptr) {
+// Add an unconfirmed transaction to the ledger
+int Blockchain::AddToLedger(Transaction* transaction) {
+	if (transaction == nullptr) {
 		return -1;
 	}
 	else {
-		m_Unconfirmed.push(block);
+		m_Unconfirmed.push(transaction);
 	}
 
 	return 0;
@@ -50,8 +50,10 @@ Block* Blockchain::GetLatest() const {
 // Mine a block
 int Blockchain::Mine() {
 	if (!m_Unconfirmed.empty()) {
-		// Get the block that the node will be mining
-		Block block = *m_Unconfirmed.front();
+		Block* latest = GetLatest();
+
+		// Create a new block that the node will be mining
+		Block newBlock(latest->m_Index + 1, &latest->m_Hash, *m_Unconfirmed.front());
 		m_Unconfirmed.pop();
 
 		Consensus(block);
