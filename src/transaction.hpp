@@ -23,6 +23,10 @@ public:
 	float m_Amount;
 	string m_Content;
 
+	// A sender and reciever signature used for verifying the transaction
+	// on the block
+	string m_SSignature, m_RSignature;
+
 	Transaction(const Node& sender, Node& recipient, string content, float amount, string condensed);
 	void Update(int nonce);
 

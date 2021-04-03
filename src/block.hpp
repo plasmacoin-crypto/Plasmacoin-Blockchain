@@ -23,10 +23,6 @@ public:
 	int m_Index, m_Nonce = 0;
 	string m_Hash, *m_PrevHash;
 
-	// A sender and reciever signature used for verifying the transaction
-	// on the block
-	string m_SSignature, m_RSignature;
-
 	Transaction* m_Transaction;
 	char* m_Timestamp;
 
