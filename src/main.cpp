@@ -13,26 +13,22 @@
 int main() {
 	Blockchain* chain = new Blockchain();
 
-	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
-	Node* node2 = new Node("John", "john", "4567", "192.168.1.7");
+	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
+	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", false);
 
 	Transaction transaction = node1->MakeTransaction(*node2, 1.0, "Here's some money");
 
-	Block block(1, nullptr, &transaction);
+	transaction = node1->Sign(transaction);
+	transaction = node2->Verify(transaction, transaction.m_SSignature);
+
+	std::cout << "Signed: " << std::hex << transaction.m_SSignature << std::endl;
+	std::cout << "Verified: " << std::hex << transaction.m_RSignature << std::endl;
+
+	chain->AddToLedger(&transaction);
 
 	std::cout << transaction.m_Content << std::endl;
 
-	std::cout << chain->Consensus(block) << std::endl;
-	std::cout << block.m_Hash << std::endl;
-
-	//node1->GenerateKeys();
-	block = node1->Sign(block);
-	block = node2->Verify(block, block.m_SSignature);
-
-	std::cout << "Signed: " << std::hex << block.m_SSignature << std::endl;
-	std::cout << "Verified: " << std::hex << block.m_RSignature << std::endl;
-
-	std::cout << (block.m_Hash == block.m_RSignature) << std::endl;
+	std::cout << chain->Mine() << std::endl;
 
 	return 0;
 }
