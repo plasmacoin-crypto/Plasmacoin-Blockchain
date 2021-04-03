@@ -54,12 +54,14 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../plasmacoin-ui/main.cpp \
 		../plasmacoin-ui/mainwindow.cpp moc_mainwindow.cpp \
-		../plasmacoin-ui/transaction-list.cpp moc_transactionlist.cpp
+		../plasmacoin-ui/transaction-list.cpp moc_transactionlist.cpp \
+		../plasmacoin-ui/mining-status.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		moc_mainwindow.o \
 		transaction-list.o \
-		moc_transactionlist.o
+		moc_transactionlist.o \
+		mining-status.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -292,8 +294,10 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/exceptions.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
-		../plasmacoin-ui/plasmacoin-ui.pro ../plasmacoin-ui/mainwindow.h ../plasmacoin-ui/main.cpp \
-		../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/transaction-list.h ../plasmacoin-ui/transaction-list.cpp
+		../plasmacoin-ui/plasmacoin-ui.pro ../plasmacoin-ui/main.cpp \
+		../plasmacoin-ui/mainwindow.h ../plasmacoin-ui/mainwindow.cpp \
+		../plasmacoin-ui/transaction-list.h ../plasmacoin-ui/transaction-list.cpp \
+		../plasmacoin-ui/mining-status.h ../plasmacoin-ui/mining-status.cpp
 QMAKE_TARGET  = plasmacoin-ui
 DESTDIR       =
 TARGET        = plasmacoin-ui
@@ -863,7 +867,7 @@ main.o: ../plasmacoin-ui/main.cpp ../plasmacoin-ui/mainwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../plasmacoin-ui/main.cpp
 
 mainwindow.o: ../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/mainwindow.h \
-			  ui_mainwindow.h
+			  ui_mainwindow.h ../../blockchain.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../plasmacoin-ui/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp
@@ -873,8 +877,11 @@ moc_transactionlist.o: moc_transactionlist.cpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_transactionlist.o moc_transactionlist.cpp
 
 transaction-list.o: ../plasmacoin-ui/transaction-list.cpp ../plasmacoin-ui/transaction-list.h \
-					ui_mainwindow.h
+					ui_mainwindow.h ../../transaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction-list.o ../plasmacoin-ui/transaction-list.cpp
+
+mining-status.o: ../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/mining-status.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mining-status.o ../plasmacoin-ui/mining-status.cpp
 
 ####### Install
 
