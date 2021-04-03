@@ -132,7 +132,7 @@
      </widget>
     </widget>
     <widget class="QWidget" name="mineCoins">
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="btn_mine">
       <property name="geometry">
        <rect>
         <x>30</x>
