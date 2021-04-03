@@ -10,7 +10,7 @@
 
 #include <queue>
 
-#include "../../transaction.hpp"
+#include "transaction.hpp"
 //#include "../../blockchain.hpp"
 
 #include <QtWidgets/QMainWindow>
