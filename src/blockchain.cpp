@@ -49,12 +49,12 @@ Block* Blockchain::GetLatest() const {
 
 // Create a new block with an unconfirmed transaction and run Proof-of-Woork
 // on it.
-bool Blockchain::Mine() {
+bool Blockchain::Mine(Block& newBlock) {
 	if (!m_Unconfirmed.empty()) {
 		Block* latest = GetLatest();
 
 		// Create a new block that the node will be mining
-		Block newBlock(latest->m_Index + 1, &latest->m_Hash, m_Unconfirmed.front());
+		newBlock = Block(latest->m_Index + 1, &latest->m_Hash, m_Unconfirmed.front());
 		m_Unconfirmed.pop();
 
 		bool result = Consensus(newBlock); // Run Proof-of-Woork on the block

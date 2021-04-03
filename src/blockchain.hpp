@@ -32,7 +32,7 @@ public:
 	vector<Block*> Get() const;
 	Block* GetLatest() const;
 
-	bool Mine();
+	bool Mine(Block& newBlock);
 private:
 	const int DIFFICULTY = 5;
 
