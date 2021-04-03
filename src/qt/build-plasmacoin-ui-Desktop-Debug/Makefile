@@ -867,7 +867,7 @@ main.o: ../plasmacoin-ui/main.cpp ../plasmacoin-ui/mainwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../plasmacoin-ui/main.cpp
 
 mainwindow.o: ../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/mainwindow.h \
-			  ui_mainwindow.h ../../blockchain.hpp
+			  ui_mainwindow.h ../../blockchain.hpp ../plasmacoin-ui/mining-status.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../plasmacoin-ui/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp
