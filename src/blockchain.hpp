@@ -31,7 +31,7 @@ public:
 	set<Block*> Get() const;
 	Block* GetLatest() const;
 
-	int Mine();
+	bool Mine();
 private:
 	const int DIFFICULTY = 5;
 
