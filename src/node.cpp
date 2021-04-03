@@ -26,8 +26,8 @@ Transaction Node::MakeTransaction(Node& recipient, float amount, string content)
 
 	// A new transaction between the current user and another user in the
 	// network.
-	return Transaction(Node(m_Name, m_Username, m_Password, m_IPAddr),
-					   recipient, content, amount, condensed);
+	return Transaction(new Node(m_Name, m_Username, m_Password, m_IPAddr),
+					   &recipient, content, amount, condensed);
 }
 
 // Get the user's name
