@@ -7,7 +7,7 @@
 
 #include "transaction.hpp"
 
-Transaction::Transaction(const Node& sender, Node& recipient, string content, float amount, string condensed):
+Transaction::Transaction(const Node* sender, Node* recipient, string content, float amount, string condensed):
 	m_Sender(sender),
 	m_Recipient(recipient),
 	m_Amount(amount),

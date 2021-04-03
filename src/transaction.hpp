@@ -17,8 +17,8 @@ class Node;
 
 class Transaction {
 public:
-	const Node& m_Sender;
-	Node& m_Recipient;
+	const Node* m_Sender;
+	Node* m_Recipient;
 
 	float m_Amount;
 	string m_Content;
@@ -27,7 +27,7 @@ public:
 	// on the block
 	string m_SSignature, m_RSignature;
 
-	Transaction(const Node& sender, Node& recipient, string content, float amount, string condensed);
+	Transaction(const Node* sender, Node* recipient, string content, float amount, string condensed);
 	void Update(int nonce);
 
 	// A condensed version of the transaction in the form:
