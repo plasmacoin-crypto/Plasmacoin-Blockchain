@@ -2,56 +2,45 @@
 
 CC = g++
 
-CRYPTO_CPP = /usr/src/cryptopp
+CRYPTO_CPP = /usr/src/cryptocpp
 
 # Compiler flags
-CFLAGS = -Wall -I$(CRYPTO_CPP) -L$(CRYPTO_CPP)
+CFLAGS = -Wall -I$(CRYPTO_CPP)
 LINKS = -lcryptopp
 
 TARGET = pcblkchn
 SOURCE = main.cpp
+OBJECTS = transaction.o node.o block.o blockchain.o
 INSTALL_LOC = /usr/bin
-
-# Stuff for building the SHA-256 Library
-# SHA_256_LOC = src/sha256
-
-# SHA_256 = $(SHA_256_LOC)/sha256
-# SHA_256_SRC = $(SHA_256_LOC)/sha256.cpp
-# SHA_256_MF = SHA256-Makefile.mk
 
 # Used to take ownership of the binary
 USER = $(shell whoami)
 
-# Some aliases and defaults
 default: $(TARGET)
-#sha256: $(SHA_256)
-
-# This will make the blockchain and the SHA-256 library tests
-all: $(TARGET) #$(SHA_256)
-
+all: $(TARGET)
 uninstall: clean
-
 remake: clean default
-#remake-all: clean-all all
+
+# Objects
+transaction.o: src/transaction.cpp src/transaction.hpp
+	$(CC) -c $(CFLAGS) -o transaction.o src/transaction.cpp -L$(CRYPTO_CPP) $(LINKS)
+
+node.o: src/node.cpp src/node.hpp src/cryptopp-sha256-libs.h src/transaction.hpp src/block.hpp
+	$(CC) -c $(CFLAGS) -o node.o src/node.cpp -L$(CRYPTO_CPP) $(LINKS)
+
+block.o: src/block.cpp src/block.hpp src/transaction.hpp
+	$(CC) -c $(CFLAGS) -o block.o src/block.cpp -L$(CRYPTO_CPP) $(LINKS)
+
+blockchain.o: src/blockchain.cpp src/blockchain.hpp src/cryptopp-sha256-libs.h src/block.hpp
+	$(CC) -c $(CFLAGS) -o blockchain.o src/blockchain.cpp -L$(CRYPTO_CPP) $(LINKS)
 
 # `make` (or `make pcblkchn`)
-$(TARGET): src/$(SOURCE)
-	# Build the blockchain
-	$(CC) $(CFLAGS) src/$(SOURCE) $(LINKS) -o $(TARGET)
-
-# `make sha256`
-# $(SHA_256): $(SHA_256_SRC)
-# 	make -C $(SHA_256_LOC) -f $(SHA_256_MF)
-
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) src/$(SOURCE) -o $(TARGET) $(OBJECTS) -L$(CRYPTO_CPP) $(LINKS)
 # `make clean`
 clean:
 	# This removes the binary from this directory and from /usr/bin
 	sudo $(RM) --verbose $(TARGET) $(INSTALL_LOC)/$(TARGET)
-
-# `make clean_all`
-# clean-all: clean
-# 	# Clean the blockchain and the SHA-256 executables
-# 	make -C $(SHA_256_LOC) -f $(SHA_256_MF) clean
 
 # `make install`
 install:
