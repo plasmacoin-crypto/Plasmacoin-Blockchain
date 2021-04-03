@@ -10,6 +10,9 @@
 #include "ui_mainwindow.h"
 
 #include "transaction-list.h"
+#include "mining-status.h"
+
+#include "blockchain.hpp"
 
 class MainWindow : public QMainWindow, public Ui::MainWindow {
 	Q_OBJECT
@@ -28,6 +31,7 @@ private:
 
 private slots:
 	void DisplayPage(int index); // Actually set the index of the stack widget
+	void StartMining(); // Initiate the mining process
 };
 
 #endif // MAINWINDOW_H
