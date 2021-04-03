@@ -65,27 +65,27 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 	return std::make_pair(pubKey, privKey);
 }
 
-// Sign a transaction (i.e., the transaction's hash) with the sender's private key
-Block Node::Sign(Block& block) {
+// Sign a transaction with the sender's private key
+Transaction Node::Sign(Transaction& transaction) {
 	CryptoPP::AutoSeededRandomPool rng;
 
 	string signature;
 	CryptoPP::RSASS<CryptoPP::PSSR, CryptoPP::SHA256>::Signer signer(m_PrivKey);
 
 	// Sign the transaction
-	CryptoPP::StringSource ss1(block.m_Hash, true,
+	CryptoPP::StringSource ss1(transaction.m_Content, true,
 		new CryptoPP::SignerFilter(rng, signer,
 			new CryptoPP::StringSink(signature), true
 		) // SignerFilter
 	); // StringSource
 
-	block.m_SSignature = signature;
+	transaction.m_SSignature = signature;
 
-	return block;
+	return transaction;
 }
 
 // Verify a transaction with the sender's public key
-Block Node::Verify(Block& block, string signature) {
+Transaction Node::Verify(Transaction& transaction, string signature) {
 	CryptoPP::AutoSeededRandomPool rng;
 	CryptoPP::InvertibleRSAFunction params;
 
@@ -105,9 +105,9 @@ Block Node::Verify(Block& block, string signature) {
 	); // StringSource
 
 	std::cout << "Result: " << recovered << std::endl;
-	block.m_RSignature = recovered;
+	transaction.m_RSignature = recovered;
 
-	return block;
+	return transaction;
 }
 
 // Use Crypto++ to hash the transaction data

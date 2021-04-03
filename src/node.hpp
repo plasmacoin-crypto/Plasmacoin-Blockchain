@@ -40,7 +40,8 @@ public:
 
 	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
 
-	Block Sign(Block& block), Verify(Block& block, string signature);
+	// Sign and verify transactions with RSA
+	Transaction Sign(Transaction& transaction), Verify(Transaction& transaction, string signature);
 
 private:
 	string m_Name, m_Username, m_Password, m_IPAddr;
