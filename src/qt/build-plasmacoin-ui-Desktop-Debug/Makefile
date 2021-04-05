@@ -61,7 +61,11 @@ OBJECTS       = main.o \
 		moc_mainwindow.o \
 		transaction-list.o \
 		moc_transactionlist.o \
-		mining-status.o
+		mining-status.o \
+		transaction.o \
+		node.o \
+		block.o \
+		blockchain.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -862,12 +866,29 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
+# Blockchain
+
+transaction.o: ../../transaction.cpp ../../transaction.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction.o ../../transaction.cpp $(LINKS)
+
+node.o: ../../node.cpp ../../node.hpp ../../cryptopp-sha256-libs.h ../../transaction.hpp \
+		../../block.hpp ../../blockchain.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o ../../node.cpp $(LINKS)
+
+block.o: ../../block.cpp ../../block.hpp ../../transaction.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o block.o ../../block.cpp $(LINKS)
+
+blockchain.o: ../../blockchain.cpp ../../blockchain.hpp ../../cryptopp-sha256-libs.h ../../block.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o blockchain.o ../../blockchain.cpp $(LINKS)
+
+# GUI
+
 main.o: ../plasmacoin-ui/main.cpp ../plasmacoin-ui/mainwindow.h \
 		 ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../plasmacoin-ui/main.cpp
 
 mainwindow.o: ../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/mainwindow.h \
-			  ui_mainwindow.h ../../blockchain.hpp ../plasmacoin-ui/mining-status.h
+			  ui_mainwindow.h ../plasmacoin-ui/mining-status.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../plasmacoin-ui/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp
@@ -877,7 +898,7 @@ moc_transactionlist.o: moc_transactionlist.cpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_transactionlist.o moc_transactionlist.cpp
 
 transaction-list.o: ../plasmacoin-ui/transaction-list.cpp ../plasmacoin-ui/transaction-list.h \
-					ui_mainwindow.h ../../transaction.hpp
+					ui_mainwindow.h ../../transaction.hpp ../../blockchain.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction-list.o ../plasmacoin-ui/transaction-list.cpp
 
 mining-status.o: ../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/mining-status.h
