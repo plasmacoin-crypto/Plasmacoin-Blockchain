@@ -21,7 +21,7 @@ int main() {
 	transaction = node1->Sign(transaction);
 	transaction = node2->Verify(transaction, transaction.m_SSignature);
 
-	std::cout << "Signed: " << std::hex << transaction.m_SSignature << std::endl;
+	std::cout << "Signed: "   << std::hex << transaction.m_SSignature << std::endl;
 	std::cout << "Verified: " << std::hex << transaction.m_RSignature << std::endl;
 
 	chain->AddToLedger(&transaction);
