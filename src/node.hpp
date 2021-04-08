@@ -34,7 +34,7 @@ using CryptoPP::Integer;
 
 class Node {
 public:
-	Node(string name, string username, string passwd, string ip, bool isMaster);
+	Node(string name, string username, string passwd, string ip, bool isMaster = false);
 	Transaction MakeTransaction(Node& recipient, float amount, string content) const;
 
 	// Some getters

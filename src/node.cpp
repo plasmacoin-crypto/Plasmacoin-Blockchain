@@ -7,7 +7,7 @@
 
 #include "node.hpp"
 
-Node::Node(string name, string username, string passwd, string ip, bool isMaster = false):
+Node::Node(string name, string username, string passwd, string ip, bool isMaster):
 	// User data
 	m_Name(name),
 	m_Username(username),
