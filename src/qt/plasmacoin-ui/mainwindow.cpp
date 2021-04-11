@@ -1,6 +1,7 @@
 // The source file for mainwindow.h
 
 #include "mainwindow.h"
+#include <iostream>
 
 MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
@@ -11,7 +12,6 @@ MainWindow::MainWindow(QWidget* parent):
 	DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
 
 	m_TList->Populate(); // Load items into the transaction list
-	LoadMiningVisuals();
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
@@ -24,7 +24,7 @@ MainWindow::~MainWindow() {
 	delete m_TList;
 }
 
-void MainWindow::LoadMiningVisuals() {
+void MainWindow::LoadMiningVisuals(Transaction* transaction) {
 	// The three widgets to display on the screen
 	QTextBrowser  *browser1 = new QTextBrowser(mineCoins),
 				  *browser2 = new QTextBrowser(mineCoins),
@@ -33,7 +33,7 @@ void MainWindow::LoadMiningVisuals() {
 	Status* status = new Status(browser1, browser2, browser3);
 
 	status->LoadVisuals();
-	status->SetHeading("Test Content");
+	//status->SetHeading(transaction->m_Condensed);
 }
 
 // Definitions for slots
@@ -44,6 +44,20 @@ void MainWindow::DisplayPage(int index) {
 }
 
 void MainWindow::StartMining() {
+	Block newBlock(-1, nullptr, nullptr); // Instantiate the block with some throwaway values
 
+	// std::thread update(&MainWindow::LoadMiningVisuals, this, newBlock.m_Transaction);
+	// update.join();
+
+	// Some test nodes
+	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
+	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", false);
+
+	Transaction transaction = node1->MakeTransaction(*node2, 1.0, "Here's some money");
+	m_User->m_BlockchainCopy->AddToLedger(&transaction);
+
+	bool result = m_User->m_BlockchainCopy->Mine(newBlock);
+	
+	//LoadMiningVisuals(newBlock.m_Transaction); // This doesn't work within a slot
 }
 
