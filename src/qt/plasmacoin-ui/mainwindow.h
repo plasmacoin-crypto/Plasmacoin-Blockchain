@@ -6,6 +6,7 @@
 
 #include <thread>
 #include <functional>
+#include <future>
 
 #include <QtWidgets/QMainWindow>
 #include <QStringList>
@@ -33,6 +34,8 @@ public:
 private:
 	QTabWidget* m_TabBar = Ui::MainWindow::tabWidget;
 	TransactionList* m_TList;
+
+	Transaction* m_CurrTrans = nullptr;
 
 	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.6", false); // Temporary data
 private slots:
