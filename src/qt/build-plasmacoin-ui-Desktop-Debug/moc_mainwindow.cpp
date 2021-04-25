@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[5];
-    char stringdata0[42];
+    QByteArrayData data[6];
+    char stringdata0[55];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,10 +36,12 @@ QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 11), // "DisplayPage"
 QT_MOC_LITERAL(2, 23, 0), // ""
 QT_MOC_LITERAL(3, 24, 5), // "index"
-QT_MOC_LITERAL(4, 30, 11) // "StartMining"
+QT_MOC_LITERAL(4, 30, 11), // "StartMining"
+QT_MOC_LITERAL(5, 42, 12) // "Transaction*"
 
     },
-    "MainWindow\0DisplayPage\0\0index\0StartMining"
+    "MainWindow\0DisplayPage\0\0index\0StartMining\0"
+    "Transaction*"
 };
 #undef QT_MOC_LITERAL
 
@@ -62,7 +64,7 @@ static const uint qt_meta_data_MainWindow[] = {
 
  // slots: parameters
     QMetaType::Void, QMetaType::Int,    3,
-    QMetaType::Void,
+    0x80000000 | 5,
 
        0        // eod
 };
@@ -74,7 +76,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->DisplayPage((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 1: _t->StartMining(); break;
+        case 1: { Transaction* _r = _t->StartMining();
+            if (_a[0]) *reinterpret_cast< Transaction**>(_a[0]) = std::move(_r); }  break;
         default: ;
         }
     }
