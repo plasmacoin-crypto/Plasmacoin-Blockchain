@@ -17,7 +17,9 @@ MainWindow::MainWindow(QWidget* parent):
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
 
 	// Mine a block when the correct button is clicked
-	connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, &MainWindow::StartMining);
+	auto mine = std::async(std::launch::deferred, &MainWindow::StartMining, this);
+	auto load = std::async(std::launch::deferred, &MainWindow::LoadMiningVisuals, this, m_CurrTrans);
+	//connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, mine.wait());
 }
 
 MainWindow::~MainWindow() {
@@ -45,7 +47,6 @@ void MainWindow::DisplayPage(int index) {
 
 void MainWindow::StartMining() {
 	Block newBlock(-1, nullptr, nullptr); // Instantiate the block with some throwaway values
-
 	// std::thread update(&MainWindow::LoadMiningVisuals, this, newBlock.m_Transaction);
 	// update.join();
 
@@ -53,11 +54,12 @@ void MainWindow::StartMining() {
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
 	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", false);
 
-	Transaction transaction = node1->MakeTransaction(*node2, 1.0, "Here's some money");
-	m_User->m_BlockchainCopy->AddToLedger(&transaction);
+	*m_CurrTrans = node1->MakeTransaction(*node2, 1.0, "Here's some money");
+
+	m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans);
+
+	//LoadMiningVisuals(newBlock.m_Transaction); // This doesn't work within a slot
 
 	bool result = m_User->m_BlockchainCopy->Mine(newBlock);
-	
-	//LoadMiningVisuals(newBlock.m_Transaction); // This doesn't work within a slot
 }
 
