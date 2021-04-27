@@ -6,6 +6,7 @@
 //
 
 #include "blockchain.hpp"
+#include <iostream>
 
 Blockchain::Blockchain() {
 	// Add a Genesis block
@@ -50,6 +51,7 @@ Block* Blockchain::GetLatest() const {
 // Create a new block with an unconfirmed transaction and run Proof-of-Woork
 // on it.
 bool Blockchain::Mine(Block& newBlock) {
+	std::cout << "Mining" << std::endl;
 	if (!m_Unconfirmed.empty()) {
 		Block* latest = GetLatest();
 
@@ -60,9 +62,11 @@ bool Blockchain::Mine(Block& newBlock) {
 		bool result = Consensus(newBlock); // Run Proof-of-Woork on the block
 		Add(&newBlock); // Add it to the blockchain
 
+		std::cout << "Done" << std::endl;
 		return result;
 	}
 	else {
+		std::cout << "Done" << std::endl;
 		return false;
 	}
 }
