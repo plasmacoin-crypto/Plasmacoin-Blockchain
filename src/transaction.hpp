@@ -17,6 +17,9 @@ class Node;
 
 class Transaction {
 public:
+	Transaction(const Node* sender, Node* recipient, string content, float amount, string condensed);
+	void Update(int nonce);
+
 	const Node* m_Sender;
 	Node* m_Recipient;
 
@@ -26,9 +29,6 @@ public:
 	// A sender and reciever signature used for verifying the transaction
 	// on the block
 	string m_SSignature, m_RSignature;
-
-	Transaction(const Node* sender, Node* recipient, string content, float amount, string condensed);
-	void Update(int nonce);
 
 	// A condensed version of the transaction in the form:
 	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>; <NONCE>

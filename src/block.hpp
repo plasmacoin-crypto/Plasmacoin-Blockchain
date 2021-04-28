@@ -19,16 +19,15 @@ using std::tuple;
 
 class Block {
 public:
+	Block(int index, string* prevHash, Transaction* transaction);
+	bool Validate(string latestHash, const int& DIFFICULTY);
+
 	// The block contents
 	int m_Index, m_Nonce = 0;
 	string m_Hash, *m_PrevHash;
 
 	Transaction* m_Transaction;
 	char* m_Timestamp;
-
-	Block(int index, string* prevHash, Transaction* transaction);
-
-	bool Validate(string latestHash, const int& DIFFICULTY);
 };
 
 #endif // BLOCK_HPP
