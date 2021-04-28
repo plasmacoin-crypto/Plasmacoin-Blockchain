@@ -6,7 +6,8 @@
 MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
-	m_TList(new TransactionList(transactionList))
+	m_TList(new TransactionList(transactionList)),
+	mine(std::async(std::launch::deferred, &MainWindow::StartMining, this))
 {
 	setupUi(this);
 	DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
@@ -17,9 +18,8 @@ MainWindow::MainWindow(QWidget* parent):
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
 
 	// Mine a block when the correct button is clicked
-	auto mine = std::async(std::launch::deferred, &MainWindow::StartMining, this);
-	auto load = std::async(std::launch::deferred, &MainWindow::LoadMiningVisuals, this, m_CurrTrans);
-	//connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, mine.wait());
+	//connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, mine);
+	mine.wait();
 }
 
 MainWindow::~MainWindow() {
@@ -51,15 +51,16 @@ void MainWindow::StartMining() {
 	// update.join();
 
 	// Some test nodes
-	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
-	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", false);
+	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
+	// Node* node2 = new Node("John", "john", "4567", "192.168.1.7", false);
 
-	*m_CurrTrans = node1->MakeTransaction(*node2, 1.0, "Here's some money");
+	// auto trans = node1->MakeTransaction(*node2, 1.0, "Here's some money");
+	// m_CurrTrans = &trans;
 
-	m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans);
+	// m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans);
 
-	//LoadMiningVisuals(newBlock.m_Transaction); // This doesn't work within a slot
+	LoadMiningVisuals(newBlock.m_Transaction); // This doesn't work within a slot
 
-	bool result = m_User->m_BlockchainCopy->Mine(newBlock);
+	//bool result = m_User->m_BlockchainCopy->Mine(newBlock);
 }
 

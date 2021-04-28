@@ -41,6 +41,10 @@ private:
 private slots:
 	void DisplayPage(int index); // Actually set the index of the stack widget
 	void StartMining(); // Initiate the mining process
+private:
+	// Asynchronous functions called during mining
+	std::future<void> mine;
+	std::future<void> load = std::async(std::launch::deferred, &MainWindow::LoadMiningVisuals, this, m_CurrTrans);
 };
 
 #endif // MAINWINDOW_H
