@@ -33,14 +33,17 @@ public:
 	Block* GetLatest() const;
 
 	bool Mine(Block& newBlock);
+
 private:
 	const int DIFFICULTY = 5;
 
 	vector<Block*> m_Chain;
 	queue<Transaction*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
+
 public:
 	bool Consensus(Block& block); // Evaluate Proof-of-Work
 	bool Validate();
+	
 private:
 	string Hash(Transaction transaction);
 };

@@ -46,6 +46,7 @@ public:
 	Transaction Sign(Transaction& transaction), Verify(Transaction& transaction, string signature);
 
 	Blockchain* m_BlockchainCopy = new Blockchain(); // The node's copy of the blockchain
+
 private:
 	string m_Name, m_Username, m_Password, m_IPAddr;
 
