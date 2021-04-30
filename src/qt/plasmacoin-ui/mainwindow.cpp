@@ -42,13 +42,6 @@ void MainWindow::LoadMiningVisuals(Transaction* transaction) {
 	//status->SetHeading(transaction->m_Condensed);
 }
 
-// Definitions for slots
-
-// Display a certain page of the QStackedWidget
-void MainWindow::DisplayPage(int index) {
-	stackedWidget->setCurrentIndex(index);
-}
-
 void MainWindow::StartMining() {
 	std::cout << "here" << std::endl;
 
@@ -72,3 +65,9 @@ void MainWindow::StartMining() {
 	//bool result = m_User->m_BlockchainCopy->Mine(newBlock);
 }
 
+// Definitions for slots
+
+// Display a certain page of the QStackedWidget
+void MainWindow::DisplayPage(int index) {
+	stackedWidget->setCurrentIndex(index);
+}
