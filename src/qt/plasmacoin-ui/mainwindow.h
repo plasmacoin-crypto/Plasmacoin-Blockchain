@@ -31,20 +31,24 @@ public:
 	void LoadMiningVisuals(Transaction* transaction); // Load certain content during mining operations
 
 	QWidget* parent;
+
 private:
+	void StartMining(); // Initiate the mining process
+
 	QTabWidget* m_TabBar = Ui::MainWindow::tabWidget;
 	TransactionList* m_TList;
 
 	Transaction* m_CurrTrans = nullptr;
 
 	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.6", false); // Temporary data
+
 private slots:
 	void DisplayPage(int index); // Actually set the index of the stack widget
-	void StartMining(); // Initiate the mining process
+
 private:
 	// Asynchronous functions called during mining
 	std::future<void> mine;
-	std::future<void> load = std::async(std::launch::deferred, &MainWindow::LoadMiningVisuals, this, m_CurrTrans);
+	//std::future<void> load = std::async(std::launch::deferred, &MainWindow::LoadMiningVisuals, this, m_CurrTrans);
 };
 
 #endif // MAINWINDOW_H

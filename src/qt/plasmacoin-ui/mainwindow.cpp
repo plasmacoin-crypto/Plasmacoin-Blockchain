@@ -18,8 +18,12 @@ MainWindow::MainWindow(QWidget* parent):
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
 
 	// Mine a block when the correct button is clicked
-	//connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, mine);
-	mine.wait();
+	connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, [=]() { this->mine.wait(); });
+
+	// std::thread([=] { /* Implicitly capture `this` */
+	// 	this->mine.wait();
+	// }).detach();
+	//mine.wait();
 }
 
 MainWindow::~MainWindow() {
@@ -28,9 +32,9 @@ MainWindow::~MainWindow() {
 
 void MainWindow::LoadMiningVisuals(Transaction* transaction) {
 	// The three widgets to display on the screen
-	QTextBrowser  *browser1 = new QTextBrowser(mineCoins),
-				  *browser2 = new QTextBrowser(mineCoins),
-				  *browser3 = new QTextBrowser(mineCoins);
+	QTextBrowser  *browser1 = new QTextBrowser(Ui::MainWindow::mineCoins),
+				  *browser2 = new QTextBrowser(Ui::MainWindow::mineCoins),
+				  *browser3 = new QTextBrowser(Ui::MainWindow::mineCoins);
 
 	Status* status = new Status(browser1, browser2, browser3);
 
@@ -46,7 +50,11 @@ void MainWindow::DisplayPage(int index) {
 }
 
 void MainWindow::StartMining() {
+	std::cout << "here" << std::endl;
+
 	Block newBlock(-1, nullptr, nullptr); // Instantiate the block with some throwaway values
+	LoadMiningVisuals(newBlock.m_Transaction);
+
 	// std::thread update(&MainWindow::LoadMiningVisuals, this, newBlock.m_Transaction);
 	// update.join();
 
@@ -59,7 +67,7 @@ void MainWindow::StartMining() {
 
 	// m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans);
 
-	LoadMiningVisuals(newBlock.m_Transaction); // This doesn't work within a slot
+	// std::cout << parent << std::endl;
 
 	//bool result = m_User->m_BlockchainCopy->Mine(newBlock);
 }
