@@ -52,17 +52,17 @@ void MainWindow::StartMining() {
 	// update.join();
 
 	// Some test nodes
-	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
-	// Node* node2 = new Node("John", "john", "4567", "192.168.1.7", false);
+	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
+	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", false);
 
-	// auto trans = node1->MakeTransaction(*node2, 1.0, "Here's some money");
-	// m_CurrTrans = &trans;
+	auto trans = node1->MakeTransaction(*node2, 1.0, "Here's some money");
+	m_CurrTrans = &trans;
 
-	// m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans);
+	m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans);
 
-	// std::cout << parent << std::endl;
+	//std::cout << parent << std::endl;
 
-	//bool result = m_User->m_BlockchainCopy->Mine(newBlock);
+	bool result = m_User->m_BlockchainCopy->Mine(newBlock);
 }
 
 // Definitions for slots
