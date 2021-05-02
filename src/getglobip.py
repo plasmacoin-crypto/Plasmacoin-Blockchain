@@ -5,9 +5,11 @@
 # COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 #
 
-import os, urllib.request, subprocess
+import os, urllib.request, subprocess#, platform
+#from pathlib import PosixPath, WindowsPath
 
 global_ip = urllib.request.urlopen("https://ident.me").read().decode("utf-8") # Get the global IP address
+#path = PosixPath("/etc/environment") if platform.system() == "Linux" else WindowsPath("")
 
 # This will write to a write-protected file, so this script
 # must be called with root permissions
