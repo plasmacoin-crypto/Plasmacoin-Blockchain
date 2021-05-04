@@ -7,23 +7,22 @@ MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
 	m_TList(new TransactionList(transactionList)),
-	mine(std::async(std::launch::deferred, &MainWindow::StartMining, this))
+
+	// Use these definitions as a workaround to pass `this` into std::async
+	mine(std::async(std::launch::deferred, &MainWindow::StartMining, this)),
+	load(std::async(std::launch::deferred, &MainWindow::LoadMiningVisuals, this, m_CurrTrans))
 {
 	setupUi(this);
 	DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
 
 	m_TList->Populate(); // Load items into the transaction list
+	load.wait(); // Load the mining visuals
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
 
 	// Mine a block when the correct button is clicked
 	connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, [=]() { this->mine.wait(); });
-
-	// std::thread([=] { /* Implicitly capture `this` */
-	// 	this->mine.wait();
-	// }).detach();
-	//mine.wait();
 }
 
 MainWindow::~MainWindow() {
@@ -43,13 +42,8 @@ void MainWindow::LoadMiningVisuals(Transaction* transaction) {
 }
 
 void MainWindow::StartMining() {
-	std::cout << "here" << std::endl;
-
 	Block newBlock(-1, nullptr, nullptr); // Instantiate the block with some throwaway values
 	LoadMiningVisuals(newBlock.m_Transaction);
-
-	// std::thread update(&MainWindow::LoadMiningVisuals, this, newBlock.m_Transaction);
-	// update.join();
 
 	// Some test nodes
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
@@ -58,11 +52,9 @@ void MainWindow::StartMining() {
 	auto trans = node1->MakeTransaction(*node2, 1.0, "Here's some money");
 	m_CurrTrans = &trans;
 
-	m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans);
+	m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans); // Load a transaction onto the block
 
-	//std::cout << parent << std::endl;
-
-	bool result = m_User->m_BlockchainCopy->Mine(newBlock);
+	bool result = m_User->m_BlockchainCopy->Mine(newBlock); // Mine the block
 }
 
 // Definitions for slots
