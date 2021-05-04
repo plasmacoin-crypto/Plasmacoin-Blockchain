@@ -43,7 +43,7 @@ private:
 public:
 	bool Consensus(Block& block); // Evaluate Proof-of-Work
 	bool Validate();
-	
+
 private:
 	string Hash(Transaction transaction);
 };
