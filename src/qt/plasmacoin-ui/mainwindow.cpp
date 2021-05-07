@@ -16,7 +16,9 @@ MainWindow::MainWindow(QWidget* parent):
 	DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
 
 	m_TList->Populate(); // Load items into the transaction list
+
 	load.wait(); // Load the mining visuals
+	Status* status = load.get(); // Capture the return value
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
@@ -29,21 +31,20 @@ MainWindow::~MainWindow() {
 	delete m_TList;
 }
 
-void MainWindow::LoadMiningVisuals(Transaction* transaction) {
+Status* MainWindow::LoadMiningVisuals(Transaction* transaction) {
 	// The three widgets to display on the screen
 	QTextBrowser  *browser1 = new QTextBrowser(Ui::MainWindow::mineCoins),
 				  *browser2 = new QTextBrowser(Ui::MainWindow::mineCoins),
 				  *browser3 = new QTextBrowser(Ui::MainWindow::mineCoins);
 
 	Status* status = new Status(browser1, browser2, browser3);
-
 	status->LoadVisuals();
-	//status->SetHeading(transaction->m_Condensed);
+
+	return status
 }
 
 void MainWindow::StartMining() {
 	Block newBlock(-1, nullptr, nullptr); // Instantiate the block with some throwaway values
-	LoadMiningVisuals(newBlock.m_Transaction);
 
 	// Some test nodes
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
