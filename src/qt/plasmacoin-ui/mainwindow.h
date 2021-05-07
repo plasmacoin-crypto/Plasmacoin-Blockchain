@@ -28,7 +28,7 @@ public:
 	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
 
-	void LoadMiningVisuals(Transaction* transaction); // Load certain content during mining operations
+	Status* LoadMiningVisuals(Transaction* transaction); // Load certain content during mining operations
 
 	QWidget* parent;
 
