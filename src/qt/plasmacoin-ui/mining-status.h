@@ -16,8 +16,8 @@ using std::string;
 
 class Status {
 public:
-	Status();
-	Status(QTextBrowser*& qtbrowser1, QTextBrowser*& qtbrowser2, QTextBrowser*& qtbrowser3);
+	Status() = default;
+	Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser* qtbrowser3);
 
 	void LoadVisuals();
 
@@ -26,5 +26,5 @@ public:
 		 SetTime(std::chrono::duration<float> elaspedTime);
 
 private:
-	static QTextBrowser *&m_Heading, *&m_NonceView, *&m_ElapsedTime;
+	QTextBrowser *m_Heading, *m_NonceView, *m_ElapsedTime;
 };
