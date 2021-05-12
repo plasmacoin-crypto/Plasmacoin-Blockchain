@@ -28,7 +28,7 @@ public:
 	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
 
-	Status* LoadMiningVisuals(Transaction* transaction); // Load certain content during mining operations
+	Status LoadMiningVisuals(Transaction* transaction); // Load certain content during mining operations
 
 	QWidget* parent;
 
@@ -48,7 +48,7 @@ private slots:
 private:
 	// Asynchronous functions called during mining
 	std::future<void> mine;
-	std::future<Status*> load;
+	std::future<Status> load;
 };
 
 #endif // MAINWINDOW_H

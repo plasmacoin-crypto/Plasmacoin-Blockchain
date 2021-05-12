@@ -2,6 +2,7 @@
 
 #include "mainwindow.h"
 #include <iostream>
+#include <cassert>
 
 MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
@@ -18,29 +19,33 @@ MainWindow::MainWindow(QWidget* parent):
 	m_TList->Populate(); // Load items into the transaction list
 
 	load.wait(); // Load the mining visuals
-	Status* status = load.get(); // Capture the return value
+	Status status = load.get(); // Capture the return value
+	//status.SetHeading("Transaction");
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
 
 	// Mine a block when the correct button is clicked
-	connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, [=]() { this->mine.wait(); });
+	connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, [this, &status]() {
+		status.SetHeading("Transaction");
+		this->mine.wait();
+	});
 }
 
 MainWindow::~MainWindow() {
 	delete m_TList;
 }
 
-Status* MainWindow::LoadMiningVisuals(Transaction* transaction) {
+Status MainWindow::LoadMiningVisuals(Transaction* transaction) {
 	// The three widgets to display on the screen
 	QTextBrowser  *browser1 = new QTextBrowser(Ui::MainWindow::mineCoins),
 				  *browser2 = new QTextBrowser(Ui::MainWindow::mineCoins),
 				  *browser3 = new QTextBrowser(Ui::MainWindow::mineCoins);
 
-	Status* status = new Status(browser1, browser2, browser3);
-	status->LoadVisuals();
+	Status status(browser1, browser2, browser3);
+	status.LoadVisuals();
 
-	return status
+	return status;
 }
 
 void MainWindow::StartMining() {
