@@ -7,7 +7,7 @@
 
 #include "mining-status.h"
 
-Status::Status(QTextBrowser*& qtbrowser1, QTextBrowser*& qtbrowser2, QTextBrowser*& qtbrowser3):
+Status::Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser* qtbrowser3):
 	m_Heading(qtbrowser1),
 	m_NonceView(qtbrowser2),
 	m_ElapsedTime(qtbrowser3)
