@@ -40,6 +40,10 @@ private:
 
 	Transaction* m_CurrTrans = nullptr;
 
+	// Store the mining status object so it doesn't go out of scope when being
+	// captured by a lambda
+	Status status;
+
 	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.6", false); // Temporary data
 
 private slots:

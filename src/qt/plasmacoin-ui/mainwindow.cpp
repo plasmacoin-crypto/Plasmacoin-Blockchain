@@ -19,15 +19,14 @@ MainWindow::MainWindow(QWidget* parent):
 	m_TList->Populate(); // Load items into the transaction list
 
 	load.wait(); // Load the mining visuals
-	Status status = load.get(); // Capture the return value
-	//status.SetHeading("Transaction");
+	this->status = load.get(); // Capture the return value
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
 
 	// Mine a block when the correct button is clicked
-	connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, [this, &status]() {
-		status.SetHeading("Transaction");
+	connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, [this]() {
+		//this->status.SetHeading("Transaction");
 		this->mine.wait();
 	});
 }
