@@ -16,6 +16,7 @@ using std::string;
 
 class Status {
 public:
+	Status();
 	Status(QTextBrowser*& qtbrowser1, QTextBrowser*& qtbrowser2, QTextBrowser*& qtbrowser3);
 
 	void LoadVisuals();
