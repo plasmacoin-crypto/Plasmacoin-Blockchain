@@ -26,5 +26,5 @@ public:
 		 SetTime(std::chrono::duration<float> elaspedTime);
 
 private:
-	QTextBrowser *&m_Heading, *&m_NonceView, *&m_ElapsedTime;
+	static QTextBrowser *&m_Heading, *&m_NonceView, *&m_ElapsedTime;
 };
