@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
-project(Plasmacoin Cryptocurrency)
+
+project(Plasmacoin Cryptocurrency VERSION 0.1.0)
+configure_file(PCConfig.h.in PCConfig.h)
 
 include(ExternalProject)
 ExternalProject_Add(cryptopp
