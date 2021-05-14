@@ -5,6 +5,6 @@
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
 
-#define Plasmacoin_Cryptocurrency_VERSION_MAJOR   @Plasmacoin_Cryptocurrency_VERSION_MAJOR@
-#define Plasmacoin_Cryptocurrency_VERSION_MINOR   @Plasmacoin_Cryptocurrency_VERSION_MINOR@
-#define Plasmacoin_Cryptocurrency_VERSION_PATCH   @Plasmacoin_Cryptocurrency_VERSION_PATCH@
+#define Plasmacoin_Crypto_VERSION_MAJOR   @Plasmacoin_Crypto_VERSION_MAJOR@
+#define Plasmacoin_Crypto_VERSION_MINOR   @Plasmacoin_Crypto_VERSION_MINOR@
+#define Plasmacoin_Crypto_VERSION_PATCH   @Plasmacoin_Crypto_VERSION_PATCH@
