@@ -1,0 +1,10 @@
+//
+// FILENAME: PCConfig.h.in
+// DESCRIPTION: the configured options and settings for the project
+// CREATED: 2021-05-14 @ 10:37 AM
+// COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
+//
+
+#define Plasmacoin_Cryptocurrency_VERSION_MAJOR   @Plasmacoin_Cryptocurrency_VERSION_MAJOR@
+#define Plasmacoin_Cryptocurrency_VERSION_MINOR   @Plasmacoin_Cryptocurrency_VERSION_MINOR@
+#define Plasmacoin_Cryptocurrency_VERSION_PATCH   @Plasmacoin_Cryptocurrency_VERSION_PATCH@
