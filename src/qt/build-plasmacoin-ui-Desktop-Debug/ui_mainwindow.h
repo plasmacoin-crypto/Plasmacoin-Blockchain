@@ -13,7 +13,12 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLCDNumber>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -22,6 +27,8 @@
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
+#include <QtWidgets/QTableWidget>
+#include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -43,6 +50,14 @@ public:
     QWidget *mineCoins;
     QPushButton *btn_mine;
     QListWidget *transactionList;
+    QWidget *addressBook;
+    QDialogButtonBox *buttonBox;
+    QWidget *formLayoutWidget;
+    QFormLayout *formLayout;
+    QLabel *amountLabel;
+    QLineEdit *amountLineEdit;
+    QTextBrowser *textBrowser;
+    QTableWidget *tableWidget;
     QStatusBar *statusbar;
     QMenuBar *menubar;
     QMenu *icon;
@@ -61,7 +76,7 @@ public:
         tabWidget->setMaximumSize(QSize(791, 16777215));
         tabWidget->setTabPosition(QTabWidget::North);
         tabWidget->setTabShape(QTabWidget::Rounded);
-        tabWidget->setMovable(true);
+        tabWidget->setMovable(false);
         Wallet = new QWidget();
         Wallet->setObjectName(QString::fromUtf8("Wallet"));
         tabWidget->addTab(Wallet, QString());
@@ -108,6 +123,43 @@ public:
         transactionList->setObjectName(QString::fromUtf8("transactionList"));
         transactionList->setGeometry(QRect(30, 30, 311, 401));
         stackedWidget->addWidget(mineCoins);
+        addressBook = new QWidget();
+        addressBook->setObjectName(QString::fromUtf8("addressBook"));
+        buttonBox = new QDialogButtonBox(addressBook);
+        buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
+        buttonBox->setGeometry(QRect(380, 130, 174, 34));
+        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+        formLayoutWidget = new QWidget(addressBook);
+        formLayoutWidget->setObjectName(QString::fromUtf8("formLayoutWidget"));
+        formLayoutWidget->setGeometry(QRect(380, 90, 341, 41));
+        formLayout = new QFormLayout(formLayoutWidget);
+        formLayout->setObjectName(QString::fromUtf8("formLayout"));
+        formLayout->setContentsMargins(0, 0, 0, 0);
+        amountLabel = new QLabel(formLayoutWidget);
+        amountLabel->setObjectName(QString::fromUtf8("amountLabel"));
+
+        formLayout->setWidget(0, QFormLayout::LabelRole, amountLabel);
+
+        amountLineEdit = new QLineEdit(formLayoutWidget);
+        amountLineEdit->setObjectName(QString::fromUtf8("amountLineEdit"));
+
+        formLayout->setWidget(0, QFormLayout::FieldRole, amountLineEdit);
+
+        textBrowser = new QTextBrowser(addressBook);
+        textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
+        textBrowser->setGeometry(QRect(380, 40, 341, 31));
+        tableWidget = new QTableWidget(addressBook);
+        if (tableWidget->columnCount() < 2)
+            tableWidget->setColumnCount(2);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
+        tableWidget->setGeometry(QRect(30, 40, 311, 421));
+        tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        tableWidget->setColumnCount(2);
+        stackedWidget->addWidget(addressBook);
         MainWindow->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -130,8 +182,8 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
+        stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -146,6 +198,12 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
         btn_mine->setText(QCoreApplication::translate("MainWindow", "Mine", nullptr));
+        amountLabel->setText(QCoreApplication::translate("MainWindow", "Amount", nullptr));
+        amountLineEdit->setText(QString());
+        QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
+        QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Status", nullptr));
         icon->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
         text->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
     } // retranslateUi
