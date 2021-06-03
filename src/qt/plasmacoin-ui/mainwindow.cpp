@@ -64,7 +64,8 @@ void MainWindow::StartMining() {
 
 // Definitions for slots
 
-// Display a certain page of the QStackedWidget
+// Display a certain page of the app
 void MainWindow::DisplayPage(int index) {
 	stackedWidget->setCurrentIndex(index);
+	tabWidget->setCurrentIndex(index);
 }
