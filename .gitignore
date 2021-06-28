@@ -8,3 +8,6 @@ src/sha256/sha256
 
 # Ignore object files
 *.o
+
+# Ignore extra makefiles
+QMakefile.mk
