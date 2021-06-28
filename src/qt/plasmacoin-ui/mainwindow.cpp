@@ -23,12 +23,6 @@ MainWindow::MainWindow(QWidget* parent):
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
-
-	// Mine a block when the correct button is clicked
-	connect(Ui::MainWindow::btn_mine, &QPushButton::released, this, [this]() {
-		//this->status.SetHeading("Transaction");
-		this->mine.wait();
-	});
 }
 
 MainWindow::~MainWindow() {
