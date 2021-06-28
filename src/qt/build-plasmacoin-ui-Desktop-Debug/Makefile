@@ -546,7 +546,7 @@ Makefile: ../plasmacoin-ui/plasmacoin-ui.pro /usr/lib/qt/mkspecs/linux-clang/qma
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
 		../plasmacoin-ui/plasmacoin-ui.pro
-	$(QMAKE) -o Makefile ../plasmacoin-ui/plasmacoin-ui.pro -spec linux-clang CONFIG+=debug CONFIG+=qml_debug
+	$(QMAKE) -o QMakefile.mk ../plasmacoin-ui/plasmacoin-ui.pro -spec linux-clang CONFIG+=debug CONFIG+=qml_debug
 /usr/lib/qt/mkspecs/features/spec_pre.prf:
 /usr/lib/qt/mkspecs/common/unix.conf:
 /usr/lib/qt/mkspecs/common/linux.conf:
@@ -781,7 +781,7 @@ Makefile: ../plasmacoin-ui/plasmacoin-ui.pro /usr/lib/qt/mkspecs/linux-clang/qma
 /usr/lib/qt/mkspecs/features/lex.prf:
 ../plasmacoin-ui/plasmacoin-ui.pro:
 qmake: FORCE
-	@$(QMAKE) -o Makefile ../plasmacoin-ui/plasmacoin-ui.pro -spec linux-clang CONFIG+=debug CONFIG+=qml_debug
+	@$(QMAKE) -o QMakefile.mk ../plasmacoin-ui/plasmacoin-ui.pro -spec linux-clang CONFIG+=debug CONFIG+=qml_debug
 
 qmake_all: FORCE
 
