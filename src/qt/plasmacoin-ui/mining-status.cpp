@@ -17,7 +17,7 @@ Status::Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser*
 void Status::LoadVisuals() {
 	// Main display
 	m_Heading->setObjectName(QString::fromUtf8("heading"));
-	m_Heading->setGeometry(QRect(380, 81, 391, 51));
+	m_Heading->setGeometry(QRect(380, 91, 391, 51));
 
 	// A readout of the current nonce value
 	m_NonceView->setObjectName(QString::fromUtf8("nonceView"));
