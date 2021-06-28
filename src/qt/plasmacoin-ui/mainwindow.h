@@ -32,6 +32,10 @@ public:
 
 	QWidget* parent;
 
+	// Store the mining status object so it doesn't go out of scope when being
+	// captured by a lambda
+	Status status;
+
 private:
 	void StartMining(); // Initiate the mining process
 
@@ -40,16 +44,13 @@ private:
 
 	Transaction* m_CurrTrans = nullptr;
 
-	// Store the mining status object so it doesn't go out of scope when being
-	// captured by a lambda
-	Status status;
-
+public:
 	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.6", false); // Temporary data
 
 private slots:
 	void DisplayPage(int index); // Actually set the index of the stack widget
 
-private:
+public:
 	// Asynchronous functions called during mining
 	std::future<void> mine;
 	std::future<Status> load;
