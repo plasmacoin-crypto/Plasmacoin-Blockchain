@@ -17,15 +17,15 @@ Status::Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser*
 void Status::LoadVisuals() {
 	// Main display
 	m_Heading->setObjectName(QString::fromUtf8("heading"));
-	m_Heading->setGeometry(QRect(380, 30, 391, 51));
+	m_Heading->setGeometry(QRect(380, 81, 391, 51));
 
 	// A readout of the current nonce value
 	m_NonceView->setObjectName(QString::fromUtf8("nonceView"));
-	m_NonceView->setGeometry(QRect(380, 100, 191, 51));
+	m_NonceView->setGeometry(QRect(380, 151, 191, 51));
 
 	// A readout of the elapsed mining time
 	m_ElapsedTime->setObjectName(QString::fromUtf8("elapsedTime"));
-	m_ElapsedTime->setGeometry(QRect(580, 100, 191, 51));
+	m_ElapsedTime->setGeometry(QRect(580, 151, 191, 51));
 }
 
 // Modify the heading
