@@ -36,7 +36,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <property name="movable">
      <bool>false</bool>
@@ -80,7 +80,7 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="wallet">
      <widget class="QLCDNumber" name="usdollars">
@@ -152,6 +152,16 @@
         <y>30</y>
         <width>311</width>
         <height>401</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTextBrowser" name="header">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>30</y>
+        <width>391</width>
+        <height>51</height>
        </rect>
       </property>
      </widget>

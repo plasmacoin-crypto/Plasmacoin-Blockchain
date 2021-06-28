@@ -50,6 +50,7 @@ public:
     QWidget *mineCoins;
     QPushButton *btn_mine;
     QListWidget *transactionList;
+    QTextBrowser *textBrowser_2;
     QWidget *addressBook;
     QDialogButtonBox *buttonBox;
     QWidget *formLayoutWidget;
@@ -122,6 +123,9 @@ public:
         transactionList = new QListWidget(mineCoins);
         transactionList->setObjectName(QString::fromUtf8("transactionList"));
         transactionList->setGeometry(QRect(30, 30, 311, 401));
+        textBrowser_2 = new QTextBrowser(mineCoins);
+        textBrowser_2->setObjectName(QString::fromUtf8("textBrowser_2"));
+        textBrowser_2->setGeometry(QRect(380, 30, 391, 51));
         stackedWidget->addWidget(mineCoins);
         addressBook = new QWidget();
         addressBook->setObjectName(QString::fromUtf8("addressBook"));
@@ -182,8 +186,8 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
-        stackedWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
