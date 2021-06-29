@@ -7,10 +7,12 @@
 #include <QtWidgets/QPushButton>
 
 void minePage(MainWindow& window) {
+	window.status.SetHeading("Mining block");
+
 	// Mine a block when the correct button is clicked
 	window.connect(window.btn_mine, &QPushButton::released, &window, [&window]() {
 		window.status.SetHeading("Transaction");
-		window->mine.wait();
+		window.mine.wait();
 	});
 }
 
