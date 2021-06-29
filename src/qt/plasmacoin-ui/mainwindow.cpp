@@ -29,18 +29,20 @@ MainWindow::~MainWindow() {
 	delete m_TList;
 }
 
+// Create QTextBrowsers to display on the mining tab
 Status MainWindow::LoadMiningVisuals(Transaction* transaction) {
 	// The three widgets to display on the screen
 	QTextBrowser  *browser1 = new QTextBrowser(Ui::MainWindow::mineCoins),
 				  *browser2 = new QTextBrowser(Ui::MainWindow::mineCoins),
-				  *browser3 = new QTextBrowser(Ui::MainWindow::mineCoins);
+				  *browser3 = new QTextBrowser(Ui::MainWindow::mineCoins),
+				  *browser4 = new QTextBrowser(Ui::MainWindow::mineCoins);
 
-	Status status(browser1, browser2, browser3);
-	status.LoadVisuals();
+	Status status(browser1, browser2, browser3, browser4);
 
 	return status;
 }
 
+// Call block mining code and make visual changes to the GUI once it's done
 void MainWindow::StartMining() {
 	Block newBlock(-1, nullptr, nullptr); // Instantiate the block with some throwaway values
 
@@ -54,6 +56,11 @@ void MainWindow::StartMining() {
 	m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans); // Load a transaction onto the block
 
 	bool result = m_User->m_BlockchainCopy->Mine(newBlock); // Mine the block
+	UpdateStatus(newBlock);
+}
+
+void MainWindow::UpdateStatus(Block& block) {
+	status.SetNonce(block.m_Nonce);
 }
 
 // Definitions for slots

@@ -38,6 +38,7 @@ public:
 
 private:
 	void StartMining(); // Initiate the mining process
+	void UpdateStatus(Block& block); // Update the mining status while a block is being mined
 
 	QTabWidget* m_TabBar = Ui::MainWindow::tabWidget;
 	TransactionList* m_TList;
