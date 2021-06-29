@@ -17,14 +17,14 @@ using std::string;
 class Status {
 public:
 	Status() = default;
-	Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser* qtbrowser3);
+	Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser* qtbrowser3, QTextBrowser* qtbrowser4);
 
 	void LoadVisuals();
 
 	// Functions to modify the browser text
-	void SetHeading(string text), SetNonce(int nonce),
-		 SetTime(std::chrono::duration<float> elaspedTime);
+	void SetHeading(string text), SetHash(string text), SetNonce(int nonce);
+	void SetTime(std::chrono::duration<float> elaspedTime);
 
 private:
-	QTextBrowser *m_Heading, *m_NonceView, *m_ElapsedTime;
+	QTextBrowser *m_Heading, *m_HashView, *m_NonceView, *m_ElapsedTime;
 };

@@ -155,16 +155,6 @@
        </rect>
       </property>
      </widget>
-     <widget class="QTextBrowser" name="header">
-      <property name="geometry">
-       <rect>
-        <x>380</x>
-        <y>30</y>
-        <width>391</width>
-        <height>51</height>
-       </rect>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="addressBook">
      <widget class="QDialogButtonBox" name="buttonBox">
