@@ -161,6 +161,8 @@ public:
         tableWidget->setColumnCount(2);
         stackedWidget->addWidget(addressBook);
         MainWindow->setCentralWidget(centralwidget);
+        stackedWidget->raise();
+        tabWidget->raise();
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
@@ -183,8 +185,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(1);
-
+        stackedWidget->setCurrentIndex(0);
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
