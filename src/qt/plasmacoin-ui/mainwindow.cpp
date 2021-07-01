@@ -4,6 +4,9 @@
 #include <iostream>
 #include <cassert>
 
+using std::chrono::high_resolution_clock;
+using std::chrono::seconds;
+
 MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
@@ -55,13 +58,22 @@ void MainWindow::StartMining() {
 
 	m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans); // Load a transaction onto the block
 
+	auto start = high_resolution_clock::now(); // Begin timing the function
+
 	bool result = m_User->m_BlockchainCopy->Mine(newBlock); // Mine the block
-	UpdateStatus(newBlock);
+
+	auto stop = high_resolution_clock::now(); // End timing
+	auto duration = std::chrono::duration_cast<seconds>(stop - start); // Find the duration
+
+	UpdateStatus(newBlock, duration);
 }
 
-void MainWindow::UpdateStatus(Block& block) {
+void MainWindow::UpdateStatus(Block& block, seconds time) {
 	status.SetHash(block.m_Hash);
 	status.SetNonce(block.m_Nonce);
+	status.SetTime(time);
+
+	status.LoadVisuals();
 }
 
 // Definitions for slots
