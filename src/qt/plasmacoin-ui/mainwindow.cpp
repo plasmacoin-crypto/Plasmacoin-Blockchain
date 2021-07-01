@@ -60,6 +60,7 @@ void MainWindow::StartMining() {
 }
 
 void MainWindow::UpdateStatus(Block& block) {
+	status.SetHash(block.m_Hash);
 	status.SetNonce(block.m_Nonce);
 }
 
