@@ -74,6 +74,7 @@ public:
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
         tabWidget->setGeometry(QRect(0, 0, 791, 31));
         tabWidget->setMaximumSize(QSize(791, 16777215));
+        tabWidget->setFocusPolicy(Qt::NoFocus);
         tabWidget->setTabPosition(QTabWidget::North);
         tabWidget->setTabShape(QTabWidget::Rounded);
         tabWidget->setMovable(false);
@@ -122,12 +123,14 @@ public:
         transactionList = new QListWidget(mineCoins);
         transactionList->setObjectName(QString::fromUtf8("transactionList"));
         transactionList->setGeometry(QRect(30, 30, 311, 401));
+        transactionList->setFocusPolicy(Qt::NoFocus);
         stackedWidget->addWidget(mineCoins);
         addressBook = new QWidget();
         addressBook->setObjectName(QString::fromUtf8("addressBook"));
         buttonBox = new QDialogButtonBox(addressBook);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         buttonBox->setGeometry(QRect(380, 130, 174, 34));
+        buttonBox->setFocusPolicy(Qt::StrongFocus);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         formLayoutWidget = new QWidget(addressBook);
         formLayoutWidget->setObjectName(QString::fromUtf8("formLayoutWidget"));
@@ -157,6 +160,7 @@ public:
         tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem1);
         tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
         tableWidget->setGeometry(QRect(30, 40, 311, 421));
+        tableWidget->setFocusPolicy(Qt::NoFocus);
         tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         tableWidget->setColumnCount(2);
         stackedWidget->addWidget(addressBook);
@@ -185,7 +189,8 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(1);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
