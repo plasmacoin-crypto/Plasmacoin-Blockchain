@@ -11,7 +11,6 @@ void minePage(MainWindow& window) {
 
 	// Mine a block when the correct button is clicked
 	window.connect(window.btn_mine, &QPushButton::released, &window, [&window]() {
-		window.status.SetHeading("Transaction");
 		window.mine.wait();
 	});
 }
