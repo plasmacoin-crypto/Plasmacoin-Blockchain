@@ -16,10 +16,7 @@ Status::Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser*
 	// Main display
 	m_Heading->setObjectName(QString::fromUtf8("heading"));
 	m_Heading->setGeometry(QRect(380, 31, 391, 51));
-}
 
-// Render the mining status visuals on the screen
-void Status::LoadVisuals() {
 	// The hash of the mined block
 	m_HashView->setObjectName(QString::fromUtf8("hashView"));
 	m_HashView->setGeometry(QRect(380, 91, 391, 51));
@@ -31,9 +28,20 @@ void Status::LoadVisuals() {
 	// A readout of the elapsed mining time
 	m_ElapsedTime->setObjectName(QString::fromUtf8("elapsedTime"));
 	m_ElapsedTime->setGeometry(QRect(580, 151, 191, 51));
+
+	m_HashView->setVisible(false);
+	m_NonceView->setVisible(false);
+	m_ElapsedTime->setVisible(false);
 }
 
-// Modify the heading
+// Render the mining status visuals on the screen
+void Status::LoadVisuals() {
+	m_HashView->setVisible(true);
+	m_NonceView->setVisible(true);
+	m_ElapsedTime->setVisible(true);
+}
+
+// Set the heading
 void Status::SetHeading(string text) {
 	m_Heading->setHtml(
 		QString(
