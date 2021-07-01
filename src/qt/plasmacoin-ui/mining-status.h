@@ -23,7 +23,7 @@ public:
 
 	// Functions to modify the browser text
 	void SetHeading(string text), SetHash(string text), SetNonce(int nonce);
-	void SetTime(std::chrono::duration<float> elaspedTime);
+	void SetTime(std::chrono::seconds elapsedTime);
 
 private:
 	QTextBrowser *m_Heading, *m_HashView, *m_NonceView, *m_ElapsedTime;
