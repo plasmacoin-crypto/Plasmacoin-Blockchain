@@ -132,3 +132,24 @@ string Blockchain::Hash(Transaction transaction) {
 
 	return digest;
 }
+
+// Use Crypto++ to hash a string
+string Blockchain::Hash(string input) {
+	CryptoPP::SHA256 hash;
+	string digest; // The result
+
+	// Use the library
+	//
+	// No objects have to be freed because of Crypto++'s pipelining
+	// functionality
+	//
+	CryptoPP::StringSource ssource(input, true,
+		new CryptoPP::HashFilter(hash,
+			new CryptoPP::HexEncoder(
+				new CryptoPP::StringSink(digest)
+			)
+		)
+	);
+
+	return digest;
+}

@@ -56,7 +56,7 @@ void MainWindow::StartMining() {
 	auto trans = node1->MakeTransaction(*node2, 1.0, "Here's some money");
 	m_CurrTrans = &trans;
 
-	m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans); // Load a transaction onto the block
+	m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans); // Add a transaction (temporary)
 
 	auto start = high_resolution_clock::now(); // Begin timing the function
 

@@ -46,6 +46,7 @@ public:
 
 private:
 	string Hash(Transaction transaction);
+	string Hash(string input)
 };
 
 #endif // BLOCKCHAIN_HPP
