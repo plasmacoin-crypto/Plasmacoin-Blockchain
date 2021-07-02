@@ -7,10 +7,10 @@
 
 #include "block.hpp"
 
-Block::Block(int index, string* prevHash, Transaction* transaction):
+Block::Block(int index, string* prevHash, vector<Transaction*> transactions):
 	m_Index(index),
 	m_PrevHash(prevHash),
-	m_Transaction(transaction)
+	m_Transactions(transactions)
 {
 	// Get a timestamp for the block
 	time_t now = time(0);
