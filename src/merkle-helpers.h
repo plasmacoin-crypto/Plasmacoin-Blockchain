@@ -5,7 +5,7 @@
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
 
-#ifndef MERKLE_HLPERS_HPP
+#ifndef MERKLE_HELPERS_HPP
 #define MERKLE_HELPERS_HPP
 
 #include <math.h>
