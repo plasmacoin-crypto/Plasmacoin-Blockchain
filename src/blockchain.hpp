@@ -9,7 +9,7 @@
 #define BLOCKCHAIN_HPP
 
 #include <vector>
-#include <queue>
+#include <deque>
 #include <iostream>
 
 // This header file groups thre Crypto++ headers to save space
@@ -17,9 +17,10 @@
 #include "cryptopp-sha256-libs.h"
 
 #include "block.hpp"
+#include "merkle-helpers.h"
 
 using std::vector;
-using std::queue;
+using std::deque;
 
 class Blockchain {
 public:
@@ -38,7 +39,7 @@ private:
 	const int DIFFICULTY = 5;
 
 	vector<Block*> m_Chain;
-	queue<Transaction*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
+	deque<Transaction*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
 
 public:
 	bool Consensus(Block& block); // Evaluate Proof-of-Work
@@ -46,7 +47,8 @@ public:
 
 private:
 	string Hash(Transaction transaction);
-	string Hash(string input)
+	string Hash(string input);
+	string Hash(Block block);
 };
 
 #endif // BLOCKCHAIN_HPP
