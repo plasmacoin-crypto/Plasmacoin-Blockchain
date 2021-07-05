@@ -47,7 +47,7 @@ Status MainWindow::LoadMiningVisuals(Transaction* transaction) {
 
 // Call block mining code and make visual changes to the GUI once it's done
 void MainWindow::StartMining() {
-	Block newBlock(-1, nullptr, nullptr); // Instantiate the block with some throwaway values
+	Block newBlock(-1, nullptr, std::deque<Transaction*>({nullptr})); // Instantiate the block with some throwaway values
 
 	// Some test nodes
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
