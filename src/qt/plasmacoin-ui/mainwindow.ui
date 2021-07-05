@@ -60,14 +60,14 @@
       <string>Address Book</string>
      </attribute>
     </widget>
-    <widget class="QWidget" name="Account">
-     <attribute name="title">
-      <string>Account</string>
-     </attribute>
-    </widget>
     <widget class="QWidget" name="Transactions">
      <attribute name="title">
       <string>Transactions</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="Account">
+     <attribute name="title">
+      <string>Account</string>
      </attribute>
     </widget>
    </widget>
@@ -139,10 +139,10 @@
      <widget class="QPushButton" name="btn_mine">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>470</y>
-        <width>88</width>
-        <height>34</height>
+        <x>520</x>
+        <y>430</y>
+        <width>84</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -168,7 +168,7 @@
         <x>280</x>
         <y>430</y>
         <width>33</width>
-        <height>34</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -191,7 +191,7 @@
         <x>310</x>
         <y>430</y>
         <width>33</width>
-        <height>34</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -206,6 +206,26 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="listWidget">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>140</y>
+        <width>351</width>
+        <height>281</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTextBrowser" name="textBrowser_2">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>430</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
       </property>
      </widget>
     </widget>

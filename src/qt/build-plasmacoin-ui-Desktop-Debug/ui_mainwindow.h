@@ -29,6 +29,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -41,8 +42,8 @@ public:
     QWidget *Wallet;
     QWidget *Mine;
     QWidget *AddressBook;
-    QWidget *Account;
     QWidget *Transactions;
+    QWidget *Account;
     QStackedWidget *stackedWidget;
     QWidget *wallet;
     QLCDNumber *usdollars;
@@ -50,6 +51,10 @@ public:
     QWidget *mineCoins;
     QPushButton *btn_mine;
     QListWidget *transactionList;
+    QToolButton *toolButton;
+    QToolButton *toolButton_2;
+    QListWidget *listWidget;
+    QTextBrowser *textBrowser_2;
     QWidget *addressBook;
     QDialogButtonBox *buttonBox;
     QWidget *formLayoutWidget;
@@ -87,12 +92,12 @@ public:
         AddressBook = new QWidget();
         AddressBook->setObjectName(QString::fromUtf8("AddressBook"));
         tabWidget->addTab(AddressBook, QString());
-        Account = new QWidget();
-        Account->setObjectName(QString::fromUtf8("Account"));
-        tabWidget->addTab(Account, QString());
         Transactions = new QWidget();
         Transactions->setObjectName(QString::fromUtf8("Transactions"));
         tabWidget->addTab(Transactions, QString());
+        Account = new QWidget();
+        Account->setObjectName(QString::fromUtf8("Account"));
+        tabWidget->addTab(Account, QString());
         stackedWidget = new QStackedWidget(centralwidget);
         stackedWidget->setObjectName(QString::fromUtf8("stackedWidget"));
         stackedWidget->setGeometry(QRect(0, 30, 801, 531));
@@ -119,11 +124,31 @@ public:
         mineCoins->setObjectName(QString::fromUtf8("mineCoins"));
         btn_mine = new QPushButton(mineCoins);
         btn_mine->setObjectName(QString::fromUtf8("btn_mine"));
-        btn_mine->setGeometry(QRect(30, 470, 88, 34));
+        btn_mine->setGeometry(QRect(520, 430, 84, 31));
         transactionList = new QListWidget(mineCoins);
         transactionList->setObjectName(QString::fromUtf8("transactionList"));
         transactionList->setGeometry(QRect(30, 30, 311, 401));
         transactionList->setFocusPolicy(Qt::NoFocus);
+        toolButton = new QToolButton(mineCoins);
+        toolButton->setObjectName(QString::fromUtf8("toolButton"));
+        toolButton->setGeometry(QRect(280, 430, 33, 31));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8("../assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton->setIcon(icon1);
+        toolButton->setIconSize(QSize(24, 24));
+        toolButton_2 = new QToolButton(mineCoins);
+        toolButton_2->setObjectName(QString::fromUtf8("toolButton_2"));
+        toolButton_2->setGeometry(QRect(310, 430, 33, 31));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8("../assets/minus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_2->setIcon(icon2);
+        toolButton_2->setIconSize(QSize(24, 24));
+        listWidget = new QListWidget(mineCoins);
+        listWidget->setObjectName(QString::fromUtf8("listWidget"));
+        listWidget->setGeometry(QRect(390, 140, 351, 281));
+        textBrowser_2 = new QTextBrowser(mineCoins);
+        textBrowser_2->setObjectName(QString::fromUtf8("textBrowser_2"));
+        textBrowser_2->setGeometry(QRect(390, 430, 121, 31));
         stackedWidget->addWidget(mineCoins);
         addressBook = new QWidget();
         addressBook->setObjectName(QString::fromUtf8("addressBook"));
@@ -175,9 +200,9 @@ public:
         menubar->setGeometry(QRect(0, 0, 800, 30));
         icon = new QMenu(menubar);
         icon->setObjectName(QString::fromUtf8("icon"));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8("../assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
-        icon->setIcon(icon1);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8("../assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon->setIcon(icon3);
         icon->setSeparatorsCollapsible(false);
         text = new QMenu(menubar);
         text->setObjectName(QString::fromUtf8("text"));
@@ -189,7 +214,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -201,9 +226,11 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(Wallet), QCoreApplication::translate("MainWindow", "Wallet", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Mine), QCoreApplication::translate("MainWindow", " Mine Coins", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(AddressBook), QCoreApplication::translate("MainWindow", "Address Book", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
         btn_mine->setText(QCoreApplication::translate("MainWindow", "Mine", nullptr));
+        toolButton->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        toolButton_2->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         amountLabel->setText(QCoreApplication::translate("MainWindow", "Amount", nullptr));
         amountLineEdit->setText(QString());
         QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
