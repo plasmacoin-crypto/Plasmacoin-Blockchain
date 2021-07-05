@@ -65,7 +65,8 @@ OBJECTS       = main.o \
 		transaction.o \
 		node.o \
 		block.o \
-		blockchain.o
+		blockchain.o \
+		merkle-helpers.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -878,8 +879,12 @@ node.o: ../../node.cpp ../../node.hpp ../../cryptopp-sha256-libs.h ../../transac
 block.o: ../../block.cpp ../../block.hpp ../../transaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o block.o ../../block.cpp $(LINKS)
 
-blockchain.o: ../../blockchain.cpp ../../blockchain.hpp ../../cryptopp-sha256-libs.h ../../block.hpp
+blockchain.o: ../../blockchain.cpp ../../blockchain.hpp ../../cryptopp-sha256-libs.h ../../block.hpp \
+			  ../../merkle-helpers.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o blockchain.o ../../blockchain.cpp $(LINKS)
+
+merkle-helpers.o: ../../merkle-helpers.c ../../merkle-helpers.h
+	$(CC) -c $(CXXFLAGS) $(INCPATH) -o merkle-helpers.o ../../merkle-helpers.c $(LINKS)
 
 # GUI
 
