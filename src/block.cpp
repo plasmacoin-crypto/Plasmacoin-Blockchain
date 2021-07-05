@@ -7,7 +7,7 @@
 
 #include "block.hpp"
 
-Block::Block(int index, string* prevHash, vector<Transaction*> transactions):
+Block::Block(int index, string* prevHash, deque<Transaction*> transactions):
 	m_Index(index),
 	m_PrevHash(prevHash),
 	m_Transactions(transactions)
