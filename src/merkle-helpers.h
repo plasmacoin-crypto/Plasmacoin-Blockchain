@@ -10,8 +10,8 @@
 
 #include <math.h>
 
-unsigned int height(unsigned int leaves);
-unsigned int nodes(unsigned int height);
-unsigned int pads(unsigned int leaves);
+int mh_height(int leaves);
+int mh_nodes(int height);
+int mh_pads(int leaves);
 
 #endif // MERKLE_HELPERS_HPP
