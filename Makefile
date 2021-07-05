@@ -35,6 +35,9 @@ block.o: src/block.cpp src/block.hpp src/transaction.hpp
 blockchain.o: src/blockchain.cpp src/blockchain.hpp src/cryptopp-sha256-libs.h src/block.hpp
 	$(CC) -c $(CFLAGS) -o blockchain.o src/blockchain.cpp -L$(CRYPTOPP) $(LINKS)
 
+merkle-helpers.o: src/merkle-helpers.c src/merkle-helpers.h
+	$(CC) -c $(CFLAGS) -o merkle-helpers.o src/merkle-helpers.c -L$(CRYPTOPP) $(LINKS)
+
 # `make` (or `make pcblkchn`)
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) src/$(SOURCE) -o $(TARGET) $(OBJECTS) -L$(CRYPTOPP) $(LINKS)
