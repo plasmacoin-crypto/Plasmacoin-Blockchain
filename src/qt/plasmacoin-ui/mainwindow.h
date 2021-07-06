@@ -7,10 +7,12 @@
 #include <thread>
 #include <functional>
 #include <future>
+#include <vector>
 
 #include <QtWidgets/QMainWindow>
 #include <QStringList>
 #include <QThread>
+#include <QtWidgets/QListWidgetItem>
 
 #include "ui_mainwindow.h"
 
@@ -35,6 +37,8 @@ public:
 	// Store the mining status object so it doesn't go out of scope when being
 	// captured by a lambda
 	Status status;
+
+	std::vector<QListWidgetItem*> m_BlockContents;
 
 private:
 	void StartMining(); // Initiate the mining process
