@@ -84,7 +84,7 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="wallet">
      <widget class="QLCDNumber" name="usdollars">
@@ -162,7 +162,7 @@
        <enum>Qt::NoFocus</enum>
       </property>
      </widget>
-     <widget class="QToolButton" name="toolButton">
+     <widget class="QToolButton" name="plusSign">
       <property name="geometry">
        <rect>
         <x>280</x>
@@ -185,7 +185,7 @@
        </size>
       </property>
      </widget>
-     <widget class="QToolButton" name="toolButton_2">
+     <widget class="QToolButton" name="minusSign">
       <property name="geometry">
        <rect>
         <x>310</x>
@@ -208,7 +208,7 @@
        </size>
       </property>
      </widget>
-     <widget class="QListWidget" name="listWidget">
+     <widget class="QListWidget" name="blockTransactionList">
       <property name="geometry">
        <rect>
         <x>390</x>
@@ -218,7 +218,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QTextBrowser" name="textBrowser_2">
+     <widget class="QTextBrowser" name="blockSize">
       <property name="geometry">
        <rect>
         <x>390</x>

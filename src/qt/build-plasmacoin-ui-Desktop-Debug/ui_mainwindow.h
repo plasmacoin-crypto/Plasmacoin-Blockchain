@@ -51,10 +51,10 @@ public:
     QWidget *mineCoins;
     QPushButton *btn_mine;
     QListWidget *transactionList;
-    QToolButton *toolButton;
-    QToolButton *toolButton_2;
-    QListWidget *listWidget;
-    QTextBrowser *textBrowser_2;
+    QToolButton *plusSign;
+    QToolButton *minusSign;
+    QListWidget *blockTransactionList;
+    QTextBrowser *blockSize;
     QWidget *addressBook;
     QDialogButtonBox *buttonBox;
     QWidget *formLayoutWidget;
@@ -129,26 +129,26 @@ public:
         transactionList->setObjectName(QString::fromUtf8("transactionList"));
         transactionList->setGeometry(QRect(30, 30, 311, 401));
         transactionList->setFocusPolicy(Qt::NoFocus);
-        toolButton = new QToolButton(mineCoins);
-        toolButton->setObjectName(QString::fromUtf8("toolButton"));
-        toolButton->setGeometry(QRect(280, 430, 33, 31));
+        plusSign = new QToolButton(mineCoins);
+        plusSign->setObjectName(QString::fromUtf8("plusSign"));
+        plusSign->setGeometry(QRect(280, 430, 33, 31));
         QIcon icon1;
         icon1.addFile(QString::fromUtf8("../assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton->setIcon(icon1);
-        toolButton->setIconSize(QSize(24, 24));
-        toolButton_2 = new QToolButton(mineCoins);
-        toolButton_2->setObjectName(QString::fromUtf8("toolButton_2"));
-        toolButton_2->setGeometry(QRect(310, 430, 33, 31));
+        plusSign->setIcon(icon1);
+        plusSign->setIconSize(QSize(24, 24));
+        minusSign = new QToolButton(mineCoins);
+        minusSign->setObjectName(QString::fromUtf8("minusSign"));
+        minusSign->setGeometry(QRect(310, 430, 33, 31));
         QIcon icon2;
         icon2.addFile(QString::fromUtf8("../assets/minus.png"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_2->setIcon(icon2);
-        toolButton_2->setIconSize(QSize(24, 24));
-        listWidget = new QListWidget(mineCoins);
-        listWidget->setObjectName(QString::fromUtf8("listWidget"));
-        listWidget->setGeometry(QRect(390, 140, 351, 281));
-        textBrowser_2 = new QTextBrowser(mineCoins);
-        textBrowser_2->setObjectName(QString::fromUtf8("textBrowser_2"));
-        textBrowser_2->setGeometry(QRect(390, 430, 121, 31));
+        minusSign->setIcon(icon2);
+        minusSign->setIconSize(QSize(24, 24));
+        blockTransactionList = new QListWidget(mineCoins);
+        blockTransactionList->setObjectName(QString::fromUtf8("blockTransactionList"));
+        blockTransactionList->setGeometry(QRect(390, 140, 351, 281));
+        blockSize = new QTextBrowser(mineCoins);
+        blockSize->setObjectName(QString::fromUtf8("blockSize"));
+        blockSize->setGeometry(QRect(390, 430, 121, 31));
         stackedWidget->addWidget(mineCoins);
         addressBook = new QWidget();
         addressBook->setObjectName(QString::fromUtf8("addressBook"));
@@ -214,7 +214,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -229,8 +229,8 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
         btn_mine->setText(QCoreApplication::translate("MainWindow", "Mine", nullptr));
-        toolButton->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
-        toolButton_2->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        plusSign->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        minusSign->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         amountLabel->setText(QCoreApplication::translate("MainWindow", "Amount", nullptr));
         amountLineEdit->setText(QString());
         QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
