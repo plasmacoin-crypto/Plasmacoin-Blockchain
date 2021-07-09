@@ -84,7 +84,7 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="wallet">
      <widget class="QLCDNumber" name="usdollars">
@@ -312,6 +312,8 @@
       </column>
      </widget>
     </widget>
+    <widget class="QWidget" name="transactions"/>
+    <widget class="QWidget" name="account"/>
    </widget>
    <zorder>stackedWidget</zorder>
    <zorder>tabWidget</zorder>
