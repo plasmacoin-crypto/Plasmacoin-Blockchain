@@ -47,7 +47,11 @@ Status MainWindow::LoadMiningVisuals(Transaction* transaction) {
 
 // Call block mining code and make visual changes to the GUI once it's done
 void MainWindow::StartMining() {
-	Block newBlock(-1, nullptr, std::deque<Transaction*>({nullptr})); // Instantiate the block with some throwaway values
+	Block* latest = m_User->m_BlockchainCopy->GetLatest(); // Get the latest block
+
+	//std::cout << m_BlockContents[0]->data(Qt::UserRole).toInt() << std::endl;
+
+	Block newBlock(latest->m_Index + 1, latest->m_PrevHash, {nullptr}); // Create a new block
 
 	// Some test nodes
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
