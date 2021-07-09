@@ -16,10 +16,11 @@ TransactionList::TransactionList(QListWidget*& list):
 TransactionList::~TransactionList() {}
 
 void TransactionList::Populate() {
-	QStringList list;
-	list << "Item1" << "Item2" << "Item3";
-
-	m_TransactionList->addItems(list); // Poplate from the QStringList
+	for (int i = 0; i < 3; i++) {
+		QListWidgetItem* item = new QListWidgetItem(QString(std::string("Transaction " + std::to_string(i + 1)).c_str()), m_TransactionList);
+		item->setData(Qt::UserRole, i);
+		m_TransactionList->addItem(item);
+	}
 }
 
 void TransactionList::Pop() {

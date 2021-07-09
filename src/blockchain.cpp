@@ -10,7 +10,7 @@
 
 Blockchain::Blockchain() {
 	// Add a Genesis block
-	Block* genesis = new Block(0, nullptr, deque<Transaction*>({nullptr}));
+	Block* genesis = new Block(0, nullptr, {nullptr});
 	Add(genesis);
 }
 
@@ -166,7 +166,7 @@ string Blockchain::Hash(Block block) {
 	string* tree[nodes]; // The Merkle Tree
 	unsigned int size = static_cast<uint>(sizeof(tree) / sizeof(string*));
 
-	std::deque<Transaction*>::iterator iter = block.m_Transactions.begin();
+	std::vector<Transaction*>::iterator iter = block.m_Transactions.begin();
 	auto index = size;
 
 	// Add the hashes of all the transactions on the block to the tree.

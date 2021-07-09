@@ -11,24 +11,24 @@
 #include <ctime>
 #include <string>
 #include <tuple>
-#include <deque>
+#include <vector>
 
 #include "transaction.hpp"
 
 using std::string;
 using std::tuple;
-using std::deque;
+using std::vector;
 
 class Block {
 public:
-	Block(int index, string* prevHash, deque<Transaction*> transactions);
+	Block(int index, string* prevHash, vector<Transaction*> transactions);
 	bool Validate(string latestHash, const int& DIFFICULTY);
 
 	// The block contents
 	int m_Index, m_Nonce = 0;
 	string m_Hash, *m_PrevHash;
 
-	deque<Transaction*> m_Transactions;
+	vector<Transaction*> m_Transactions;
 	char* m_Timestamp;
 };
 

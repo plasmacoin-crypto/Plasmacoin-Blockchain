@@ -8,17 +8,17 @@
 #ifndef TRANSACTION_LIST_H
 #define TRANSACTION_LIST_H
 
-#include <queue>
+#include <vector>
+#include <string>
 
 #include "transaction.hpp"
-//#include "../../blockchain.hpp"
 
 #include <QtWidgets/QMainWindow>
 #include <QList>
 
 #include "ui_mainwindow.h"
 
-using std::queue;
+using std::vector;
 
 class TransactionList : public QMainWindow, public Ui_MainWindow {
 	Q_OBJECT
@@ -31,8 +31,8 @@ public:
 	void Pop();
 
 private:
-	queue<Transaction*> m_List;
-	QListWidget*& m_TransactionList;
+	QListWidget*& m_TransactionList; // The QListWidget
+	vector<Transaction*> m_List;	 // The corresponding transactions
 };
 
 #endif // TRANSACTION_LIST_H
