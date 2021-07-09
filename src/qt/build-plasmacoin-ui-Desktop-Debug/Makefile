@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = clang
 CXX           = clang++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../plasmacoin-ui -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-clang -I../.. -I/usr/src/cryptopp
+INCPATH       = -I../plasmacoin-ui -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-clang -I../.. -I/usr/src/cryptopp
 QMAKE         = /bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = plasmacoin-ui1.0.0
 DISTDIR 	  = ./.tmp/plasmacoin-ui1.0.0
 LINK          = clang++
 LFLAGS        = -ccc-gcc-name g++
-LIBS          = $(SUBLIBS) /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Core.so -lGL -lpthread -lcryptopp
+LIBS          = $(SUBLIBS) /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Core.so -lGL -lpthread -lcryptopp
 AR            = ar cqs
 RANLIB        =
 SED           = sed
@@ -55,7 +55,8 @@ OBJECTS_DIR   = ./
 SOURCES       = ../plasmacoin-ui/main.cpp \
 		../plasmacoin-ui/mainwindow.cpp moc_mainwindow.cpp \
 		../plasmacoin-ui/transaction-list.cpp moc_transactionlist.cpp \
-		../plasmacoin-ui/mining-status.cpp
+		../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/recipient-list.cpp \
+		../plasmacoin-ui/firebase-auth.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		moc_mainwindow.o \
@@ -66,7 +67,9 @@ OBJECTS       = main.o \
 		node.o \
 		block.o \
 		blockchain.o \
-		merkle-helpers.o
+		merkle-helpers.o \
+		firebase-auth.o \
+		moc_firebase_auth.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -302,7 +305,8 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		../plasmacoin-ui/plasmacoin-ui.pro ../plasmacoin-ui/main.cpp \
 		../plasmacoin-ui/mainwindow.h ../plasmacoin-ui/mainwindow.cpp \
 		../plasmacoin-ui/transaction-list.h ../plasmacoin-ui/transaction-list.cpp \
-		../plasmacoin-ui/mining-status.h ../plasmacoin-ui/mining-status.cpp
+		../plasmacoin-ui/mining-status.h ../plasmacoin-ui/mining-status.cpp \
+		../plasmacoin-ui/recipient-list.h ../plasmacoin-ui/recipient-list.cpp
 QMAKE_TARGET  = plasmacoin-ui
 DESTDIR       =
 TARGET        = plasmacoin-ui
@@ -846,6 +850,11 @@ moc_transactionlist.cpp: ../plasmacoin-ui/transaction-list.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-ui -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-ui/transaction-list.h -o moc_transactionlist.cpp
 
+moc_firebase_auth.cpp: ../plasmacoin-ui/ \
+		ui_mainwindow.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-ui -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-ui/firebase-auth.h -o moc_firebase_auth.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -889,7 +898,7 @@ merkle-helpers.o: ../../merkle-helpers.c ../../merkle-helpers.h
 # GUI
 
 main.o: ../plasmacoin-ui/main.cpp ../plasmacoin-ui/mainwindow.h \
-		 ui_mainwindow.h
+		 ui_mainwindow.h ../plasmacoin-ui/firebase-auth.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../plasmacoin-ui/main.cpp
 
 mainwindow.o: ../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/mainwindow.h \
@@ -902,12 +911,19 @@ moc_mainwindow.o: moc_mainwindow.cpp
 moc_transactionlist.o: moc_transactionlist.cpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_transactionlist.o moc_transactionlist.cpp
 
+moc_firebase_auth.o: moc_firebase_auth.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_firebase_auth.o moc_firebase_auth.cpp
+
 transaction-list.o: ../plasmacoin-ui/transaction-list.cpp ../plasmacoin-ui/transaction-list.h \
 					ui_mainwindow.h ../../transaction.hpp ../../blockchain.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction-list.o ../plasmacoin-ui/transaction-list.cpp
 
 mining-status.o: ../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/mining-status.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mining-status.o ../plasmacoin-ui/mining-status.cpp
+
+firebase-auth.o: ../plasmacoin-ui/firebase-auth.cpp ../plasmacoin-ui/firebase-auth.h \
+				 ui_mainwindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o firebase-auth.o ../plasmacoin-ui/firebase-auth.cpp
 
 ####### Install
 
