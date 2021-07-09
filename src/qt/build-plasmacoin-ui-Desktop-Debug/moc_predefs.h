@@ -249,6 +249,7 @@
 #define __SIZE_WIDTH__ 64
 #define __SSP_STRONG__ 2
 #define __STDCPP_DEFAULT_NEW_ALIGNMENT__ 16UL
+#define __STDCPP_THREADS__ 1
 #define __STDC_HOSTED__ 1
 #define __STDC_UTF_16__ 1
 #define __STDC_UTF_32__ 1
@@ -345,7 +346,7 @@
 #define __UINT_LEAST8_MAX__ 255
 #define __UINT_LEAST8_TYPE__ unsigned char
 #define __USER_LABEL_PREFIX__ 
-#define __VERSION__ "Clang 11.1.0"
+#define __VERSION__ "Clang 12.0.0"
 #define __WCHAR_MAX__ 4294967295U
 #define __WCHAR_TYPE__ unsigned int
 #define __WCHAR_UNSIGNED__ 1
@@ -356,10 +357,10 @@
 #define __WINT_WIDTH__ 32
 #define __aarch64__ 1
 #define __clang__ 1
-#define __clang_major__ 11
-#define __clang_minor__ 1
+#define __clang_major__ 12
+#define __clang_minor__ 0
 #define __clang_patchlevel__ 0
-#define __clang_version__ "11.1.0 "
+#define __clang_version__ "12.0.0 "
 #define __cplusplus 201103L
 #define __cpp_alias_templates 200704L
 #define __cpp_attributes 200809L
