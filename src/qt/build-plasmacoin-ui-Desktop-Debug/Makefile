@@ -893,7 +893,7 @@ blockchain.o: ../../blockchain.cpp ../../blockchain.hpp ../../cryptopp-sha256-li
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o blockchain.o ../../blockchain.cpp $(LINKS)
 
 merkle-helpers.o: ../../merkle-helpers.c ../../merkle-helpers.h
-	$(CC) -c $(CXXFLAGS) $(INCPATH) -o merkle-helpers.o ../../merkle-helpers.c $(LINKS)
+	$(CXX) -c $(CFLAGS) $(INCPATH) -o merkle-helpers.o ../../merkle-helpers.c $(LINKS)
 
 # GUI
 
@@ -915,7 +915,7 @@ moc_firebase_auth.o: moc_firebase_auth.cpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_firebase_auth.o moc_firebase_auth.cpp
 
 transaction-list.o: ../plasmacoin-ui/transaction-list.cpp ../plasmacoin-ui/transaction-list.h \
-					ui_mainwindow.h ../../transaction.hpp ../../blockchain.hpp
+					ui_mainwindow.h ../../transaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction-list.o ../plasmacoin-ui/transaction-list.cpp
 
 mining-status.o: ../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/mining-status.h
