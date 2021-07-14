@@ -8,6 +8,11 @@
 #ifndef FIREBASE_AUTH_H
 #define FIREBASE_AUTH_H
 
+#include <string>
+#include <cstring>
+#include <iterator>
+#include <algorithm>
+
 #include <QtWidgets/QMainWindow>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -19,7 +24,18 @@
 #include <QString>
 #include <QObject>
 
+#include <cryptopp/cryptlib.h>
+#include <cryptopp/pwdbased.h>
+#include <cryptopp/sha.h>
+#include <cryptopp/hex.h>
+#include <cryptopp/osrng.h>
+
 #include "ui_mainwindow.h"
+
+using CryptoPP::byte;
+using CryptoPP::SHA256;
+using CryptoPP::HexEncoder;
+using CryptoPP::StringSink;
 
 class Auth : public QMainWindow, public Ui_MainWindow {
 	Q_OBJECT
@@ -49,6 +65,10 @@ private:
 
 	void ParseResponse(const QByteArray& response);
 
+public:
+	template<std::size_t N> std::string EncryptPassword(const char (&_password)[N]);
 };
+
+#include "firebase-auth.tcc"
 
 #endif // FIREBASE_AUTH_H
