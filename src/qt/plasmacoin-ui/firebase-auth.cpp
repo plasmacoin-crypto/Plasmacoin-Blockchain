@@ -11,7 +11,7 @@ Auth::Auth():
 	m_Manager(new QNetworkAccessManager(this)),
 	m_Reply(m_Manager->get(QNetworkRequest(QUrl("https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json"))))
 {
-	connect(this, &Auth::UserSignedIn, this, &Auth::DBCall);
+	//connect(this, &Auth::UserSignedIn, this, &Auth::DBCall);
 }
 
 // Sign a user up for a Plasmacoin Account
@@ -51,7 +51,7 @@ void Auth::SignIn(const QString& email, const QString& password) {
 }
 
 // This is a signal that notifies other objects that a user signed in. It has no
-// implementation here. 
+// implementation here.
 void UserSignedIn() {}
 
 // A slot that perform actions on API response data
