@@ -324,27 +324,14 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="signIn">
-       <widget class="QLabel" name="signInTitle">
+       <widget class="QLineEdit" name="s_EmailField">
         <property name="geometry">
          <rect>
-          <x>210</x>
-          <y>100</y>
-          <width>371</width>
-          <height>81</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Sign in to your Plasmacoin Account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit">
-        <property name="geometry">
-         <rect>
-          <x>280</x>
-          <y>200</y>
+          <x>290</x>
+          <y>210</y>
           <width>241</width>
           <height>31</height>
          </rect>
@@ -359,11 +346,37 @@
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_2">
+       <widget class="QPushButton" name="btn_signIn">
         <property name="geometry">
          <rect>
-          <x>280</x>
-          <y>240</y>
+          <x>310</x>
+          <y>330</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Sign In</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="signInTitle">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>110</y>
+          <width>371</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Sign in to your Plasmacoin Account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="s_PasswordField">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>250</y>
           <width>241</width>
           <height>31</height>
          </rect>
@@ -381,24 +394,11 @@
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QPushButton" name="btn_signIn">
-        <property name="geometry">
-         <rect>
-          <x>300</x>
-          <y>320</y>
-          <width>81</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Sign In</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="btn_create">
         <property name="geometry">
          <rect>
-          <x>400</x>
-          <y>320</y>
+          <x>410</x>
+          <y>330</y>
           <width>81</width>
           <height>31</height>
          </rect>
@@ -408,7 +408,210 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="page_2"/>
+      <widget class="QWidget" name="signUp">
+       <widget class="QLabel" name="createTitle">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>80</y>
+          <width>381</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Create your Plasmacoin account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="c_UsernameField">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>170</y>
+          <width>241</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Username</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="c_PasswordField">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>250</y>
+          <width>241</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Password</string>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_signUp">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>330</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Sign Up</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_back">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>330</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Go Back...</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="c_EmailField">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>210</y>
+          <width>241</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Email Address</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="loggedIn">
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>80</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;RSA Keys&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QTextBrowser" name="textBrowser_2">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>120</y>
+          <width>331</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QTextBrowser" name="textBrowser_3">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>160</y>
+          <width>331</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>120</y>
+          <width>33</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../assets/no-view.png</normaloff>../assets/no-view.png</iconset>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton_2">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>160</y>
+          <width>33</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../assets/no-view.png</normaloff>../assets/no-view.png</iconset>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton_3">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>120</y>
+          <width>33</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="toolButton_4">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>160</y>
+          <width>33</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </widget>
    </widget>

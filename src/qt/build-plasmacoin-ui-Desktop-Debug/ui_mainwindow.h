@@ -63,6 +63,30 @@ public:
     QLineEdit *amountLineEdit;
     QTextBrowser *textBrowser;
     QTableWidget *tableWidget;
+    QWidget *transactions;
+    QWidget *account;
+    QStackedWidget *accountView;
+    QWidget *signIn;
+    QLineEdit *s_EmailField;
+    QPushButton *btn_signIn;
+    QLabel *signInTitle;
+    QLineEdit *s_PasswordField;
+    QPushButton *btn_create;
+    QWidget *signUp;
+    QLabel *createTitle;
+    QLineEdit *c_UsernameField;
+    QLineEdit *c_PasswordField;
+    QPushButton *btn_signUp;
+    QPushButton *btn_back;
+    QLineEdit *c_EmailField;
+    QWidget *loggedIn;
+    QLabel *label;
+    QTextBrowser *textBrowser_2;
+    QTextBrowser *textBrowser_3;
+    QToolButton *toolButton;
+    QToolButton *toolButton_2;
+    QToolButton *toolButton_3;
+    QToolButton *toolButton_4;
     QStatusBar *statusbar;
     QMenuBar *menubar;
     QMenu *icon;
@@ -189,6 +213,93 @@ public:
         tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         tableWidget->setColumnCount(2);
         stackedWidget->addWidget(addressBook);
+        transactions = new QWidget();
+        transactions->setObjectName(QString::fromUtf8("transactions"));
+        stackedWidget->addWidget(transactions);
+        account = new QWidget();
+        account->setObjectName(QString::fromUtf8("account"));
+        accountView = new QStackedWidget(account);
+        accountView->setObjectName(QString::fromUtf8("accountView"));
+        accountView->setGeometry(QRect(0, 20, 801, 491));
+        signIn = new QWidget();
+        signIn->setObjectName(QString::fromUtf8("signIn"));
+        s_EmailField = new QLineEdit(signIn);
+        s_EmailField->setObjectName(QString::fromUtf8("s_EmailField"));
+        s_EmailField->setGeometry(QRect(290, 210, 241, 31));
+        s_EmailField->setClearButtonEnabled(true);
+        btn_signIn = new QPushButton(signIn);
+        btn_signIn->setObjectName(QString::fromUtf8("btn_signIn"));
+        btn_signIn->setGeometry(QRect(310, 330, 81, 31));
+        signInTitle = new QLabel(signIn);
+        signInTitle->setObjectName(QString::fromUtf8("signInTitle"));
+        signInTitle->setGeometry(QRect(220, 110, 371, 81));
+        s_PasswordField = new QLineEdit(signIn);
+        s_PasswordField->setObjectName(QString::fromUtf8("s_PasswordField"));
+        s_PasswordField->setGeometry(QRect(290, 250, 241, 31));
+        s_PasswordField->setEchoMode(QLineEdit::Password);
+        s_PasswordField->setClearButtonEnabled(true);
+        btn_create = new QPushButton(signIn);
+        btn_create->setObjectName(QString::fromUtf8("btn_create"));
+        btn_create->setGeometry(QRect(410, 330, 81, 31));
+        accountView->addWidget(signIn);
+        signUp = new QWidget();
+        signUp->setObjectName(QString::fromUtf8("signUp"));
+        createTitle = new QLabel(signUp);
+        createTitle->setObjectName(QString::fromUtf8("createTitle"));
+        createTitle->setGeometry(QRect(220, 80, 381, 81));
+        c_UsernameField = new QLineEdit(signUp);
+        c_UsernameField->setObjectName(QString::fromUtf8("c_UsernameField"));
+        c_UsernameField->setGeometry(QRect(290, 170, 241, 31));
+        c_UsernameField->setClearButtonEnabled(true);
+        c_PasswordField = new QLineEdit(signUp);
+        c_PasswordField->setObjectName(QString::fromUtf8("c_PasswordField"));
+        c_PasswordField->setGeometry(QRect(290, 250, 241, 31));
+        c_PasswordField->setEchoMode(QLineEdit::Password);
+        c_PasswordField->setClearButtonEnabled(true);
+        btn_signUp = new QPushButton(signUp);
+        btn_signUp->setObjectName(QString::fromUtf8("btn_signUp"));
+        btn_signUp->setGeometry(QRect(310, 330, 81, 31));
+        btn_back = new QPushButton(signUp);
+        btn_back->setObjectName(QString::fromUtf8("btn_back"));
+        btn_back->setGeometry(QRect(410, 330, 81, 31));
+        c_EmailField = new QLineEdit(signUp);
+        c_EmailField->setObjectName(QString::fromUtf8("c_EmailField"));
+        c_EmailField->setGeometry(QRect(290, 210, 241, 31));
+        c_EmailField->setClearButtonEnabled(true);
+        accountView->addWidget(signUp);
+        loggedIn = new QWidget();
+        loggedIn->setObjectName(QString::fromUtf8("loggedIn"));
+        label = new QLabel(loggedIn);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(20, 80, 121, 41));
+        textBrowser_2 = new QTextBrowser(loggedIn);
+        textBrowser_2->setObjectName(QString::fromUtf8("textBrowser_2"));
+        textBrowser_2->setGeometry(QRect(30, 120, 331, 31));
+        textBrowser_3 = new QTextBrowser(loggedIn);
+        textBrowser_3->setObjectName(QString::fromUtf8("textBrowser_3"));
+        textBrowser_3->setGeometry(QRect(30, 160, 331, 31));
+        toolButton = new QToolButton(loggedIn);
+        toolButton->setObjectName(QString::fromUtf8("toolButton"));
+        toolButton->setGeometry(QRect(370, 120, 33, 31));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8("../assets/no-view.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton->setIcon(icon3);
+        toolButton_2 = new QToolButton(loggedIn);
+        toolButton_2->setObjectName(QString::fromUtf8("toolButton_2"));
+        toolButton_2->setGeometry(QRect(370, 160, 33, 31));
+        toolButton_2->setIcon(icon3);
+        toolButton_3 = new QToolButton(loggedIn);
+        toolButton_3->setObjectName(QString::fromUtf8("toolButton_3"));
+        toolButton_3->setGeometry(QRect(410, 120, 33, 31));
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8("../assets/clipboard.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_3->setIcon(icon4);
+        toolButton_4 = new QToolButton(loggedIn);
+        toolButton_4->setObjectName(QString::fromUtf8("toolButton_4"));
+        toolButton_4->setGeometry(QRect(410, 160, 33, 31));
+        toolButton_4->setIcon(icon4);
+        accountView->addWidget(loggedIn);
+        stackedWidget->addWidget(account);
         MainWindow->setCentralWidget(centralwidget);
         stackedWidget->raise();
         tabWidget->raise();
@@ -200,9 +311,9 @@ public:
         menubar->setGeometry(QRect(0, 0, 800, 30));
         icon = new QMenu(menubar);
         icon->setObjectName(QString::fromUtf8("icon"));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8("../assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
-        icon->setIcon(icon3);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8("../assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon->setIcon(icon5);
         icon->setSeparatorsCollapsible(false);
         text = new QMenu(menubar);
         text->setObjectName(QString::fromUtf8("text"));
@@ -214,7 +325,8 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(4);
+        accountView->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -237,6 +349,37 @@ public:
         ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
         QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
         ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Status", nullptr));
+#if QT_CONFIG(tooltip)
+        s_EmailField->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Hello</p></body></html>", nullptr));
+#endif // QT_CONFIG(tooltip)
+        s_EmailField->setText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
+        btn_signIn->setText(QCoreApplication::translate("MainWindow", "Sign In", nullptr));
+        signInTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Sign in to your Plasmacoin Account</span></p></body></html>", nullptr));
+#if QT_CONFIG(tooltip)
+        s_PasswordField->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Hello</p></body></html>", nullptr));
+#endif // QT_CONFIG(tooltip)
+        s_PasswordField->setText(QCoreApplication::translate("MainWindow", "Password", nullptr));
+        btn_create->setText(QCoreApplication::translate("MainWindow", "Create...", nullptr));
+        createTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Create your Plasmacoin account</span></p></body></html>", nullptr));
+#if QT_CONFIG(tooltip)
+        c_UsernameField->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Hello</p></body></html>", nullptr));
+#endif // QT_CONFIG(tooltip)
+        c_UsernameField->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
+#if QT_CONFIG(tooltip)
+        c_PasswordField->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Hello</p></body></html>", nullptr));
+#endif // QT_CONFIG(tooltip)
+        c_PasswordField->setText(QCoreApplication::translate("MainWindow", "Password", nullptr));
+        btn_signUp->setText(QCoreApplication::translate("MainWindow", "Sign Up", nullptr));
+        btn_back->setText(QCoreApplication::translate("MainWindow", "Go Back...", nullptr));
+#if QT_CONFIG(tooltip)
+        c_EmailField->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Hello</p></body></html>", nullptr));
+#endif // QT_CONFIG(tooltip)
+        c_EmailField->setText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">RSA Keys</span></p></body></html>", nullptr));
+        toolButton->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        toolButton_2->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        toolButton_3->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        toolButton_4->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         icon->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
         text->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
     } // retranslateUi
