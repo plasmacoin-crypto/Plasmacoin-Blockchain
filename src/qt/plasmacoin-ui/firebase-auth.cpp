@@ -28,7 +28,7 @@ void Auth::SignUp(const QString& email, const QString& username, const QString& 
 	Post(endpoint, jsonPayload); // Make a post request
 
 	// Once a token has been requested, add the user to the RTDB
-	connect(this, &Auth::RequestedToken, this, [&, this, email, username, password]() {
+	connect(this, &Auth::UserSignedIn, this, [&, this, email, username, password]() {
 		this->AddUser(email, username, password);
 	});
 }
@@ -101,8 +101,6 @@ void Auth::RequestToken() {
 	// The API URL
 	QString endpoint = "https://securetoken.googleapis.com/v1/token?key=" + m_APIKey;
 	QString header = "application/x-www-form-urlencoded";
-
-	m_RefreshToken = "ACzBnCj6u4GNQKV9j5PQN9yYgiGlULDHTNVaKGfL9qlOetI3yvkmVzClvusGBtRctmR41jsDr3uvlje-Q1VZwWYGmc0aRcuKCCpeazc0K0UP5BEEQjs65fcLleqX2q61azVodHqOnsygtWKOLFceN27UJqAcwCzvJ6V91rHPHSUwwhyVPnrM8GySFZy2IiUWZa_94u6d4gEtf_6W0PZXdG1zdDU90oNkaw";
 
 	//QUrlQuery params;
 	//params.addQueryItem("grant_type", "refresh_token");
