@@ -23,6 +23,7 @@
 #include <QDebug>
 #include <QString>
 #include <QObject>
+#include <QUrlQuery>
 
 #include <cryptopp/cryptlib.h>
 #include <cryptopp/pwdbased.h>
@@ -43,32 +44,38 @@ class Auth : public QMainWindow, public Ui_MainWindow {
 public:
 	Auth();
 
-	void SignUp(const QString& email, const QString& password);
+	void SignUp(const QString& email, const QString& username, const QString& password);
 	void SignIn(const QString& email, const QString& password);
 
 private:
 	QNetworkAccessManager* m_Manager;
 	QNetworkReply* m_Reply;
 	QString m_APIKey = "AIzaSyCy39L5RALPFihk-akUffLx-cMGH6wWlBY";
-	QString m_IDToken;
+	QString m_IDToken, m_RefreshToken;
 
 signals:
 	void UserSignedIn();
+	void RequestedToken();
 
 public slots:
 	void NetworkReplyReady();
-	void DBCall();
 
 private:
-	void Post(QVariant newUser);
-	void Post(const QString& url, const QJsonDocument& payload);
+	void AddUser(const QString& email, const QString& username, const QString& password);
 
-	void ParseResponse(const QByteArray& response);
+	void Post(const QString& url, const QJsonDocument& payload, const QString& header = "application/json");
+	void Post(const QString& url, const QByteArray& data, const QString& header = "application/json");
 
 public:
-	template<std::size_t N> std::string EncryptPassword(const char (&_password)[N]);
-};
+	void RequestToken();
 
-#include "firebase-auth.tcc"
+public:
+	void Get();
+	bool SearchFor(std::string query);
+
+private:
+	void ParseResponse(const QByteArray& response);
+	std::string EncryptPassword(std::string _password);
+};
 
 #endif // FIREBASE_AUTH_H
