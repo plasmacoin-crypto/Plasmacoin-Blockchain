@@ -90,8 +90,8 @@ void Auth::Post(const QString& url, const QByteArray& data, const QString& heade
 	QNetworkRequest request((QUrl(url)));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, QString(header));
 
-	connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
 	m_Reply = m_Manager->post(request, data); // Make a POST request
+	connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
 }
 
 // Request that a user's ID token be regenerated. This is done by calling the Token Service
@@ -110,21 +110,20 @@ void Auth::RequestToken() {
 	data.append("grant_type=refresh_token");
 	data.append(std::string("&refresh_token=" + m_RefreshToken.toStdString()).c_str());
 
-	// Make a post request to the RTDB
-	QNetworkRequest request((QUrl(endpoint)));
-	request.setHeader(QNetworkRequest::ContentTypeHeader, header);
-	request.setHeader(QNetworkRequest::ContentLengthHeader, data.size());
-
-	connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
-	m_Reply = m_Manager->post(request, data); // Make a POST request
+	Post(endpoint, data, header); // Make a post request to the RTDB
 }
 
 // Make an authenticated GET request to the RTDB
 void Auth::Get() {
-	QString endpoint = "https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json?auth=" + m_IDToken;
-	m_Reply = m_Manager->get(QNetworkRequest(QUrl(endpoint))); // Get data from the RTDB
+	connect(this, &Auth::UserSignedIn, this, &Auth::RequestToken); // Request a new ID token
 
-	connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
+	// Make a GET request
+	connect(this, &Auth::RequestedToken, this, [&, this]() {
+		QString endpoint = "https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json?auth=" + m_IDToken;
+		this->m_Reply = m_Manager->get(QNetworkRequest(QUrl(endpoint))); // Get data from the RTDB
+
+		connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
+	});
 }
 
 bool Auth::SearchFor(std::string query) {

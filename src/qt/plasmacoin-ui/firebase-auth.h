@@ -59,15 +59,13 @@ signals:
 
 public slots:
 	void NetworkReplyReady();
+	void RequestToken();
 
 private:
 	void AddUser(const QString& email, const QString& username, const QString& password);
 
 	void Post(const QString& url, const QJsonDocument& payload, const QString& header = "application/json");
 	void Post(const QString& url, const QByteArray& data, const QString& header = "application/json");
-
-public:
-	void RequestToken();
 
 public:
 	void Get();
