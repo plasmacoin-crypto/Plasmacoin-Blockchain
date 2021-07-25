@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Auth_t {
     QByteArrayData data[5];
-    char stringdata0[44];
+    char stringdata0[52];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,12 +35,12 @@ static const qt_meta_stringdata_Auth_t qt_meta_stringdata_Auth = {
 QT_MOC_LITERAL(0, 0, 4), // "Auth"
 QT_MOC_LITERAL(1, 5, 12), // "UserSignedIn"
 QT_MOC_LITERAL(2, 18, 0), // ""
-QT_MOC_LITERAL(3, 19, 17), // "NetworkReplyReady"
-QT_MOC_LITERAL(4, 37, 6) // "DBCall"
+QT_MOC_LITERAL(3, 19, 14), // "RequestedToken"
+QT_MOC_LITERAL(4, 34, 17) // "NetworkReplyReady"
 
     },
-    "Auth\0UserSignedIn\0\0NetworkReplyReady\0"
-    "DBCall"
+    "Auth\0UserSignedIn\0\0RequestedToken\0"
+    "NetworkReplyReady"
 };
 #undef QT_MOC_LITERAL
 
@@ -55,20 +55,20 @@ static const uint qt_meta_data_Auth[] = {
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       1,       // signalCount
+       2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
        1,    0,   29,    2, 0x06 /* Public */,
+       3,    0,   30,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       3,    0,   30,    2, 0x0a /* Public */,
        4,    0,   31,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
+    QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -81,8 +81,8 @@ void Auth::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
         (void)_t;
         switch (_id) {
         case 0: _t->UserSignedIn(); break;
-        case 1: _t->NetworkReplyReady(); break;
-        case 2: _t->DBCall(); break;
+        case 1: _t->RequestedToken(); break;
+        case 2: _t->NetworkReplyReady(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -91,6 +91,13 @@ void Auth::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
             using _t = void (Auth::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Auth::UserSignedIn)) {
                 *result = 0;
+                return;
+            }
+        }
+        {
+            using _t = void (Auth::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Auth::RequestedToken)) {
+                *result = 1;
                 return;
             }
         }
@@ -144,6 +151,12 @@ int Auth::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 void Auth::UserSignedIn()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
+}
+
+// SIGNAL 1
+void Auth::RequestedToken()
+{
+    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE
