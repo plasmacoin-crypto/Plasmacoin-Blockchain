@@ -56,7 +56,7 @@ SOURCES       = ../plasmacoin-ui/main.cpp \
 		../plasmacoin-ui/mainwindow.cpp moc_mainwindow.cpp \
 		../plasmacoin-ui/transaction-list.cpp moc_transactionlist.cpp \
 		../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/recipient-list.cpp \
-		../plasmacoin-ui/firebase-auth.cpp ../plasmacoin-ui/firebase-auth.tcc
+		../plasmacoin-ui/firebase-auth.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		moc_mainwindow.o \
@@ -307,7 +307,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		../plasmacoin-ui/transaction-list.h ../plasmacoin-ui/transaction-list.cpp \
 		../plasmacoin-ui/mining-status.h ../plasmacoin-ui/mining-status.cpp \
 		../plasmacoin-ui/recipient-list.h ../plasmacoin-ui/recipient-list.cpp \
-		../plasmacoin-ui/firebase-auth.h ../plasmacoin/firebase-auth.cpp ../plasmacoin-ui/firebase-auth.tcc
+		../plasmacoin-ui/firebase-auth.h ../plasmacoin/firebase-auth.cpp
 QMAKE_TARGET  = plasmacoin-ui
 DESTDIR       =
 TARGET        = plasmacoin-ui
@@ -899,7 +899,7 @@ merkle-helpers.o: ../../merkle-helpers.c ../../merkle-helpers.h
 # GUI
 
 main.o: ../plasmacoin-ui/main.cpp ../plasmacoin-ui/mainwindow.h \
-		 ui_mainwindow.h ../plasmacoin-ui/firebase-auth.h ../plasmacoin-ui/firebase-auth.tcc
+		 ui_mainwindow.h ../plasmacoin-ui/firebase-auth.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../plasmacoin-ui/main.cpp $(LINKS)
 
 mainwindow.o: ../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/mainwindow.h \
@@ -923,7 +923,7 @@ mining-status.o: ../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/mining-stat
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mining-status.o ../plasmacoin-ui/mining-status.cpp
 
 firebase-auth.o: ../plasmacoin-ui/firebase-auth.cpp ../plasmacoin-ui/firebase-auth.h \
-				 ../plasmacoin-ui/firebase-auth.tcc ui_mainwindow.h
+				 ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o firebase-auth.o ../plasmacoin-ui/firebase-auth.cpp $(LINKS)
 
 ####### Install
