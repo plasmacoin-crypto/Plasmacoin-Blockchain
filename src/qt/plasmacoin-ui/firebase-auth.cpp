@@ -65,11 +65,6 @@ void Auth::AddUser(const QString& email, const QString& username, const QString&
 	QJsonDocument jsonDoc = QJsonDocument::fromVariant(newUser); // Load the QVariant as JSON
 
 	Post("https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json?auth=" + this->m_IDToken, jsonDoc);
-
-	// Make a post request to the RTDB
-	//QNetworkRequest request(QUrl("https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json"));
-	//request.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json"));
-	//m_Manager->post(request, jsonDoc.toJson()); // Send the data
 }
 
 // Use a POST request to write data to a certain Firebase API endpoint
@@ -122,7 +117,8 @@ void Auth::Get() {
 		QString endpoint = "https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json?auth=" + m_IDToken;
 		this->m_Reply = m_Manager->get(QNetworkRequest(QUrl(endpoint))); // Get data from the RTDB
 
-		connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
+		// Send the data to be parsed
+		connect(this->m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady);
 	});
 }
 
@@ -132,13 +128,15 @@ bool Auth::SearchFor(std::string query) {
 
 void Auth::ParseResponse(const QByteArray& response) {
 	QJsonDocument jsonDocument = QJsonDocument::fromJson(response);
+	m_LastResponse = jsonDocument.toJson();
 
 	qDebug() << jsonDocument.toJson();
 
-	if (jsonDocument.object().contains("error")) { // Handle a failure
+	if (jsonDocument.object().contains("error")) {
+		// Handle a failure
 		qDebug() << "Error:" << response;
 	}
-	else if (jsonDocument.object().contains("kind")) { // Handle a successful call
+	else if (jsonDocument.object().contains("kind")) {
 		m_IDToken = jsonDocument.object().value("idToken").toString();
 		m_RefreshToken = jsonDocument.object().value("refreshToken").toString();
 

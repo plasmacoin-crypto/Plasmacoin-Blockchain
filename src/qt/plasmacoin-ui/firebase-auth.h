@@ -12,6 +12,7 @@
 #include <cstring>
 #include <iterator>
 #include <algorithm>
+#include <future>
 
 #include <QtWidgets/QMainWindow>
 #include <QNetworkAccessManager>
@@ -52,6 +53,7 @@ private:
 	QNetworkReply* m_Reply;
 	QString m_APIKey = "AIzaSyCy39L5RALPFihk-akUffLx-cMGH6wWlBY";
 	QString m_IDToken, m_RefreshToken;
+	QByteArray m_LastResponse; // The last JSON response from the REST API
 
 signals:
 	void UserSignedIn();
