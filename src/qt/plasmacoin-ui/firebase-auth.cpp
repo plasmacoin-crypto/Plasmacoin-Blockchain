@@ -27,7 +27,7 @@ void Auth::SignUp(const QString& email, const QString& username, const QString& 
 	QJsonDocument jsonPayload = QJsonDocument::fromVariant(payload); // Load the QVariant as JSON
 	Post(endpoint, jsonPayload); // Make a post request
 
-	// Once a token has been requested, add the user to the RTDB
+	// Add the user to the RTDB
 	connect(this, &Auth::UserSignedIn, this, [&, this, email, username, password]() {
 		this->AddUser(email, username, password);
 	});
@@ -84,6 +84,7 @@ void Auth::Post(const QString& url, const QByteArray& data, const QString& heade
 	// Make a post request to the RTDB
 	QNetworkRequest request((QUrl(url)));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, QString(header));
+	request.setHeader(QNetworkRequest::ContentLengthHeader, data.size());
 
 	m_Reply = m_Manager->post(request, data); // Make a POST request
 	connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
@@ -97,10 +98,6 @@ void Auth::RequestToken() {
 	QString endpoint = "https://securetoken.googleapis.com/v1/token?key=" + m_APIKey;
 	QString header = "application/x-www-form-urlencoded";
 
-	//QUrlQuery params;
-	//params.addQueryItem("grant_type", "refresh_token");
-	//params.addQueryItem("refresh_token", m_RefreshToken.toStdString().c_str());
-
 	QByteArray data;
 	data.append("grant_type=refresh_token");
 	data.append(std::string("&refresh_token=" + m_RefreshToken.toStdString()).c_str());
@@ -111,6 +108,7 @@ void Auth::RequestToken() {
 // Make an authenticated GET request to the RTDB
 void Auth::Get() {
 	connect(this, &Auth::UserSignedIn, this, &Auth::RequestToken); // Request a new ID token
+	//RequestToken();
 
 	// Make a GET request
 	connect(this, &Auth::RequestedToken, this, [&, this]() {
