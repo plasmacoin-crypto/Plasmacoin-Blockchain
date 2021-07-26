@@ -326,7 +326,7 @@ public:
 
         tabWidget->setCurrentIndex(0);
         stackedWidget->setCurrentIndex(4);
-        accountView->setCurrentIndex(2);
+        accountView->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
