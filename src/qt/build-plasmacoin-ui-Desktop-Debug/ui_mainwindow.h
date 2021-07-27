@@ -232,7 +232,7 @@ public:
         btn_signIn->setGeometry(QRect(310, 330, 81, 31));
         signInTitle = new QLabel(signIn);
         signInTitle->setObjectName(QString::fromUtf8("signInTitle"));
-        signInTitle->setGeometry(QRect(220, 110, 371, 81));
+        signInTitle->setGeometry(QRect(230, 110, 371, 81));
         s_PasswordField = new QLineEdit(signIn);
         s_PasswordField->setObjectName(QString::fromUtf8("s_PasswordField"));
         s_PasswordField->setGeometry(QRect(290, 250, 241, 31));
