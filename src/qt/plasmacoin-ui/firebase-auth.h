@@ -66,9 +66,7 @@ public slots:
 private:
 	void AddUser(const QString& email, const QString& username, const QString& password, const QString& uid);
 
-	//
 	// HTTP Request Implementations
-	//
 	void Post(const QString& url, const QJsonDocument& payload, const QString& header = "application/json");
 	void Post(const QString& url, const QByteArray& data, const QString& header = "application/json");
 
