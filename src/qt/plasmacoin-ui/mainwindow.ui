@@ -324,7 +324,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="signIn">
        <widget class="QLineEdit" name="s_EmailField">
@@ -340,6 +340,9 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
          <string>Email Address</string>
         </property>
         <property name="clearButtonEnabled">
@@ -385,10 +388,13 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Password</string>
+         <string/>
         </property>
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>
+        </property>
+        <property name="placeholderText">
+         <string>Password</string>
         </property>
         <property name="clearButtonEnabled">
          <bool>true</bool>
@@ -435,6 +441,9 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
          <string>Username</string>
         </property>
         <property name="clearButtonEnabled">
@@ -454,10 +463,13 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Password</string>
+         <string/>
         </property>
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>
+        </property>
+        <property name="placeholderText">
+         <string>Password</string>
         </property>
         <property name="clearButtonEnabled">
          <bool>true</bool>
@@ -502,6 +514,9 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
          <string>Email Address</string>
         </property>
         <property name="clearButtonEnabled">
