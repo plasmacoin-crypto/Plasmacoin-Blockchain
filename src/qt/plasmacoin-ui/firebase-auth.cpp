@@ -29,7 +29,7 @@ void Auth::SignUp(const QString& email, const QString& username, const QString& 
 
 	// Add the user to the RTDB
 	connect(this, &Auth::UserSignedIn, this, [&, this, email, username, password]() {
-		this->AddUser(email, username, password);
+		this->AddUser(email, username, password, this->m_UserID);
 	});
 }
 
@@ -54,7 +54,7 @@ void Auth::NetworkReplyReady() {
 	ParseResponse(response);
 }
 
-void Auth::AddUser(const QString& email, const QString& username, const QString& password) {
+void Auth::AddUser(const QString& email, const QString& username, const QString& password, const QString& uid) {
 	QVariantMap newUser;
 
 	// Add the new user's information
@@ -62,32 +62,60 @@ void Auth::AddUser(const QString& email, const QString& username, const QString&
 	newUser["email"] = email;
 	newUser["password"] = QString(this->EncryptPassword(password.toStdString().c_str()).c_str());
 
-	QJsonDocument jsonDoc = QJsonDocument::fromVariant(newUser); // Load the QVariant as JSON
+	QJsonDocument body = QJsonDocument::fromVariant(newUser); // Load the QVariant as JSON
+	QString jsonStr = "{\"" + uid + "\":" + QString(body.toJson(QJsonDocument::Compact)) + "}"; // Build a JSON object as a QString
+	
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonStr.toUtf8()); // Convert the QString to a QJsonDocument
 
-	Post("https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json?auth=" + this->m_IDToken, jsonDoc);
+	Patch("https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json?auth=" + this->m_IDToken, jsonDoc);
 }
 
 // Use a POST request to write data to a certain Firebase API endpoint
 // Data type: QJsonDocument
 void Auth::Post(const QString& url, const QJsonDocument& payload, const QString& header) {
-	// Make a post request to the RTDB
+	// Prepare a request
 	QNetworkRequest request((QUrl(url)));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, QString(header));
 
-	m_Reply = m_Manager->post(request, payload.toJson()); // Make a POST request
+	m_Reply = m_Manager->post(request, payload.toJson()); // Make the request
 	connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
 }
 
 // Use a POST request to write data to a certain Firebase API endpoint
 // Data type: QByteArray
 void Auth::Post(const QString& url, const QByteArray& data, const QString& header) {
-	// Make a post request to the RTDB
+	// Prepare a request
 	QNetworkRequest request((QUrl(url)));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, QString(header));
 	request.setHeader(QNetworkRequest::ContentLengthHeader, data.size());
 
-	m_Reply = m_Manager->post(request, data); // Make a POST request
+	m_Reply = m_Manager->post(request, data); // Make the request
 	connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
+}
+
+// Use a PUT request to insert data at a certain Firebase API endpoint
+void Auth::Put(const QString& url, const QJsonDocument& payload, const QString& header) {
+	// Prepare a request
+	QNetworkRequest request((QUrl(url)));
+	request.setHeader(QNetworkRequest::ContentTypeHeader, QString(header));
+
+	m_Reply = m_Manager->put(request, payload.toJson()); // Make the request
+	connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
+}
+
+void Auth::Patch(const QString& url, const QJsonDocument& payload, const QString& header) {
+	// Prepare a request
+	QNetworkRequest request((QUrl(url)));
+	request.setHeader(QNetworkRequest::ContentTypeHeader, QString(header));
+
+	m_Reply = m_Manager->sendCustomRequest(request, "PATCH", payload.toJson()); // Make the request
+	connect(m_Reply, &QNetworkReply::readyRead, this, &Auth::NetworkReplyReady); // Send the data to be parsed
+
+	// QNetworkRequest request(destination);
+	// request.setHeader(QNetworkRequest::ContentTypeHeader,
+	// 	"application/x-www-form-urlencoded");
+	// qDebug()<<jsonString;
+	// manager->sendCustomRequest(request,"PATCH",buffer);
 }
 
 // Request that a user's ID token be regenerated. This is done by calling the Token Service
@@ -108,7 +136,6 @@ void Auth::RequestToken() {
 // Make an authenticated GET request to the RTDB
 void Auth::Get() {
 	connect(this, &Auth::UserSignedIn, this, &Auth::RequestToken); // Request a new ID token
-	//RequestToken();
 
 	// Make a GET request
 	connect(this, &Auth::RequestedToken, this, [&, this]() {
@@ -121,6 +148,8 @@ void Auth::Get() {
 }
 
 bool Auth::SearchFor(std::string query) {
+	Get();
+
 
 }
 
@@ -137,6 +166,7 @@ void Auth::ParseResponse(const QByteArray& response) {
 	else if (jsonDocument.object().contains("kind")) {
 		m_IDToken = jsonDocument.object().value("idToken").toString();
 		m_RefreshToken = jsonDocument.object().value("refreshToken").toString();
+		m_UserID = jsonDocument.object().value("localId").toString();
 
 		qDebug() << "ID token:" << m_IDToken;
 		qDebug() << "Refresh token" << m_RefreshToken;
@@ -163,7 +193,7 @@ void Auth::ParseResponse(const QByteArray& response) {
 // Encrypt a user's password. This is done by combining a cryptographic salt with the
 // password, then using SHA-256 to hash the resulting string. Here, all the work is done
 // using PBKDF2 rather than each step being perfomred separately.
-std::string Auth::EncryptPassword(std::string _password) {
+std::string Auth::EncryptPassword(std::string _password) const {
 	// ----------------------------------
 
 	// Use Crypto++ to generate a random number. On Linux-based systems, /dev/random or /dev/urandom

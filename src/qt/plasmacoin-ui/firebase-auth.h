@@ -52,7 +52,7 @@ private:
 	QNetworkAccessManager* m_Manager;
 	QNetworkReply* m_Reply;
 	QString m_APIKey = "AIzaSyCy39L5RALPFihk-akUffLx-cMGH6wWlBY";
-	QString m_IDToken, m_RefreshToken;
+	QString m_IDToken, m_RefreshToken, m_UserID;
 	QByteArray m_LastResponse; // The last JSON response from the REST API
 
 signals:
@@ -64,10 +64,17 @@ public slots:
 	void RequestToken();
 
 private:
-	void AddUser(const QString& email, const QString& username, const QString& password);
+	void AddUser(const QString& email, const QString& username, const QString& password, const QString& uid);
 
+	//
+	// HTTP Request Implementations
+	//
 	void Post(const QString& url, const QJsonDocument& payload, const QString& header = "application/json");
 	void Post(const QString& url, const QByteArray& data, const QString& header = "application/json");
+
+	void Put(const QString& url, const QJsonDocument& payload, const QString& header = "application/json");
+
+	void Patch(const QString& url, const QJsonDocument& payload, const QString& header = "application/json");
 
 public:
 	void Get();
@@ -75,7 +82,7 @@ public:
 
 private:
 	void ParseResponse(const QByteArray& response);
-	std::string EncryptPassword(std::string _password);
+	std::string EncryptPassword(std::string _password) const;
 };
 
 #endif // FIREBASE_AUTH_H
