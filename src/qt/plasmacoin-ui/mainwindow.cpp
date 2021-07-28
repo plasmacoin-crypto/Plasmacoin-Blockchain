@@ -10,6 +10,8 @@ using std::chrono::seconds;
 MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
+	m_AccPgs(new AccountPages(accountView)),
+	m_Authenticator(new Auth());
 	m_TList(new TransactionList(transactionList)),
 
 	// Use these definitions as a workaround to pass `this` into std::async
@@ -22,14 +24,18 @@ MainWindow::MainWindow(QWidget* parent):
 	m_TList->Populate(); // Load items into the transaction list
 
 	load.wait(); // Load the mining visuals
-	this->status = load.get(); // Capture the return value
+	this->m_Status = load.get(); // Capture the return value
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
 }
 
 MainWindow::~MainWindow() {
+	delete m_AccPgs;
+	delete m_Authenticator;
 	delete m_TList;
+
+	m_TabBar->deleteLater();
 }
 
 // Create QTextBrowsers to display on the mining tab
