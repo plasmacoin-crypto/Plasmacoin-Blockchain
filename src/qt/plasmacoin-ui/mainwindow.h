@@ -18,6 +18,7 @@
 
 #include "transaction-list.h"
 #include "mining-status.h"
+#include "account-pages.h"
 
 #include "block.hpp"
 #include "blockchain.hpp"
@@ -34,9 +35,9 @@ public:
 
 	QWidget* parent;
 
-	// Store the mining status object so it doesn't go out of scope when being
-	// captured by a lambda
-	Status status;
+	Status m_Status;
+	AccountPages* m_AccPgs;
+	Auth* m_Authenticator;
 
 	std::vector<QListWidgetItem*> m_BlockContents;
 
