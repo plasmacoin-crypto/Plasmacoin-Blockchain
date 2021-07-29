@@ -346,7 +346,7 @@
 #define __UINT_LEAST8_MAX__ 255
 #define __UINT_LEAST8_TYPE__ unsigned char
 #define __USER_LABEL_PREFIX__ 
-#define __VERSION__ "Clang 12.0.0"
+#define __VERSION__ "Clang 12.0.1"
 #define __WCHAR_MAX__ 4294967295U
 #define __WCHAR_TYPE__ unsigned int
 #define __WCHAR_UNSIGNED__ 1
@@ -359,8 +359,8 @@
 #define __clang__ 1
 #define __clang_major__ 12
 #define __clang_minor__ 0
-#define __clang_patchlevel__ 0
-#define __clang_version__ "12.0.0 "
+#define __clang_patchlevel__ 1
+#define __clang_version__ "12.0.1 "
 #define __cplusplus 201103L
 #define __cpp_alias_templates 200704L
 #define __cpp_attributes 200809L
