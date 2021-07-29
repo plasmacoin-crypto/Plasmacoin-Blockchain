@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
 	m_AccPgs(new AccountPages(accountView)),
-	m_Authenticator(new Auth());
+	m_Authenticator(new Auth()),
 	m_TList(new TransactionList(transactionList)),
 
 	// Use these definitions as a workaround to pass `this` into std::async
@@ -79,11 +79,11 @@ void MainWindow::StartMining() {
 }
 
 void MainWindow::UpdateStatus(Block& block, seconds time) {
-	status.SetHash(block.m_Hash);
-	status.SetNonce(block.m_Nonce);
-	status.SetTime(time);
+	m_Status.SetHash(block.m_Hash);
+	m_Status.SetNonce(block.m_Nonce);
+	m_Status.SetTime(time);
 
-	status.LoadVisuals();
+	m_Status.LoadVisuals();
 }
 
 // Definitions for slots
