@@ -34,8 +34,6 @@ MainWindow::~MainWindow() {
 	delete m_AccPgs;
 	delete m_Authenticator;
 	delete m_TList;
-
-	m_TabBar->deleteLater();
 }
 
 // Create QTextBrowsers to display on the mining tab
