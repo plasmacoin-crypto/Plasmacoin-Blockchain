@@ -84,7 +84,7 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="wallet">
      <widget class="QLCDNumber" name="usdollars">
@@ -324,7 +324,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="signIn">
        <widget class="QLineEdit" name="s_EmailField">
@@ -336,11 +336,8 @@
           <height>31</height>
          </rect>
         </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string/>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
         <property name="placeholderText">
          <string>Email Address</string>
@@ -384,11 +381,8 @@
           <height>31</height>
          </rect>
         </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string/>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>
@@ -437,12 +431,6 @@
           <height>31</height>
          </rect>
         </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
         <property name="placeholderText">
          <string>Username</string>
         </property>
@@ -458,12 +446,6 @@
           <width>241</width>
           <height>31</height>
          </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string/>
         </property>
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>
@@ -509,12 +491,6 @@
           <width>241</width>
           <height>31</height>
          </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string/>
         </property>
         <property name="placeholderText">
          <string>Email Address</string>
@@ -664,6 +640,31 @@
    <addaction name="text"/>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>s_EmailField</tabstop>
+  <tabstop>s_PasswordField</tabstop>
+  <tabstop>btn_signIn</tabstop>
+  <tabstop>btn_create</tabstop>
+  <tabstop>blockSize</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>amountLineEdit</tabstop>
+  <tabstop>textBrowser</tabstop>
+  <tabstop>btn_mine</tabstop>
+  <tabstop>plusSign</tabstop>
+  <tabstop>c_UsernameField</tabstop>
+  <tabstop>c_PasswordField</tabstop>
+  <tabstop>btn_signUp</tabstop>
+  <tabstop>btn_back</tabstop>
+  <tabstop>c_EmailField</tabstop>
+  <tabstop>textBrowser_2</tabstop>
+  <tabstop>textBrowser_3</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>toolButton_2</tabstop>
+  <tabstop>toolButton_3</tabstop>
+  <tabstop>toolButton_4</tabstop>
+  <tabstop>minusSign</tabstop>
+  <tabstop>blockTransactionList</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
