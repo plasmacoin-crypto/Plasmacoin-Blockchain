@@ -318,6 +318,28 @@ public:
         text = new QMenu(menubar);
         text->setObjectName(QString::fromUtf8("text"));
         MainWindow->setMenuBar(menubar);
+        QWidget::setTabOrder(s_EmailField, s_PasswordField);
+        QWidget::setTabOrder(s_PasswordField, btn_signIn);
+        QWidget::setTabOrder(btn_signIn, btn_create);
+        QWidget::setTabOrder(btn_create, blockSize);
+        QWidget::setTabOrder(blockSize, buttonBox);
+        QWidget::setTabOrder(buttonBox, amountLineEdit);
+        QWidget::setTabOrder(amountLineEdit, textBrowser);
+        QWidget::setTabOrder(textBrowser, btn_mine);
+        QWidget::setTabOrder(btn_mine, plusSign);
+        QWidget::setTabOrder(plusSign, c_UsernameField);
+        QWidget::setTabOrder(c_UsernameField, c_PasswordField);
+        QWidget::setTabOrder(c_PasswordField, btn_signUp);
+        QWidget::setTabOrder(btn_signUp, btn_back);
+        QWidget::setTabOrder(btn_back, c_EmailField);
+        QWidget::setTabOrder(c_EmailField, textBrowser_2);
+        QWidget::setTabOrder(textBrowser_2, textBrowser_3);
+        QWidget::setTabOrder(textBrowser_3, toolButton);
+        QWidget::setTabOrder(toolButton, toolButton_2);
+        QWidget::setTabOrder(toolButton_2, toolButton_3);
+        QWidget::setTabOrder(toolButton_3, toolButton_4);
+        QWidget::setTabOrder(toolButton_4, minusSign);
+        QWidget::setTabOrder(minusSign, blockTransactionList);
 
         menubar->addAction(icon->menuAction());
         menubar->addAction(text->menuAction());
@@ -326,7 +348,7 @@ public:
 
         tabWidget->setCurrentIndex(0);
         stackedWidget->setCurrentIndex(4);
-        accountView->setCurrentIndex(1);
+        accountView->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -349,36 +371,16 @@ public:
         ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
         QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
         ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Status", nullptr));
-#if QT_CONFIG(tooltip)
-        s_EmailField->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Hello</p></body></html>", nullptr));
-#endif // QT_CONFIG(tooltip)
-        s_EmailField->setText(QString());
         s_EmailField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
         btn_signIn->setText(QCoreApplication::translate("MainWindow", "Sign In", nullptr));
         signInTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Sign in to your Plasmacoin Account</span></p></body></html>", nullptr));
-#if QT_CONFIG(tooltip)
-        s_PasswordField->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Hello</p></body></html>", nullptr));
-#endif // QT_CONFIG(tooltip)
-        s_PasswordField->setText(QString());
         s_PasswordField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Password", nullptr));
         btn_create->setText(QCoreApplication::translate("MainWindow", "Create...", nullptr));
         createTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Create your Plasmacoin account</span></p></body></html>", nullptr));
-#if QT_CONFIG(tooltip)
-        c_UsernameField->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Hello</p></body></html>", nullptr));
-#endif // QT_CONFIG(tooltip)
-        c_UsernameField->setText(QString());
         c_UsernameField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Username", nullptr));
-#if QT_CONFIG(tooltip)
-        c_PasswordField->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Hello</p></body></html>", nullptr));
-#endif // QT_CONFIG(tooltip)
-        c_PasswordField->setText(QString());
         c_PasswordField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Password", nullptr));
         btn_signUp->setText(QCoreApplication::translate("MainWindow", "Sign Up", nullptr));
         btn_back->setText(QCoreApplication::translate("MainWindow", "Go Back...", nullptr));
-#if QT_CONFIG(tooltip)
-        c_EmailField->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Hello</p></body></html>", nullptr));
-#endif // QT_CONFIG(tooltip)
-        c_EmailField->setText(QString());
         c_EmailField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">RSA Keys</span></p></body></html>", nullptr));
         toolButton->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
