@@ -76,7 +76,7 @@ private:
 
 public:
 	void Get();
-	bool SearchFor(std::string query);
+	bool SearchFor(QString query);
 
 private:
 	void ParseResponse(const QByteArray& response);

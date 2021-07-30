@@ -64,7 +64,7 @@ void Auth::AddUser(const QString& email, const QString& username, const QString&
 
 	QJsonDocument body = QJsonDocument::fromVariant(newUser); // Load the QVariant as JSON
 	QString jsonStr = "{\"" + uid + "\":" + QString(body.toJson(QJsonDocument::Compact)) + "}"; // Build a JSON object as a QString
-	
+
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonStr.toUtf8()); // Convert the QString to a QJsonDocument
 
 	Patch("https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json?auth=" + this->m_IDToken, jsonDoc);
@@ -147,10 +147,11 @@ void Auth::Get() {
 	});
 }
 
-bool Auth::SearchFor(std::string query) {
-	Get();
+bool Auth::SearchFor(QString query) {
+	QJsonDocument doc = QJsonDocument::fromJson(m_LastResponse);
+	QJsonObject json = doc.object();
 
-
+	return json.find(query) != json.end();
 }
 
 void Auth::ParseResponse(const QByteArray& response) {
