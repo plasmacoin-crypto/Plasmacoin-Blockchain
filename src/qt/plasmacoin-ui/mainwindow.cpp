@@ -2,7 +2,6 @@
 
 #include "mainwindow.h"
 #include <iostream>
-#include <cassert>
 
 using std::chrono::high_resolution_clock;
 using std::chrono::seconds;
@@ -10,9 +9,9 @@ using std::chrono::seconds;
 MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
-	m_AccPgs(new AccountPages(accountView)),
+	m_AccPgs(new AccountPages(Ui::MainWindow::accountView)),
 	m_Authenticator(new Auth()),
-	m_TList(new TransactionList(transactionList)),
+	m_TList(new TransactionList(Ui::MainWindow::transactionList)),
 
 	// Use these definitions as a workaround to pass `this` into std::async
 	mine(std::async(std::launch::deferred, &MainWindow::StartMining, this)),
