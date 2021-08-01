@@ -347,7 +347,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(4);
+        stackedWidget->setCurrentIndex(0);
         accountView->setCurrentIndex(0);
 
 
