@@ -70,6 +70,25 @@ void Auth::AddUser(const QString& email, const QString& username, const QString&
 	Patch("https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json?auth=" + this->m_IDToken, jsonDoc);
 }
 
+void Auth::ModUsername(const QString& username) {
+	connect(this, &Auth::UserSignedIn, this, &Auth::RequestToken);
+
+	connect(this, &Auth::RequestedToken, this, [&, this, username]() {
+		QString endpoint = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=" + this->m_APIKey;
+
+		// Add the user's new information
+		QVariantMap modUser;
+		modUser["idToken"] = this->m_IDToken;
+		modUser["displayName"] = username;
+		modUser["photoUrl"] = ""; // Changing account pictures won't be allowed, at least for now
+		modUser["deleteAttribute"] = "PHOTO_URL";
+		modUser["returnSecureToken"] = false; // This call is not meant to refresh tokens, despite the functionality being available
+
+		QJsonDocument jsonPayload = QJsonDocument::fromVariant(modUser); // Load the QVariant as JSON
+		Post(endpoint, jsonPayload); // Make a post request
+	});
+}
+
 // Use a POST request to write data to a certain Firebase API endpoint
 // Data type: QJsonDocument
 void Auth::Post(const QString& url, const QJsonDocument& payload, const QString& header) {
@@ -164,7 +183,7 @@ void Auth::ParseResponse(const QByteArray& response) {
 		// Handle a failure
 		qDebug() << "Error:" << response;
 	}
-	else if (jsonDocument.object().contains("kind")) {
+	else if (jsonDocument.object().contains("kind") && !jsonDocument.object().contains("displayName")) {
 		m_IDToken = jsonDocument.object().value("idToken").toString();
 		m_RefreshToken = jsonDocument.object().value("refreshToken").toString();
 		m_UserID = jsonDocument.object().value("localId").toString();

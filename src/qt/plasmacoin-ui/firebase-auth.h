@@ -58,6 +58,8 @@ private:
 signals:
 	void UserSignedIn();
 	void RequestedToken();
+	void EmailExists();
+	void UsernameTaken();
 
 public slots:
 	void NetworkReplyReady();
@@ -65,6 +67,7 @@ public slots:
 
 private:
 	void AddUser(const QString& email, const QString& username, const QString& password, const QString& uid);
+	void ModUsername(const QString& username);
 
 	// HTTP Request Implementations
 	void Post(const QString& url, const QJsonDocument& payload, const QString& header = "application/json");
