@@ -38,12 +38,12 @@ MainWindow::~MainWindow() {
 // Create QTextBrowsers to display on the mining tab
 Status MainWindow::LoadMiningVisuals(Transaction* transaction) {
 	// The three widgets to display on the screen
-	QTextBrowser  *browser1 = new QTextBrowser(Ui::MainWindow::mineCoins),
-				  *browser2 = new QTextBrowser(Ui::MainWindow::mineCoins),
-				  *browser3 = new QTextBrowser(Ui::MainWindow::mineCoins),
-				  *browser4 = new QTextBrowser(Ui::MainWindow::mineCoins);
+	QTextBrowser  browser1 = QTextBrowser(Ui::MainWindow::mineCoins),
+				  browser2 = QTextBrowser(Ui::MainWindow::mineCoins),
+				  browser3 = QTextBrowser(Ui::MainWindow::mineCoins),
+				  browser4 = QTextBrowser(Ui::MainWindow::mineCoins);
 
-	Status status(browser1, browser2, browser3, browser4);
+	Status status(&browser1, &browser2, &browser3, &browser4);
 
 	return status;
 }
