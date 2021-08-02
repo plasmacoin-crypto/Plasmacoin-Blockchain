@@ -9,7 +9,6 @@ using std::chrono::seconds;
 MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
-	m_AccPgs(new AccountPages(Ui::MainWindow::accountView)),
 	m_Authenticator(new Auth()),
 	m_TList(new TransactionList(Ui::MainWindow::transactionList)),
 
@@ -25,6 +24,12 @@ MainWindow::MainWindow(QWidget* parent):
 	load.wait(); // Load the mining visuals
 	this->m_Status = load.get(); // Capture the return value
 
+	QLabel *label1 = new QLabel("", Ui::MainWindow::accountView),
+	 	   *label2 = new QLabel("", Ui::MainWindow::accountView),
+	 	   *label3 = new QLabel("", Ui::MainWindow::accountView);
+
+	m_AccPgs = new AccountPages(Ui::MainWindow::accountView, label1, label2, label3);
+
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
 }
@@ -38,14 +43,13 @@ MainWindow::~MainWindow() {
 // Create QTextBrowsers to display on the mining tab
 Status MainWindow::LoadMiningVisuals(Transaction* transaction) {
 	// The three widgets to display on the screen
-	QTextBrowser  browser1 = QTextBrowser(Ui::MainWindow::mineCoins),
-				  browser2 = QTextBrowser(Ui::MainWindow::mineCoins),
-				  browser3 = QTextBrowser(Ui::MainWindow::mineCoins),
-				  browser4 = QTextBrowser(Ui::MainWindow::mineCoins);
+	QTextBrowser *browser1 = new QTextBrowser(Ui::MainWindow::mineCoins),
+				 *browser2 = new QTextBrowser(Ui::MainWindow::mineCoins),
+				 *browser3 = new QTextBrowser(Ui::MainWindow::mineCoins),
+				 *browser4 = new QTextBrowser(Ui::MainWindow::mineCoins);
 
-	Status status(&browser1, &browser2, &browser3, &browser4);
-
-	return status;
+ 	Status status(browser1, browser2, browser3, browser4);
+ 	return status;
 }
 
 // Call block mining code and make visual changes to the GUI once it's done
