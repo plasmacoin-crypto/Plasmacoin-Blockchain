@@ -24,9 +24,9 @@ MainWindow::MainWindow(QWidget* parent):
 	load.wait(); // Load the mining visuals
 	this->m_Status = load.get(); // Capture the return value
 
-	QLabel *label1 = new QLabel("", Ui::MainWindow::accountView),
-	 	   *label2 = new QLabel("", Ui::MainWindow::accountView),
-	 	   *label3 = new QLabel("", Ui::MainWindow::accountView);
+	QLabel *label1 = new QLabel("", Ui::MainWindow::signIn),
+	 	   *label2 = new QLabel("", Ui::MainWindow::signIn),
+	 	   *label3 = new QLabel("", Ui::MainWindow::signIn);
 
 	m_AccPgs = new AccountPages(Ui::MainWindow::accountView, label1, label2, label3);
 
