@@ -30,6 +30,7 @@ void Auth::SignUp(const QString& email, const QString& username, const QString& 
 	// Add the user to the RTDB
 	connect(this, &Auth::UserSignedIn, this, [&, this, email, username, password]() {
 		this->AddUser(email, username, password, this->m_UserID);
+		this->ModUsername(username);
 	});
 }
 
