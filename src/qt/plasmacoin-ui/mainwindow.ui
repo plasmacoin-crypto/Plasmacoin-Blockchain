@@ -425,6 +425,9 @@
           <height>31</height>
          </rect>
         </property>
+        <property name="statusTip">
+         <string>Your username can contain alphanumeric characters and the following special characters: #, $, &amp;, *, -</string>
+        </property>
         <property name="placeholderText">
          <string>Username</string>
         </property>
@@ -440,6 +443,9 @@
           <width>241</width>
           <height>31</height>
          </rect>
+        </property>
+        <property name="statusTip">
+         <string>Your password must be at least 6 characters long and contain at least 1 capital letter and 1 special character</string>
         </property>
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>
