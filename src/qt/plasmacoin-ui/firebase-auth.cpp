@@ -28,10 +28,10 @@ void Auth::SignUp(const QString& email, const QString& username, const QString& 
 	Post(endpoint, jsonPayload); // Make a post request
 
 	// Add the user to the RTDB
-	connect(this, &Auth::UserSignedIn, this, [&, this, email, username, password]() {
-		this->AddUser(email, username, password, this->m_UserID);
-		this->ModUsername(username);
-	});
+	// connect(this, &Auth::UserSignedIn, this, [&, this, email, username, password]() {
+	// 	this->AddUser(email, username, password, this->m_UserID);
+	// 	this->ModUsername(username);
+	// });
 }
 
 // Sign a user into their Plasmacoin account
@@ -182,7 +182,12 @@ void Auth::ParseResponse(const QByteArray& response) {
 
 	if (jsonDocument.object().contains("error")) {
 		// Handle a failure
-		qDebug() << "Error:" << response;
+		if (jsonDocument.object().value("message").toString() == "EMAIL_EXISTS") {
+			emit EmailExists();
+		}
+		else if (jsonDocument.object().value("message").toString() == "INVALID_EMAIL") {
+			emit InvalidEmail();
+		}
 	}
 	else if (jsonDocument.object().contains("kind") && !jsonDocument.object().contains("displayName")) {
 		m_IDToken = jsonDocument.object().value("idToken").toString();
