@@ -74,11 +74,11 @@ public:
     QPushButton *btn_create;
     QWidget *signUp;
     QLabel *createTitle;
-    QLineEdit *c_UsernameField;
-    QLineEdit *c_PasswordField;
     QPushButton *btn_signUp;
     QPushButton *btn_back;
     QLineEdit *c_EmailField;
+    QLineEdit *c_UsernameField;
+    QLineEdit *c_PasswordField;
     QWidget *loggedIn;
     QLabel *label;
     QTextBrowser *textBrowser_2;
@@ -247,15 +247,6 @@ public:
         createTitle = new QLabel(signUp);
         createTitle->setObjectName(QString::fromUtf8("createTitle"));
         createTitle->setGeometry(QRect(220, 80, 381, 81));
-        c_UsernameField = new QLineEdit(signUp);
-        c_UsernameField->setObjectName(QString::fromUtf8("c_UsernameField"));
-        c_UsernameField->setGeometry(QRect(290, 170, 241, 31));
-        c_UsernameField->setClearButtonEnabled(true);
-        c_PasswordField = new QLineEdit(signUp);
-        c_PasswordField->setObjectName(QString::fromUtf8("c_PasswordField"));
-        c_PasswordField->setGeometry(QRect(290, 250, 241, 31));
-        c_PasswordField->setEchoMode(QLineEdit::Password);
-        c_PasswordField->setClearButtonEnabled(true);
         btn_signUp = new QPushButton(signUp);
         btn_signUp->setObjectName(QString::fromUtf8("btn_signUp"));
         btn_signUp->setGeometry(QRect(310, 330, 81, 31));
@@ -264,8 +255,17 @@ public:
         btn_back->setGeometry(QRect(410, 330, 81, 31));
         c_EmailField = new QLineEdit(signUp);
         c_EmailField->setObjectName(QString::fromUtf8("c_EmailField"));
-        c_EmailField->setGeometry(QRect(290, 210, 241, 31));
+        c_EmailField->setGeometry(QRect(290, 170, 241, 31));
         c_EmailField->setClearButtonEnabled(true);
+        c_UsernameField = new QLineEdit(signUp);
+        c_UsernameField->setObjectName(QString::fromUtf8("c_UsernameField"));
+        c_UsernameField->setGeometry(QRect(290, 210, 241, 31));
+        c_UsernameField->setClearButtonEnabled(true);
+        c_PasswordField = new QLineEdit(signUp);
+        c_PasswordField->setObjectName(QString::fromUtf8("c_PasswordField"));
+        c_PasswordField->setGeometry(QRect(290, 250, 241, 31));
+        c_PasswordField->setEchoMode(QLineEdit::Password);
+        c_PasswordField->setClearButtonEnabled(true);
         accountView->addWidget(signUp);
         loggedIn = new QWidget();
         loggedIn->setObjectName(QString::fromUtf8("loggedIn"));
@@ -327,9 +327,7 @@ public:
         QWidget::setTabOrder(amountLineEdit, textBrowser);
         QWidget::setTabOrder(textBrowser, btn_mine);
         QWidget::setTabOrder(btn_mine, plusSign);
-        QWidget::setTabOrder(plusSign, c_UsernameField);
-        QWidget::setTabOrder(c_UsernameField, c_PasswordField);
-        QWidget::setTabOrder(c_PasswordField, btn_signUp);
+        QWidget::setTabOrder(plusSign, btn_signUp);
         QWidget::setTabOrder(btn_signUp, btn_back);
         QWidget::setTabOrder(btn_back, c_EmailField);
         QWidget::setTabOrder(c_EmailField, textBrowser_2);
@@ -347,8 +345,8 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(0);
-        accountView->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(4);
+        accountView->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -377,11 +375,23 @@ public:
         s_PasswordField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Password", nullptr));
         btn_create->setText(QCoreApplication::translate("MainWindow", "Create...", nullptr));
         createTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Create your Plasmacoin account</span></p></body></html>", nullptr));
-        c_UsernameField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Username", nullptr));
-        c_PasswordField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Password", nullptr));
         btn_signUp->setText(QCoreApplication::translate("MainWindow", "Sign Up", nullptr));
         btn_back->setText(QCoreApplication::translate("MainWindow", "Go Back...", nullptr));
         c_EmailField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
+#if QT_CONFIG(statustip)
+        c_UsernameField->setStatusTip(QCoreApplication::translate("MainWindow", "Your username can contain alphanumeric characters and the following special characters: #, $, &, *, -", nullptr));
+#endif // QT_CONFIG(statustip)
+#if QT_CONFIG(whatsthis)
+        c_UsernameField->setWhatsThis(QCoreApplication::translate("MainWindow", "Your password must be at least 6 characters long and contain at least 1 capital letter and 1 special character", nullptr));
+#endif // QT_CONFIG(whatsthis)
+        c_UsernameField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Username", nullptr));
+#if QT_CONFIG(statustip)
+        c_PasswordField->setStatusTip(QCoreApplication::translate("MainWindow", "Your password must be at least 6 characters long and contain at least 1 capital letter and 1 special character", nullptr));
+#endif // QT_CONFIG(statustip)
+#if QT_CONFIG(whatsthis)
+        c_PasswordField->setWhatsThis(QString());
+#endif // QT_CONFIG(whatsthis)
+        c_PasswordField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Password", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">RSA Keys</span></p></body></html>", nullptr));
         toolButton->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         toolButton_2->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
