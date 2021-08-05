@@ -58,7 +58,9 @@ private:
 signals:
 	void UserSignedIn();
 	void RequestedToken();
+
 	void EmailExists();
+	void InvalidEmail();
 	void UsernameTaken();
 
 public slots:
