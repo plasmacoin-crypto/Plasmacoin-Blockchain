@@ -318,26 +318,28 @@ public:
         text = new QMenu(menubar);
         text->setObjectName(QString::fromUtf8("text"));
         MainWindow->setMenuBar(menubar);
+        QWidget::setTabOrder(plusSign, minusSign);
+        QWidget::setTabOrder(minusSign, blockSize);
+        QWidget::setTabOrder(blockSize, btn_mine);
+        QWidget::setTabOrder(btn_mine, amountLineEdit);
+        QWidget::setTabOrder(amountLineEdit, buttonBox);
+        QWidget::setTabOrder(buttonBox, s_EmailField);
         QWidget::setTabOrder(s_EmailField, s_PasswordField);
         QWidget::setTabOrder(s_PasswordField, btn_signIn);
         QWidget::setTabOrder(btn_signIn, btn_create);
-        QWidget::setTabOrder(btn_create, blockSize);
-        QWidget::setTabOrder(blockSize, buttonBox);
-        QWidget::setTabOrder(buttonBox, amountLineEdit);
-        QWidget::setTabOrder(amountLineEdit, textBrowser);
-        QWidget::setTabOrder(textBrowser, btn_mine);
-        QWidget::setTabOrder(btn_mine, plusSign);
-        QWidget::setTabOrder(plusSign, btn_signUp);
+        QWidget::setTabOrder(btn_create, c_EmailField);
+        QWidget::setTabOrder(c_EmailField, c_UsernameField);
+        QWidget::setTabOrder(c_UsernameField, c_PasswordField);
+        QWidget::setTabOrder(c_PasswordField, btn_signUp);
         QWidget::setTabOrder(btn_signUp, btn_back);
-        QWidget::setTabOrder(btn_back, c_EmailField);
-        QWidget::setTabOrder(c_EmailField, textBrowser_2);
+        QWidget::setTabOrder(btn_back, toolButton);
+        QWidget::setTabOrder(toolButton, toolButton_3);
+        QWidget::setTabOrder(toolButton_3, toolButton_2);
+        QWidget::setTabOrder(toolButton_2, toolButton_4);
+        QWidget::setTabOrder(toolButton_4, blockTransactionList);
+        QWidget::setTabOrder(blockTransactionList, textBrowser_2);
         QWidget::setTabOrder(textBrowser_2, textBrowser_3);
-        QWidget::setTabOrder(textBrowser_3, toolButton);
-        QWidget::setTabOrder(toolButton, toolButton_2);
-        QWidget::setTabOrder(toolButton_2, toolButton_3);
-        QWidget::setTabOrder(toolButton_3, toolButton_4);
-        QWidget::setTabOrder(toolButton_4, minusSign);
-        QWidget::setTabOrder(minusSign, blockTransactionList);
+        QWidget::setTabOrder(textBrowser_3, textBrowser);
 
         menubar->addAction(icon->menuAction());
         menubar->addAction(text->menuAction());
@@ -345,8 +347,8 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(4);
-        accountView->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(0);
+        accountView->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -381,16 +383,11 @@ public:
 #if QT_CONFIG(statustip)
         c_UsernameField->setStatusTip(QCoreApplication::translate("MainWindow", "Your username can contain alphanumeric characters and the following special characters: #, $, &, *, -", nullptr));
 #endif // QT_CONFIG(statustip)
-#if QT_CONFIG(whatsthis)
-        c_UsernameField->setWhatsThis(QCoreApplication::translate("MainWindow", "Your password must be at least 6 characters long and contain at least 1 capital letter and 1 special character", nullptr));
-#endif // QT_CONFIG(whatsthis)
         c_UsernameField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Username", nullptr));
 #if QT_CONFIG(statustip)
         c_PasswordField->setStatusTip(QCoreApplication::translate("MainWindow", "Your password must be at least 6 characters long and contain at least 1 capital letter and 1 special character", nullptr));
 #endif // QT_CONFIG(statustip)
-#if QT_CONFIG(whatsthis)
-        c_PasswordField->setWhatsThis(QString());
-#endif // QT_CONFIG(whatsthis)
+        c_PasswordField->setInputMask(QString());
         c_PasswordField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Password", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">RSA Keys</span></p></body></html>", nullptr));
         toolButton->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
