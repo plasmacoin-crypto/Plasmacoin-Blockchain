@@ -34,7 +34,6 @@ public:
 	Status LoadMiningVisuals(Transaction* transaction); // Load certain content during mining operations
 
 	QWidget* parent;
-^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){5,}$
 	Status m_Status;
 	AccountPages* m_AccPgs;
 	Auth* m_Authenticator;
