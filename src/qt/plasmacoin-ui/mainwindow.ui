@@ -416,47 +416,6 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Create your Plasmacoin account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="c_UsernameField">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>210</y>
-          <width>241</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="statusTip">
-         <string>Your username can contain alphanumeric characters and the following special characters: #, $, &amp;, *, -</string>
-        </property>
-        <property name="placeholderText">
-         <string>Username</string>
-        </property>
-        <property name="clearButtonEnabled">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="c_PasswordField">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>250</y>
-          <width>241</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="statusTip">
-         <string>Your password must be at least 6 characters long and contain at least 1 capital letter and 1 special character</string>
-        </property>
-        <property name="echoMode">
-         <enum>QLineEdit::Password</enum>
-        </property>
-        <property name="placeholderText">
-         <string>Password</string>
-        </property>
-        <property name="clearButtonEnabled">
-         <bool>true</bool>
-        </property>
-       </widget>
        <widget class="QPushButton" name="btn_signUp">
         <property name="geometry">
          <rect>
@@ -494,6 +453,50 @@
         </property>
         <property name="placeholderText">
          <string>Email Address</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="c_UsernameField">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>210</y>
+          <width>241</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Your username can contain alphanumeric characters and the following special characters: #, $, &amp;, *, -</string>
+        </property>
+        <property name="placeholderText">
+         <string>Username</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="c_PasswordField">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>250</y>
+          <width>241</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Your password must be at least 6 characters long and contain at least 1 capital letter and 1 special character</string>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+        <property name="placeholderText">
+         <string>Password</string>
         </property>
         <property name="clearButtonEnabled">
          <bool>true</bool>
@@ -641,29 +644,29 @@
   </widget>
  </widget>
  <tabstops>
+  <tabstop>plusSign</tabstop>
+  <tabstop>minusSign</tabstop>
+  <tabstop>blockSize</tabstop>
+  <tabstop>btn_mine</tabstop>
+  <tabstop>amountLineEdit</tabstop>
+  <tabstop>buttonBox</tabstop>
   <tabstop>s_EmailField</tabstop>
   <tabstop>s_PasswordField</tabstop>
   <tabstop>btn_signIn</tabstop>
   <tabstop>btn_create</tabstop>
-  <tabstop>blockSize</tabstop>
-  <tabstop>buttonBox</tabstop>
-  <tabstop>amountLineEdit</tabstop>
-  <tabstop>textBrowser</tabstop>
-  <tabstop>btn_mine</tabstop>
-  <tabstop>plusSign</tabstop>
+  <tabstop>c_EmailField</tabstop>
   <tabstop>c_UsernameField</tabstop>
   <tabstop>c_PasswordField</tabstop>
   <tabstop>btn_signUp</tabstop>
   <tabstop>btn_back</tabstop>
-  <tabstop>c_EmailField</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>toolButton_3</tabstop>
+  <tabstop>toolButton_2</tabstop>
+  <tabstop>toolButton_4</tabstop>
+  <tabstop>blockTransactionList</tabstop>
   <tabstop>textBrowser_2</tabstop>
   <tabstop>textBrowser_3</tabstop>
-  <tabstop>toolButton</tabstop>
-  <tabstop>toolButton_2</tabstop>
-  <tabstop>toolButton_3</tabstop>
-  <tabstop>toolButton_4</tabstop>
-  <tabstop>minusSign</tabstop>
-  <tabstop>blockTransactionList</tabstop>
+  <tabstop>textBrowser</tabstop>
  </tabstops>
  <resources/>
  <connections/>
