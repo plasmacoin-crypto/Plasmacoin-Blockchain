@@ -9,10 +9,11 @@
 #include <iostream>
 
 AccountPages::AccountPages(QStackedWidget*& pages, QLabel* label1, QLabel* label2, QLabel* label3):
-	m_AccountView(pages),
 	m_EmailWarning(label1),
 	m_UsernameWarning(label2),
-	m_PasswordWarning(label3)
+	m_PasswordWarning(label3),
+
+	m_AccountView(pages)
 {
 	// Style all of the warning labels and position them on the screen
 	m_EmailWarning->setStyleSheet(STYLE);
@@ -24,6 +25,7 @@ AccountPages::AccountPages(QStackedWidget*& pages, QLabel* label1, QLabel* label
 	m_PasswordWarning->setStyleSheet(STYLE);
 	m_PasswordWarning->setGeometry(540, 250, 121, 31);
 
+	// Hide all the widgets
 	m_EmailWarning->setVisible(false);
 	m_UsernameWarning->setVisible(false);
 	m_PasswordWarning->setVisible(false);
