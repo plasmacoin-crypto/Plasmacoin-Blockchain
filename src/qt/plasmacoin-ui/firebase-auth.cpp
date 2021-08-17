@@ -18,14 +18,14 @@ Auth::Auth():
 
 // Sign a user up for a Plasmacoin Account
 void Auth::SignUp(const QString& email, const QString& username, const QString& password) {
+	m_Errors = 0;
+
 	if (!ValidateUsername(username)) {
 		m_Errors |= INVALID_USERNAME;
-		//emit InvalidUsername();
 	}
 
 	if (!ValidatePassword(password)) {
 		m_Errors |= INVALID_PASSWORD;
-		//emit InvalidPassword();
 	}
 
 	// The API URL
