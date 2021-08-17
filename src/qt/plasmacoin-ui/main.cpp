@@ -41,9 +41,45 @@ void accountPages(MainWindow& window) {
 		window.m_Authenticator->SignUp(email, username, password);
 	});
 
+	window.connect(window.m_Authenticator, &Auth::FoundAuthErrors, &window, [&window]() {
+		// Hide all the warning labels
+		window.m_AccPgs->m_EmailWarning->setVisible(false);
+		window.m_AccPgs->m_UsernameWarning->setVisible(false);
+		window.m_AccPgs->m_PasswordWarning->setVisible(false);
+
+		for (uint8_t code = Auth::EMAIL_EXISTS, i = 0; i < Auth::LAST; code = 1 << ++i) {
+			if (window.m_Authenticator->m_Errors & code) {
+				switch (code) {
+					case Auth::EMAIL_EXISTS:
+						emit window.m_Authenticator->EmailExists();
+						break;
+
+					case Auth::USERNAME_TAKEN:
+						emit window.m_Authenticator->UsernameTaken();
+						break;
+
+					case Auth::INVALID_EMAIL:
+						emit window.m_Authenticator->InvalidEmail();
+						break;
+
+					case Auth::INVALID_USERNAME:
+						emit window.m_Authenticator->InvalidUsername();
+						break;
+
+					case Auth::INVALID_PASSWORD:
+						emit window.m_Authenticator->InvalidPassword();
+						break;
+
+					default:
+						break;
+				}
+			}
+		}
+	});
+
 	// Take the user to the logged in view if Firebase successfully logged them in
 	window.connect(window.m_Authenticator, &Auth::UserSignedIn, &window, [&window]() {
-		if (!window.m_Authenticator->SearchFor("error")) {
+		if (!window.m_Authenticator->SearchFor("error") && window.m_Authenticator->m_Errors == 0) {
 			window.m_AccPgs->DisplayPage(2);
 		}
 	});
@@ -62,8 +98,20 @@ void accountPages(MainWindow& window) {
 
 	// Display a warning when a user tries to create an account with an email that's in use
 	window.connect(window.m_Authenticator, &Auth::UsernameTaken, &window, [&window]() {
-		window.m_AccPgs->m_EmailWarning->setText("Username already in use");
-		window.m_AccPgs->m_EmailWarning->setVisible(true);
+		window.m_AccPgs->m_UsernameWarning->setText("Username already in use");
+		window.m_AccPgs->m_UsernameWarning->setVisible(true);
+	});
+
+	// Display a warning when a user tries to create an account with an invalid username
+	window.connect(window.m_Authenticator, &Auth::InvalidUsername, &window, [&window]() {
+		window.m_AccPgs->m_UsernameWarning->setText("Username invalid");
+		window.m_AccPgs->m_UsernameWarning->setVisible(true);
+	});
+
+	// Display a warning when a user tries to create an account with an invalid password
+	window.connect(window.m_Authenticator, &Auth::InvalidPassword, &window, [&window]() {
+		window.m_AccPgs->m_PasswordWarning->setText("Password invalid");
+		window.m_AccPgs->m_PasswordWarning->setVisible(true);
 	});
 }
 
