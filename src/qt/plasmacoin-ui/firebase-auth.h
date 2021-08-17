@@ -20,11 +20,14 @@
 #include <QNetworkRequest>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QVariantMap>
 #include <QDebug>
 #include <QString>
 #include <QObject>
 #include <QUrlQuery>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 #include <cryptopp/cryptlib.h>
 #include <cryptopp/pwdbased.h>
@@ -48,20 +51,49 @@ public:
 	void SignUp(const QString& email, const QString& username, const QString& password);
 	void SignIn(const QString& email, const QString& password);
 
+	uint8_t m_Errors = 0; // Stores a number that corresponds to certain login errors
+
+	// I'd love Go's `iota` feature right about now...
+	enum m_ErrorCodes: uint8_t {
+		EMAIL_EXISTS 	 = 1 << 0,
+		USERNAME_TAKEN 	 = 1 << 1,
+		INVALID_EMAIL	 = 1 << 2,
+		INVALID_USERNAME = 1 << 3,
+		INVALID_PASSWORD = 1 << 4,
+
+		LAST			 = 5	// This is probbaly okay
+	};
+
 private:
 	QNetworkAccessManager* m_Manager;
 	QNetworkReply* m_Reply;
 	QString m_APIKey = "AIzaSyCy39L5RALPFihk-akUffLx-cMGH6wWlBY";
 	QString m_IDToken, m_RefreshToken, m_UserID;
 	QByteArray m_LastResponse; // The last JSON response from the REST API
+	QRegularExpressionValidator *m_UsernameValidator, *m_PasswordValidator;
+
+	QRegularExpression m_UsernameRegex = QRegularExpression("^([^\\.\\-])([_]{0,})(?=.{2,20}$)(?<![\\.\\-])(?!.*[_\\.\\-]{})[\\w_\\.\\-]+([^\\._\\-]|(?![_]))(?!\\.\\-)(?<![\\.\\-])$");
+	QRegularExpression m_PasswordRegex = QRegularExpression("^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){5,}$");
+
+
+public:
+	bool ValidateUsername(const QString& username);
+	bool ValidatePassword(const QString& password);
 
 signals:
+	void FinishedRequest();
+
 	void UserSignedIn();
 	void RequestedToken();
 
 	void EmailExists();
-	void InvalidEmail();
 	void UsernameTaken();
+
+	void InvalidEmail();
+	void InvalidUsername();
+	void InvalidPassword();
+
+	void FoundAuthErrors();
 
 public slots:
 	void NetworkReplyReady();

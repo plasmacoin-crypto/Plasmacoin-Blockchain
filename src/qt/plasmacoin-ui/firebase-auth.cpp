@@ -11,10 +11,23 @@
 Auth::Auth():
 	m_Manager(new QNetworkAccessManager(this)),
 	m_Reply(m_Manager->get(QNetworkRequest(QUrl("https://plasmacoin-crypto-default-rtdb.firebaseio.com/users.json"))))
+
+	//m_UsernameValidator(new QRegularExpressionValidator(QRegularExpression(USERNAME_REGEX), this)),
+	//m_PasswordValidator(new QRegularExpressionValidator(QRegularExpression(PASSWORD_REGEX), this))
 {}
 
 // Sign a user up for a Plasmacoin Account
 void Auth::SignUp(const QString& email, const QString& username, const QString& password) {
+	if (!ValidateUsername(username)) {
+		m_Errors |= INVALID_USERNAME;
+		//emit InvalidUsername();
+	}
+
+	if (!ValidatePassword(password)) {
+		m_Errors |= INVALID_PASSWORD;
+		//emit InvalidPassword();
+	}
+
 	// The API URL
 	QString endpoint = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + m_APIKey;
 
@@ -28,14 +41,22 @@ void Auth::SignUp(const QString& email, const QString& username, const QString& 
 	Post(endpoint, jsonPayload); // Make a post request
 
 	// Add the user to the RTDB
-	// connect(this, &Auth::UserSignedIn, this, [&, this, email, username, password]() {
-	// 	this->AddUser(email, username, password, this->m_UserID);
-	// 	this->ModUsername(username);
-	// });
+	connect(this, &Auth::UserSignedIn, this, [&, this, email, username, password]() {
+		this->AddUser(email, username, password, this->m_UserID);
+		this->ModUsername(username);
+	});
+
+	connect(this, &Auth::FinishedRequest, this, [&this]() {
+		if (this->m_Errors != 0) {
+			emit this->FoundAuthErrors();
+		}
+	});
 }
 
 // Sign a user into their Plasmacoin account
 void Auth::SignIn(const QString& email, const QString& password) {
+	m_Errors = 0;
+
 	// The API URL
 	QString endpoint = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + m_APIKey;
 
@@ -88,6 +109,14 @@ void Auth::ModUsername(const QString& username) {
 		QJsonDocument jsonPayload = QJsonDocument::fromVariant(modUser); // Load the QVariant as JSON
 		Post(endpoint, jsonPayload); // Make a post request
 	});
+}
+
+bool Auth::ValidateUsername(const QString& username) {
+	return m_UsernameRegex.match(username).hasMatch();
+}
+
+bool Auth::ValidatePassword(const QString& password) {
+	return m_PasswordRegex.match(password).hasMatch();
 }
 
 // Use a POST request to write data to a certain Firebase API endpoint
@@ -178,15 +207,20 @@ void Auth::ParseResponse(const QByteArray& response) {
 	QJsonDocument jsonDocument = QJsonDocument::fromJson(response);
 	m_LastResponse = jsonDocument.toJson();
 
-	qDebug() << jsonDocument.toJson();
+	qDebug().noquote() << jsonDocument.toJson();
 
 	if (jsonDocument.object().contains("error")) {
+		// Get the JSON dictionary called "error" within the response object
+		QVariantMap errorMap = jsonDocument.object().toVariantMap()["error"].toMap();
+
 		// Handle a failure
-		if (jsonDocument.object().value("message").toString() == "EMAIL_EXISTS") {
-			emit EmailExists();
+		if (errorMap["message"].toString() == "EMAIL_EXISTS") {
+			m_Errors |= EMAIL_EXISTS;
+			//emit EmailExists();
 		}
-		else if (jsonDocument.object().value("message").toString() == "INVALID_EMAIL") {
-			emit InvalidEmail();
+		else if (errorMap["message"].toString() == "INVALID_EMAIL") {
+			m_Errors |= INVALID_EMAIL;
+			//emit InvalidEmail();
 		}
 	}
 	else if (jsonDocument.object().contains("kind") && !jsonDocument.object().contains("displayName")) {
@@ -214,6 +248,8 @@ void Auth::ParseResponse(const QByteArray& response) {
 	else {
 		qDebug() << "Response:" << jsonDocument.toJson();
 	}
+
+	emit FinishedRequest();
 }
 
 // Encrypt a user's password. This is done by combining a cryptographic salt with the
