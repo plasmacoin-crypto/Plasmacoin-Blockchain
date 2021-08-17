@@ -46,7 +46,7 @@ void Auth::SignUp(const QString& email, const QString& username, const QString& 
 		this->ModUsername(username);
 	});
 
-	connect(this, &Auth::FinishedRequest, this, [&this]() {
+	connect(this, &Auth::FinishedRequest, this, [this]() {
 		if (this->m_Errors != 0) {
 			emit this->FoundAuthErrors();
 		}
