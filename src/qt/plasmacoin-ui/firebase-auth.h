@@ -73,8 +73,7 @@ private:
 	QRegularExpressionValidator *m_UsernameValidator, *m_PasswordValidator;
 
 	QRegularExpression m_UsernameRegex = QRegularExpression("^([^\\.\\-])([_]{0,})(?=.{2,20}$)(?<![\\.\\-])(?!.*[_\\.\\-]{})[\\w_\\.\\-]+([^\\._\\-]|(?![_]))(?!\\.\\-)(?<![\\.\\-])$");
-	QRegularExpression m_PasswordRegex = QRegularExpression("^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){5,}$");
-
+	QRegularExpression m_PasswordRegex = QRegularExpression("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{6,})\\S$");
 
 public:
 	bool ValidateUsername(const QString& username);
