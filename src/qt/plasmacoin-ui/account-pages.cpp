@@ -25,7 +25,7 @@ AccountPages::AccountPages(QStackedWidget*& pages, QLabel* label1, QLabel* label
 	m_PasswordWarning->setStyleSheet(STYLE);
 	m_PasswordWarning->setGeometry(540, 250, 121, 31);
 
-	// Hide all the widgets
+	// Hide all the warning labels
 	m_EmailWarning->setVisible(false);
 	m_UsernameWarning->setVisible(false);
 	m_PasswordWarning->setVisible(false);
