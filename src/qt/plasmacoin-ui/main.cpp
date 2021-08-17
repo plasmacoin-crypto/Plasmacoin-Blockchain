@@ -26,6 +26,11 @@ void accountPages(MainWindow& window) {
 		window.m_AccPgs->DisplayPage(1);
 	});
 
+	// Take a user from the sign up screen back to the sign in screen
+	window.connect(window.btn_back, &QPushButton::released, &window [&window]() {
+		window.m_AccPgs->DisplayPage(0);
+	})
+
 	// Sign a user into their account
 	window.connect(window.btn_signIn, &QPushButton::released, &window, [&window]() {
 		QString email, username, password;
@@ -34,6 +39,7 @@ void accountPages(MainWindow& window) {
 		window.m_Authenticator->SignIn(email, password);
 	});
 
+	// Sign a user up for their account
 	window.connect(window.btn_signUp, &QPushButton::released, &window, [&window]() {
 		QString email, username, password;
 		std::tie(email, username, password) = window.m_AccPgs->ReadText(); // Get the user's entries
@@ -41,6 +47,7 @@ void accountPages(MainWindow& window) {
 		window.m_Authenticator->SignUp(email, username, password);
 	});
 
+	// Check the current form for authentication errors
 	window.connect(window.m_Authenticator, &Auth::FoundAuthErrors, &window, [&window]() {
 		// Hide all the warning labels
 		window.m_AccPgs->m_EmailWarning->setVisible(false);
