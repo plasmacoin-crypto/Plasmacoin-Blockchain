@@ -61,7 +61,7 @@ public:
 		INVALID_USERNAME = 1 << 3,
 		INVALID_PASSWORD = 1 << 4,
 
-		LAST			 = 5	// This is probbaly okay
+		LAST			 = 5	// This is probably okay
 	};
 
 private:
