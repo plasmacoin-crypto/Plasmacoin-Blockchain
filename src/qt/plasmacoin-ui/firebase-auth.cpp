@@ -20,11 +20,16 @@ Auth::Auth():
 void Auth::SignUp(const QString& email, const QString& username, const QString& password) {
 	m_Errors = 0;
 
-	if (!ValidateUsername(username)) {
+	//
+	// Evaluate the provided username and password against their
+	// regular expressions. NOTE: only non-empty strings are tested.
+	//
+
+	if (username != "" && !ValidateUsername(username)) {
 		m_Errors |= INVALID_USERNAME;
 	}
 
-	if (!ValidatePassword(password)) {
+	if (password != "" && !ValidatePassword(password)) {
 		m_Errors |= INVALID_PASSWORD;
 	}
 
