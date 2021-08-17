@@ -216,11 +216,12 @@ void Auth::ParseResponse(const QByteArray& response) {
 		// Handle a failure
 		if (errorMap["message"].toString() == "EMAIL_EXISTS") {
 			m_Errors |= EMAIL_EXISTS;
-			//emit EmailExists();
 		}
 		else if (errorMap["message"].toString() == "INVALID_EMAIL") {
 			m_Errors |= INVALID_EMAIL;
-			//emit InvalidEmail();
+		}
+		else if (errorMap["message"].toString() == "WEAK_PASSWORD") {
+			m_Errors |= INVALID_PASSWORD;
 		}
 	}
 	else if (jsonDocument.object().contains("kind") && !jsonDocument.object().contains("displayName")) {
