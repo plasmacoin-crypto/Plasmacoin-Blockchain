@@ -27,9 +27,9 @@ void accountPages(MainWindow& window) {
 	});
 
 	// Take a user from the sign up screen back to the sign in screen
-	window.connect(window.btn_back, &QPushButton::released, &window [&window]() {
+	window.connect(window.btn_back, &QPushButton::released, &window, [&window]() {
 		window.m_AccPgs->DisplayPage(0);
-	})
+	});
 
 	// Sign a user into their account
 	window.connect(window.btn_signIn, &QPushButton::released, &window, [&window]() {
