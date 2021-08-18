@@ -225,11 +225,14 @@ void Auth::ParseResponse(const QByteArray& response) {
 		else if (errorMap["message"].toString() == "INVALID_EMAIL") {
 			m_Errors |= INVALID_EMAIL;
 		}
-		else if (errorMap["message"].toString() == "WEAK_PASSWORD") {
+		else if (
+			errorMap["message"].toString() == "WEAK_PASSWORD" ||
+			errorMap["message"].toString() == "INVALID_PASSWORD"
+		) {
 			m_Errors |= INVALID_PASSWORD;
 		}
 	}
-	else if (jsonDocument.object().contains("kind") && !jsonDocument.object().contains("displayName")) {
+	else if (jsonDocument.object().value("kind") == "identitytoolkit#VerifyPasswordResponse") {
 		m_IDToken = jsonDocument.object().value("idToken").toString();
 		m_RefreshToken = jsonDocument.object().value("refreshToken").toString();
 		m_UserID = jsonDocument.object().value("localId").toString();
