@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>803</width>
-    <height>600</height>
+    <width>807</width>
+    <height>606</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,7 +84,7 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="wallet">
      <widget class="QLCDNumber" name="usdollars">
@@ -324,7 +324,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="signIn">
        <widget class="QLineEdit" name="s_EmailField">
@@ -504,191 +504,395 @@
        </widget>
       </widget>
       <widget class="QWidget" name="loggedIn">
-       <widget class="QScrollArea" name="scrollArea">
+       <widget class="QWidget" name="verticalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>-10</x>
-          <y>-10</y>
-          <width>821</width>
-          <height>531</height>
+          <x>0</x>
+          <y>10</y>
+          <width>791</width>
+          <height>481</height>
          </rect>
         </property>
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>817</width>
-           <height>527</height>
-          </rect>
-         </property>
-         <widget class="QToolButton" name="pubKeyCopy">
-          <property name="geometry">
-           <rect>
-            <x>400</x>
-            <y>70</y>
-            <width>33</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="address">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>280</y>
-            <width>331</width>
-            <height>32</height>
-           </rect>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QLabel" name="addressTitle">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>180</y>
-            <width>161</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Your Address&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="addressSubtitle">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>220</y>
-            <width>501</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Your Plasmacoin address identifies your node as the sender or reciever&lt;br&gt;in a transaction. It is also the way Plasmacoin is sent to your node.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="privateKey">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>110</y>
-            <width>331</width>
-            <height>32</height>
-           </rect>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="ptivKeyCopy">
-          <property name="geometry">
-           <rect>
-            <x>400</x>
-            <y>110</y>
-            <width>33</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
-          </property>
-         </widget>
-         <widget class="QLabel" name="rsaTitle">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>30</y>
-            <width>121</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;RSA Keys&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="publicKey">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>70</y>
-            <width>331</width>
-            <height>32</height>
-           </rect>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="privKeyShow">
-          <property name="geometry">
-           <rect>
-            <x>360</x>
-            <y>110</y>
-            <width>33</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../assets/no-view.png</normaloff>../assets/no-view.png</iconset>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="addressCopy">
-          <property name="geometry">
-           <rect>
-            <x>360</x>
-            <y>280</y>
-            <width>33</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="pubKeyShow">
-          <property name="geometry">
-           <rect>
-            <x>360</x>
-            <y>70</y>
-            <width>33</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../assets/no-view.png</normaloff>../assets/no-view.png</iconset>
-          </property>
-         </widget>
-        </widget>
+        <layout class="QVBoxLayout" name="pageContainer">
+         <item>
+          <widget class="QScrollArea" name="scrollArea">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAsNeeded</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <widget class="QWidget" name="scrollAreaContent">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>768</width>
+              <height>550</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>550</width>
+              <height>550</height>
+             </size>
+            </property>
+            <widget class="QWidget" name="contentContainer" native="true">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>-10</y>
+               <width>791</width>
+               <height>551</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <layout class="QVBoxLayout" name="pageLayout">
+              <property name="sizeConstraint">
+               <enum>QLayout::SetDefaultConstraint</enum>
+              </property>
+              <item>
+               <widget class="QWidget" name="address" native="true">
+                <widget class="QToolButton" name="addressCopy">
+                 <property name="geometry">
+                  <rect>
+                   <x>340</x>
+                   <y>100</y>
+                   <width>33</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="walletAddress">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>100</y>
+                   <width>321</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="addressSubtitle">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>50</y>
+                   <width>491</width>
+                   <height>41</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Your Plasmacoin address identifies your node as the sender or reciever&lt;br/&gt;in a transaction. It is also the way Plasmacoin is sent to your node.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="addressTitle">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>231</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Your Wallet Address&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="rsaKeys" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <widget class="QLabel" name="rsaTitle">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>111</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;RSA Keys&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QToolButton" name="privKeyShow">
+                 <property name="geometry">
+                  <rect>
+                   <x>350</x>
+                   <y>89</y>
+                   <width>33</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../assets/no-view.png</normaloff>../assets/no-view.png</iconset>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="publicKey">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>50</y>
+                   <width>331</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+                <widget class="QToolButton" name="pubKeyCopy">
+                 <property name="geometry">
+                  <rect>
+                   <x>390</x>
+                   <y>50</y>
+                   <width>33</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
+                 </property>
+                </widget>
+                <widget class="QToolButton" name="pubKeyShow">
+                 <property name="geometry">
+                  <rect>
+                   <x>350</x>
+                   <y>50</y>
+                   <width>33</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../assets/no-view.png</normaloff>../assets/no-view.png</iconset>
+                 </property>
+                </widget>
+                <widget class="QToolButton" name="privKeyCopy">
+                 <property name="geometry">
+                  <rect>
+                   <x>390</x>
+                   <y>90</y>
+                   <width>33</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="privateKey">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>90</y>
+                   <width>331</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="pubIPAddr" native="true">
+                <widget class="QLabel" name="pubIPAddrTitle">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>201</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Public IP Address&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QTextBrowser" name="publicIPAddress">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>140</y>
+                   <width>256</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="pubIPAddrSubtitle">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>50</y>
+                   <width>521</width>
+                   <height>81</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Your public IP address is what is used to send your Plasmacoin to once&lt;br&gt;the block with your transaction(s) is confirmed to the blockchain. Your&lt;br&gt;IP address is neither stored on the blockchain nor directly traceable from&lt;br&gt;a transaction&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>
@@ -703,7 +907,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>803</width>
+     <width>807</width>
      <height>30</height>
     </rect>
    </property>

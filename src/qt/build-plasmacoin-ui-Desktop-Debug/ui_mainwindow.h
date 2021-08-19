@@ -24,12 +24,14 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QToolButton>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -80,13 +82,29 @@ public:
     QLineEdit *c_UsernameField;
     QLineEdit *c_PasswordField;
     QWidget *loggedIn;
-    QLabel *label;
-    QTextBrowser *textBrowser_2;
-    QTextBrowser *textBrowser_3;
-    QToolButton *toolButton;
-    QToolButton *toolButton_2;
-    QToolButton *toolButton_3;
-    QToolButton *toolButton_4;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *pageContainer;
+    QScrollArea *scrollArea;
+    QWidget *scrollAreaContent;
+    QWidget *contentContainer;
+    QVBoxLayout *pageLayout;
+    QWidget *address;
+    QToolButton *addressCopy;
+    QLineEdit *walletAddress;
+    QLabel *addressSubtitle;
+    QLabel *addressTitle;
+    QWidget *rsaKeys;
+    QLabel *rsaTitle;
+    QToolButton *privKeyShow;
+    QLineEdit *publicKey;
+    QToolButton *pubKeyCopy;
+    QToolButton *pubKeyShow;
+    QToolButton *privKeyCopy;
+    QLineEdit *privateKey;
+    QWidget *pubIPAddr;
+    QLabel *pubIPAddrTitle;
+    QTextBrowser *publicIPAddress;
+    QLabel *pubIPAddrSubtitle;
     QStatusBar *statusbar;
     QMenuBar *menubar;
     QMenu *icon;
@@ -96,7 +114,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(800, 600);
+        MainWindow->resize(807, 606);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         tabWidget = new QTabWidget(centralwidget);
@@ -269,35 +287,154 @@ public:
         accountView->addWidget(signUp);
         loggedIn = new QWidget();
         loggedIn->setObjectName(QString::fromUtf8("loggedIn"));
-        label = new QLabel(loggedIn);
-        label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(20, 80, 121, 41));
-        textBrowser_2 = new QTextBrowser(loggedIn);
-        textBrowser_2->setObjectName(QString::fromUtf8("textBrowser_2"));
-        textBrowser_2->setGeometry(QRect(30, 120, 331, 31));
-        textBrowser_3 = new QTextBrowser(loggedIn);
-        textBrowser_3->setObjectName(QString::fromUtf8("textBrowser_3"));
-        textBrowser_3->setGeometry(QRect(30, 160, 331, 31));
-        toolButton = new QToolButton(loggedIn);
-        toolButton->setObjectName(QString::fromUtf8("toolButton"));
-        toolButton->setGeometry(QRect(370, 120, 33, 31));
+        verticalLayoutWidget = new QWidget(loggedIn);
+        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(0, 10, 791, 481));
+        pageContainer = new QVBoxLayout(verticalLayoutWidget);
+        pageContainer->setObjectName(QString::fromUtf8("pageContainer"));
+        pageContainer->setContentsMargins(0, 0, 0, 0);
+        scrollArea = new QScrollArea(verticalLayoutWidget);
+        scrollArea->setObjectName(QString::fromUtf8("scrollArea"));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(scrollArea->sizePolicy().hasHeightForWidth());
+        scrollArea->setSizePolicy(sizePolicy);
+        scrollArea->setMinimumSize(QSize(0, 0));
+        scrollArea->setFrameShape(QFrame::NoFrame);
+        scrollArea->setFrameShadow(QFrame::Sunken);
+        scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scrollArea->setWidgetResizable(true);
+        scrollArea->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
+        scrollAreaContent = new QWidget();
+        scrollAreaContent->setObjectName(QString::fromUtf8("scrollAreaContent"));
+        scrollAreaContent->setGeometry(QRect(0, 0, 768, 550));
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(scrollAreaContent->sizePolicy().hasHeightForWidth());
+        scrollAreaContent->setSizePolicy(sizePolicy1);
+        scrollAreaContent->setMinimumSize(QSize(550, 550));
+        contentContainer = new QWidget(scrollAreaContent);
+        contentContainer->setObjectName(QString::fromUtf8("contentContainer"));
+        contentContainer->setGeometry(QRect(0, -10, 791, 551));
+        sizePolicy1.setHeightForWidth(contentContainer->sizePolicy().hasHeightForWidth());
+        contentContainer->setSizePolicy(sizePolicy1);
+        pageLayout = new QVBoxLayout(contentContainer);
+        pageLayout->setObjectName(QString::fromUtf8("pageLayout"));
+        pageLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
+        address = new QWidget(contentContainer);
+        address->setObjectName(QString::fromUtf8("address"));
+        addressCopy = new QToolButton(address);
+        addressCopy->setObjectName(QString::fromUtf8("addressCopy"));
+        addressCopy->setGeometry(QRect(340, 100, 33, 31));
+        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(addressCopy->sizePolicy().hasHeightForWidth());
+        addressCopy->setSizePolicy(sizePolicy2);
         QIcon icon3;
-        icon3.addFile(QString::fromUtf8("../assets/no-view.png"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton->setIcon(icon3);
-        toolButton_2 = new QToolButton(loggedIn);
-        toolButton_2->setObjectName(QString::fromUtf8("toolButton_2"));
-        toolButton_2->setGeometry(QRect(370, 160, 33, 31));
-        toolButton_2->setIcon(icon3);
-        toolButton_3 = new QToolButton(loggedIn);
-        toolButton_3->setObjectName(QString::fromUtf8("toolButton_3"));
-        toolButton_3->setGeometry(QRect(410, 120, 33, 31));
+        icon3.addFile(QString::fromUtf8("../assets/clipboard.png"), QSize(), QIcon::Normal, QIcon::Off);
+        addressCopy->setIcon(icon3);
+        walletAddress = new QLineEdit(address);
+        walletAddress->setObjectName(QString::fromUtf8("walletAddress"));
+        walletAddress->setGeometry(QRect(10, 100, 321, 31));
+        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(walletAddress->sizePolicy().hasHeightForWidth());
+        walletAddress->setSizePolicy(sizePolicy3);
+        walletAddress->setReadOnly(true);
+        addressSubtitle = new QLabel(address);
+        addressSubtitle->setObjectName(QString::fromUtf8("addressSubtitle"));
+        addressSubtitle->setGeometry(QRect(10, 50, 491, 41));
+        QSizePolicy sizePolicy4(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(addressSubtitle->sizePolicy().hasHeightForWidth());
+        addressSubtitle->setSizePolicy(sizePolicy4);
+        addressTitle = new QLabel(address);
+        addressTitle->setObjectName(QString::fromUtf8("addressTitle"));
+        addressTitle->setGeometry(QRect(10, 10, 231, 31));
+        sizePolicy4.setHeightForWidth(addressTitle->sizePolicy().hasHeightForWidth());
+        addressTitle->setSizePolicy(sizePolicy4);
+
+        pageLayout->addWidget(address);
+
+        rsaKeys = new QWidget(contentContainer);
+        rsaKeys->setObjectName(QString::fromUtf8("rsaKeys"));
+        rsaKeys->setMinimumSize(QSize(0, 0));
+        rsaTitle = new QLabel(rsaKeys);
+        rsaTitle->setObjectName(QString::fromUtf8("rsaTitle"));
+        rsaTitle->setGeometry(QRect(10, 10, 111, 31));
+        sizePolicy4.setHeightForWidth(rsaTitle->sizePolicy().hasHeightForWidth());
+        rsaTitle->setSizePolicy(sizePolicy4);
+        privKeyShow = new QToolButton(rsaKeys);
+        privKeyShow->setObjectName(QString::fromUtf8("privKeyShow"));
+        privKeyShow->setGeometry(QRect(350, 89, 33, 31));
+        sizePolicy2.setHeightForWidth(privKeyShow->sizePolicy().hasHeightForWidth());
+        privKeyShow->setSizePolicy(sizePolicy2);
         QIcon icon4;
-        icon4.addFile(QString::fromUtf8("../assets/clipboard.png"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_3->setIcon(icon4);
-        toolButton_4 = new QToolButton(loggedIn);
-        toolButton_4->setObjectName(QString::fromUtf8("toolButton_4"));
-        toolButton_4->setGeometry(QRect(410, 160, 33, 31));
-        toolButton_4->setIcon(icon4);
+        icon4.addFile(QString::fromUtf8("../assets/no-view.png"), QSize(), QIcon::Normal, QIcon::Off);
+        privKeyShow->setIcon(icon4);
+        publicKey = new QLineEdit(rsaKeys);
+        publicKey->setObjectName(QString::fromUtf8("publicKey"));
+        publicKey->setGeometry(QRect(10, 50, 331, 31));
+        sizePolicy3.setHeightForWidth(publicKey->sizePolicy().hasHeightForWidth());
+        publicKey->setSizePolicy(sizePolicy3);
+        publicKey->setReadOnly(true);
+        pubKeyCopy = new QToolButton(rsaKeys);
+        pubKeyCopy->setObjectName(QString::fromUtf8("pubKeyCopy"));
+        pubKeyCopy->setGeometry(QRect(390, 50, 33, 31));
+        sizePolicy2.setHeightForWidth(pubKeyCopy->sizePolicy().hasHeightForWidth());
+        pubKeyCopy->setSizePolicy(sizePolicy2);
+        pubKeyCopy->setIcon(icon3);
+        pubKeyShow = new QToolButton(rsaKeys);
+        pubKeyShow->setObjectName(QString::fromUtf8("pubKeyShow"));
+        pubKeyShow->setGeometry(QRect(350, 50, 33, 31));
+        sizePolicy2.setHeightForWidth(pubKeyShow->sizePolicy().hasHeightForWidth());
+        pubKeyShow->setSizePolicy(sizePolicy2);
+        pubKeyShow->setIcon(icon4);
+        privKeyCopy = new QToolButton(rsaKeys);
+        privKeyCopy->setObjectName(QString::fromUtf8("privKeyCopy"));
+        privKeyCopy->setGeometry(QRect(390, 90, 33, 31));
+        sizePolicy2.setHeightForWidth(privKeyCopy->sizePolicy().hasHeightForWidth());
+        privKeyCopy->setSizePolicy(sizePolicy2);
+        privKeyCopy->setIcon(icon3);
+        privateKey = new QLineEdit(rsaKeys);
+        privateKey->setObjectName(QString::fromUtf8("privateKey"));
+        privateKey->setGeometry(QRect(10, 90, 331, 31));
+        sizePolicy3.setHeightForWidth(privateKey->sizePolicy().hasHeightForWidth());
+        privateKey->setSizePolicy(sizePolicy3);
+        privateKey->setReadOnly(true);
+
+        pageLayout->addWidget(rsaKeys);
+
+        pubIPAddr = new QWidget(contentContainer);
+        pubIPAddr->setObjectName(QString::fromUtf8("pubIPAddr"));
+        pubIPAddrTitle = new QLabel(pubIPAddr);
+        pubIPAddrTitle->setObjectName(QString::fromUtf8("pubIPAddrTitle"));
+        pubIPAddrTitle->setGeometry(QRect(10, 10, 201, 31));
+        sizePolicy4.setHeightForWidth(pubIPAddrTitle->sizePolicy().hasHeightForWidth());
+        pubIPAddrTitle->setSizePolicy(sizePolicy4);
+        publicIPAddress = new QTextBrowser(pubIPAddr);
+        publicIPAddress->setObjectName(QString::fromUtf8("publicIPAddress"));
+        publicIPAddress->setGeometry(QRect(10, 140, 256, 31));
+        sizePolicy3.setHeightForWidth(publicIPAddress->sizePolicy().hasHeightForWidth());
+        publicIPAddress->setSizePolicy(sizePolicy3);
+        pubIPAddrSubtitle = new QLabel(pubIPAddr);
+        pubIPAddrSubtitle->setObjectName(QString::fromUtf8("pubIPAddrSubtitle"));
+        pubIPAddrSubtitle->setGeometry(QRect(10, 50, 521, 81));
+        sizePolicy4.setHeightForWidth(pubIPAddrSubtitle->sizePolicy().hasHeightForWidth());
+        pubIPAddrSubtitle->setSizePolicy(sizePolicy4);
+
+        pageLayout->addWidget(pubIPAddr);
+
+        scrollArea->setWidget(scrollAreaContent);
+
+        pageContainer->addWidget(scrollArea);
+
         accountView->addWidget(loggedIn);
         stackedWidget->addWidget(account);
         MainWindow->setCentralWidget(centralwidget);
@@ -308,7 +445,7 @@ public:
         MainWindow->setStatusBar(statusbar);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 30));
+        menubar->setGeometry(QRect(0, 0, 807, 30));
         icon = new QMenu(menubar);
         icon->setObjectName(QString::fromUtf8("icon"));
         QIcon icon5;
@@ -332,14 +469,8 @@ public:
         QWidget::setTabOrder(c_UsernameField, c_PasswordField);
         QWidget::setTabOrder(c_PasswordField, btn_signUp);
         QWidget::setTabOrder(btn_signUp, btn_back);
-        QWidget::setTabOrder(btn_back, toolButton);
-        QWidget::setTabOrder(toolButton, toolButton_3);
-        QWidget::setTabOrder(toolButton_3, toolButton_2);
-        QWidget::setTabOrder(toolButton_2, toolButton_4);
-        QWidget::setTabOrder(toolButton_4, blockTransactionList);
-        QWidget::setTabOrder(blockTransactionList, textBrowser_2);
-        QWidget::setTabOrder(textBrowser_2, textBrowser_3);
-        QWidget::setTabOrder(textBrowser_3, textBrowser);
+        QWidget::setTabOrder(btn_back, blockTransactionList);
+        QWidget::setTabOrder(blockTransactionList, textBrowser);
 
         menubar->addAction(icon->menuAction());
         menubar->addAction(text->menuAction());
@@ -381,21 +512,26 @@ public:
         btn_back->setText(QCoreApplication::translate("MainWindow", "Go Back...", nullptr));
         c_EmailField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
 #if QT_CONFIG(statustip)
-        c_UsernameField->setStatusTip(QCoreApplication::translate("MainWindow", "Your username can contain alphanumeric characters and the following special characters: #, $, &, *, -", nullptr));
+        c_UsernameField->setStatusTip(QCoreApplication::translate("MainWindow", "Your username can contain alphanumeric characters, dashes, underscores, and periods", nullptr));
 #endif // QT_CONFIG(statustip)
         c_UsernameField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Username", nullptr));
 #if QT_CONFIG(statustip)
-        c_PasswordField->setStatusTip(QCoreApplication::translate("MainWindow", "Your password must be at least 6 characters long and contain at least 1 capital letter and 1 special character", nullptr));
+        c_PasswordField->setStatusTip(QCoreApplication::translate("MainWindow", "Your password must be at least 6 characters long and contain at least 1 capital letter, 1 special character, and 1 number", nullptr));
 #endif // QT_CONFIG(statustip)
         c_PasswordField->setInputMask(QString());
         c_PasswordField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Password", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">RSA Keys</span></p></body></html>", nullptr));
-        toolButton->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
-        toolButton_2->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
-        toolButton_3->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
-        toolButton_4->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        addressCopy->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        addressSubtitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt;\">Your Plasmacoin address identifies your node as the sender or reciever<br/>in a transaction. It is also the way Plasmacoin is sent to your node.</span></p></body></html>", nullptr));
+        addressTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt;\">Your Wallet Address</span></p></body></html>", nullptr));
+        rsaTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt;\">RSA Keys</span></p></body></html>", nullptr));
+        privKeyShow->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        pubKeyCopy->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        pubKeyShow->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        privKeyCopy->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        pubIPAddrTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt;\">Public IP Address</span></p></body></html>", nullptr));
+        pubIPAddrSubtitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt;\">Your public IP address is what is used to send your Plasmacoin to once<br>the block with your transaction(s) is confirmed to the blockchain. Your<br>IP address is neither stored on the blockchain nor directly traceable from<br>a transaction</span></p></body></html>", nullptr));
         icon->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
-        text->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
+        text->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin Client", nullptr));
     } // retranslateUi
 
 };
