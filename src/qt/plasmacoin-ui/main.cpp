@@ -50,9 +50,11 @@ void accountPages(MainWindow& window) {
 	// Check the current form for authentication errors
 	window.connect(window.m_Authenticator, &Auth::FoundAuthErrors, &window, [&window]() {
 		// Hide all the warning labels
-		window.m_AccPgs->m_EmailWarning->setVisible(false);
+		window.m_AccPgs->m_EmailSignInWarning->setVisible(false);
+		window.m_AccPgs->m_PasswordSignInWarning->setVisible(false);
+		window.m_AccPgs->m_EmailSignUpWarning->setVisible(false);
 		window.m_AccPgs->m_UsernameWarning->setVisible(false);
-		window.m_AccPgs->m_PasswordWarning->setVisible(false);
+		window.m_AccPgs->m_PasswordSignUpWarning->setVisible(false);
 
 		for (uint8_t code = Auth::EMAIL_EXISTS, i = 0; i < Auth::LAST; code = 1 << ++i) {
 			if (window.m_Authenticator->m_Errors & code) {
@@ -85,7 +87,7 @@ void accountPages(MainWindow& window) {
 	});
 
 	// Take the user to the logged in view if Firebase successfully logged them in
-	window.connect(window.m_Authenticator, &Auth::UserSignedIn, &window, [&window]() {
+	window.connect(window.m_Authenticator, &Auth::FinishedRequest, &window, [&window]() {
 		if (!window.m_Authenticator->SearchFor("error") && window.m_Authenticator->m_Errors == 0) {
 			window.m_AccPgs->DisplayPage(2);
 		}
@@ -93,14 +95,20 @@ void accountPages(MainWindow& window) {
 
 	// Display a warning when a user tries to create an account with an email that's in use
 	window.connect(window.m_Authenticator, &Auth::EmailExists, &window, [&window]() {
-		window.m_AccPgs->m_EmailWarning->setText("Email in use");
-		window.m_AccPgs->m_EmailWarning->setVisible(true);
+		window.m_AccPgs->m_EmailSignUpWarning->setText("Email in use");
+		window.m_AccPgs->m_EmailSignUpWarning->setVisible(true);
 	});
 
 	// Display a warning when a user tries to create an account with an invalid email
 	window.connect(window.m_Authenticator, &Auth::InvalidEmail, &window, [&window]() {
-		window.m_AccPgs->m_EmailWarning->setText("Invalid email");
-		window.m_AccPgs->m_EmailWarning->setVisible(true);
+		if (window.accountView->currentIndex() == 0) {
+			window.m_AccPgs->m_EmailSignInWarning->setText("Invalid Email");
+			window.m_AccPgs->m_EmailSignInWarning->setVisible(true);
+		}
+		else {
+			window.m_AccPgs->m_EmailSignUpWarning->setText("Invalid email");
+			window.m_AccPgs->m_EmailSignUpWarning->setVisible(true);
+		}
 	});
 
 	// Display a warning when a user tries to create an account with an email that's in use
@@ -117,8 +125,14 @@ void accountPages(MainWindow& window) {
 
 	// Display a warning when a user tries to create an account with an invalid password
 	window.connect(window.m_Authenticator, &Auth::InvalidPassword, &window, [&window]() {
-		window.m_AccPgs->m_PasswordWarning->setText("Password invalid");
-		window.m_AccPgs->m_PasswordWarning->setVisible(true);
+		if (window.accountView->currentIndex() == 0) {
+			window.m_AccPgs->m_PasswordSignInWarning->setText("Password invalid");
+			window.m_AccPgs->m_PasswordSignInWarning->setVisible(true);
+		}
+		else {
+			window.m_AccPgs->m_PasswordSignUpWarning->setText("Password invalid");
+			window.m_AccPgs->m_PasswordSignUpWarning->setVisible(true);
+		}
 	});
 }
 
