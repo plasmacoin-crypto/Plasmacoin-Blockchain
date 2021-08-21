@@ -73,6 +73,12 @@ void Auth::SignIn(const QString& email, const QString& password) {
 
 	QJsonDocument jsonPayload = QJsonDocument::fromVariant(payload); // Load the QVariant as JSON
 	Post(endpoint, jsonPayload); // Make a post request
+
+	connect(this, &Auth::FinishedRequest, this, [this]() {
+		if (this->m_Errors != 0) {
+			emit this->FoundAuthErrors();
+		}
+	});
 }
 
 // A slot that perform actions on API response data
