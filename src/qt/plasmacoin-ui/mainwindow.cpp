@@ -24,11 +24,14 @@ MainWindow::MainWindow(QWidget* parent):
 	load.wait(); // Load the mining visuals
 	this->m_Status = load.get(); // Capture the return value
 
-	QLabel *label1 = new QLabel("", Ui::MainWindow::signUp),
-	 	   *label2 = new QLabel("", Ui::MainWindow::signUp),
-	 	   *label3 = new QLabel("", Ui::MainWindow::signUp);
+	// Create warning labels for all 5 input fields
+	QLabel *label1 = new QLabel("", Ui::MainWindow::signIn),
+		   *label2 = new QLabel("", Ui::MainWindow::signIn),
+		   *label3 = new QLabel("", Ui::MainWindow::signUp),
+	 	   *label4 = new QLabel("", Ui::MainWindow::signUp),
+	 	   *label5 = new QLabel("", Ui::MainWindow::signUp);
 
-	m_AccPgs = new AccountPages(Ui::MainWindow::accountView, label1, label2, label3);
+	m_AccPgs = new AccountPages(Ui::MainWindow::accountView, label1, label2, label3, label4, label5);
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);

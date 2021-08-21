@@ -19,12 +19,16 @@
 
 class AccountPages : public QMainWindow, public Ui_MainWindow {
 public:
-	AccountPages(QStackedWidget*& pages, QLabel* label1, QLabel* label2, QLabel* label3);
+	AccountPages(
+		QStackedWidget*& pages, QLabel* label1, QLabel* label2,
+		QLabel* label3, QLabel* label4, QLabel* label5
+	);
 
 	void DisplayPage(int index);
 	std::tuple<QString, QString, QString> ReadText();
 
-	QLabel *m_EmailWarning, *m_UsernameWarning, *m_PasswordWarning;
+	QLabel *m_EmailSignInWarning, *m_PasswordSignInWarning, *m_EmailSignUpWarning,
+		   *m_UsernameWarning, *m_PasswordSignUpWarning;
 
 private:
 	QStackedWidget*& m_AccountView;

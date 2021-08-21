@@ -8,27 +8,40 @@
 #include "account-pages.h"
 #include <iostream>
 
-AccountPages::AccountPages(QStackedWidget*& pages, QLabel* label1, QLabel* label2, QLabel* label3):
-	m_EmailWarning(label1),
-	m_UsernameWarning(label2),
-	m_PasswordWarning(label3),
+AccountPages::AccountPages(
+	QStackedWidget*& pages, QLabel* label1, QLabel* label2,
+	QLabel* label3, QLabel* label4, QLabel* label5
+):
+	m_EmailSignInWarning(label1),
+	m_PasswordSignInWarning(label2),
+	m_EmailSignUpWarning(label3),
+	m_UsernameWarning(label4),
+	m_PasswordSignUpWarning(label5),
 
 	m_AccountView(pages)
 {
 	// Style all of the warning labels and position them on the screen
-	m_EmailWarning->setStyleSheet(STYLE);
-	m_EmailWarning->setGeometry(540, 170, 121, 31);
+	m_EmailSignInWarning->setStyleSheet(STYLE);
+	m_EmailSignInWarning->setGeometry(540, 210, 121, 21);
+
+	m_PasswordSignInWarning->setStyleSheet(STYLE);
+	m_PasswordSignInWarning->setGeometry(540, 250, 121, 21);
+
+	m_EmailSignUpWarning->setStyleSheet(STYLE);
+	m_EmailSignUpWarning->setGeometry(540, 170, 121, 31);
 
 	m_UsernameWarning->setStyleSheet(STYLE);
 	m_UsernameWarning->setGeometry(540, 210, 121, 31);
 
-	m_PasswordWarning->setStyleSheet(STYLE);
-	m_PasswordWarning->setGeometry(540, 250, 121, 31);
+	m_PasswordSignUpWarning->setStyleSheet(STYLE);
+	m_PasswordSignUpWarning->setGeometry(540, 250, 121, 31);
 
 	// Hide all the warning labels
-	m_EmailWarning->setVisible(false);
+	m_EmailSignInWarning->setVisible(false);
+	m_PasswordSignInWarning->setVisible(false);
+	m_EmailSignUpWarning->setVisible(false);
 	m_UsernameWarning->setVisible(false);
-	m_PasswordWarning->setVisible(false);
+	m_PasswordSignUpWarning->setVisible(false);
 }
 
 // Display a certain page of the account view
@@ -38,8 +51,6 @@ void AccountPages::DisplayPage(int index) {
 
 // Get the inputs to the login fields
 std::tuple<QString, QString, QString> AccountPages::ReadText() {
-	//std::tuple<QString, QString, QString>
-
 	switch (m_AccountView->currentIndex()) {
 		case 0: { // The sign-in page
 			// Fetch all QLineEdit objects on the current page
