@@ -12,7 +12,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Plasmacoin Client</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../assets/plasmacoin-logo.png</normaloff>../assets/plasmacoin-logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -307,7 +311,7 @@
       </column>
       <column>
        <property name="text">
-        <string>Status</string>
+        <string>Address</string>
        </property>
       </column>
      </widget>
