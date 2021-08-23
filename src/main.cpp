@@ -15,20 +15,23 @@ int main() {
 
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
 	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", false);
+	Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8", false);
 
 	Transaction transaction = node1->MakeTransaction(*node2, 1.0, "Here's some money");
 
-	transaction = node1->Sign(transaction);
-	transaction = node2->Verify(transaction, transaction.m_SSignature);
+	CryptoPP::byte* signature;
+	size_t length;
 
-	std::cout << "Signed: "   << std::hex << transaction.m_SSignature << std::endl;
-	std::cout << "Verified: " << std::hex << transaction.m_RSignature << std::endl;
+	std::tie(signature, length) = node1->Sign(transaction);
+	bool result = node2->Verify(transaction, signature, length, node2->m_PubKey);
 
-	chain->AddToLedger(&transaction);
+	std::cout << result << std::endl;
 
-	std::cout << transaction.m_Content << std::endl;
+	//chain->AddToLedger(&transaction);
 
-	std::cout << chain->Mine() << std::endl;
+	//std::cout << transaction.m_Content << std::endl;
+
+	//std::cout << chain->Mine() << std::endl;
 
 	return 0;
 }
