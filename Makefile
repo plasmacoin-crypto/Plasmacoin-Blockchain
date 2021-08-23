@@ -1,16 +1,18 @@
 # The Makefile for the Plasmacoin Blockchain
 
-CC = g++
+CC = gcc
+CXX = g++
 
 CRYPTOPP = /usr/src/cryptopp
 
 # Compiler flags
 CFLAGS = -Wall -I$(CRYPTOPP)
-LIBS = -lcryptopp
+CXXFLAGS = $(CFLAGS) -std=c++17
+LIBS = -lcryptopp -lstdc++fs
 
 TARGET = pcblkchn
 SOURCE = main.cpp
-OBJECTS = transaction.o node.o block.o blockchain.o
+OBJECTS = transaction.o node.o block.o blockchain.o merkle-helpers.o rsa-fs.o
 INSTALL_LOC = /usr/bin
 
 # Used to take ownership of the binary
@@ -23,24 +25,28 @@ remake: clean default
 
 # Objects
 transaction.o: src/transaction.cpp src/transaction.hpp
-	$(CC) -c $(CFLAGS) -o transaction.o src/transaction.cpp -L$(CRYPTOPP) $(LINKS)
+	$(CXX) -c $(CXXFLAGS) -o transaction.o src/transaction.cpp -L$(CRYPTOPP) $(LIBS)
 
 node.o: src/node.cpp src/node.hpp src/cryptopp-sha256-libs.h src/transaction.hpp \
-		src/block.hpp src/blockchain.hpp
-	$(CC) -c $(CFLAGS) -o node.o src/node.cpp -L$(CRYPTOPP) $(LINKS)
+		src/block.hpp src/blockchain.hpp src/rsa-fs.hpp
+	$(CXX) -c $(CXXFLAGS) -o node.o src/node.cpp -L$(CRYPTOPP) $(LIBS)
 
 block.o: src/block.cpp src/block.hpp src/transaction.hpp
-	$(CC) -c $(CFLAGS) -o block.o src/block.cpp -L$(CRYPTOPP) $(LINKS)
+	$(CXX) -c $(CXXFLAGS) -o block.o src/block.cpp -L$(CRYPTOPP) $(LIBS)
 
-blockchain.o: src/blockchain.cpp src/blockchain.hpp src/cryptopp-sha256-libs.h src/block.hpp
-	$(CC) -c $(CFLAGS) -o blockchain.o src/blockchain.cpp -L$(CRYPTOPP) $(LINKS)
+blockchain.o: src/blockchain.cpp src/blockchain.hpp src/cryptopp-sha256-libs.h src/block.hpp \
+			  src/merkle-helpers.h
+	$(CXX) -c $(CXXFLAGS) -o blockchain.o src/blockchain.cpp -L$(CRYPTOPP) $(LIBS)
 
 merkle-helpers.o: src/merkle-helpers.c src/merkle-helpers.h
-	$(CC) -c $(CFLAGS) -o merkle-helpers.o src/merkle-helpers.c -L$(CRYPTOPP) $(LINKS)
+	$(CXX) -c $(CXXFLAGS) -o merkle-helpers.o src/merkle-helpers.c $(LIBS)
+
+rsa-fs.o: src/rsa-fs.cpp src/rsa-fs.hpp
+	$(CXX) -c $(CXXFLAGS) -o rsa-fs.o src/rsa-fs.cpp -L$(CRYPTOPP) $(LIBS)
 
 # `make` (or `make pcblkchn`)
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) src/$(SOURCE) -o $(TARGET) $(OBJECTS) -L$(CRYPTOPP) $(LINKS)
+	$(CXX) $(CXXFLAGS) src/$(SOURCE) -o $(TARGET) $(OBJECTS) -L$(CRYPTOPP) $(LIBS)
 
 # `make clean`
 clean:
