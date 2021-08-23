@@ -15,7 +15,13 @@ Node::Node(string name, string username, string passwd, string ip, bool isMaster
 	m_IPAddr(ip),
 	isMaster(isMaster)
 {
-	std::tie(m_PubKey, m_PrivKey) = GenerateKeys(); // Generate a set of RSA keys for the user
+	if (!fs::exists(rsafs::RSA_PATH + "/pc_rsa_keys")) {
+		std::tie(m_PubKey, m_PrivKey) = GenerateKeys(); // Generate a set of RSA keys for the user
+		rsafs::writeKeys(m_Keys);
+	}
+	else {
+		std::tie(m_PubKey, m_PrivKey) = rsafs::readKeys(m_Keys);
+	}
 }
 
 Transaction Node::MakeTransaction(Node& recipient, float amount, string content) const {
@@ -56,6 +62,8 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 	RSA::PrivateKey privKey(params);
 	RSA::PublicKey pubKey(params);
 
+	m_Keys = params;
+
 	// Validate the private key that was generated. If this key passes, the
 	// public key does not need to be tested.
 	if (!privKey.Validate(rng, 3)) {
@@ -65,49 +73,39 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 	return std::make_pair(pubKey, privKey);
 }
 
-// Sign a transaction with the sender's private key
-Transaction Node::Sign(Transaction& transaction) {
+// Sign a transaction with the sender's private key. Return the signature, as well as its length.
+std::tuple<byte*, size_t> Node::Sign(Transaction& transaction) noexcept(false) {
 	CryptoPP::AutoSeededRandomPool rng;
+	string message = transaction.m_Content;
 
-	string signature;
-	CryptoPP::RSASS<CryptoPP::PSSR, CryptoPP::SHA256>::Signer signer(m_PrivKey);
+	//string signature;
+	m_Signer = CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Signer(m_Keys);
 
-	// Sign the transaction
-	CryptoPP::StringSource ss1(transaction.m_Content, true,
-		new CryptoPP::SignerFilter(rng, signer,
-			new CryptoPP::StringSink(signature), true
-		) // SignerFilter
-	); // StringSource
+	byte* signature = new byte[m_Signer.MaxSignatureLength()];
 
-	transaction.m_SSignature = signature;
+	if (signature == nullptr) {
+		throw std::runtime_error("Transaction signing failed. Aborting.");
+	}
 
-	return transaction;
+	size_t length = m_Signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
+
+	return std::make_tuple(signature, length);
 }
 
-// Verify a transaction with the sender's public key
-Transaction Node::Verify(Transaction& transaction, string signature) {
+// Verify a transaction using the sender's public key. Returns true if verification succeded,
+// false otherwise.
+bool Node::Verify(Transaction& transaction, byte* signature, size_t length, RSA::PublicKey publicKey) {
 	CryptoPP::AutoSeededRandomPool rng;
 	CryptoPP::InvertibleRSAFunction params;
+	string message = transaction.m_Content;
 
-	string recovered;
-	CryptoPP::RSASS<CryptoPP::PSSR, CryptoPP::SHA256>::Verifier verifier(m_PubKey);
+	//string recovered;
+	CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Verifier verifier(publicKey);
 
-	// Verify the transaction
-	CryptoPP::StringSource ss2(signature, true,
-		new CryptoPP::SignatureVerificationFilter(
-			verifier,
-			new CryptoPP::StringSink(
-            	recovered
-			), // StringSink
-			CryptoPP::SignatureVerificationFilter::PUT_MESSAGE |
-			CryptoPP::SignatureVerificationFilter::SIGNATURE_AT_END
-		) // SignatureVerificationFilter
-	); // StringSource
+	bool result = verifier.VerifyMessage((const byte*)message.c_str(), message.length(), signature, length);
 
-	std::cout << "Result: " << recovered << std::endl;
-	transaction.m_RSignature = recovered;
-
-	return transaction;
+	delete[] signature;
+	return result;
 }
 
 // Use Crypto++ to hash the transaction data
