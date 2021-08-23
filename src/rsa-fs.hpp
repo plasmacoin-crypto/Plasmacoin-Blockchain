@@ -10,7 +10,7 @@
 
 // We aren't allowed to have a using directive for `std::filesystem`, so
 // I'll create an alias for the namespace called `fs`.
-#if __cplusplus >= 201703L /* C++17 or later (reccomended) */
+#if __cplusplus >= 201703L /* C++17 or later (recommended) */
 	#include <filesystem>
 	namespace fs = std::filesystem;
 #elif __cplusplus == 201402L /* C++14 (experimental usage) */
