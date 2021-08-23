@@ -16,7 +16,7 @@ CC            = clang
 CXX           = clang++
 DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -g -std=gnu++17 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I../plasmacoin-ui -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-clang -I../.. -I/usr/src/cryptopp
 QMAKE         = /bin/qmake
 DEL_FILE      = rm -f
@@ -59,16 +59,17 @@ SOURCES       = ../plasmacoin-ui/main.cpp \
 		../plasmacoin-ui/firebase-auth.cpp  moc_firebase_auth.cpp \
 		../plasmacoin-ui/account-pages.cpp moc_account_pages.cpp
 OBJECTS       = main.o \
-		mainwindow.o \
-		moc_mainwindow.o \
-		transaction-list.o \
-		moc_transactionlist.o \
-		mining-status.o \
 		transaction.o \
 		node.o \
 		block.o \
 		blockchain.o \
 		merkle-helpers.o \
+		rsa-fs.o \
+		mainwindow.o \
+		moc_mainwindow.o \
+		transaction-list.o \
+		moc_transactionlist.o \
+		mining-status.o \
 		firebase-auth.o \
 		moc_firebase_auth.o \
 		account-pages.o \
@@ -892,7 +893,7 @@ transaction.o: ../../transaction.cpp ../../transaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction.o ../../transaction.cpp $(LINKS)
 
 node.o: ../../node.cpp ../../node.hpp ../../cryptopp-sha256-libs.h ../../transaction.hpp \
-		../../block.hpp ../../blockchain.hpp
+		../../block.hpp ../../blockchain.hpp ../../rsa-fs.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o ../../node.cpp $(LINKS)
 
 block.o: ../../block.cpp ../../block.hpp ../../transaction.hpp
@@ -904,6 +905,9 @@ blockchain.o: ../../blockchain.cpp ../../blockchain.hpp ../../cryptopp-sha256-li
 
 merkle-helpers.o: ../../merkle-helpers.c ../../merkle-helpers.h
 	$(CXX) -c $(CFLAGS) $(INCPATH) -o merkle-helpers.o ../../merkle-helpers.c $(LINKS)
+
+rsa-fs.o: ../../rsa-fs.cpp ../../rsa-fs.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rsa-fs.o ../../rsa-fs.cpp $(LINKS)
 
 # GUI
 
