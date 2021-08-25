@@ -17,11 +17,11 @@ class Node;
 
 class Transaction {
 public:
-	Transaction(const Node* sender, Node* recipient, string content, float amount, string condensed);
+	Transaction(const Node* sender, const Node* recipient, string content, float amount, string condensed);
 	void Update(int nonce);
 
 	const Node* m_Sender;
-	Node* m_Recipient;
+	const Node* m_Recipient;
 
 	float m_Amount;
 	string m_Content;
