@@ -57,7 +57,7 @@ SOURCES       = ../plasmacoin-ui/main.cpp \
 		../plasmacoin-ui/transaction-list.cpp moc_transactionlist.cpp \
 		../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/recipient-list.cpp \
 		../plasmacoin-ui/firebase-auth.cpp  moc_firebase_auth.cpp \
-		../plasmacoin-ui/account-pages.cpp moc_account_pages.cpp
+		../plasmacoin-ui/account-pages.cpp ../plasmacoin-ui/settings-manager.cpp
 OBJECTS       = main.o \
 		transaction.o \
 		node.o \
@@ -73,7 +73,8 @@ OBJECTS       = main.o \
 		firebase-auth.o \
 		moc_firebase_auth.o \
 		account-pages.o \
-		moc_account_pages.o
+		settings-manager.o
+
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -313,6 +314,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		../plasmacoin-ui/recipient-list.h ../plasmacoin-ui/recipient-list.cpp \
 		../plasmacoin-ui/firebase-auth.h ../plasmacoin/firebase-auth.cpp \
 		../plasmacoin-ui/account-pages.h ../plasmacoin/account-pages.cpp
+		../plasmacoin-ui/settings-manager.h ../plasmacoin/settings-manager.cpp
 QMAKE_TARGET  = plasmacoin-ui
 DESTDIR       =
 TARGET        = plasmacoin-ui
@@ -861,11 +863,6 @@ moc_firebase_auth.cpp: ../plasmacoin-ui/ \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-ui -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-ui/firebase-auth.h -o moc_firebase_auth.cpp
 
-moc_account_pages.cpp: ../plasmacoin-ui/ \
-		ui_mainwindow.h \
-		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-ui -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-ui/account-pages.h -o moc_account_pages.cpp
-
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -916,7 +913,8 @@ main.o: ../plasmacoin-ui/main.cpp ../plasmacoin-ui/mainwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../plasmacoin-ui/main.cpp $(LINKS)
 
 mainwindow.o: ../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/mainwindow.h \
-			  ui_mainwindow.h ../plasmacoin-ui/mining-status.h ../plasmacoin-ui/account-pages.h
+			  ui_mainwindow.h ../plasmacoin-ui/mining-status.h ../plasmacoin-ui/account-pages.h \
+			  ../plasmacoin-ui/settings-manager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../plasmacoin-ui/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp
@@ -945,6 +943,10 @@ firebase-auth.o: ../plasmacoin-ui/firebase-auth.cpp ../plasmacoin-ui/firebase-au
 account-pages.o: ../plasmacoin-ui/account-pages.cpp ../plasmacoin-ui/account-pages.h \
 				 ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o account-pages.o ../plasmacoin-ui/account-pages.cpp
+
+settings-manager.o: ../plasmacoin-ui/settings-manager.cpp ../plasmacoin-ui/settings-manager.h \
+				 ui_mainwindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings-manager.o ../plasmacoin-ui/settings-manager.cpp
 
 ####### Install
 
