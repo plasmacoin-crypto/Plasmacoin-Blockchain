@@ -38,7 +38,7 @@ using CryptoPP::byte;
 class Node {
 public:
 	Node(string name, string username, string password, string ip, string keyPath = rsafs::RSA_PATH, bool isMaster = false);
-	Transaction MakeTransaction(Node& recipient, float amount, string content) const;
+	Transaction MakeTransaction(const Node& recipient, float amount, string content) const;
 
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const;
