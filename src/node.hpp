@@ -37,7 +37,7 @@ using CryptoPP::byte;
 
 class Node {
 public:
-	Node(string name, string username, string passwd, string ip, bool isMaster = false);
+	Node(string name, string username, string password, string ip, string keyPath = rsafs::RSA_PATH, bool isMaster = false);
 	Transaction MakeTransaction(Node& recipient, float amount, string content) const;
 
 	// Some getters
@@ -56,13 +56,12 @@ public:
 private:
 	string Hash(Transaction transaction);
 
-	string m_Name, m_Username, m_Password, m_IPAddr;
+	string m_Name, m_Username, m_Password, m_IPAddr, m_KeyPath;
 	RSA::PrivateKey m_PrivKey;
+	bool isMaster;
 
 	CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Signer m_Signer;
 	CryptoPP::InvertibleRSAFunction m_Keys;
-
-	bool isMaster;
 };
 
 #endif // NODE_HPP
