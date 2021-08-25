@@ -32,20 +32,27 @@ using std::pair;
 using CryptoPP::RSA;
 
 namespace rsafs {
+	const string FILENAME = "pc_rsa_keys";
+
 	// Separate Unix-style paths from Windows paths
 	#ifdef _WIN32
 		// On Windows, `getenv()` is deprecated
 		const string HOME_DIR = getenv_s(R"(%HOMEDRIVE%%HOMEPATH%)") != nullptr? string(getenv_s(R"(%HOMEDRIVE%%HOMEPATH%)")) : "";
-		const string RSA_PATH = /*"C:\\" +*/ HOME_DIR + "\\.ssh";
+		const char DELIM	  = '\\';
 	#elif __APPLE__ || __linux__
 		const string HOME_DIR = getenv("HOME") != nullptr? string(getenv("HOME")) : "";
-		const string RSA_PATH = HOME_DIR + "/.ssh";
+		const char DELIM	  = '/';
 	#endif
+
+	const string DIR_PATH = HOME_DIR + DELIM + ".ssh" + DELIM;
+	const string RSA_PATH = /*C:\ ?*/ DIR_PATH + FILENAME;
 
 	fs::path writeKeys(CryptoPP::InvertibleRSAFunction keys, string path = RSA_PATH);
 	pair<RSA::PublicKey, RSA::PrivateKey> readKeys(CryptoPP::InvertibleRSAFunction keys, string path = RSA_PATH);
 
-	void createRSAPath(string path);
+	void createRSAPath(string dirpath = RSA_PATH);
+	bool pathOkay(string path);
+	string dirName(const string& path);
 }
 
 #endif // RSA_FS_HPP
