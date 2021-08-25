@@ -155,7 +155,7 @@ string Blockchain::Hash(string input) {
 }
 
 // Hash a block by constructing a Merkle Tree. Each block hash will be make up of hashes of
-// concatenations until a root node for the tree is generated.
+// concatenations of hashes until a root node for the tree is generated.
 string Blockchain::Hash(Block block) {
 	// Declare some variables
 	int leaves = block.m_Transactions.size(),
