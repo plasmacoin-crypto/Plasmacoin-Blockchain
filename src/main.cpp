@@ -10,12 +10,14 @@
 #include "node.hpp"
 #include "blockchain.hpp"
 
+#include <cryptopp/filters.h>
+
 int main() {
 	Blockchain* chain = new Blockchain();
 
-	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
-	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", false);
-	Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8", false);
+	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
+	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", "/home/rmsmith/.ssh/pc_rsa_keys2");
+	//Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8");
 
 	Transaction transaction = node1->MakeTransaction(*node2, 1.0, "Here's some money");
 
@@ -23,9 +25,9 @@ int main() {
 	size_t length;
 
 	std::tie(signature, length) = node1->Sign(transaction);
-	bool result = node2->Verify(transaction, signature, length, node2->m_PubKey);
+	bool result = node2->Verify(transaction, signature, length, node1->m_PubKey);
 
-	std::cout << result << std::endl;
+	std::cout << (result? "verified": "not verified") << std::endl;
 
 	//chain->AddToLedger(&transaction);
 
