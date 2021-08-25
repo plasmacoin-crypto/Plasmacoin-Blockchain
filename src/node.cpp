@@ -7,24 +7,26 @@
 
 #include "node.hpp"
 
-Node::Node(string name, string username, string passwd, string ip, bool isMaster):
+Node::Node(string name, string username, string password, string ip, string keyPath, bool isMaster):
 	// User data
 	m_Name(name),
 	m_Username(username),
-	m_Password(passwd),
+	m_Password(password),
 	m_IPAddr(ip),
+	m_KeyPath(keyPath),
 	isMaster(isMaster)
 {
-	if (!fs::exists(rsafs::RSA_PATH + "/pc_rsa_keys")) {
+	if (!rsafs::pathOkay(m_KeyPath + rsafs::FILENAME)) {
 		std::tie(m_PubKey, m_PrivKey) = GenerateKeys(); // Generate a set of RSA keys for the user
-		rsafs::writeKeys(m_Keys);
+		rsafs::writeKeys(m_Keys, m_KeyPath);
 	}
 	else {
-		std::tie(m_PubKey, m_PrivKey) = rsafs::readKeys(m_Keys);
+		std::tie(m_PubKey, m_PrivKey) = rsafs::readKeys(m_Keys, m_KeyPath + rsafs::FILENAME);
 	}
 }
 
-Transaction Node::MakeTransaction(Node& recipient, float amount, string content) const {
+// Create a new transaction to a recipient on the blockchain network
+Transaction Node::MakeTransaction(const Node& recipient, float amount, string content) const {
 	// From Transaction::m_Condensed:
 	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>; <NONCE>
 	string condensed = this->GetUsrName() + ": " + std::to_string(amount) +
@@ -32,8 +34,7 @@ Transaction Node::MakeTransaction(Node& recipient, float amount, string content)
 
 	// A new transaction between the current user and another user in the
 	// network.
-	return Transaction(new Node(m_Name, m_Username, m_Password, m_IPAddr),
-					   &recipient, content, amount, condensed);
+	return Transaction(this, &recipient, content, amount, condensed);
 }
 
 // Get the user's name
