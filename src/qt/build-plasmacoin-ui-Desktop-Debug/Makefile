@@ -313,7 +313,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		../plasmacoin-ui/mining-status.h ../plasmacoin-ui/mining-status.cpp \
 		../plasmacoin-ui/recipient-list.h ../plasmacoin-ui/recipient-list.cpp \
 		../plasmacoin-ui/firebase-auth.h ../plasmacoin/firebase-auth.cpp \
-		../plasmacoin-ui/account-pages.h ../plasmacoin/account-pages.cpp
+		../plasmacoin-ui/account-pages.h ../plasmacoin/account-pages.cpp \
 		../plasmacoin-ui/settings-manager.h ../plasmacoin/settings-manager.cpp
 QMAKE_TARGET  = plasmacoin-ui
 DESTDIR       =
@@ -909,7 +909,7 @@ rsa-fs.o: ../../rsa-fs.cpp ../../rsa-fs.hpp
 # GUI
 
 main.o: ../plasmacoin-ui/main.cpp ../plasmacoin-ui/mainwindow.h \
-		 ui_mainwindow.h ../plasmacoin-ui/firebase-auth.h
+		ui_mainwindow.h ../plasmacoin-ui/firebase-auth.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../plasmacoin-ui/main.cpp $(LINKS)
 
 mainwindow.o: ../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/mainwindow.h \
@@ -945,7 +945,7 @@ account-pages.o: ../plasmacoin-ui/account-pages.cpp ../plasmacoin-ui/account-pag
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o account-pages.o ../plasmacoin-ui/account-pages.cpp
 
 settings-manager.o: ../plasmacoin-ui/settings-manager.cpp ../plasmacoin-ui/settings-manager.h \
-				 ui_mainwindow.h
+					ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings-manager.o ../plasmacoin-ui/settings-manager.cpp
 
 ####### Install
