@@ -3,6 +3,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QListWidgetItem>
+#include <QSplashScreen>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -175,8 +176,14 @@ void removeFromBlock(MainWindow& window) {
 int main(int argc, char* argv[]) {
 	QApplication app(argc, argv);
 
+	QPixmap pixmap("../assets/plasmacoin-banner.png");
+    QSplashScreen splashScreen(pixmap);
+    splashScreen.show();
+
 	MainWindow window;
 	window.show();
+
+	splashScreen.finish(&window);
 
 	// Connect everything
 	minePage(window);
