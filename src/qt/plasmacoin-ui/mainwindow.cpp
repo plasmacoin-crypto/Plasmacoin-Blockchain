@@ -1,7 +1,11 @@
-// The source file for mainwindow.h
+//
+// FILENAME: mainwindow.cpp | Plasmacoin Cryptocurrency
+// DESCRIPTION: The source file for mainwindow.h
+// CREATED: 2021-03-21 @ 3:47 PM
+// COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
+//
 
 #include "mainwindow.h"
-#include <iostream>
 
 using std::chrono::high_resolution_clock;
 using std::chrono::seconds;
@@ -10,6 +14,7 @@ MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
 	m_Authenticator(new Auth()),
+	m_SettingsManager(new SettingsManager()),
 	m_TList(new TransactionList(Ui::MainWindow::transactionList)),
 
 	// Use these definitions as a workaround to pass `this` into std::async
@@ -35,6 +40,14 @@ MainWindow::MainWindow(QWidget* parent):
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
+
+	connect(Ui::MainWindow::btn_choosePath, &QPushButton::released, this, [this]() {
+		qDebug() << this->m_FileBrowser->getSaveFileName(
+											Ui::MainWindow::settings, QFileDialog::tr("Choose an RSA output location"),
+											QString(rsafs::HOME_DIR.c_str()), QFileDialog::tr("Text Files (*.txt);;All Files (*.*, *)"),
+											nullptr, QFileDialog::DontUseNativeDialog
+										);
+	});
 }
 
 MainWindow::~MainWindow() {
@@ -59,18 +72,16 @@ Status MainWindow::LoadMiningVisuals(Transaction* transaction) {
 void MainWindow::StartMining() {
 	Block* latest = m_User->m_BlockchainCopy->GetLatest(); // Get the latest block
 
+	// TODO: Make sure transactions are somehow readable from the QListWidget
 	//std::cout << m_BlockContents[0]->data(Qt::UserRole).toInt() << std::endl;
 
+	// std::vector<QListWidgetItem*> transactions;
+
+	// for (int i = 0; i < Ui::MainWindow::blockTransactionList->count(); i++) {
+	// 	transactions.push_back(Ui::MainWindow::blockTransactionList->row(i));
+	// }
+
 	Block newBlock(latest->m_Index + 1, latest->m_PrevHash, {nullptr}); // Create a new block
-
-	// Some test nodes
-	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6", false);
-	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", false);
-
-	auto trans = node1->MakeTransaction(*node2, 1.0, "Here's some money");
-	m_CurrTrans = &trans;
-
-	m_User->m_BlockchainCopy->AddToLedger(m_CurrTrans); // Add a transaction (temporary)
 
 	auto start = high_resolution_clock::now(); // Begin timing the function
 
