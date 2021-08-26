@@ -18,6 +18,15 @@
    <iconset>
     <normaloff>../assets/plasmacoin-logo.png</normaloff>../assets/plasmacoin-logo.png</iconset>
   </property>
+  <property name="iconSize">
+   <size>
+    <width>200</width>
+    <height>100</height>
+   </size>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonIconOnly</enum>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
@@ -44,7 +53,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <property name="movable">
      <bool>false</bool>
@@ -74,6 +83,11 @@
       <string>Account</string>
      </attribute>
     </widget>
+    <widget class="QWidget" name="Settings">
+     <attribute name="title">
+      <string>Settings</string>
+     </attribute>
+    </widget>
    </widget>
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
@@ -88,7 +102,7 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="wallet">
      <widget class="QLCDNumber" name="usdollars">
@@ -328,7 +342,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="signIn">
        <widget class="QLineEdit" name="s_EmailField">
@@ -555,7 +569,7 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>768</width>
+              <width>550</width>
               <height>550</height>
              </rect>
             </property>
@@ -612,7 +626,7 @@
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
+                   <normaloff>../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../.designer/assets/clipboard.png</iconset>
                  </property>
                 </widget>
                 <widget class="QLineEdit" name="walletAddress">
@@ -721,7 +735,7 @@
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../assets/no-view.png</normaloff>../assets/no-view.png</iconset>
+                   <normaloff>../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../.designer/assets/no-view.png</iconset>
                  </property>
                 </widget>
                 <widget class="QLineEdit" name="publicKey">
@@ -763,7 +777,7 @@
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
+                   <normaloff>../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../.designer/assets/clipboard.png</iconset>
                  </property>
                 </widget>
                 <widget class="QToolButton" name="pubKeyShow">
@@ -786,7 +800,7 @@
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../assets/no-view.png</normaloff>../assets/no-view.png</iconset>
+                   <normaloff>../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../.designer/assets/no-view.png</iconset>
                  </property>
                 </widget>
                 <widget class="QToolButton" name="privKeyCopy">
@@ -809,7 +823,7 @@
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../assets/clipboard.png</normaloff>../assets/clipboard.png</iconset>
+                   <normaloff>../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../.designer/assets/clipboard.png</iconset>
                  </property>
                 </widget>
                 <widget class="QLineEdit" name="privateKey">
@@ -901,6 +915,97 @@
       </widget>
      </widget>
     </widget>
+    <widget class="QWidget" name="settings">
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>20</y>
+        <width>91</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Settings&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="rsaKeyPath" native="true">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>60</y>
+        <width>431</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <widget class="QToolButton" name="btn_reset">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>60</y>
+         <width>33</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../assets/reset.png</normaloff>../assets/reset.png</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_choosePath">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>60</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Choose Path...</string>
+       </property>
+      </widget>
+      <widget class="QTextBrowser" name="rsaKeyView">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>60</y>
+         <width>251</width>
+         <height>31</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;RSA Key Path&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>30</y>
+         <width>431</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the path where your RSA public-private key pair will be stored.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
    </widget>
    <zorder>stackedWidget</zorder>
    <zorder>tabWidget</zorder>
@@ -915,24 +1020,11 @@
      <height>30</height>
     </rect>
    </property>
-   <widget class="QMenu" name="icon">
-    <property name="title">
-     <string>Plasmacoin UI</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>../assets/plasmacoin-logo.png</normaloff>../assets/plasmacoin-logo.png</iconset>
-    </property>
-    <property name="separatorsCollapsible">
-     <bool>false</bool>
-    </property>
-   </widget>
    <widget class="QMenu" name="text">
     <property name="title">
      <string>Plasmacoin Client</string>
     </property>
    </widget>
-   <addaction name="icon"/>
    <addaction name="text"/>
   </widget>
  </widget>

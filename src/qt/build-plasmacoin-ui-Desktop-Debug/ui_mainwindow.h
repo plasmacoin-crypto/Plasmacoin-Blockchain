@@ -46,6 +46,7 @@ public:
     QWidget *AddressBook;
     QWidget *Transactions;
     QWidget *Account;
+    QWidget *Settings;
     QStackedWidget *stackedWidget;
     QWidget *wallet;
     QLCDNumber *usdollars;
@@ -105,9 +106,16 @@ public:
     QLabel *pubIPAddrTitle;
     QTextBrowser *publicIPAddress;
     QLabel *pubIPAddrSubtitle;
+    QWidget *settings;
+    QLabel *label;
+    QWidget *rsaKeyPath;
+    QToolButton *btn_reset;
+    QPushButton *btn_choosePath;
+    QTextBrowser *rsaKeyView;
+    QLabel *label_2;
+    QLabel *label_3;
     QStatusBar *statusbar;
     QMenuBar *menubar;
-    QMenu *icon;
     QMenu *text;
 
     void setupUi(QMainWindow *MainWindow)
@@ -115,9 +123,11 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(807, 606);
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8("../assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
-        MainWindow->setWindowIcon(icon1);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("../assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
+        MainWindow->setWindowIcon(icon);
+        MainWindow->setIconSize(QSize(200, 100));
+        MainWindow->setToolButtonStyle(Qt::ToolButtonIconOnly);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         tabWidget = new QTabWidget(centralwidget);
@@ -143,6 +153,9 @@ public:
         Account = new QWidget();
         Account->setObjectName(QString::fromUtf8("Account"));
         tabWidget->addTab(Account, QString());
+        Settings = new QWidget();
+        Settings->setObjectName(QString::fromUtf8("Settings"));
+        tabWidget->addTab(Settings, QString());
         stackedWidget = new QStackedWidget(centralwidget);
         stackedWidget->setObjectName(QString::fromUtf8("stackedWidget"));
         stackedWidget->setGeometry(QRect(0, 30, 801, 531));
@@ -177,16 +190,16 @@ public:
         plusSign = new QToolButton(mineCoins);
         plusSign->setObjectName(QString::fromUtf8("plusSign"));
         plusSign->setGeometry(QRect(280, 430, 33, 31));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8("../assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
-        plusSign->setIcon(icon2);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8("../assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        plusSign->setIcon(icon1);
         plusSign->setIconSize(QSize(24, 24));
         minusSign = new QToolButton(mineCoins);
         minusSign->setObjectName(QString::fromUtf8("minusSign"));
         minusSign->setGeometry(QRect(310, 430, 33, 31));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8("../assets/minus.png"), QSize(), QIcon::Normal, QIcon::Off);
-        minusSign->setIcon(icon3);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8("../assets/minus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        minusSign->setIcon(icon2);
         minusSign->setIconSize(QSize(24, 24));
         blockTransactionList = new QListWidget(mineCoins);
         blockTransactionList->setObjectName(QString::fromUtf8("blockTransactionList"));
@@ -312,7 +325,7 @@ public:
         scrollArea->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         scrollAreaContent = new QWidget();
         scrollAreaContent->setObjectName(QString::fromUtf8("scrollAreaContent"));
-        scrollAreaContent->setGeometry(QRect(0, 0, 768, 550));
+        scrollAreaContent->setGeometry(QRect(0, 0, 550, 550));
         QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Minimum);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -337,9 +350,9 @@ public:
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(addressCopy->sizePolicy().hasHeightForWidth());
         addressCopy->setSizePolicy(sizePolicy2);
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8("../assets/clipboard.png"), QSize(), QIcon::Normal, QIcon::Off);
-        addressCopy->setIcon(icon4);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8("../../../../../../.designer/assets/clipboard.png"), QSize(), QIcon::Normal, QIcon::Off);
+        addressCopy->setIcon(icon3);
         walletAddress = new QLineEdit(address);
         walletAddress->setObjectName(QString::fromUtf8("walletAddress"));
         walletAddress->setGeometry(QRect(10, 100, 321, 31));
@@ -378,9 +391,9 @@ public:
         privKeyShow->setGeometry(QRect(350, 89, 33, 31));
         sizePolicy2.setHeightForWidth(privKeyShow->sizePolicy().hasHeightForWidth());
         privKeyShow->setSizePolicy(sizePolicy2);
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8("../assets/no-view.png"), QSize(), QIcon::Normal, QIcon::Off);
-        privKeyShow->setIcon(icon5);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8("../../../../../../.designer/assets/no-view.png"), QSize(), QIcon::Normal, QIcon::Off);
+        privKeyShow->setIcon(icon4);
         publicKey = new QLineEdit(rsaKeys);
         publicKey->setObjectName(QString::fromUtf8("publicKey"));
         publicKey->setGeometry(QRect(10, 50, 331, 31));
@@ -392,19 +405,19 @@ public:
         pubKeyCopy->setGeometry(QRect(390, 50, 33, 31));
         sizePolicy2.setHeightForWidth(pubKeyCopy->sizePolicy().hasHeightForWidth());
         pubKeyCopy->setSizePolicy(sizePolicy2);
-        pubKeyCopy->setIcon(icon4);
+        pubKeyCopy->setIcon(icon3);
         pubKeyShow = new QToolButton(rsaKeys);
         pubKeyShow->setObjectName(QString::fromUtf8("pubKeyShow"));
         pubKeyShow->setGeometry(QRect(350, 50, 33, 31));
         sizePolicy2.setHeightForWidth(pubKeyShow->sizePolicy().hasHeightForWidth());
         pubKeyShow->setSizePolicy(sizePolicy2);
-        pubKeyShow->setIcon(icon5);
+        pubKeyShow->setIcon(icon4);
         privKeyCopy = new QToolButton(rsaKeys);
         privKeyCopy->setObjectName(QString::fromUtf8("privKeyCopy"));
         privKeyCopy->setGeometry(QRect(390, 90, 33, 31));
         sizePolicy2.setHeightForWidth(privKeyCopy->sizePolicy().hasHeightForWidth());
         privKeyCopy->setSizePolicy(sizePolicy2);
-        privKeyCopy->setIcon(icon4);
+        privKeyCopy->setIcon(icon3);
         privateKey = new QLineEdit(rsaKeys);
         privateKey->setObjectName(QString::fromUtf8("privateKey"));
         privateKey->setGeometry(QRect(10, 90, 331, 31));
@@ -440,6 +453,33 @@ public:
 
         accountView->addWidget(loggedIn);
         stackedWidget->addWidget(account);
+        settings = new QWidget();
+        settings->setObjectName(QString::fromUtf8("settings"));
+        label = new QLabel(settings);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(30, 20, 91, 41));
+        rsaKeyPath = new QWidget(settings);
+        rsaKeyPath->setObjectName(QString::fromUtf8("rsaKeyPath"));
+        rsaKeyPath->setGeometry(QRect(30, 60, 431, 101));
+        btn_reset = new QToolButton(rsaKeyPath);
+        btn_reset->setObjectName(QString::fromUtf8("btn_reset"));
+        btn_reset->setGeometry(QRect(370, 60, 33, 31));
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8("../assets/reset.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_reset->setIcon(icon5);
+        btn_choosePath = new QPushButton(rsaKeyPath);
+        btn_choosePath->setObjectName(QString::fromUtf8("btn_choosePath"));
+        btn_choosePath->setGeometry(QRect(260, 60, 101, 31));
+        rsaKeyView = new QTextBrowser(rsaKeyPath);
+        rsaKeyView->setObjectName(QString::fromUtf8("rsaKeyView"));
+        rsaKeyView->setGeometry(QRect(0, 60, 251, 31));
+        label_2 = new QLabel(rsaKeyPath);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setGeometry(QRect(0, 0, 101, 31));
+        label_3 = new QLabel(rsaKeyPath);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+        label_3->setGeometry(QRect(0, 30, 431, 31));
+        stackedWidget->addWidget(settings);
         MainWindow->setCentralWidget(centralwidget);
         stackedWidget->raise();
         tabWidget->raise();
@@ -449,10 +489,6 @@ public:
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 807, 30));
-        icon = new QMenu(menubar);
-        icon->setObjectName(QString::fromUtf8("icon"));
-        icon->setIcon(icon1);
-        icon->setSeparatorsCollapsible(false);
         text = new QMenu(menubar);
         text->setObjectName(QString::fromUtf8("text"));
         MainWindow->setMenuBar(menubar);
@@ -473,14 +509,13 @@ public:
         QWidget::setTabOrder(btn_back, blockTransactionList);
         QWidget::setTabOrder(blockTransactionList, textBrowser);
 
-        menubar->addAction(icon->menuAction());
         menubar->addAction(text->menuAction());
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(0);
-        accountView->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(5);
+        stackedWidget->setCurrentIndex(1);
+        accountView->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -494,6 +529,7 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(AddressBook), QCoreApplication::translate("MainWindow", "Address Book", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Settings), QCoreApplication::translate("MainWindow", "Settings", nullptr));
         btn_mine->setText(QCoreApplication::translate("MainWindow", "Mine", nullptr));
         plusSign->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         minusSign->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
@@ -531,7 +567,11 @@ public:
         privKeyCopy->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         pubIPAddrTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt;\">Public IP Address</span></p></body></html>", nullptr));
         pubIPAddrSubtitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt;\">Your public IP address is what is used to send your Plasmacoin to once<br>the block with your transaction(s) is confirmed to the blockchain. Your<br>IP address is neither stored on the blockchain nor directly traceable from<br>a transaction</span></p></body></html>", nullptr));
-        icon->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin UI", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt;\">Settings</span></p></body></html>", nullptr));
+        btn_reset->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        btn_choosePath->setText(QCoreApplication::translate("MainWindow", "Choose Path...", nullptr));
+        label_2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; text-decoration: underline;\">RSA Key Path</span></p></body></html>", nullptr));
+        label_3->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Choose the path where your RSA public-private key pair will be stored.</p></body></html>", nullptr));
         text->setTitle(QCoreApplication::translate("MainWindow", "Plasmacoin Client", nullptr));
     } // retranslateUi
 
