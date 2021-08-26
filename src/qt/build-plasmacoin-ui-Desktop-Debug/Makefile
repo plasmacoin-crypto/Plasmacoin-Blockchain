@@ -914,7 +914,7 @@ main.o: ../plasmacoin-ui/main.cpp ../plasmacoin-ui/mainwindow.h \
 
 mainwindow.o: ../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/mainwindow.h \
 			  ui_mainwindow.h ../plasmacoin-ui/mining-status.h ../plasmacoin-ui/account-pages.h \
-			  ../plasmacoin-ui/settings-manager.h
+			  ../plasmacoin-ui/settings-manager.h ../../rsa-fs.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../plasmacoin-ui/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp
