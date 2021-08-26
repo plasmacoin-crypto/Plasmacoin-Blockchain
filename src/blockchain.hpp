@@ -11,6 +11,8 @@
 #include <vector>
 #include <iostream>
 
+#include <QDebug>
+
 // This header file groups thre Crypto++ headers to save space
 // and also provide them with a descriptive overall name.
 #include "cryptopp-sha256-libs.h"

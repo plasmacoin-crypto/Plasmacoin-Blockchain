@@ -56,7 +56,7 @@ bool Blockchain::Mine(Block& newBlock) {
 		Block* latest = GetLatest();
 
 		// Create a new block that the node will be mining
-		newBlock = Block(latest->m_Index + 1, &latest->m_Hash, m_Unconfirmed);
+		//newBlock = Block(latest->m_Index + 1, &latest->m_Hash, m_Unconfirmed);
 		m_Unconfirmed.clear();
 
 		bool result = Consensus(newBlock); // Run Proof-of-Woork on the block
@@ -163,27 +163,33 @@ string Blockchain::Hash(Block block) {
 		height = mh_height(leaves),
 		nodes  = mh_nodes(height) + pads;
 
+	qDebug().noquote()  << "leaves:" << leaves
+						<< "\npredicted pads:" << pads
+						<< "\npredicted tree height:" << height
+						<< "\npredicted node count:" << nodes;
+
 	string* tree[nodes]; // The Merkle Tree
-	unsigned int size = static_cast<uint>(sizeof(tree) / sizeof(string*));
+	//size_t size = sizeof(tree) / sizeof(string*);
 
 	std::vector<Transaction*>::iterator iter = block.m_Transactions.begin();
-	auto index = size;
+	auto index = nodes;
 
 	// Add the hashes of all the transactions on the block to the tree.
 	// These hashes will be stored in the leaf nodes.
-	for (; index > size - leaves; index--, iter++) {
+	for (; index > nodes - leaves; index--, iter++) {
 		string hash = Hash(**iter);
 		tree[index] = &hash;
 	}
 
 	// Pad the leaves, if necessary
-	if (leaves % 2 != 0) {
-		tree[index - 1] = tree[index];
+	while (leaves % 2 != 0) {
+		*tree[index - 1] = *tree[index];
 		index--;
 		leaves++;
 	}
 
 	int npl = leaves; // The number of nodes per level of the tree
+	index = nodes; // Reset the index to the number of predicted nodes
 
 	while (index >= 0) {
 		// A parent node's children are at 2i + 1 (left) and 2i + 2 (right).
@@ -191,6 +197,9 @@ string Blockchain::Hash(Block block) {
 		tree[index] = &hash;
 		index--;
 
+		// Pad any levels that become uneven in the tree generation process.
+		// For example, a tree with a second row of 3 nodes will need to be
+		// padded to 4.
 		if (npl % 2 != 0) {
 			tree[index - 1] = tree[index];
 			index--;
