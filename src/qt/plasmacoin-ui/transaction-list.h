@@ -27,11 +27,11 @@ public:
 	TransactionList(QListWidget*& list);
 	~TransactionList();
 
-	void Add(Transaction* transaction);
+	void Add(Transaction*& transaction);
 	void Pop();
 
 	vector<Transaction*> m_List; // The corresponding transactions
-	
+
 private:
 	QListWidget*& m_TransactionList; // The QListWidget
 };
