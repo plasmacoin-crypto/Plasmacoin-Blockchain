@@ -23,6 +23,7 @@ public:
 		QStackedWidget*& pages, QLabel* label1, QLabel* label2,
 		QLabel* label3, QLabel* label4, QLabel* label5
 	);
+	~AccountPages()
 
 	void DisplayPage(int index);
 	std::tuple<QString, QString, QString> ReadText();

@@ -44,6 +44,14 @@ AccountPages::AccountPages(
 	m_PasswordSignUpWarning->setVisible(false);
 }
 
+AccountPages::~AccountPages() {
+	delete m_EmailSignInWarning;
+	delete m_PasswordSignInWarning;
+	delete m_EmailSignUpWarning;
+	delete m_UsernameWarning;
+	delete m_PasswordSignUpWarning;
+}
+
 // Display a certain page of the account view
 void AccountPages::DisplayPage(int index) {
 	m_AccountView->setCurrentIndex(index);
