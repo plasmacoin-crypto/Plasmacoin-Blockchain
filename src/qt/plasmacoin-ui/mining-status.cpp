@@ -41,6 +41,13 @@ void Status::LoadVisuals() {
 	m_ElapsedTime->setVisible(true);
 }
 
+Status::~Status() {
+	delete m_Heading;
+	delete m_HashView;
+	delete m_NonceView;
+	delete m_ElapsedTime;
+}
+
 // Set the heading
 void Status::SetHeading(string text) {
 	m_Heading->setHtml(
