@@ -13,7 +13,7 @@
 
 #include <QDebug>
 
-// This header file groups thre Crypto++ headers to save space
+// This header file groups three Crypto++ headers to save space
 // and also provide them with a descriptive overall name.
 #include "cryptopp-sha256-libs.h"
 
@@ -46,9 +46,9 @@ public:
 	bool Validate();
 
 private:
-	string Hash(Transaction transaction);
-	string Hash(string input);
-	string Hash(Block block);
+	string Hash(const Transaction& transaction);
+	string Hash(const string& input);
+	string Hash(const Block& block);
 };
 
 #endif // BLOCKCHAIN_HPP
