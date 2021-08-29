@@ -13,12 +13,16 @@ TransactionList::TransactionList(QListWidget*& list):
 	m_TransactionList(list)
 {}
 
-TransactionList::~TransactionList() {}
+TransactionList::~TransactionList() {
+	for (auto t: m_List) {
+		delete t;
+	}
+}
 
-void TransactionList::Add(Transaction* transaction) {
+void TransactionList::Add(Transaction*& transaction) {
 	m_List.push_back(transaction);
 
-	QListWidgetItem* item = new QListWidgetItem(QString(transaction->m_Condensed.c_str()), m_TransactionList);
+	QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(transaction->m_Condensed), m_TransactionList);
 	item->setData(Qt::UserRole, m_TransactionList->count() + 1);
 	m_TransactionList->addItem(item);
 }
