@@ -86,7 +86,7 @@ std::tuple<byte*, size_t> Node::Sign(Transaction& transaction) noexcept(false) {
 	string message = transaction.m_Content;
 
 	//string signature;
-	m_Signer = CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Signer(m_Keys);
+	m_Signer = CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Signer(m_PrivKey);
 
 	byte* signature = new byte[m_Signer.MaxSignatureLength()];
 
