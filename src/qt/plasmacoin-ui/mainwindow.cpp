@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget* parent):
 	setupUi(this);
 	DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
 
+	// Create some temporary nodes to make transactions between
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
 	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", "/home/rmsmith/.ssh/node2keys/");
 	Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8", "/home/rmsmith/.ssh/node3keys/");
