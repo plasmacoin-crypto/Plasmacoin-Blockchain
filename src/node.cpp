@@ -7,7 +7,7 @@
 
 #include "node.hpp"
 
-Node::Node(string name, string username, string password, string ip, string keyPath, bool isMaster):
+Node::Node(const string& name, const string& username, const string& password, const string& ip, string keyPath, bool isMaster):
 	// User data
 	m_Name(name),
 	m_Username(username),
@@ -28,15 +28,14 @@ Node::Node(string name, string username, string password, string ip, string keyP
 }
 
 // Create a new transaction to a recipient on the blockchain network
-Transaction Node::MakeTransaction(const Node& recipient, float amount, string content) const {
+Transaction* Node::MakeTransaction(const Node& recipient, float amount, string content) const {
 	// From Transaction::m_Condensed:
 	// <SENDER_ADDR> -> <RECIEVER_ADDR> : <AMOUNT>
-	string condensed = this->GetUsrName() + ": " + std::to_string(amount) +
-					   " Plasmacoins to " + recipient.GetUsrName() + "; 0"; // Use 0 as the starting nonce
+	string condensed = this->GetAddress() + " -> " + recipient.GetAddress() + " : " + std::to_string(amount);
 
 	// A new transaction between the current user and another user in the
 	// network.
-	return Transaction(this, &recipient, content, amount, condensed);
+	return new Transaction(this, &recipient, content, amount, condensed);
 }
 
 // Get the user's name

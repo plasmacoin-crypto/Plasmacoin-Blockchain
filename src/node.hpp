@@ -38,8 +38,11 @@ using CryptoPP::byte;
 
 class Node {
 public:
-	Node(string name, string username, string password, string ip, string keyPath = rsafs::DIR_PATH, bool isMaster = false);
-	Transaction MakeTransaction(const Node& recipient, float amount, string content) const;
+	Node(
+		const string& name, const string& username, const string& password,
+		const string& ip, string keyPath = rsafs::DIR_PATH, bool isMaster = false
+	);
+	Transaction* MakeTransaction(const Node& recipient, float amount, string content) const;
 
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
