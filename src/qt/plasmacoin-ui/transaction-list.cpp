@@ -15,12 +15,12 @@ TransactionList::TransactionList(QListWidget*& list):
 
 TransactionList::~TransactionList() {}
 
-void TransactionList::Populate() {
-	for (int i = 0; i < 3; i++) {
-		QListWidgetItem* item = new QListWidgetItem(QString(std::string("Transaction " + std::to_string(i + 1)).c_str()), m_TransactionList);
-		item->setData(Qt::UserRole, i);
-		m_TransactionList->addItem(item);
-	}
+void TransactionList::Add(Transaction* transaction) {
+	m_List.push_back(transaction);
+
+	QListWidgetItem* item = new QListWidgetItem(QString(transaction->m_Condensed.c_str()), m_TransactionList);
+	item->setData(Qt::UserRole, m_TransactionList->count() + 1);
+	m_TransactionList->addItem(item);
 }
 
 void TransactionList::Pop() {
