@@ -24,7 +24,19 @@ MainWindow::MainWindow(QWidget* parent):
 	setupUi(this);
 	DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
 
-	m_TList->Populate(); // Load items into the transaction list
+	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
+	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", "/home/rmsmith/.ssh/node2keys/");
+	Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8", "/home/rmsmith/.ssh/node3keys/");
+
+	Transaction* transaction1 = node1->MakeTransaction(*node2, 1.0, "Here's some money");
+	Transaction* transaction2 = node2->MakeTransaction(*node3, 5.7, "Here's some money");
+	Transaction* transaction3 = node3->MakeTransaction(*node1, 2.1, "Here's some money");
+
+	std::cout << transaction1->m_Condensed << std::endl;
+
+	m_TList->Add(transaction1); // Load items into the transaction list
+	m_TList->Add(transaction2); // Load items into the transaction list
+	m_TList->Add(transaction3); // Load items into the transaction list
 
 	load.wait(); // Load the mining visuals
 	this->m_Status = load.get(); // Capture the return value
@@ -44,7 +56,7 @@ MainWindow::MainWindow(QWidget* parent):
 	connect(Ui::MainWindow::btn_choosePath, &QPushButton::released, this, [this]() {
 		qDebug() << this->m_FileBrowser->getSaveFileName(
 											Ui::MainWindow::settings, QFileDialog::tr("Choose an RSA output location"),
-											QString(rsafs::HOME_DIR.c_str()), QFileDialog::tr("Text Files (*.txt);;All Files (*.*, *)"),
+											QString::fromStdString(rsafs::HOME_DIR), QFileDialog::tr("Text Files (*.txt);;All Files (*.*, *)"),
 											nullptr, QFileDialog::DontUseNativeDialog
 										);
 	});
@@ -81,7 +93,7 @@ void MainWindow::StartMining() {
 	// 	transactions.push_back(Ui::MainWindow::blockTransactionList->row(i));
 	// }
 
-	Block newBlock(latest->m_Index + 1, latest->m_PrevHash, {nullptr}); // Create a new block
+	Block newBlock(latest->m_Index + 1, latest->m_PrevHash, m_TList->m_List); // Create a new block
 
 	auto start = high_resolution_clock::now(); // Begin timing the function
 
