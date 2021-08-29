@@ -15,19 +15,62 @@ fs::path rsafs::writeKeys(CryptoPP::InvertibleRSAFunction keys, string path) {
 		rsafs::createRSAPath(path); // Create a path to store the keys
 	}
 
-	// Write the keys to the path on in the filesystem
-	CryptoPP::FileSink output(string(path).c_str());
-	keys.DEREncode(output);
+	RSA::PublicKey pubKey = RSA::PublicKey(keys);
+	RSA::PrivateKey privKey = RSA::PrivateKey(keys);
+
+	CryptoPP::ByteQueue queue;
+
+	pubKey.Save(queue);
+	rsafs::saveHex(path + rsafs::PUB_FILENAME, queue);
+
+	queue.Clear();
+
+	privKey.Save(queue);
+	rsafs::saveHex(path + rsafs::PRIV_FILENAME, queue);
 
 	return fs::path(path);
 }
 
 // Read the user's RSA keys from the key file
-pair<RSA::PublicKey, RSA::PrivateKey> rsafs::readKeys(CryptoPP::InvertibleRSAFunction keys, string path) {
-	CryptoPP::FileSource input(string(path).c_str(), true);
-	keys.BERDecode(input);
+void rsafs::readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, string path) {
+	string pubKeyPath = path + rsafs::PUB_FILENAME;
+	string privKeyPath = path + rsafs::PRIV_FILENAME;
 
-	return std::make_pair(RSA::PublicKey(keys), RSA::PrivateKey(keys));
+	CryptoPP::ByteQueue queue;
+
+	// Load the public key
+    rsafs::loadHex(pubKeyPath, queue);
+    pubKey.Load(queue);
+
+	queue.Clear();
+
+	// Load the private key
+	rsafs::loadHex(privKeyPath, queue);
+    privKey.Load(queue);
+}
+
+void rsafs::saveHex(string filename, const CryptoPP::BufferedTransformation& bt) {
+	CryptoPP::HexEncoder encoder;
+
+	bt.CopyTo(encoder);
+    encoder.MessageEnd();
+
+    CryptoPP::FileSink file(filename.c_str());
+
+    bt.CopyTo(file);
+    file.MessageEnd();
+}
+
+void rsafs::loadHex(string filename, CryptoPP::BufferedTransformation& bt) {
+	CryptoPP::HexDecoder decoder;
+
+	bt.CopyTo(decoder);
+    decoder.MessageEnd();
+
+    CryptoPP::FileSource file(filename.c_str(), true);
+
+    file.TransferTo(bt);
+    bt.MessageEnd();
 }
 
 // Create a place to store the user's RSA keys if the provided path doesn't exist.
@@ -35,8 +78,9 @@ pair<RSA::PublicKey, RSA::PrivateKey> rsafs::readKeys(CryptoPP::InvertibleRSAFun
 // On Linux and macOS, the file is created in `$HOME/.ssh`. On all platforms, the
 // file's name is `pc_rsa_keys`.
 void rsafs::createRSAPath(string path) {
-	fs::create_directory(rsafs::dirName(path));
-	std::ofstream rsaKeyFile(path);
+	fs::create_directory(path);
+	std::ofstream rsaPubKeyFile(path + rsafs::PUB_FILENAME);
+	std::ofstream rsaPrivKeyFile(path + rsafs::PRIV_FILENAME);
 }
 
 // Check if a given path exists and is not an empty string

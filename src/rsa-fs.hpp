@@ -26,13 +26,17 @@
 using std::string;
 using std::pair;
 
-#include <cryptopp/rsa.h> 	// Use Crypto++'s RSA functionality
-#include <cryptopp/files.h> // Use FileSink
+#include <cryptopp/rsa.h> 	   	// Use Crypto++'s RSA functionality
+#include <cryptopp/files.h>    	// Use FileSink
+#include <cryptopp/queue.h>    	// Use ByteQueue
+#include <cryptopp/cryptlib.h> 	// Use BufferedTransformation
+#include <cryptopp/hex.h>		// Use HexEncoder
 
 using CryptoPP::RSA;
 
 namespace rsafs {
-	const string FILENAME = "pc_rsa_keys";
+	const string PUB_FILENAME  = "pc_pub.key";
+	const string PRIV_FILENAME = "pc_priv.key";
 
 	// Separate Unix-style paths from Windows paths
 	#ifdef _WIN32
@@ -45,12 +49,15 @@ namespace rsafs {
 	#endif
 
 	const string DIR_PATH = HOME_DIR + DELIM + ".ssh" + DELIM;
-	const string RSA_PATH = /*C:\ ?*/ DIR_PATH + FILENAME;
+	//const string RSA_PATH = /*C:\ ?*/ DIR_PATH + FILENAME;
 
-	fs::path writeKeys(CryptoPP::InvertibleRSAFunction keys, string path = RSA_PATH);
-	pair<RSA::PublicKey, RSA::PrivateKey> readKeys(CryptoPP::InvertibleRSAFunction keys, string path = RSA_PATH);
+	fs::path writeKeys(CryptoPP::InvertibleRSAFunction keys, string path = DIR_PATH);
+	void readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, string path = DIR_PATH);
 
-	void createRSAPath(string dirpath = RSA_PATH);
+	void saveHex(string filename, const CryptoPP::BufferedTransformation& bt);
+	void loadHex(string filename, CryptoPP::BufferedTransformation& bt);
+
+	void createRSAPath(string dirpath = DIR_PATH);
 	bool pathOkay(string path);
 	string dirName(const string& path);
 }
