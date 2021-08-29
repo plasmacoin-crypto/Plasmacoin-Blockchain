@@ -17,7 +17,7 @@ class Node;
 
 class Transaction {
 public:
-	Transaction(const Node* sender, const Node* recipient, string content, float amount, string condensed);
+	Transaction(const Node* sender, const Node* recipient, const string& content, float amount, const string& condensed);
 	void Update(int nonce);
 
 	const Node* m_Sender;
@@ -31,7 +31,7 @@ public:
 	string m_SSignature, m_RSignature;
 
 	// A condensed version of the transaction in the form:
-	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>; <NONCE>
+	// <SENDER_ADDR> -> <RECIEVER_ADDR> : <AMOUNT>
 	string m_Condensed;
 };
 
