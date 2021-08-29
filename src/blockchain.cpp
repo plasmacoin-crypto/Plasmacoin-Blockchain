@@ -52,7 +52,7 @@ Block* Blockchain::GetLatest() const {
 // on it.
 bool Blockchain::Mine(Block& newBlock) {
 	std::cout << "Mining" << std::endl;
-	if (!m_Unconfirmed.empty()) {
+	if (!newBlock.m_Transactions.empty()) {
 		Block* latest = GetLatest();
 
 		// Create a new block that the node will be mining
@@ -78,16 +78,14 @@ bool Blockchain::Consensus(Block& block) {
 	// Get the nonce. If the difficulty is 5, the string representation
 	// of the nonce will be "00000".
 	string strNonce = string(DIFFICULTY, '0');
+	string hash;
 
-	string hash = Hash(block); // Hash the block
+	do {
+		hash = Hash(block); // Hash the block
 
-	while (hash.substr(0, strNonce.size()) != strNonce) {
 		// Increase the nonce and update the condensed block data
 		block.m_Nonce++;
-		//block.m_Transaction->Update(block.m_Nonce);
-
-		hash = Hash(block);
-	}
+	} while (hash.substr(0, strNonce.size()) != strNonce);
 
 	block.m_Hash = hash;
 	std::cout << hash << std::endl;
@@ -112,7 +110,7 @@ bool Blockchain::Validate() {
 }
 
 // Use Crypto++ to hash the transaction data
-string Blockchain::Hash(Transaction transaction) {
+string Blockchain::Hash(const Transaction& transaction) {
 	CryptoPP::SHA256 hash;
 	string digest; // The result
 	string message = transaction.m_Condensed;
@@ -134,7 +132,7 @@ string Blockchain::Hash(Transaction transaction) {
 }
 
 // Use Crypto++ to hash a string
-string Blockchain::Hash(string input) {
+string Blockchain::Hash(const string& input) {
 	CryptoPP::SHA256 hash;
 	string digest; // The result
 
@@ -156,12 +154,12 @@ string Blockchain::Hash(string input) {
 
 // Hash a block by constructing a Merkle Tree. Each block hash will be make up of hashes of
 // concatenations of hashes until a root node for the tree is generated.
-string Blockchain::Hash(Block block) {
+string Blockchain::Hash(const Block& block) {
 	// Declare some variables
 	int leaves = block.m_Transactions.size(),
 		pads   = mh_pads(leaves),
 		height = mh_height(leaves),
-		nodes  = mh_nodes(height) + pads;
+		nodes  = mh_nodes(height);
 
 	qDebug().noquote()  << "leaves:" << leaves
 						<< "\npredicted pads:" << pads
@@ -169,44 +167,51 @@ string Blockchain::Hash(Block block) {
 						<< "\npredicted node count:" << nodes;
 
 	string* tree[nodes]; // The Merkle Tree
-	//size_t size = sizeof(tree) / sizeof(string*);
 
-	std::vector<Transaction*>::iterator iter = block.m_Transactions.begin();
-	auto index = nodes;
+	std::vector<Transaction*>::const_iterator iter = block.m_Transactions.cbegin();
+	int index = nodes;
 
 	// Add the hashes of all the transactions on the block to the tree.
 	// These hashes will be stored in the leaf nodes.
-	for (; index > nodes - leaves; index--, iter++) {
-		string hash = Hash(**iter);
-		tree[index] = &hash;
+	for (auto trans: block.m_Transactions) {
+		string hash = Hash(*trans);
+		tree[index - 1] = &hash;
+
+		index--;
 	}
 
 	// Pad the leaves, if necessary
 	while (leaves % 2 != 0) {
-		*tree[index - 1] = *tree[index];
-		index--;
-		leaves++;
+		tree[index - 1] = tree[index];
+		index--, leaves++;
 	}
 
 	int npl = leaves; // The number of nodes per level of the tree
-	index = nodes; // Reset the index to the number of predicted nodes
+	index = nodes - leaves - 1; // Set the index to the number of remaining nodes
+	string hash;
 
 	while (index >= 0) {
 		// A parent node's children are at 2i + 1 (left) and 2i + 2 (right).
-		string hash = Hash(*tree[2 * index + 1] + *tree[2 * index + 2]);
+		hash = Hash(*tree[2 * index + 1] + *tree[2 * index + 2]);
 		tree[index] = &hash;
 		index--;
 
+		//
 		// Pad any levels that become uneven in the tree generation process.
 		// For example, a tree with a second row of 3 nodes will need to be
 		// padded to 4.
-		if (npl % 2 != 0) {
-			tree[index - 1] = tree[index];
+		//
+		// The root node is the top of the tree, not a row with 1 node that needs
+		// to be padded to 2.
+		//
+		if (npl % 2 != 0 && npl > 1) {
+			*tree[index - 1] = *tree[index];
 			index--;
 		}
 
 		npl /= 2;
 	}
 
+	std::cout << block.m_Nonce << std::endl;
 	return Hash(*tree[0] + std::to_string(block.m_Nonce));
 }
