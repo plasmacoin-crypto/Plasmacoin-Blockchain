@@ -30,6 +30,7 @@ using std::pair;
 #include <cryptopp/filters.h>	// Use SignerFilter, StringSink, SignatureVerificationFilter
 #include <cryptopp/cryptlib.h> 	// Use GenerateRandomWithKeySize
 #include <cryptopp/pssr.h>		// Use PSSR
+#include <cryptopp/ripemd.h>	// Use the RIPEMD hash function
 
 using CryptoPP::RSA;
 using CryptoPP::Integer;
@@ -37,11 +38,11 @@ using CryptoPP::byte;
 
 class Node {
 public:
-	Node(string name, string username, string password, string ip, string keyPath = rsafs::RSA_PATH, bool isMaster = false);
+	Node(string name, string username, string password, string ip, string keyPath = rsafs::DIR_PATH, bool isMaster = false);
 	Transaction MakeTransaction(const Node& recipient, float amount, string content) const;
 
 	// Some getters
-	string GetName() const, GetUsrName() const, GetIP() const;
+	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
 
 	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
 
@@ -54,9 +55,13 @@ public:
 	RSA::PublicKey m_PubKey;
 
 private:
+	string Hash(string input);
 	string Hash(Transaction transaction);
+	string RIPEMD160(string input);
 
-	string m_Name, m_Username, m_Password, m_IPAddr, m_KeyPath;
+	string CreateAddress(RSA::PublicKey pubKey);
+
+	string m_Name, m_Username, m_Password, m_IPAddr, m_KeyPath, m_Address;
 	RSA::PrivateKey m_PrivKey;
 	bool isMaster;
 

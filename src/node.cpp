@@ -16,19 +16,21 @@ Node::Node(string name, string username, string password, string ip, string keyP
 	m_KeyPath(keyPath),
 	isMaster(isMaster)
 {
-	if (!rsafs::pathOkay(m_KeyPath + rsafs::FILENAME)) {
+	if (!rsafs::pathOkay(m_KeyPath + rsafs::PUB_FILENAME) && !rsafs::pathOkay(m_KeyPath + rsafs::PRIV_FILENAME)) {
 		std::tie(m_PubKey, m_PrivKey) = GenerateKeys(); // Generate a set of RSA keys for the user
 		rsafs::writeKeys(m_Keys, m_KeyPath);
 	}
 	else {
-		std::tie(m_PubKey, m_PrivKey) = rsafs::readKeys(m_Keys, m_KeyPath + rsafs::FILENAME);
+		rsafs::readKeys(m_PubKey, m_PrivKey, m_KeyPath);
 	}
+
+	m_Address = CreateAddress(m_PubKey);
 }
 
 // Create a new transaction to a recipient on the blockchain network
 Transaction Node::MakeTransaction(const Node& recipient, float amount, string content) const {
 	// From Transaction::m_Condensed:
-	// <SENDER>: <AMOUNT> Plasmacoins to <RECIPIENT>; <NONCE>
+	// <SENDER_ADDR> -> <RECIEVER_ADDR> : <AMOUNT>
 	string condensed = this->GetUsrName() + ": " + std::to_string(amount) +
 					   " Plasmacoins to " + recipient.GetUsrName() + "; 0"; // Use 0 as the starting nonce
 
@@ -50,6 +52,10 @@ string Node::GetUsrName() const {
 // Get the user's global IP address
 string Node::GetIP() const {
 	return m_IPAddr;
+}
+
+string Node::GetAddress() const {
+	return m_Address;
 }
 
 // Generate public and private RSA keys for signing transactions
@@ -109,6 +115,27 @@ bool Node::Verify(Transaction& transaction, byte* signature, size_t length, RSA:
 	return result;
 }
 
+// Use Crypto++ to hash a string
+string Node::Hash(string input) {
+	CryptoPP::SHA256 hash;
+	string digest; // The result
+
+	// Use the library
+	//
+	// No objects have to be freed because of Crypto++'s pipelining
+	// functionality
+	//
+	CryptoPP::StringSource ssource(input, true,
+		new CryptoPP::HashFilter(hash,
+			new CryptoPP::HexEncoder(
+				new CryptoPP::StringSink(digest)
+			)
+		)
+	);
+
+	return digest;
+}
+
 // Use Crypto++ to hash the transaction data
 string Node::Hash(Transaction transaction) {
 	CryptoPP::SHA256 hash;
@@ -129,4 +156,31 @@ string Node::Hash(Transaction transaction) {
 	);
 
 	return digest;
+}
+
+string Node::RIPEMD160(string input) {
+	CryptoPP::RIPEMD160 hash;
+	string digest; // The result
+
+	// Hash the transaction data
+	//
+	// No objects have to be freed because of Crypto++'s pipelining
+	// functionality
+	//
+	CryptoPP::StringSource ssource(input, true,
+		new CryptoPP::HashFilter(hash,
+			new CryptoPP::HexEncoder(
+				new CryptoPP::StringSink(digest)
+			)
+		)
+	);
+
+	return digest;
+}
+
+string Node::CreateAddress(RSA::PublicKey pubKey) {
+	string strPubKey;
+	pubKey.Save(CryptoPP::StringSink(strPubKey).Ref());
+
+	return RIPEMD160(Hash(strPubKey));
 }
