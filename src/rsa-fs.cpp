@@ -11,7 +11,11 @@
 // at a custom path the user provided. If the provided path doesn't exist, those
 // directories and/or files are created first.
 fs::path rsafs::writeKeys(CryptoPP::InvertibleRSAFunction keys, string path) {
-	if (!fs::exists(rsafs::dirName(path)) || !fs::exists(path)) {
+	if (
+		!fs::exists(path) ||
+		!fs::exists(path + rsafs::PUB_FILENAME) ||
+		!fs::exists(path + rsafs::PRIV_FILENAME)
+	) {
 		rsafs::createRSAPath(path); // Create a path to store the keys
 	}
 
