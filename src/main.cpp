@@ -16,7 +16,7 @@ int main() {
 	Blockchain* chain = new Blockchain();
 
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
-	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", "/home/rmsmith/.ssh/pc_rsa_keys2");
+	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", "/home/rmsmith/.ssh/node2keys/");
 	//Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8");
 
 	Transaction transaction = node1->MakeTransaction(*node2, 1.0, "Here's some money");
@@ -32,8 +32,6 @@ int main() {
 	//chain->AddToLedger(&transaction);
 
 	//std::cout << transaction.m_Content << std::endl;
-
-	//std::cout << chain->Mine() << std::endl;
 
 	return 0;
 }
