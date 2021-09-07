@@ -18,10 +18,17 @@ Block::Block(int index, string* prevHash, vector<Transaction*> transactions):
 }
 
 // Make sure the block is valid
-bool Block::Validate(string latestHash, const int& DIFFICULTY) {
+bool Block::Validate(const string& hash, const string& prevHash, const int& DIFFICULTY) {
 	return (
-		(m_PrevHash != nullptr) &&	// Check if the previous hash exists on the block
-		(latestHash == *m_PrevHash) &&	// Check if the previous hash is valid
-		(m_Hash.find(string(DIFFICULTY, '0')) != string::npos)	// Check if the block hash is valid
+		m_PrevHash != nullptr &&							// Check if the previous hash exists on the block
+		ValidateHash(*m_PrevHash, prevHash, DIFFICULTY) &&	// Check if the previous hash is valid
+		ValidateHash(m_Hash, hash, DIFFICULTY)				// Check if the block hash is valid
 	);
+}
+
+bool Block::ValidateHash(const string& orig, const string& val, const int& DIFFICULTY) {
+	// Check the difficulty using the second hash, because the first one could be
+	// tampered with. Thanks to short-circuit evaluation, either one will technically
+	// at this point.
+	return (orig == val) && (val.find(string(DIFFICULTY, '0')) != string::npos);
 }
