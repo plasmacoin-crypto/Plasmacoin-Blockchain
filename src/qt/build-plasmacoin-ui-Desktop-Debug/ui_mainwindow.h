@@ -182,7 +182,7 @@ public:
         mineCoins->setObjectName(QString::fromUtf8("mineCoins"));
         btn_mine = new QPushButton(mineCoins);
         btn_mine->setObjectName(QString::fromUtf8("btn_mine"));
-        btn_mine->setGeometry(QRect(520, 430, 84, 31));
+        btn_mine->setGeometry(QRect(540, 430, 84, 31));
         transactionList = new QListWidget(mineCoins);
         transactionList->setObjectName(QString::fromUtf8("transactionList"));
         transactionList->setGeometry(QRect(30, 30, 311, 401));
@@ -203,10 +203,10 @@ public:
         minusSign->setIconSize(QSize(24, 24));
         blockTransactionList = new QListWidget(mineCoins);
         blockTransactionList->setObjectName(QString::fromUtf8("blockTransactionList"));
-        blockTransactionList->setGeometry(QRect(390, 140, 351, 281));
+        blockTransactionList->setGeometry(QRect(390, 140, 381, 281));
         blockSize = new QTextBrowser(mineCoins);
         blockSize->setObjectName(QString::fromUtf8("blockSize"));
-        blockSize->setGeometry(QRect(390, 430, 121, 31));
+        blockSize->setGeometry(QRect(390, 430, 141, 31));
         stackedWidget->addWidget(mineCoins);
         addressBook = new QWidget();
         addressBook->setObjectName(QString::fromUtf8("addressBook"));
