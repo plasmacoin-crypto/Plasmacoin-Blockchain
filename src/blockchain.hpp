@@ -32,6 +32,7 @@ public:
 
 	vector<Block*> Get() const;
 	Block* GetLatest() const;
+	size_t Size() const;
 
 	bool Mine(Block& newBlock);
 

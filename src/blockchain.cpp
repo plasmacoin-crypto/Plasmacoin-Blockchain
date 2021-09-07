@@ -48,6 +48,10 @@ Block* Blockchain::GetLatest() const {
 	return m_Chain.back();
 }
 
+size_t Blockchain::Size() const {
+	return m_Chain.size();
+}
+
 // Create a new block with an unconfirmed transaction and run Proof-of-Woork
 // on it.
 bool Blockchain::Mine(Block& newBlock) {
@@ -81,6 +85,7 @@ bool Blockchain::Consensus(Block& block) {
 	string hash;
 
 	do {
+		std::cout << "Nonce: " << block.m_Nonce << std::endl;
 		hash = Hash(block); // Hash the block
 
 		// Increase the nonce and update the condensed block data
@@ -100,8 +105,10 @@ bool Blockchain::Validate() {
 	for (auto block: m_Chain) {
 		hash = Hash(*block); // Regenerate the block hash
 
-		// Make sure the block is valid
-		if (!block->Validate(hash, DIFFICULTY)) {
+		// Make sure the block is valid. One invalid block invalidates the whole
+		// chain, because the previous hash fields of all the following blocks will
+		// be invalid.
+		if (!block->Validate(block->m_Hash, hash, DIFFICULTY)) {
 			return false;
 		}
 	}
@@ -156,20 +163,13 @@ string Blockchain::Hash(const string& input) {
 // concatenations of hashes until a root node for the tree is generated.
 string Blockchain::Hash(const Block& block) {
 	// Declare some variables
-	int leaves = block.m_Transactions.size(),
+	int leaves = block.m_Transactions.size(), // Each transaction's hash becomes a leaf
 		pads   = mh_pads(leaves),
 		height = mh_height(leaves),
 		nodes  = mh_nodes(height);
 
-	qDebug().noquote()  << "leaves:" << leaves
-						<< "\npredicted pads:" << pads
-						<< "\npredicted tree height:" << height
-						<< "\npredicted node count:" << nodes;
-
 	string* tree[nodes]; // The Merkle Tree
-
-	std::vector<Transaction*>::const_iterator iter = block.m_Transactions.cbegin();
-	int index = nodes;
+	int index = nodes;	 // The current node that's being accessed
 
 	// Add the hashes of all the transactions on the block to the tree.
 	// These hashes will be stored in the leaf nodes.
@@ -183,7 +183,7 @@ string Blockchain::Hash(const Block& block) {
 	// Pad the leaves, if necessary
 	while (leaves % 2 != 0) {
 		tree[index - 1] = tree[index];
-		index--, leaves++;
+		index--, leaves++, pads--;
 	}
 
 	int npl = leaves; // The number of nodes per level of the tree
@@ -206,12 +206,11 @@ string Blockchain::Hash(const Block& block) {
 		//
 		if (npl % 2 != 0 && npl > 1) {
 			*tree[index - 1] = *tree[index];
-			index--;
+			index--, pads--;
 		}
 
 		npl /= 2;
 	}
 
-	std::cout << block.m_Nonce << std::endl;
 	return Hash(*tree[0] + std::to_string(block.m_Nonce));
 }
