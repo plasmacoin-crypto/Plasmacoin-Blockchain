@@ -53,7 +53,7 @@ AccountPages::~AccountPages() {
 }
 
 // Display a certain page of the account view
-void AccountPages::DisplayPage(int index) {
+void AccountPages::DisplayPage(int index) const {
 	m_AccountView->setCurrentIndex(index);
 }
 
