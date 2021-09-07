@@ -52,28 +52,37 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../plasmacoin-ui/main.cpp \
-		../plasmacoin-ui/mainwindow.cpp moc_mainwindow.cpp \
-		../plasmacoin-ui/transaction-list.cpp moc_transactionlist.cpp \
-		../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/recipient-list.cpp \
-		../plasmacoin-ui/firebase-auth.cpp  moc_firebase_auth.cpp \
-		../plasmacoin-ui/account-pages.cpp ../plasmacoin-ui/settings-manager.cpp
-OBJECTS       = main.o \
-		transaction.o \
-		node.o \
-		block.o \
-		blockchain.o \
-		merkle-helpers.o \
-		rsa-fs.o \
-		mainwindow.o \
-		moc_mainwindow.o \
-		transaction-list.o \
-		moc_transactionlist.o \
-		mining-status.o \
-		firebase-auth.o \
-		moc_firebase_auth.o \
-		account-pages.o \
-		settings-manager.o
+SOURCES = 	../plasmacoin-ui/main.cpp \
+			../plasmacoin-ui/mainwindow.cpp moc_mainwindow.cpp \
+			../plasmacoin-ui/transaction-list.cpp moc_transactionlist.cpp \
+			../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/moc_mining_status.cpp \
+			../plasmacoin-ui/recipient-list.cpp ../plasmacoin-ui/firebase-auth.cpp \
+			moc_firebase_auth.cpp ../plasmacoin-ui/account-pages.cpp \
+			#../plasmacoin-ui/settings-manager.cpp
+
+OBJECTS = 	main.o \
+			transaction.o \
+			node.o \
+			block.o \
+			blockchain.o \
+			merkle-helpers.o \
+			rsa-fs.o \
+			mainwindow.o \
+			moc_mainwindow.o \
+			transaction-list.o \
+			moc_transactionlist.o \
+			mining-status.o \
+			moc_mining_status.o \
+			firebase-auth.o \
+			moc_firebase_auth.o \
+			account-pages.o \
+			#settings-manager.o
+
+MOC = 	moc_mainwindow.cpp \
+		moc_transactionlist.cpp \
+		moc_mining_status.cpp \
+		moc_firebase_auth.cpp \
+		moc_account_pages.cpp
 
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
@@ -314,7 +323,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		../plasmacoin-ui/recipient-list.h ../plasmacoin-ui/recipient-list.cpp \
 		../plasmacoin-ui/firebase-auth.h ../plasmacoin/firebase-auth.cpp \
 		../plasmacoin-ui/account-pages.h ../plasmacoin/account-pages.cpp \
-		../plasmacoin-ui/settings-manager.h ../plasmacoin/settings-manager.cpp
+		#../plasmacoin-ui/settings-manager.h ../plasmacoin/settings-manager.cpp
 QMAKE_TARGET  = plasmacoin-ui
 DESTDIR       =
 TARGET        = plasmacoin-ui
@@ -842,9 +851,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 	clang++ -pipe -g -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: $(MOC)
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_transactionlist.cpp
+	-$(DEL_FILE) $(MOC)
 
 moc_mainwindow.cpp: ../plasmacoin-ui/mainwindow.h \
 		ui_mainwindow.h \
@@ -857,6 +866,12 @@ moc_transactionlist.cpp: ../plasmacoin-ui/transaction-list.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-ui -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-ui/transaction-list.h -o moc_transactionlist.cpp
+
+moc_mining_status.cpp: ../plasmacoin-ui/mining-status.h \
+		ui_mainwindow.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-ui -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-ui/mining-status.h -o moc_mining_status.cpp
 
 moc_firebase_auth.cpp: ../plasmacoin-ui/ \
 		ui_mainwindow.h \
@@ -871,7 +886,7 @@ compiler_uic_make_all: ui_mainwindow.h
 compiler_uic_clean:
 	-$(DEL_FILE) ui_mainwindow.h
 ui_mainwindow.h: ../plasmacoin-ui/mainwindow.ui \
-		/usr/bin/uic
+				 /usr/bin/uic
 	/usr/bin/uic ../plasmacoin-ui/mainwindow.ui -o ui_mainwindow.h
 
 compiler_yacc_decl_make_all:
@@ -914,7 +929,7 @@ main.o: ../plasmacoin-ui/main.cpp ../plasmacoin-ui/mainwindow.h \
 
 mainwindow.o: ../plasmacoin-ui/mainwindow.cpp ../plasmacoin-ui/mainwindow.h \
 			  ui_mainwindow.h ../plasmacoin-ui/mining-status.h ../plasmacoin-ui/account-pages.h \
-			  ../plasmacoin-ui/settings-manager.h ../../rsa-fs.hpp
+			../../rsa-fs.hpp # ../plasmacoin-ui/settings-manager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../plasmacoin-ui/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp
@@ -922,6 +937,9 @@ moc_mainwindow.o: moc_mainwindow.cpp
 
 moc_transactionlist.o: moc_transactionlist.cpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_transactionlist.o moc_transactionlist.cpp
+
+moc_mining_status.o: moc_mining_status.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mining_status.o moc_mining_status.cpp
 
 moc_firebase_auth.o: moc_firebase_auth.cpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_firebase_auth.o moc_firebase_auth.cpp
@@ -933,7 +951,8 @@ transaction-list.o: ../plasmacoin-ui/transaction-list.cpp ../plasmacoin-ui/trans
 					ui_mainwindow.h ../../transaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction-list.o ../plasmacoin-ui/transaction-list.cpp
 
-mining-status.o: ../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/mining-status.h
+mining-status.o: ../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/mining-status.h \
+				 ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mining-status.o ../plasmacoin-ui/mining-status.cpp
 
 firebase-auth.o: ../plasmacoin-ui/firebase-auth.cpp ../plasmacoin-ui/firebase-auth.h \
@@ -944,9 +963,9 @@ account-pages.o: ../plasmacoin-ui/account-pages.cpp ../plasmacoin-ui/account-pag
 				 ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o account-pages.o ../plasmacoin-ui/account-pages.cpp
 
-settings-manager.o: ../plasmacoin-ui/settings-manager.cpp ../plasmacoin-ui/settings-manager.h \
-					ui_mainwindow.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings-manager.o ../plasmacoin-ui/settings-manager.cpp
+# settings-manager.o: ../plasmacoin-ui/settings-manager.cpp ../plasmacoin-ui/settings-manager.h \
+# 					ui_mainwindow.h
+# 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings-manager.o ../plasmacoin-ui/settings-manager.cpp
 
 ####### Install
 
