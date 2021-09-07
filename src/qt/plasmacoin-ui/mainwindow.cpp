@@ -13,16 +13,15 @@ using std::chrono::seconds;
 MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
+	m_Status(CreateMiningVisuals()),
 	m_Authenticator(new Auth()),
-	m_SettingsManager(new SettingsManager()),
-	m_TList(new TransactionList(Ui::MainWindow::transactionList)),
-
-	// Use these definitions as a workaround to pass `this` into std::async
-	mine(std::async(std::launch::deferred, &MainWindow::StartMining, this)),
-	load(std::async(std::launch::deferred, &MainWindow::LoadMiningVisuals, this, m_CurrTrans))
+	//m_SettingsManager(new SettingsManager()),
+	m_TList(new TransactionList(Ui::MainWindow::transactionList))
 {
 	setupUi(this);
-	DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
+	this->DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
+
+	m_AccPgs = CreatePages();
 
 	// Create some temporary nodes to make transactions between
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
@@ -39,17 +38,14 @@ MainWindow::MainWindow(QWidget* parent):
 	m_TList->Add(transaction2); // Load items into the transaction list
 	m_TList->Add(transaction3); // Load items into the transaction list
 
-	load.wait(); // Load the mining visuals
-	this->m_Status = load.get(); // Capture the return value
+	m_Status->SetHeading("Building Block #" + std::to_string(m_User->m_BlockchainCopy->Size()));
 
 	// Create warning labels for all 5 input fields
-	QLabel *label1 = new QLabel("", Ui::MainWindow::signIn),
-		   *label2 = new QLabel("", Ui::MainWindow::signIn),
-		   *label3 = new QLabel("", Ui::MainWindow::signUp),
-	 	   *label4 = new QLabel("", Ui::MainWindow::signUp),
-	 	   *label5 = new QLabel("", Ui::MainWindow::signUp);
-
-	m_AccPgs = new AccountPages(Ui::MainWindow::accountView, label1, label2, label3, label4, label5);
+	// QLabel *label1 = new QLabel("", Ui::MainWindow::signIn),
+	// 	   *label2 = new QLabel("", Ui::MainWindow::signIn),
+	// 	   *label3 = new QLabel("", Ui::MainWindow::signUp),
+	//  	   *label4 = new QLabel("", Ui::MainWindow::signUp),
+	//  	   *label5 = new QLabel("", Ui::MainWindow::signUp);
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
@@ -64,36 +60,40 @@ MainWindow::MainWindow(QWidget* parent):
 }
 
 MainWindow::~MainWindow() {
-	delete m_AccPgs;
+	delete m_Status;
 	delete m_Authenticator;
 	delete m_TList;
+	delete m_AccPgs;
 }
 
 // Create QTextBrowsers to display on the mining tab
-Status MainWindow::LoadMiningVisuals(Transaction* transaction) {
-	// The three widgets to display on the screen
+Status* MainWindow::CreateMiningVisuals() {
+	// The four widgets to display on the screen once a block has
+	// been mined.
 	QTextBrowser *browser1 = new QTextBrowser(Ui::MainWindow::mineCoins),
 				 *browser2 = new QTextBrowser(Ui::MainWindow::mineCoins),
 				 *browser3 = new QTextBrowser(Ui::MainWindow::mineCoins),
 				 *browser4 = new QTextBrowser(Ui::MainWindow::mineCoins);
 
- 	Status status(browser1, browser2, browser3, browser4);
- 	return status;
+ 	return new Status(browser1, browser2, browser3, browser4);
+}
+
+AccountPages* MainWindow::CreatePages() {
+	// Create warning labels for all 5 input fields
+	QLabel *label1 = new QLabel("", Ui::MainWindow::signIn),
+		   *label2 = new QLabel("", Ui::MainWindow::signIn),
+		   *label3 = new QLabel("", Ui::MainWindow::signUp),
+	 	   *label4 = new QLabel("", Ui::MainWindow::signUp),
+	 	   *label5 = new QLabel("", Ui::MainWindow::signUp);
+
+	return new AccountPages(Ui::MainWindow::accountView, label1, label2, label3, label4, label5);
 }
 
 // Call block mining code and make visual changes to the GUI once it's done
 void MainWindow::StartMining() {
+	m_Status->SetHeading("Mining Block #" + std::to_string(m_User->m_BlockchainCopy->Size()));
+
 	Block* latest = m_User->m_BlockchainCopy->GetLatest(); // Get the latest block
-
-	// TODO: Make sure transactions are somehow readable from the QListWidget
-	//std::cout << m_BlockContents[0]->data(Qt::UserRole).toInt() << std::endl;
-
-	// std::vector<QListWidgetItem*> transactions;
-
-	// for (int i = 0; i < Ui::MainWindow::blockTransactionList->count(); i++) {
-	// 	transactions.push_back(Ui::MainWindow::blockTransactionList->row(i));
-	// }
-
 	Block newBlock(latest->m_Index + 1, latest->m_PrevHash, m_TList->m_List); // Create a new block
 
 	auto start = high_resolution_clock::now(); // Begin timing the function
@@ -107,17 +107,17 @@ void MainWindow::StartMining() {
 }
 
 void MainWindow::UpdateStatus(Block& block, seconds time) {
-	m_Status.SetHash(block.m_Hash);
-	m_Status.SetNonce(block.m_Nonce);
-	m_Status.SetTime(time);
+	m_Status->SetHash(block.m_Hash);
+	m_Status->SetNonce(block.m_Nonce);
+	m_Status->SetTime(time);
 
-	m_Status.LoadVisuals();
+	m_Status->LoadVisuals();
 }
 
 // Definitions for slots
 
 // Display a certain page of the app
-void MainWindow::DisplayPage(int index) {
+void MainWindow::DisplayPage(int index) const {
 	stackedWidget->setCurrentIndex(index);
 	tabWidget->setCurrentIndex(index);
 }
