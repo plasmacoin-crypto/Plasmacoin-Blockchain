@@ -10,7 +10,6 @@
 
 #include <thread>
 #include <functional>
-#include <future>
 #include <vector>
 #include <iostream>
 
@@ -25,7 +24,7 @@
 #include "transaction-list.h"
 #include "mining-status.h"
 #include "account-pages.h"
-#include "settings-manager.h"
+//#include "settings-manager.h"
 
 #include "block.hpp"
 #include "blockchain.hpp"
@@ -39,22 +38,24 @@ public:
 	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
 
-	Status LoadMiningVisuals(Transaction* transaction); // Load certain content during mining operations
+	Status* CreateMiningVisuals(); // Load certain content during mining operations
+	AccountPages* CreatePages();	   // Create warning labels for authentication pages
+
+	void StartMining(); // Initiate the mining process
 
 	QWidget* parent;
-	Status m_Status;
-	AccountPages* m_AccPgs;
+	Status* m_Status;
 	Auth* m_Authenticator;
-	SettingsManager* m_SettingsManager;
+	TransactionList* m_TList;
+	AccountPages* m_AccPgs;
+	//SettingsManager* m_SettingsManager;
 
 	std::vector<QListWidgetItem*> m_BlockContents;
 
 private:
-	void StartMining(); // Initiate the mining process
 	void UpdateStatus(Block& block, std::chrono::seconds time); // Update the mining status while a block is being mined
 
 	QTabWidget* m_TabBar = Ui::MainWindow::tabWidget;
-	TransactionList* m_TList;
 
 	Transaction* m_CurrTrans = nullptr;
 	QFileDialog* m_FileBrowser = new QFileDialog();
@@ -63,12 +64,7 @@ public:
 	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.6"); // Temporary data
 
 private slots:
-	void DisplayPage(int index); // Actually set the index of the stack widget
-
-public:
-	// Asynchronous functions called during mining
-	std::future<void> mine;
-	std::future<Status> load;
+	void DisplayPage(int index) const; // Actually set the index of the stack widget
 };
 
 #endif // MAINWINDOW_H
