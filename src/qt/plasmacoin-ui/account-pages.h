@@ -23,9 +23,9 @@ public:
 		QStackedWidget*& pages, QLabel* label1, QLabel* label2,
 		QLabel* label3, QLabel* label4, QLabel* label5
 	);
-	~AccountPages()
+	~AccountPages();
 
-	void DisplayPage(int index);
+	void DisplayPage(int index) const;
 	std::tuple<QString, QString, QString> ReadText();
 
 	QLabel *m_EmailSignInWarning, *m_PasswordSignInWarning, *m_EmailSignUpWarning,
