@@ -11,12 +11,8 @@
 
 // Allow the user to mine their block
 void minePage(MainWindow& window) {
-	window.m_Status.SetHeading("Mining block");
-
 	// Mine a block when the correct button is clicked
-	window.connect(window.btn_mine, &QPushButton::released, &window, [&window]() {
-		window.mine.wait();
-	});
+	window.connect(window.btn_mine, &QPushButton::released, &window, &MainWindow::StartMining);
 }
 
 // Allow the user to type information in forms (QLineEdits) and be authenticated to
