@@ -5,6 +5,7 @@
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
 
+#include <QtWidgets/QMainWindow>
 #include <QString>
 #include <QTextBrowser>
 #include <QRect>
@@ -12,19 +13,26 @@
 #include <string>
 #include <chrono>
 
+#include "ui_mainwindow.h"
+
 using std::string;
 
-class Status {
+class Status : public QMainWindow, public Ui_MainWindow {
+	Q_OBJECT
+
 public:
 	Status() = default;
 	Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser* qtbrowser3, QTextBrowser* qtbrowser4);
 	~Status();
 
-	void LoadVisuals();
+	void LoadVisuals(), HideVisuals();
 
 	// Functions to modify the browser text
 	void SetHeading(string text), SetHash(string text), SetNonce(int nonce);
 	void SetTime(std::chrono::seconds elapsedTime);
+
+signals:
+	void FinishedMining();
 
 private:
 	QTextBrowser *m_Heading, *m_HashView, *m_NonceView, *m_ElapsedTime;
