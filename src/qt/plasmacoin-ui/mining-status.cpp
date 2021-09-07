@@ -15,23 +15,30 @@ Status::Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser*
 {
 	// Main display
 	m_Heading->setObjectName(QString::fromUtf8("heading"));
-	m_Heading->setGeometry(QRect(380, 31, 381, 51));
+	m_Heading->setGeometry(QRect(390, 31, 381, 51));
 
 	// The hash of the mined block
 	m_HashView->setObjectName(QString::fromUtf8("hashView"));
-	m_HashView->setGeometry(QRect(380, 91, 381, 51));
+	m_HashView->setGeometry(QRect(390, 91, 381, 51));
 
 	// A readout of the current nonce value
 	m_NonceView->setObjectName(QString::fromUtf8("nonceView"));
-	m_NonceView->setGeometry(QRect(380, 151, 181, 51));
+	m_NonceView->setGeometry(QRect(390, 151, 181, 51));
 
 	// A readout of the elapsed mining time
 	m_ElapsedTime->setObjectName(QString::fromUtf8("elapsedTime"));
-	m_ElapsedTime->setGeometry(QRect(580, 151, 181, 51));
+	m_ElapsedTime->setGeometry(QRect(590, 151, 181, 51));
 
 	m_HashView->setVisible(false);
 	m_NonceView->setVisible(false);
 	m_ElapsedTime->setVisible(false);
+}
+
+Status::~Status() {
+	delete m_Heading;
+	delete m_HashView;
+	delete m_NonceView;
+	delete m_ElapsedTime;
 }
 
 // Render the mining status visuals on the screen
@@ -39,6 +46,12 @@ void Status::LoadVisuals() {
 	m_HashView->setVisible(true);
 	m_NonceView->setVisible(true);
 	m_ElapsedTime->setVisible(true);
+}
+
+void Status::HideVisuals() {
+	m_HashView->setVisible(false);
+	m_NonceView->setVisible(false);
+	m_ElapsedTime->setVisible(false);
 }
 
 // Set the heading
