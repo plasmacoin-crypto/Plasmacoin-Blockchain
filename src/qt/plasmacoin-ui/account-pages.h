@@ -34,5 +34,5 @@ public:
 private:
 	QStackedWidget*& m_AccountView;
 
-	const QString STYLE = "font-size:11pt;font-style:italic;color:rgba(255,0,0,0.784314);";
+	const QString STYLE = "font-size: 11pt; font-style: italic; color: rgba(255,0,0,0.784314);";
 };
