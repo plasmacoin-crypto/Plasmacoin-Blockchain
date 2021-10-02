@@ -22,19 +22,19 @@ AccountPages::AccountPages(
 {
 	// Style all of the warning labels and position them on the screen
 	m_EmailSignInWarning->setStyleSheet(STYLE);
-	m_EmailSignInWarning->setGeometry(540, 210, 121, 21);
+	m_EmailSignInWarning->setGeometry(480, 380, 121, 31);
 
 	m_PasswordSignInWarning->setStyleSheet(STYLE);
-	m_PasswordSignInWarning->setGeometry(540, 250, 121, 21);
+	m_PasswordSignInWarning->setGeometry(480, 420, 121, 31);
 
 	m_EmailSignUpWarning->setStyleSheet(STYLE);
-	m_EmailSignUpWarning->setGeometry(540, 170, 121, 31);
+	m_EmailSignUpWarning->setGeometry(480, 350, 121, 31);
 
 	m_UsernameWarning->setStyleSheet(STYLE);
-	m_UsernameWarning->setGeometry(540, 210, 121, 31);
+	m_UsernameWarning->setGeometry(540, 390, 121, 31);
 
 	m_PasswordSignUpWarning->setStyleSheet(STYLE);
-	m_PasswordSignUpWarning->setGeometry(540, 250, 121, 31);
+	m_PasswordSignUpWarning->setGeometry(540, 430, 121, 31);
 
 	// Hide all the warning labels
 	m_EmailSignInWarning->setVisible(false);
