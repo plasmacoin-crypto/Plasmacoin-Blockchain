@@ -31,10 +31,10 @@ AccountPages::AccountPages(
 	m_EmailSignUpWarning->setGeometry(480, 350, 121, 31);
 
 	m_UsernameWarning->setStyleSheet(STYLE);
-	m_UsernameWarning->setGeometry(540, 390, 121, 31);
+	m_UsernameWarning->setGeometry(480, 390, 121, 31);
 
 	m_PasswordSignUpWarning->setStyleSheet(STYLE);
-	m_PasswordSignUpWarning->setGeometry(540, 430, 121, 31);
+	m_PasswordSignUpWarning->setGeometry(480, 430, 121, 31);
 
 	// Hide all the warning labels
 	m_EmailSignInWarning->setVisible(false);
