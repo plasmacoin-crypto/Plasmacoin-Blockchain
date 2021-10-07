@@ -34,6 +34,6 @@ public:
 signals:
 	void FinishedMining();
 
-private:
+public:
 	QTextBrowser *m_Heading, *m_HashView, *m_NonceView, *m_ElapsedTime;
 };
