@@ -78,9 +78,9 @@ void rsafs::loadHex(string filename, CryptoPP::BufferedTransformation& bt) {
 }
 
 // Create a place to store the user's RSA keys if the provided path doesn't exist.
-// On Windows, this creates a file in `%HOMEDRIVE%%HOMEPATH%\\.ssh` by default.
-// On Linux and macOS, the file is created in `$HOME/.ssh`. On all platforms, the
-// file's name is `pc_rsa_keys`.
+// On Windows, this creates a file in `%USERPROFILE%\\.ssh` by default. On Linux
+// and macOS, the file is created in `$HOME/.ssh`. On all platforms, the file's name
+// is `pc_rsa_keys`.
 void rsafs::createRSAPath(string path) {
 	fs::create_directory(path);
 	std::ofstream rsaPubKeyFile(path + rsafs::PUB_FILENAME);
