@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>807</width>
-    <height>606</height>
+    <width>1262</width>
+    <height>872</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../assets/plasmacoin-logo.png</normaloff>../assets/plasmacoin-logo.png</iconset>
+    <normaloff>../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -33,14 +33,20 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>791</width>
+      <width>1251</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="maximumSize">
      <size>
-      <width>791</width>
-      <height>16777215</height>
+      <width>1401</width>
+      <height>31</height>
      </size>
     </property>
     <property name="focusPolicy">
@@ -53,7 +59,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>0</number>
     </property>
     <property name="movable">
      <bool>false</bool>
@@ -92,17 +98,17 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>-10</x>
       <y>30</y>
-      <width>801</width>
-      <height>531</height>
+      <width>1261</width>
+      <height>821</height>
      </rect>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="wallet">
      <widget class="QLCDNumber" name="usdollars">
@@ -157,8 +163,8 @@
      <widget class="QPushButton" name="btn_mine">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>430</y>
+        <x>840</x>
+        <y>730</y>
         <width>84</width>
         <height>31</height>
        </rect>
@@ -170,21 +176,41 @@
      <widget class="QListWidget" name="transactionList">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>30</y>
-        <width>311</width>
-        <height>401</height>
+        <x>40</x>
+        <y>80</y>
+        <width>611</width>
+        <height>651</height>
        </rect>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
      </widget>
+     <widget class="QListWidget" name="blockTransactionList">
+      <property name="geometry">
+       <rect>
+        <x>690</x>
+        <y>240</y>
+        <width>551</width>
+        <height>471</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTextBrowser" name="blockSize">
+      <property name="geometry">
+       <rect>
+        <x>690</x>
+        <y>730</y>
+        <width>141</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
      <widget class="QToolButton" name="plusSign">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>430</y>
+        <x>590</x>
+        <y>730</y>
         <width>33</width>
         <height>31</height>
        </rect>
@@ -194,7 +220,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../assets/plus.png</normaloff>../assets/plus.png</iconset>
+        <normaloff>../../../../../../.designer/assets/plus.png</normaloff>../../../../../../.designer/assets/plus.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -206,8 +232,8 @@
      <widget class="QToolButton" name="minusSign">
       <property name="geometry">
        <rect>
-        <x>310</x>
-        <y>430</y>
+        <x>620</x>
+        <y>730</y>
         <width>33</width>
         <height>31</height>
        </rect>
@@ -217,7 +243,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../assets/minus.png</normaloff>../assets/minus.png</iconset>
+        <normaloff>../../../../../../.designer/assets/minus.png</normaloff>../../../../../../.designer/assets/minus.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -226,32 +252,12 @@
        </size>
       </property>
      </widget>
-     <widget class="QListWidget" name="blockTransactionList">
-      <property name="geometry">
-       <rect>
-        <x>390</x>
-        <y>140</y>
-        <width>381</width>
-        <height>281</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QTextBrowser" name="blockSize">
-      <property name="geometry">
-       <rect>
-        <x>390</x>
-        <y>430</y>
-        <width>141</width>
-        <height>31</height>
-       </rect>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="addressBook">
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>600</x>
         <y>130</y>
         <width>174</width>
         <height>34</height>
@@ -267,7 +273,7 @@
      <widget class="QWidget" name="formLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>600</x>
         <y>90</y>
         <width>341</width>
         <height>41</height>
@@ -293,7 +299,7 @@
      <widget class="QTextBrowser" name="textBrowser">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>600</x>
         <y>40</y>
         <width>341</width>
         <height>31</height>
@@ -305,8 +311,8 @@
        <rect>
         <x>30</x>
         <y>40</y>
-        <width>311</width>
-        <height>421</height>
+        <width>531</width>
+        <height>711</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -318,6 +324,18 @@
       <property name="columnCount">
        <number>2</number>
       </property>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>132</number>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderStretchLastSection">
+       <bool>false</bool>
+      </attribute>
       <column>
        <property name="text">
         <string>Username</string>
@@ -337,19 +355,19 @@
        <rect>
         <x>0</x>
         <y>20</y>
-        <width>801</width>
-        <height>491</height>
+        <width>1261</width>
+        <height>801</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="signIn">
        <widget class="QLineEdit" name="s_EmailField">
         <property name="geometry">
          <rect>
-          <x>290</x>
-          <y>210</y>
+          <x>230</x>
+          <y>380</y>
           <width>241</width>
           <height>31</height>
          </rect>
@@ -364,8 +382,8 @@
        <widget class="QPushButton" name="btn_signIn">
         <property name="geometry">
          <rect>
-          <x>310</x>
-          <y>330</y>
+          <x>250</x>
+          <y>500</y>
           <width>81</width>
           <height>31</height>
          </rect>
@@ -377,21 +395,21 @@
        <widget class="QLabel" name="signInTitle">
         <property name="geometry">
          <rect>
-          <x>230</x>
-          <y>110</y>
-          <width>371</width>
+          <x>130</x>
+          <y>230</y>
+          <width>451</width>
           <height>81</height>
          </rect>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Sign in to your Plasmacoin Account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Sign in to your Plasmacoin Account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="s_PasswordField">
         <property name="geometry">
          <rect>
-          <x>290</x>
-          <y>250</y>
+          <x>230</x>
+          <y>420</y>
           <width>241</width>
           <height>31</height>
          </rect>
@@ -409,8 +427,8 @@
        <widget class="QPushButton" name="btn_create">
         <property name="geometry">
          <rect>
-          <x>410</x>
-          <y>330</y>
+          <x>350</x>
+          <y>500</y>
           <width>81</width>
           <height>31</height>
          </rect>
@@ -419,26 +437,57 @@
          <string>Create...</string>
         </property>
        </widget>
+       <widget class="QWidget" name="banner1" native="true">
+        <property name="geometry">
+         <rect>
+          <x>650</x>
+          <y>40</y>
+          <width>591</width>
+          <height>721</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(115, 233, 255);
+border: 4px solid rgb(115, 233, 255);
+border-radius: 4px</string>
+        </property>
+        <widget class="QLabel" name="bannerText1">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>591</width>
+           <height>721</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; color:#000000;&quot;&gt;Welcome Back!&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; color:#000000;&quot;&gt;Please sign in to continue.&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/newPrefix/plasmacoin-banner.png&quot; width=&quot;550&quot; height=&quot;150&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </widget>
       </widget>
       <widget class="QWidget" name="signUp">
        <widget class="QLabel" name="createTitle">
         <property name="geometry">
          <rect>
-          <x>220</x>
-          <y>80</y>
-          <width>381</width>
-          <height>81</height>
+          <x>60</x>
+          <y>190</y>
+          <width>611</width>
+          <height>101</height>
          </rect>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Create your Plasmacoin account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Create your Plasmacoin account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QPushButton" name="btn_signUp">
         <property name="geometry">
          <rect>
-          <x>310</x>
-          <y>330</y>
+          <x>250</x>
+          <y>510</y>
           <width>81</width>
           <height>31</height>
          </rect>
@@ -450,8 +499,8 @@
        <widget class="QPushButton" name="btn_back">
         <property name="geometry">
          <rect>
-          <x>410</x>
-          <y>330</y>
+          <x>350</x>
+          <y>510</y>
           <width>81</width>
           <height>31</height>
          </rect>
@@ -463,8 +512,8 @@
        <widget class="QLineEdit" name="c_EmailField">
         <property name="geometry">
          <rect>
-          <x>290</x>
-          <y>170</y>
+          <x>230</x>
+          <y>350</y>
           <width>241</width>
           <height>31</height>
          </rect>
@@ -479,8 +528,8 @@
        <widget class="QLineEdit" name="c_UsernameField">
         <property name="geometry">
          <rect>
-          <x>290</x>
-          <y>210</y>
+          <x>230</x>
+          <y>390</y>
           <width>241</width>
           <height>31</height>
          </rect>
@@ -498,8 +547,8 @@
        <widget class="QLineEdit" name="c_PasswordField">
         <property name="geometry">
          <rect>
-          <x>290</x>
-          <y>250</y>
+          <x>230</x>
+          <y>430</y>
           <width>241</width>
           <height>31</height>
          </rect>
@@ -520,15 +569,46 @@
          <bool>true</bool>
         </property>
        </widget>
+       <widget class="QWidget" name="banner2" native="true">
+        <property name="geometry">
+         <rect>
+          <x>650</x>
+          <y>40</y>
+          <width>591</width>
+          <height>721</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(115, 233, 255);
+border: 4px solid rgb(115, 233, 255);
+border-radius: 4px</string>
+        </property>
+        <widget class="QLabel" name="bannerText2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>591</width>
+           <height>721</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;What is my account for?&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Your Plasmacoin account registers you for the desktop app.&lt;br/&gt;This registers your computer as a Plasmacoin node and also&lt;br/&gt;gives you access to the offical Plasmacoin software wallet.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Credentials&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Once you 're signed in, you'll have access to your public and&lt;br/&gt;private keys, as well as your Plasmacoin address, which is what&lt;br/&gt;you'll use to send and recieve transactions.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Address Book&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;With your account, you can access the built-in address book,&lt;br/&gt;which allows you to save the addresses of other Plasmacoin&lt;br/&gt;users.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/newPrefix/plasmacoin-banner.png&quot; width=&quot;550&quot; height=&quot;150&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </widget>
       </widget>
       <widget class="QWidget" name="loggedIn">
        <widget class="QWidget" name="verticalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>0</x>
-          <y>10</y>
-          <width>791</width>
-          <height>481</height>
+          <x>10</x>
+          <y>0</y>
+          <width>1251</width>
+          <height>791</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="pageContainer">
@@ -569,8 +649,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>550</width>
-              <height>550</height>
+              <width>1249</width>
+              <height>789</height>
              </rect>
             </property>
             <property name="sizePolicy">
@@ -589,9 +669,9 @@
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-10</y>
-               <width>791</width>
-               <height>551</height>
+               <y>0</y>
+               <width>631</width>
+               <height>671</height>
               </rect>
              </property>
              <property name="sizePolicy">
@@ -626,7 +706,7 @@
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../.designer/assets/clipboard.png</iconset>
+                   <normaloff>../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                  </property>
                 </widget>
                 <widget class="QLineEdit" name="walletAddress">
@@ -735,7 +815,7 @@
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../.designer/assets/no-view.png</iconset>
+                   <normaloff>../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../.designer/assets/no-view.png</iconset>
                  </property>
                 </widget>
                 <widget class="QLineEdit" name="publicKey">
@@ -777,7 +857,7 @@
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../.designer/assets/clipboard.png</iconset>
+                   <normaloff>../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                  </property>
                 </widget>
                 <widget class="QToolButton" name="pubKeyShow">
@@ -800,7 +880,7 @@
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../.designer/assets/no-view.png</iconset>
+                   <normaloff>../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../.designer/assets/no-view.png</iconset>
                  </property>
                 </widget>
                 <widget class="QToolButton" name="privKeyCopy">
@@ -823,7 +903,7 @@
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../.designer/assets/clipboard.png</iconset>
+                   <normaloff>../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                  </property>
                 </widget>
                 <widget class="QLineEdit" name="privateKey">
@@ -916,7 +996,7 @@
      </widget>
     </widget>
     <widget class="QWidget" name="settings">
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="settingsTitle">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -952,7 +1032,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../assets/reset.png</normaloff>../assets/reset.png</iconset>
+         <normaloff>../../../../../../.designer/assets/reset.png</normaloff>../../../../../../.designer/assets/reset.png</iconset>
        </property>
       </widget>
       <widget class="QPushButton" name="btn_choosePath">
@@ -978,7 +1058,7 @@
         </rect>
        </property>
       </widget>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="rsaKeyTitle">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -991,7 +1071,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;RSA Key Path&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="rsaKeySubtitle">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -1005,32 +1085,119 @@
        </property>
       </widget>
      </widget>
+     <widget class="QWidget" name="changePassword" native="true">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>170</y>
+        <width>561</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="chgPsswdTitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>141</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;Change Password&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="chgPsswdSubtitle">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>40</y>
+         <width>551</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change the password for your Plasmacoin Account. Remember that your password&lt;br/&gt;must be at least 6 characters long and contain at least 1 capital letter, 1 special character,&lt;br/&gt;and 1 number.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="currPassField">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>110</y>
+         <width>241</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+       <property name="placeholderText">
+        <string>Current Password</string>
+       </property>
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="newPassField">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>150</y>
+         <width>241</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+       <property name="placeholderText">
+        <string>New Password</string>
+       </property>
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_confirm">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>190</y>
+         <width>81</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Confirm</string>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </widget>
    <zorder>stackedWidget</zorder>
    <zorder>tabWidget</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>807</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="text">
-    <property name="title">
-     <string>Plasmacoin Client</string>
-    </property>
-   </widget>
-   <addaction name="text"/>
-  </widget>
  </widget>
  <tabstops>
-  <tabstop>plusSign</tabstop>
-  <tabstop>minusSign</tabstop>
   <tabstop>blockSize</tabstop>
   <tabstop>btn_mine</tabstop>
   <tabstop>amountLineEdit</tabstop>
@@ -1047,6 +1214,8 @@
   <tabstop>blockTransactionList</tabstop>
   <tabstop>textBrowser</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../assets/plasmacoin-banner.qrc"/>
+ </resources>
  <connections/>
 </ui>
