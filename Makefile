@@ -12,7 +12,7 @@ LIBS = -lcryptopp -lstdc++fs
 
 TARGET = pcblkchn
 SOURCE = main.cpp
-OBJECTS = transaction.o node.o block.o blockchain.o merkle-helpers.o rsa-fs.o
+OBJECTS = transaction.o node.o block.o blockchain.o merkle-helpers.o rsa-fs.o dat-fs.o
 INSTALL_LOC = /usr/bin
 
 # Used to take ownership of the binary
@@ -28,7 +28,7 @@ transaction.o: src/transaction.cpp src/transaction.hpp
 	$(CXX) -c $(CXXFLAGS) -o transaction.o src/transaction.cpp -L$(CRYPTOPP) $(LIBS)
 
 node.o: src/node.cpp src/node.hpp src/cryptopp-sha256-libs.h src/transaction.hpp \
-		src/block.hpp src/blockchain.hpp src/rsa-fs.hpp
+		src/block.hpp src/blockchain.hpp src/rsa-fs.hpp src/dat-fs.hpp
 	$(CXX) -c $(CXXFLAGS) -o node.o src/node.cpp -L$(CRYPTOPP) $(LIBS)
 
 block.o: src/block.cpp src/block.hpp src/transaction.hpp
@@ -43,6 +43,9 @@ merkle-helpers.o: src/merkle-helpers.c src/merkle-helpers.h
 
 rsa-fs.o: src/rsa-fs.cpp src/rsa-fs.hpp
 	$(CXX) -c $(CXXFLAGS) -o rsa-fs.o src/rsa-fs.cpp -L$(CRYPTOPP) $(LIBS)
+
+dat-fs.o: src/dat-fs.cpp src/dat-fs.hpp src/block.hpp
+	$(CXX) -c $(CXXFLAGS) -o dat-fs.o src/dat-fs.cpp -L$(CRYPTOPP) $(LIBS)
 
 # `make` (or `make pcblkchn`)
 $(TARGET): $(OBJECTS)

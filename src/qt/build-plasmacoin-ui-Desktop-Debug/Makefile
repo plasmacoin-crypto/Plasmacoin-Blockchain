@@ -52,8 +52,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES = 	../plasmacoin-ui/main.cpp \
-			../plasmacoin-ui/mainwindow.cpp moc_mainwindow.cpp \
+SOURCES = 	../../transaction.cpp ../../node.cpp ../../block.cpp \
+			../../blockchain.cpp ../../merkle-helpers.cpp ../../rsa-fs.cpp \
+			../../dat-fs.cpp ../plasmacoin-ui/main.cpp \
+			./plasmacoin-ui/mainwindow.cpp moc_mainwindow.cpp \
 			../plasmacoin-ui/transaction-list.cpp moc_transactionlist.cpp \
 			../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/moc_mining_status.cpp \
 			../plasmacoin-ui/recipient-list.cpp ../plasmacoin-ui/firebase-auth.cpp \
@@ -76,6 +78,7 @@ OBJECTS = 	main.o \
 			firebase-auth.o \
 			moc_firebase_auth.o \
 			account-pages.o \
+			dat-fs.o \
 			#settings-manager.o
 
 MOC = 	moc_mainwindow.cpp \
@@ -316,6 +319,14 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/exceptions.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
+		cryptopp-sha256-libs.h \
+		../../transaction.hpp ../../transaction.cpp \
+		../../node.hpp ../../node.cpp \
+		../../block.hpp ../../block.hpp \
+		../../blockchain.hpp ../../blockchain.cpp \
+		../../merkle-helpers.h ../../merkle-helpers.c \
+		../../rsa-fs.hpp ../../rsa-fs.cpp \
+		../../dat-fs.hpp ../../dat-fs.cpp \
 		../plasmacoin-ui/plasmacoin-ui.pro ../plasmacoin-ui/main.cpp \
 		../plasmacoin-ui/mainwindow.h ../plasmacoin-ui/mainwindow.cpp \
 		../plasmacoin-ui/transaction-list.h ../plasmacoin-ui/transaction-list.cpp \
@@ -905,7 +916,7 @@ transaction.o: ../../transaction.cpp ../../transaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction.o ../../transaction.cpp $(LINKS)
 
 node.o: ../../node.cpp ../../node.hpp ../../cryptopp-sha256-libs.h ../../transaction.hpp \
-		../../block.hpp ../../blockchain.hpp ../../rsa-fs.hpp
+		../../block.hpp ../../blockchain.hpp ../../rsa-fs.hpp ../../dat-fs.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o ../../node.cpp $(LINKS)
 
 block.o: ../../block.cpp ../../block.hpp ../../transaction.hpp
@@ -920,6 +931,9 @@ merkle-helpers.o: ../../merkle-helpers.c ../../merkle-helpers.h
 
 rsa-fs.o: ../../rsa-fs.cpp ../../rsa-fs.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rsa-fs.o ../../rsa-fs.cpp $(LINKS)
+
+dat-fs.o: ../../dat-fs.cpp ../../dat-fs.hpp ../../block.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dat-fs.o ../../dat-fs.cpp $(LINKS)
 
 # GUI
 
