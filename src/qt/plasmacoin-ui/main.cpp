@@ -11,8 +11,12 @@
 
 // Allow the user to mine their block
 void minePage(MainWindow& window) {
+	window.m_Status->m_Heading->setVisible(true);
+
 	// Mine a block when the correct button is clicked
 	window.connect(window.btn_mine, &QPushButton::released, &window, &MainWindow::StartMining);
+
+	window.connect(&window, &MainWindow::DoneMining, &window, &MainWindow::ResetBlock);
 }
 
 // Allow the user to type information in forms (QLineEdits) and be authenticated to
@@ -147,7 +151,7 @@ void addToBlock(MainWindow& window) {
 		if ((selected.size() != 0) && (window.blockTransactionList->findItems(selected.front()->text(), Qt::MatchFixedString).size() == 0)) {
 			QListWidgetItem* item = window.transactionList->item(row); // Get the item at the currently selected row
 
-			window.m_BlockContents.push_back(item); // Record the selected item
+			window.m_BlockContents.push_back(window.m_TList->m_List[row]); // Record the selected item
 			window.blockTransactionList->addItem(item->text());
 		}
 	});

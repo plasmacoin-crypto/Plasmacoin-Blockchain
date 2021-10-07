@@ -13,7 +13,6 @@ using std::chrono::seconds;
 MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
-	m_Status(CreateMiningVisuals()),
 	m_Authenticator(new Auth()),
 	//m_SettingsManager(new SettingsManager()),
 	m_TList(new TransactionList(Ui::MainWindow::transactionList))
@@ -21,6 +20,7 @@ MainWindow::MainWindow(QWidget* parent):
 	setupUi(this);
 	this->DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
 
+	m_Status = CreateMiningVisuals();
 	m_AccPgs = CreatePages();
 
 	// Create some temporary nodes to make transactions between
@@ -39,13 +39,6 @@ MainWindow::MainWindow(QWidget* parent):
 	m_TList->Add(transaction3); // Load items into the transaction list
 
 	m_Status->SetHeading("Building Block #" + std::to_string(m_User->m_BlockchainCopy->Size()));
-
-	// Create warning labels for all 5 input fields
-	// QLabel *label1 = new QLabel("", Ui::MainWindow::signIn),
-	// 	   *label2 = new QLabel("", Ui::MainWindow::signIn),
-	// 	   *label3 = new QLabel("", Ui::MainWindow::signUp),
-	//  	   *label4 = new QLabel("", Ui::MainWindow::signUp),
-	//  	   *label5 = new QLabel("", Ui::MainWindow::signUp);
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
@@ -94,7 +87,7 @@ void MainWindow::StartMining() {
 	m_Status->SetHeading("Mining Block #" + std::to_string(m_User->m_BlockchainCopy->Size()));
 
 	Block* latest = m_User->m_BlockchainCopy->GetLatest(); // Get the latest block
-	Block newBlock(latest->m_Index + 1, latest->m_PrevHash, m_TList->m_List); // Create a new block
+	Block newBlock(latest->m_Index + 1, latest->m_Hash, m_BlockContents); // Create a new block
 
 	auto start = high_resolution_clock::now(); // Begin timing the function
 
@@ -104,6 +97,12 @@ void MainWindow::StartMining() {
 	auto duration = std::chrono::duration_cast<seconds>(stop - start); // Find the duration
 
 	UpdateStatus(newBlock, duration);
+	emit DoneMining();
+}
+
+void MainWindow::ResetBlock() {
+	m_BlockContents.clear();
+	blockTransactionList->clear();
 }
 
 void MainWindow::UpdateStatus(Block& block, seconds time) {

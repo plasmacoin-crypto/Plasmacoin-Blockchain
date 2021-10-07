@@ -1,6 +1,6 @@
 //
 // FILENAME: mainwindow.h | Plasmacoin Cryptocurrency
-// DESCRIPTION: The app's main windoow and base functionality
+// DESCRIPTION: The app's main window and base functionality
 // CREATED: 2021-03-21 @ 3:47 PM
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
@@ -39,9 +39,10 @@ public:
 	~MainWindow();
 
 	Status* CreateMiningVisuals(); // Load certain content during mining operations
-	AccountPages* CreatePages();	   // Create warning labels for authentication pages
+	AccountPages* CreatePages();   // Create warning labels for authentication pages
 
 	void StartMining(); // Initiate the mining process
+	void ResetBlock();	// Reset the user's block
 
 	QWidget* parent;
 	Status* m_Status;
@@ -50,7 +51,7 @@ public:
 	AccountPages* m_AccPgs;
 	//SettingsManager* m_SettingsManager;
 
-	std::vector<QListWidgetItem*> m_BlockContents;
+	std::vector<Transaction*> m_BlockContents;
 
 private:
 	void UpdateStatus(Block& block, std::chrono::seconds time); // Update the mining status while a block is being mined
@@ -62,6 +63,9 @@ private:
 
 public:
 	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.6"); // Temporary data
+
+signals:
+	void DoneMining();
 
 private slots:
 	void DisplayPage(int index) const; // Actually set the index of the stack widget
