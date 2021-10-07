@@ -20,7 +20,7 @@
 
 #include <string>
 #include <utility>
-#include <ostream>
+#include <fstream>
 #include <cstdlib>
 
 using std::string;
@@ -41,7 +41,7 @@ namespace rsafs {
 	// Separate Unix-style paths from Windows paths
 	#ifdef _WIN32
 		// On Windows, `getenv()` is deprecated
-		const string HOME_DIR = getenv_s(R"(%HOMEDRIVE%%HOMEPATH%)") != nullptr? string(getenv_s(R"(%HOMEDRIVE%%HOMEPATH%)")) : "";
+		const string HOME_DIR = getenv_s(R"(%USERPROFILE%)") != nullptr? string(getenv_s(R"(%USERPROFILE%)")) : "";
 		const char DELIM	  = '\\';
 	#elif __APPLE__ || __linux__
 		const string HOME_DIR = getenv("HOME") != nullptr? string(getenv("HOME")) : "";
