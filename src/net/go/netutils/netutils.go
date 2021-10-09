@@ -1,5 +1,12 @@
 package main
 
+/*
+typedef const char* cchar_t;
+
+typedef struct {
+	cchar_t error;
+} Error;
+*/
 import "C"
 
 import (
@@ -28,7 +35,7 @@ func PortIsOpen(host, port string) bool {
 // Get the user's global IP address by making a call to http://ip-api.com/json/.
 //
 //export GetGlobalIP
-func GetGlobalIP() (string, error) {
+func GetGlobalIP() (string, C.Error) {
 	resp, err := http.Get("http://ip-api.com/json/") // make a GET request
 	body, _ := ioutil.ReadAll(resp.Body)             // Get the response as JSON
 
@@ -37,9 +44,14 @@ func GetGlobalIP() (string, error) {
 	json.Unmarshal(body, &responseMap)
 
 	if err != nil || responseMap["status"] == "fail" {
-		return "", errors.New("could not get user's global IP address: " + responseMap["message"])
+		goError := errors.New("could not get user's global IP address: " + responseMap["message"])
+		cError := C.Error{C.CString(goError.Error())}
+
+		return "", cError
 	}
 
 	defer resp.Body.Close()
-	return responseMap["query"], nil
+	return responseMap["query"], C.Error{nil}
 }
+
+func main() {}
