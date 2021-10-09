@@ -50,7 +50,7 @@ AR            	 = ar cqs
 RANLIB        	 =
 SED           	 = sed
 STRIP         	 = strip
-VERSION	 	  	 = 0.0.1
+VERSION	 	  	 = 0.1.0
 
 ####### Output directory
 
