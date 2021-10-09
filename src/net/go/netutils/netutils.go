@@ -19,7 +19,6 @@ import (
 )
 
 // Check if a port is open on a certain host
-//
 //export PortIsOpen
 func PortIsOpen(host, port string) bool {
 	addr := net.JoinHostPort(host, port)
@@ -33,7 +32,6 @@ func PortIsOpen(host, port string) bool {
 }
 
 // Get the user's global IP address by making a call to http://ip-api.com/json/.
-//
 //export GetGlobalIP
 func GetGlobalIP() (string, C.Error) {
 	resp, err := http.Get("http://ip-api.com/json/") // make a GET request
