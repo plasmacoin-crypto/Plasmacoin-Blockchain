@@ -7,8 +7,8 @@ import (
 	"os"
 	"sync"
 
-	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/src/net/go/tcpnet"
-	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/src/net/go/util"
+	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/tcpnet"
+	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/util"
 )
 
 var wg sync.WaitGroup
