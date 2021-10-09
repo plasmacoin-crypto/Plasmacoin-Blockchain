@@ -8,6 +8,7 @@ import (
 )
 
 // Attempt to send a message to a specified host and port
+// export Dial
 func Dial(protocol, host, port, message string) {
 	conn, err := net.Dial(protocol, net.JoinHostPort(host, port))
 
@@ -23,3 +24,5 @@ func Dial(protocol, host, port, message string) {
 
 	conn.Close()
 }
+
+func main() {}
