@@ -1,4 +1,6 @@
-package util
+package main
+
+import "C"
 
 import (
 	"bufio"

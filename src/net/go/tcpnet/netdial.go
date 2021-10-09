@@ -1,4 +1,6 @@
-package tcpnet
+package main
+
+import "C"
 
 import (
 	"log"
