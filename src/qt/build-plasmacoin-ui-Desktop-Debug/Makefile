@@ -6,45 +6,48 @@
 # Command: /bin/qmake -o Makefile ../plasmacoin-ui/plasmacoin-ui.pro -spec linux-clang CONFIG+=debug CONFIG+=qml_debug
 #############################################################################
 
-MAKEFILE      = Makefile
+MAKEFILE      	 = Makefile
 
-EQ            = =
+EQ            	 = =
 
 ####### Compiler, tools and options
 
-CC            = clang
-CXX           = clang++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
-CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -g -std=gnu++17 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../plasmacoin-ui -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-clang -I../.. -I/usr/src/cryptopp
-QMAKE         = /bin/qmake
-DEL_FILE      = rm -f
-CHK_DIR_EXISTS= test -d
-MKDIR         = mkdir -p
-COPY          = cp -f
-COPY_FILE     = cp -f
-COPY_DIR      = cp -f -R
-INSTALL_FILE  = install -m 644 -p
-INSTALL_PROGRAM = install -m 755 -p
-INSTALL_DIR   = cp -f -R
-QINSTALL      = /bin/qmake -install qinstall
+CC            	 = clang
+CXX           	 = clang++
+GO 			  	 = go
+DEFINES       	 = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
+CFLAGS        	 = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      	 = -pipe -g -std=gnu++17 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+GOFLAGS		  	 = -buildmode c-shared
+INCPATH       	 = -I../plasmacoin-ui -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-clang -I../.. -I/usr/src/cryptopp -I../../net/c
+QMAKE         	 = /bin/qmake
+DEL_FILE      	 = rm -f
+CHK_DIR_EXISTS	 = test -d
+MKDIR         	 = mkdir -p
+COPY          	 = cp -f
+COPY_FILE     	 = cp -f
+COPY_DIR      	 = cp -f -R
+INSTALL_FILE  	 = install -m 644 -p
+INSTALL_PROGRAM  = install -m 755 -p
+INSTALL_DIR   	 = cp -f -R
+QINSTALL      	 = /bin/qmake -install qinstall
 QINSTALL_PROGRAM = /bin/qmake -install qinstall -exe
-DEL_FILE      = rm -f
-SYMLINK       = ln -f -s
-DEL_DIR       = rmdir
-MOVE          = mv -f
-TAR           = tar -cf
-COMPRESS      = gzip -9f
-DISTNAME      = plasmacoin-ui1.0.0
-DISTDIR 	  = ./.tmp/plasmacoin-ui1.0.0
-LINK          = clang++
-LFLAGS        = -ccc-gcc-name g++
-LIBS          = $(SUBLIBS) /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Core.so -lGL -lpthread -lcryptopp -lstdc++fs
-AR            = ar cqs
-RANLIB        =
-SED           = sed
-STRIP         = strip
+DEL_FILE      	 = rm -f
+SYMLINK       	 = ln -f -s
+DEL_DIR       	 = rmdir
+MOVE          	 = mv -f
+TAR           	 = tar -cf
+COMPRESS      	 = gzip -9f
+DISTNAME      	 = plasmacoin-client-$(VERSION)
+DISTDIR 	  	 = ./.tmp/plasmacoin-client-$(VERSION)
+LINK          	 = clang++
+LFLAGS        	 = -ccc-gcc-name g++
+LIBS          	 = $(SUBLIBS) /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Core.so ../../net/c/compression.so -lGL -lpthread -lcryptopp -lstdc++fs
+AR            	 = ar cqs
+RANLIB        	 =
+SED           	 = sed
+STRIP         	 = strip
+VERSION	 	  	 = 0.0.1
 
 ####### Output directory
 
@@ -60,6 +63,9 @@ SOURCES = 	../../transaction.cpp ../../node.cpp ../../block.cpp \
 			../plasmacoin-ui/mining-status.cpp ../plasmacoin-ui/moc_mining_status.cpp \
 			../plasmacoin-ui/recipient-list.cpp ../plasmacoin-ui/firebase-auth.cpp \
 			moc_firebase_auth.cpp ../plasmacoin-ui/account-pages.cpp \
+			\
+			../../net/go/tcpnet/netdial.go ../../net/go/tcpnet/netlisten.go \
+			../../net/go/util/compression.go ../../net/go/util/netutils.go \
 			#../plasmacoin-ui/settings-manager.cpp
 
 OBJECTS = 	main.o \
@@ -334,10 +340,13 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		../plasmacoin-ui/recipient-list.h ../plasmacoin-ui/recipient-list.cpp \
 		../plasmacoin-ui/firebase-auth.h ../plasmacoin/firebase-auth.cpp \
 		../plasmacoin-ui/account-pages.h ../plasmacoin/account-pages.cpp \
+		\
+		../../net/go/tcpnet/netdial.go ../../net/go/tcpnet/netlisten.go \
+		../../net/go/util/compression.go ../../net/go/util/netutils.go \
 		#../plasmacoin-ui/settings-manager.h ../plasmacoin/settings-manager.cpp
-QMAKE_TARGET  = plasmacoin-ui
+QMAKE_TARGET  = plasmacoin-client
 DESTDIR       =
-TARGET        = plasmacoin-ui
+TARGET        = plasmacoin-client
 
 
 first: all
@@ -818,8 +827,9 @@ qmake: FORCE
 
 qmake_all: FORCE
 
+go: compression.so
 
-all: Makefile plasmacoin-ui
+all: Makefile go plasmacoin-ui
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
@@ -923,7 +933,7 @@ block.o: ../../block.cpp ../../block.hpp ../../transaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o block.o ../../block.cpp $(LINKS)
 
 blockchain.o: ../../blockchain.cpp ../../blockchain.hpp ../../cryptopp-sha256-libs.h ../../block.hpp \
-			  ../../merkle-helpers.h
+			  ../../merkle-helpers.h ../../net/c/compression.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o blockchain.o ../../blockchain.cpp $(LINKS)
 
 merkle-helpers.o: ../../merkle-helpers.c ../../merkle-helpers.h
@@ -980,6 +990,11 @@ account-pages.o: ../plasmacoin-ui/account-pages.cpp ../plasmacoin-ui/account-pag
 # settings-manager.o: ../plasmacoin-ui/settings-manager.cpp ../plasmacoin-ui/settings-manager.h \
 # 					ui_mainwindow.h
 # 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings-manager.o ../plasmacoin-ui/settings-manager.cpp
+
+# Compile Go files into C headers
+
+compression.h compression.so: ../../net/go/util/compression.go
+	$(GO) build $(GOFLAGS) -o ../../net/c/compression.so ../../net/go/util/compression.go
 
 ####### Install
 
