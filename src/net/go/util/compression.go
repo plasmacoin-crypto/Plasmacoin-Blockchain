@@ -23,7 +23,8 @@ func check(err error, line int) {
 }
 
 // Compress a file using gzip
-// export GzipCompress
+//
+//export GzipCompress
 func GzipCompress(filename string) *os.File {
 	// Open the file
 	file, err := os.Open(filename)
@@ -55,7 +56,8 @@ func GzipCompress(filename string) *os.File {
 }
 
 // Decompress a gzip-compressed file
-// export GzipDecompress
+//
+//export GzipDecompress
 func GzipDecompress(file *os.File) *os.File {
 	// Open the file for reading and writing
 	input, err := os.OpenFile(file.Name(), os.O_RDONLY, 0)

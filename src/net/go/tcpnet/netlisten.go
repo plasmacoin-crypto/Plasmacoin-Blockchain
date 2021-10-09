@@ -21,7 +21,8 @@ func handleConnection(conn net.Conn) {
 }
 
 // Listen for connections on a specified host and port
-// export Listen
+//
+//export Listen
 func Listen(protocol, host, port string) (net.Listener, error) {
 	listener, err := net.Listen(protocol, net.JoinHostPort(host, port))
 
@@ -33,6 +34,7 @@ func Listen(protocol, host, port string) (net.Listener, error) {
 }
 
 // Accept a TCP connection from a client
+//
 // export Accept
 func Accept(listener net.Listener) {
 	for {
