@@ -1,5 +1,8 @@
 package main
 
+/*
+typedef const char* cchar_t;
+*/
 import "C"
 
 import (
@@ -23,11 +26,12 @@ func check(err error, line int) {
 }
 
 // Compress a file using gzip
-//
 //export GzipCompress
-func GzipCompress(filename string) *os.File {
+func GzipCompress(filename C.cchar_t) C.cchar_t {
+	goFilename := C.GoString(filename) // Convert from a C string to a Go string
+
 	// Open the file
-	file, err := os.Open(filename)
+	file, err := os.Open(goFilename)
 	check(err, 23)
 
 	// Read the contents of the file
@@ -36,7 +40,7 @@ func GzipCompress(filename string) *os.File {
 	check(err, 27)
 
 	// Create the compressed file (.gz)
-	comp, err := os.Create(filename + ".gz")
+	comp, err := os.Create(goFilename + ".gz")
 	check(err, 30)
 
 	// Make a new writer
@@ -44,7 +48,7 @@ func GzipCompress(filename string) *os.File {
 	defer gzwriter.Close()
 
 	// Set the header fields
-	gzwriter.Name = filename
+	gzwriter.Name = goFilename
 	gzwriter.Comment = ""
 	gzwriter.ModTime = time.Now()
 
@@ -52,15 +56,16 @@ func GzipCompress(filename string) *os.File {
 	_, err = gzwriter.Write(contents)
 	check(err, 42)
 
-	return comp
+	return C.CString(comp.Name())
 }
 
 // Decompress a gzip-compressed file
-//
 //export GzipDecompress
-func GzipDecompress(file *os.File) *os.File {
+func GzipDecompress(filename C.cchar_t) C.cchar_t {
+	goFilename := C.GoString(filename) // Convert from a C string to a Go string
+
 	// Open the file for reading and writing
-	input, err := os.OpenFile(file.Name(), os.O_RDONLY, 0)
+	input, err := os.OpenFile(goFilename, os.O_RDONLY, 0)
 	check(err, 55)
 
 	defer input.Close()
@@ -77,7 +82,7 @@ func GzipDecompress(file *os.File) *os.File {
 	defer gzreader.Close()
 
 	// Create a destination file
-	output, err := os.Create(strings.SplitAfterN(file.Name(), ".gz", 1)[0])
+	output, err := os.Create(strings.SplitAfterN(goFilename, ".gz", 1)[0])
 	check(err, 71)
 
 	// Copy the decompressed data from the gzip reader to the destination file
@@ -85,7 +90,9 @@ func GzipDecompress(file *os.File) *os.File {
 		check(err, 66)
 	}
 
-	os.Remove(file.Name()) // Delete the compressed data
+	os.Remove(goFilename) // Delete the compressed data
 
-	return output
+	return C.CString(output.Name())
 }
+
+func main() {}
