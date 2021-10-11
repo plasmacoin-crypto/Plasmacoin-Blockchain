@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="assets">
+    <file>plasmacoin-banner.png</file>
+    <file>plus.png</file>
+  </qresource>
+</RCC>
