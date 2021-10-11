@@ -24,6 +24,8 @@ Node::Node(const string& name, const string& username, const string& password, c
 		rsafs::readKeys(m_PubKey, m_PrivKey, m_KeyPath);
 	}
 
+	datfs::createDataPath(); // Create a place to store blockchain data
+
 	m_Address = CreateAddress(m_PubKey);
 }
 

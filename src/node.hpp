@@ -21,6 +21,7 @@
 #include "block.hpp"
 #include "blockchain.hpp"
 #include "rsa-fs.hpp"
+#include "dat-fs.hpp"
 
 using std::string;
 using std::pair;
