@@ -12,13 +12,12 @@ import (
 
 // Attempt to send a message to a specified host and port
 //export Dial
-func Dial(protocol, host, port, message C.cchar_t) {
+func Dial(protocol, host, port C.cchar_t, message byte) {
 	// Convert the C strings to Go strings
 	var (
 		goProtocol = C.GoString(protocol)
 		goHost     = C.GoString(host)
 		goPort     = C.GoString(port)
-		goMessage  = C.GoString(message)
 	)
 
 	conn, err := net.Dial(goProtocol, net.JoinHostPort(goHost, goPort))
@@ -27,7 +26,7 @@ func Dial(protocol, host, port, message C.cchar_t) {
 		log.Fatal(err)
 	}
 
-	_, writeErr := conn.Write([]byte(goMessage))
+	_, writeErr := conn.Write([]byte{message})
 
 	if writeErr != nil {
 		log.Fatal("Error while writing")
@@ -36,4 +35,6 @@ func Dial(protocol, host, port, message C.cchar_t) {
 	conn.Close()
 }
 
-func main() {}
+func main() {
+	//Dial(C.CString("tcp"), C.CString("192.168.1.6"), C.CString("8080"), 1)
+}
