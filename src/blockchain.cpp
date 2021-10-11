@@ -10,8 +10,14 @@
 
 Blockchain::Blockchain() {
 	// Add a Genesis block
-	Block* genesis = new Block(0, nullptr, {nullptr});
+	Block* genesis = new Block(0, "", {nullptr}, true);
 	Add(genesis);
+}
+
+Blockchain::~Blockchain() {
+	for (auto block: m_Chain) {
+		delete block;
+	}
 }
 
 // Add a confirmed block to the blockchain
@@ -22,6 +28,8 @@ int Blockchain::Add(Block* block) {
 	else {
 		m_Chain.push_back(block);
 	}
+
+	Save(block);
 
 	return 0;
 }
@@ -48,13 +56,34 @@ Block* Blockchain::GetLatest() const {
 	return m_Chain.back();
 }
 
+// Get the number of blocks in the blockchain
 size_t Blockchain::Size() const {
 	return m_Chain.size();
 }
 
-// Create a new block with an unconfirmed transaction and run Proof-of-Woork
+
+void Blockchain::Save(Block* block) const {
+	datfs::saveBlock(block);
+}
+
+void Blockchain::Compress() {
+	string path;
+
+	for (unsigned int i = 0; i < this->Size(); i++) {
+		path = datfs::BLOCKS_LOC + datfs::DELIM + "block" + std::to_string(i) + ".dat";
+		go::GzipCompress(path.c_str());
+	}
+}
+
+// Create a new block with unconfirmed transactions and run Proof-of-Woork
 // on it.
 bool Blockchain::Mine(Block& newBlock) {
+	std::thread receive(go::Receive, "tcp", "192.168.1.6", "8080");
+	receive.join();
+
+	//std::thread dial(go::Dial, "tcp", "192.168.1.6", "8080", (uint8_t)1);
+	//dial.join();
+
 	std::cout << "Mining" << std::endl;
 	if (!newBlock.m_Transactions.empty()) {
 		Block* latest = GetLatest();
@@ -88,14 +117,13 @@ bool Blockchain::Consensus(Block& block) {
 		std::cout << "Nonce: " << block.m_Nonce << std::endl;
 		hash = Hash(block); // Hash the block
 
-		// Increase the nonce and update the condensed block data
-		block.m_Nonce++;
+		block.m_Nonce++; // Increase the nonce
 	} while (hash.substr(0, strNonce.size()) != strNonce);
 
 	block.m_Hash = hash;
 	std::cout << hash << std::endl;
 
-	return true;
+	return true && Validate();
 }
 
 // Make sure the blockchain isn't corrupted
@@ -162,6 +190,10 @@ string Blockchain::Hash(const string& input) {
 // Hash a block by constructing a Merkle Tree. Each block hash will be make up of hashes of
 // concatenations of hashes until a root node for the tree is generated.
 string Blockchain::Hash(const Block& block) {
+	if (block.m_IsGenesis) {
+		return string(64, '0');
+	}
+
 	// Declare some variables
 	int leaves = block.m_Transactions.size(), // Each transaction's hash becomes a leaf
 		pads   = mh_pads(leaves),
