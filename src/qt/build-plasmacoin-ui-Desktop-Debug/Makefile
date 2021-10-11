@@ -937,7 +937,7 @@ block.o: ../../block.cpp ../../block.hpp ../../transaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o block.o ../../block.cpp $(LINKS)
 
 blockchain.o: ../../blockchain.cpp ../../blockchain.hpp ../../cryptopp-sha256-libs.h ../../block.hpp \
-			  ../../merkle-helpers.h ../../net/c/compression.h
+			  ../../merkle-helpers.h ../../net/c/compression.h ../../net/c/netutils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o blockchain.o ../../blockchain.cpp $(LINKS)
 
 merkle-helpers.o: ../../merkle-helpers.c ../../merkle-helpers.h
