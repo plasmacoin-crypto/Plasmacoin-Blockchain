@@ -2,10 +2,6 @@ package main
 
 /*
 typedef const char* cchar_t;
-
-typedef struct {
-	cchar_t error;
-} Error;
 */
 import "C"
 
@@ -20,8 +16,13 @@ import (
 
 // Check if a port is open on a certain host
 //export PortIsOpen
-func PortIsOpen(host, port string) bool {
-	addr := net.JoinHostPort(host, port)
+func PortIsOpen(host, port C.cchar_t) bool {
+	var (
+		goHost = C.GoString(host)
+		goPort = C.GoString(port)
+	)
+
+	addr := net.JoinHostPort(goHost, goPort)
 
 	if conn, err := net.DialTimeout("tcp", addr, time.Second); conn != nil && err == nil {
 		defer conn.Close()
@@ -33,7 +34,7 @@ func PortIsOpen(host, port string) bool {
 
 // Get the user's global IP address by making a call to http://ip-api.com/json/.
 //export GetGlobalIP
-func GetGlobalIP() (string, C.Error) {
+func GetGlobalIP() C.cchar_t {
 	resp, err := http.Get("http://ip-api.com/json/") // make a GET request
 	body, _ := ioutil.ReadAll(resp.Body)             // Get the response as JSON
 
@@ -42,14 +43,11 @@ func GetGlobalIP() (string, C.Error) {
 	json.Unmarshal(body, &responseMap)
 
 	if err != nil || responseMap["status"] == "fail" {
-		goError := errors.New("could not get user's global IP address: " + responseMap["message"])
-		cError := C.Error{C.CString(goError.Error())}
-
-		return "", cError
+		panic(errors.New("could not get user's global IP address: " + responseMap["message"]))
 	}
 
 	defer resp.Body.Close()
-	return responseMap["query"], C.Error{nil}
+	return C.CString(responseMap["query"])
 }
 
 func main() {}
