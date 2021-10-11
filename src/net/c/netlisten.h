@@ -74,7 +74,7 @@ extern "C" {
 #endif
 
 
-// Recieve and accept TCP/UDP connections
+// Listen for and accept TCP/UDP connections
 extern void Receive(cchar_t protocol, cchar_t host, cchar_t port);
 
 #ifdef __cplusplus

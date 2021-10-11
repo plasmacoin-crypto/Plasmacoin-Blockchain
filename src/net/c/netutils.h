@@ -23,10 +23,6 @@ typedef struct { const char *p; ptrdiff_t n; } _GoString_;
 
 typedef const char* cchar_t;
 
-typedef struct {
-	cchar_t error;
-} Error;
-
 #line 1 "cgo-generated-wrapper"
 
 
@@ -79,16 +75,10 @@ extern "C" {
 
 
 // Check if a port is open on a certain host
-extern GoUint8 PortIsOpen(GoString host, GoString port);
-
-/* Return type for GetGlobalIP */
-struct GetGlobalIP_return {
-	GoString r0;
-	Error r1;
-};
+extern GoUint8 PortIsOpen(cchar_t host, cchar_t port);
 
 // Get the user's global IP address by making a call to http://ip-api.com/json/.
-extern struct GetGlobalIP_return GetGlobalIP();
+extern cchar_t GetGlobalIP();
 
 #ifdef __cplusplus
 }

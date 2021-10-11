@@ -75,7 +75,7 @@ extern "C" {
 
 
 // Attempt to send a message to a specified host and port
-extern void Dial(cchar_t protocol, cchar_t host, cchar_t port, cchar_t message);
+extern void Dial(cchar_t protocol, cchar_t host, cchar_t port, GoUint8 message);
 
 #ifdef __cplusplus
 }
