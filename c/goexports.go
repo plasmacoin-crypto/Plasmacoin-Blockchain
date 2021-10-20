@@ -28,9 +28,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/src/net/handler"
-	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/src/net/netutils"
-	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/src/net/tcpnet"
+	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/handler"
+	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/netutils"
+	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/tcpnet"
 )
 
 // Attempt to send a message to a specified host and port

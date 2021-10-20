@@ -12,7 +12,7 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/src/net/handler"
+	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/handler"
 )
 
 type Dialer struct{}

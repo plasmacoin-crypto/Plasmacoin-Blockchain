@@ -13,7 +13,7 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/src/net/netutils"
+	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/netutils"
 )
 
 // Check for errors
