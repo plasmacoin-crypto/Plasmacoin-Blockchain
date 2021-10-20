@@ -14,7 +14,7 @@ EQ            	 = =
 
 CC            	 = clang
 CXX           	 = clang++
-GO 			  	 = go
+GO 			  	 = /usr/bin/go
 DEFINES       	 = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        	 = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      	 = -pipe -g -std=gnu++17 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
@@ -42,7 +42,7 @@ DISTNAME      	 = plasmacoin-client-$(VERSION)
 DISTDIR 	  	 = ./.tmp/plasmacoin-client-$(VERSION)
 LINK          	 = clang++
 LFLAGS        	 = -ccc-gcc-name g++
-GOLIBS			 = ../../net/c/compression.so ../../net/c/netdial.so ../../net/c/netlisten.so ../../net/c/netutils.so
+GOLIBS			 = ../../../c/goexports.so
 QTLIBS 			 = /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Core.so
 SUBLIBS			 =
 LIBS          	 = $(QTLIBS) $(GOLIBS) -lGL -lpthread -lcryptopp -lstdc++fs
@@ -67,8 +67,9 @@ SOURCES = 	../../transaction.cpp ../../node.cpp ../../block.cpp \
 			../plasmacoin-client/recipient-list.cpp ../plasmacoin-client/firebase-auth.cpp \
 			moc_firebase_auth.cpp ../plasmacoin-client/account-pages.cpp \
 			\
-			../../net/go/tcpnet/netdial.go ../../net/go/tcpnet/netlisten.go \
-			../../net/go/util/compression.go ../../net/go/util/netutils.go \
+			../../../tcpnet/netdial.go ../../../tcpnet/netlisten.go \
+			../../../netutils/compression.go ../../../netutils/netutils.go ../../../netutils/parser.go \
+			../../../handler/handler.go ../../../c/goexports.go ../../../c/goexports.h \
 			#../plasmacoin-client/settings-manager.cpp
 
 OBJECTS = 	main.o \
@@ -831,9 +832,7 @@ qmake: FORCE
 
 qmake_all: FORCE
 
-golibs: compression.so netdial.so netlisten.so netutils.so
-
-all: Makefile golibs plasmacoin-client
+all: Makefile goexports.so plasmacoin-client
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
@@ -997,17 +996,8 @@ account-pages.o: ../plasmacoin-client/account-pages.cpp ../plasmacoin-client/acc
 
 # Compile Go files into C headers
 
-compression.h compression.so: ../../net/go/compression/compression.go
-	$(GO) build $(GOFLAGS) -o ../../net/c/compression.so ../../net/go/compression/compression.go
-
-netdial.h netdial.so: ../../net/go/netdial/netdial.go
-	$(GO) build $(GOFLAGS) -o ../../net/c/netdial.so ../../net/go/netdial/netdial.go
-
-netlisten.h netlisten.so: ../../net/go/netlisten/netlisten.go
-	$(GO) build $(GOFLAGS) -o ../../net/c/netlisten.so ../../net/go/netlisten/netlisten.go
-
-netutils.h netutils.so: ../../net/go/netutils/netutils.go
-	$(GO) build $(GOFLAGS) -o ../../net/c/netutils.so ../../net/go/netutils/netutils.go
+goexports.h goexports.so: ../../../c/goexports.go
+	$(GO) build $(GOFLAGS) -o ../../../c/goexports.so ../../../c/goexports.go
 
 ####### Install
 
