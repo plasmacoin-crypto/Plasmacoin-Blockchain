@@ -1,3 +1,3 @@
-module github.com/plasmacoin-crypto/Plasmacoin-Blockchain/src/net
+module github.com/plasmacoin-crypto/Plasmacoin-Blockchain
 
 go 1.17
