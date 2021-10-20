@@ -19,7 +19,7 @@ typedef struct { const char *p; ptrdiff_t n; } _GoString_;
 /* Start of preamble from import "C" comments.  */
 
 
-#line 3 "netlisten.go"
+#line 10 "goexports.go"
 
 typedef const char* cchar_t;
 
@@ -74,8 +74,23 @@ extern "C" {
 #endif
 
 
+// Attempt to send a message to a specified host and port
+extern void dial(cchar_t protocol, cchar_t host, cchar_t port, GoUint8 message);
+
 // Listen for and accept TCP/UDP connections
-extern void Receive(cchar_t protocol, cchar_t host, cchar_t port);
+extern void receive(cchar_t protocol, cchar_t host, cchar_t port);
+
+// Compress a file using gzip
+extern cchar_t gzipCompress(cchar_t filename);
+
+// Decompress a gzip-compressed file
+extern cchar_t gzipDecompress(cchar_t filename);
+
+// Check if a port is open on a certain host
+extern GoUint8 portIsOpen(cchar_t host, cchar_t port);
+
+// Get the user's global IP address by making a call to http://ip-api.com/json/.
+extern cchar_t getGlobalIP();
 
 #ifdef __cplusplus
 }

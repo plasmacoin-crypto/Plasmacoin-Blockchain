@@ -1,9 +1,11 @@
-package main
+//
+// FILENAME: compression.go | Plasmacoin Cryptocurrency
+// DESCRIPTION: Compress and decompress files uisng gzip
+// CREATED: 2021-09-11 @ 3:42 PM
+// COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
+//
 
-/*
-typedef const char* cchar_t;
-*/
-import "C"
+package netutils
 
 import (
 	"bufio"
@@ -11,88 +13,73 @@ import (
 	"compress/gzip"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
 
-// Check for errors
-func check(err error, line int) {
-	if err != nil {
-		log.Fatal(err.Error() + " on line " + strconv.Itoa(line))
-	}
-}
-
 // Compress a file using gzip
 //export GzipCompress
-func GzipCompress(filename C.cchar_t) C.cchar_t {
-	goFilename := C.GoString(filename) // Convert from a C string to a Go string
-
+func GzipCompress(filename string) string {
 	// Open the file
-	file, err := os.Open(goFilename)
-	check(err, 23)
+	file, err := os.Open(filename)
+	Check(err, 26)
 
 	// Read the contents of the file
 	reader := bufio.NewReader(file)
 	contents, err := ioutil.ReadAll(reader)
-	check(err, 27)
+	Check(err, 31)
 
 	// Create the compressed file (.gz)
-	comp, err := os.Create(goFilename + ".gz")
-	check(err, 30)
+	comp, err := os.Create(filename + ".gz")
+	Check(err, 35)
 
 	// Make a new writer
 	gzwriter := gzip.NewWriter(comp)
 	defer gzwriter.Close()
 
 	// Set the header fields
-	gzwriter.Name = goFilename
+	gzwriter.Name = filename
 	gzwriter.Comment = ""
 	gzwriter.ModTime = time.Now()
 
 	// Write the compressed data to the file
 	_, err = gzwriter.Write(contents)
-	check(err, 42)
+	Check(err, 48)
 
-	return C.CString(comp.Name())
+	return comp.Name()
 }
 
 // Decompress a gzip-compressed file
 //export GzipDecompress
-func GzipDecompress(filename C.cchar_t) C.cchar_t {
-	goFilename := C.GoString(filename) // Convert from a C string to a Go string
-
+func GzipDecompress(filename string) string {
 	// Open the file for reading and writing
-	input, err := os.OpenFile(goFilename, os.O_RDONLY, 0)
-	check(err, 55)
+	input, err := os.OpenFile(filename, os.O_RDONLY, 0)
+	Check(err, 60)
 
 	defer input.Close()
 
 	// Read the file as a byte slice
 	b, err := ioutil.ReadFile(input.Name())
-	check(err, 56)
+	Check(err, 66)
 
 	// Create a byte reader and use it to make a gzip reader
 	breader := bytes.NewReader(b)
 	gzreader, err := gzip.NewReader(breader)
 
-	check(err, 62)
+	Check(err, 72)
 	defer gzreader.Close()
 
 	// Create a destination file
-	output, err := os.Create(strings.SplitAfterN(goFilename, ".gz", 1)[0])
-	check(err, 71)
+	output, err := os.Create(strings.SplitAfterN(filename, ".gz", 1)[0])
+	Check(err, 77)
 
 	// Copy the decompressed data from the gzip reader to the destination file
 	if _, err = io.Copy(output, gzreader); err != nil {
-		check(err, 66)
+		Check(err, 81)
 	}
 
-	os.Remove(goFilename) // Delete the compressed data
+	os.Remove(filename) // Delete the compressed data
 
-	return C.CString(output.Name())
+	return output.Name()
 }
-
-func main() {}
