@@ -831,9 +831,9 @@ qmake: FORCE
 
 qmake_all: FORCE
 
-go: compression.so netdial.so netlisten.so netutils.so
+golibs: compression.so netdial.so netlisten.so netutils.so
 
-all: Makefile go plasmacoin-client
+all: Makefile golibs plasmacoin-client
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
