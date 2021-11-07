@@ -39,10 +39,13 @@ bool Block::Validate(const string& hash, const string& prevHash, const int& DIFF
 }
 
 bool Block::ValidateHash(const string& orig, const string& val, const int& DIFFICULTY) {
+	string substring = val.substr(0, DIFFICULTY); // The first characters of the hash that represent the difficulty
+
 	// Check the difficulty using the second hash, because the first one could be
-	// tampered with. Thanks to short-circuit evaluation, either one will technically
-	// at this point.
-	return (orig == val) && (val.find(string(DIFFICULTY, '0')) != string::npos);
+	// tampered with.
+	bool matchedDiff = substring.find(string(DIFFICULTY, '0')) != string::npos;
+
+	return orig == val && matchedDiff;
 }
 
 string Block::Stringify() {
