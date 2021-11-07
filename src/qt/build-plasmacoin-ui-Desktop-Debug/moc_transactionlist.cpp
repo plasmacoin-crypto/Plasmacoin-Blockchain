@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../plasmacoin-ui/transaction-list.h"
+#include "../plasmacoin-client/transaction-list.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
