@@ -91,12 +91,27 @@ void MainWindow::StartMining() {
 
 	auto start = high_resolution_clock::now(); // Begin timing the function
 
-	bool result = m_User->m_BlockchainCopy->Mine(newBlock); // Mine the block
+	bool success = false, valid = false;
+	uint8_t code;
+	std::tie(success, code) = m_User->m_BlockchainCopy->Mine(newBlock); // Mine the block
+
+	std::cout << "Success: " << success << std::endl;
+	std::cout << "Code: " << (uint)code << std::endl;
 
 	auto stop = high_resolution_clock::now(); // End timing
 	auto duration = std::chrono::duration_cast<seconds>(stop - start); // Find the duration
 
-	UpdateStatus(newBlock, duration);
+	// NOTE: Ideally, the blockchain will be validated without altering even the user's
+	// personal copy first.
+	if (success) {
+		m_User->m_BlockchainCopy->Add(&newBlock);
+		valid = m_User->m_BlockchainCopy->Validate();
+	}
+
+	if (valid) {
+		UpdateStatus(newBlock, duration);
+	}
+
 	emit DoneMining();
 }
 
