@@ -58,7 +58,7 @@ func dial(protocol, host, port C.cchar_t, message byte) {
 
 // Listen for and accept TCP/UDP connections
 //export receive
-func receive(protocol, host, port C.cchar_t) {
+func receive(protocol, host, port C.cchar_t) byte {
 	// Convert the C strings to Go strings
 	var (
 		goProtocol = C.GoString(protocol)
@@ -76,14 +76,20 @@ func receive(protocol, host, port C.cchar_t) {
 
 	defer listener.Close()
 
-	for {
-		// Wait for a connection.
-		conn, err := listener.Accept()
-		netutils.Check(err, 73)
+	// Wait for a connection.
+	conn, err := listener.Accept()
+	netutils.Check(err, 73)
 
-		// Handle the connection
-		go handler.HandleConnection(conn)
-	}
+	ch := make(chan byte)
+
+	// Handle the connection
+	go func(ch chan<- byte) {
+		out := handler.HandleConnection(conn)
+		ch <- out
+	}(ch)
+
+	out := <-ch
+	return out
 }
 
 // Compress a file using gzip
