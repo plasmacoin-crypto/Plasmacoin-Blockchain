@@ -78,7 +78,7 @@ extern "C" {
 extern void dial(cchar_t protocol, cchar_t host, cchar_t port, GoUint8 message);
 
 // Listen for and accept TCP/UDP connections
-extern void receive(cchar_t protocol, cchar_t host, cchar_t port);
+extern GoUint8 receive(cchar_t protocol, cchar_t host, cchar_t port);
 
 // Compress a file using gzip
 extern cchar_t gzipCompress(cchar_t filename);
