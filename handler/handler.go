@@ -12,8 +12,6 @@ import (
 	"io/ioutil"
 	"net"
 	"strconv"
-
-	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/netutils"
 )
 
 // Check for errors
@@ -24,13 +22,12 @@ func check(err error, line int) {
 }
 
 // Read the data from a connection
-func HandleConnection(conn net.Conn) {
+func HandleConnection(conn net.Conn) byte {
 	buf, err := ioutil.ReadAll(conn)
 	check(err, 37)
 
 	fmt.Println("Received")
 	fmt.Println(buf)
 
-	var d netutils.DialInstance
-	d.Parse(int(buf[0]))
+	return buf[0]
 }
