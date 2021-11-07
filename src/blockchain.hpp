@@ -11,6 +11,12 @@
 #include <vector>
 #include <iostream>
 #include <thread>
+#include <future>
+#include <chrono>
+#include <functional>
+#include <utility>
+
+#include <unistd.h>
 
 #include <QDebug>
 
@@ -24,13 +30,12 @@
 
 // Include Go code
 namespace go {
-	#include "compression.h"
-	#include "netutils.h"
-	#include "netlisten.h"
-	#include "netdial.h"
+	#include "goexports.h"
 }
 
 using std::vector;
+using std::pair;
+using std::future;
 
 class Blockchain {
 public:
@@ -43,7 +48,7 @@ public:
 
 	vector<Block*> Get() const;
 	Block* GetLatest() const;
-	size_t Size() const;
+	inline constexpr size_t Size() const;
 
 private:
 	const int DIFFICULTY = 5;
@@ -53,16 +58,24 @@ private:
 
 	void Save(Block* block) const;
 	void Compress();
+	template<typename T> bool IsReady(const future<T>& future);
 
 public:
-	bool Mine(Block& newBlock);
-	bool Consensus(Block& block); // Evaluate Proof-of-Work
+	pair<bool, uint8_t> Mine(Block& newBlock);
+	bool Consensus(Block& block, future<void> exitSignal); // Evaluate Proof-of-Work
+
 	bool Validate();
+	bool ValidateHash(const string& hash);
 
 private:
-	string Hash(const Transaction& transaction);
 	string Hash(const string& input);
+	string Hash(const Transaction& transaction);
 	string Hash(const Block& block);
 };
+
+template<typename T>
+bool Blockchain::IsReady(const future<T>& future) {
+	return future.wait_for(std::chrono::seconds(0)) == std::future_status::ready;
+}
 
 #endif // BLOCKCHAIN_HPP
