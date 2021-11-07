@@ -19,7 +19,7 @@ DEFINES       	 = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB 
 CFLAGS        	 = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      	 = -pipe -g -std=gnu++17 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 GOFLAGS		  	 = -buildmode c-shared
-INCPATH       	 = -I../plasmacoin-client -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-clang -I../.. -I/usr/src/cryptopp -I../../net/c
+INCPATH       	 = -I../plasmacoin-client -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-clang -I../.. -I/usr/src/cryptopp -I../../../c -I/usr/lib
 QMAKE         	 = /bin/qmake
 DEL_FILE      	 = rm -f
 CHK_DIR_EXISTS	 = test -d
@@ -42,7 +42,7 @@ DISTNAME      	 = plasmacoin-client-$(VERSION)
 DISTDIR 	  	 = ./.tmp/plasmacoin-client-$(VERSION)
 LINK          	 = clang++
 LFLAGS        	 = -ccc-gcc-name g++
-GOLIBS			 = ../../../c/goexports.so
+GOLIBS			 = /usr/lib/goexports.so
 QTLIBS 			 = /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Core.so
 SUBLIBS			 =
 LIBS          	 = $(QTLIBS) $(GOLIBS) -lGL -lpthread -lcryptopp -lstdc++fs
@@ -849,6 +849,7 @@ distdir: FORCE
 clean: compiler_clean
 	-$(DEL_FILE) $(OBJECTS)
 	-$(DEL_FILE) *~ core *.core
+	-$(DEL_FILE) ../../../c/goexports.h ../../../c/goexports.so
 
 
 distclean: clean
@@ -936,7 +937,7 @@ block.o: ../../block.cpp ../../block.hpp ../../transaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o block.o ../../block.cpp $(LINKS)
 
 blockchain.o: ../../blockchain.cpp ../../blockchain.hpp ../../cryptopp-sha256-libs.h ../../block.hpp \
-			  ../../merkle-helpers.h ../../net/c/compression.h ../../net/c/netutils.h
+			  ../../merkle-helpers.h ../../../c/goexports.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o blockchain.o ../../blockchain.cpp $(LINKS)
 
 merkle-helpers.o: ../../merkle-helpers.c ../../merkle-helpers.h
@@ -998,6 +999,7 @@ account-pages.o: ../plasmacoin-client/account-pages.cpp ../plasmacoin-client/acc
 
 goexports.h goexports.so: ../../../c/goexports.go
 	$(GO) build $(GOFLAGS) -o ../../../c/goexports.so ../../../c/goexports.go
+	$(INSTALL_FILE) ../../../c/goexports.so /usr/lib/
 
 ####### Install
 
