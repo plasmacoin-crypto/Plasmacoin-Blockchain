@@ -32,6 +32,6 @@ func (d DialInstance) Parse(signal int) {
 	case ping:
 		fmt.Println(Ping("localhost"))
 	case finished:
-		break
+		fmt.Println("Detected finished mining")
 	}
 }
