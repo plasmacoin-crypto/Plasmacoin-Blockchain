@@ -994,7 +994,7 @@ account-pages.o: ../plasmacoin-client/account-pages.cpp ../plasmacoin-client/acc
 # 					ui_mainwindow.h
 # 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings-manager.o ../plasmacoin-client/settings-manager.cpp
 
-# Compile Go files into C headers
+# Compile the Go code into a C header
 
 goexports.h goexports.so: ../../../c/goexports.go
 	$(GO) build $(GOFLAGS) -o ../../../c/goexports.so ../../../c/goexports.go
