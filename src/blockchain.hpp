@@ -48,7 +48,7 @@ public:
 
 	vector<Block*> Get() const;
 	Block* GetLatest() const;
-	inline constexpr size_t Size() const;
+	constexpr size_t Size() const;
 
 private:
 	const int DIFFICULTY = 5;
@@ -73,6 +73,12 @@ private:
 	string Hash(const Block& block);
 };
 
+// Get the number of blocks in the blockchain
+inline constexpr size_t Blockchain::Size() const {
+	return m_Chain.size();
+}
+
+// Check if a future is ready to have its value read
 template<typename T>
 bool Blockchain::IsReady(const future<T>& future) {
 	return future.wait_for(std::chrono::seconds(0)) == std::future_status::ready;

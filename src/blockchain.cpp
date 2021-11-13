@@ -56,12 +56,6 @@ Block* Blockchain::GetLatest() const {
 	return m_Chain.back();
 }
 
-// Get the number of blocks in the blockchain
-constexpr size_t Blockchain::Size() const {
-	return m_Chain.size();
-}
-
-
 void Blockchain::Save(Block* block) const {
 	datfs::saveBlock(block);
 }
