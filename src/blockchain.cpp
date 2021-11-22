@@ -93,18 +93,17 @@ pair<bool, uint8_t> Blockchain::Mine(Block& newBlock) {
 
 	// Set up futures to check for and receive data from other mining nodes on the network
 	future<uint8_t> receive = std::async(std::launch::deferred, receiver);
-	future<uint8_t> handle = std::async(handler, std::ref(receive), std::move(exitSignal));
+	future<uint8_t> handle = std::async(handler, std::ref(receive), std::move(exitSignal)); // This blocks a title change
 
-	auto c = [=](Block newBlock, future<void> exitFuture) -> bool {
-		return this->Consensus(newBlock, std::move(exitFuture));
-	};
+	// auto c = [=](Block newBlock, future<void> exitFuture) -> bool {
+	// 	return this->Consensus(newBlock, std::move(exitFuture));
+	// };
 
 	// Set up a packged task to run the Proof-of-Woork consensus protocol on the block
-	std::packaged_task<bool(Block, future<void>)> consensus(c);
+	//std::packaged_task<bool(Block, future<void>)> consensus(c);
 	future<bool> runConsensus = std::async(std::launch::deferred, &Blockchain::Consensus, this, std::ref(newBlock), std::move(exitFuture));
 
 	bool success = false;
-
 	std::cout << "Mining" << std::endl;
 	if (!newBlock.m_Transactions.empty()) {
 		Block* latest = GetLatest();
@@ -135,6 +134,7 @@ bool Blockchain::Consensus(Block& block, future<void> exitSignal) {
 		hash.substr(0, strNonce.size()) != strNonce &&
 		exitSignal.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout
 	) {
+		std::cout << "Nonce: " << block.m_Nonce << std::endl;
 		hash = Hash(block); // Hash the block
 
 		if (ValidateHash(hash)) {
