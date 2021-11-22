@@ -28,7 +28,9 @@ public:
 	void LoadVisuals(), HideVisuals();
 
 	// Functions to modify the browser text
-	void SetHeading(string text), SetHash(string text), SetNonce(int nonce);
+	void SetHeading(const string& text);
+	void SetHash(const string& text);
+	void SetNonce(int nonce);
 	void SetTime(std::chrono::seconds elapsedTime);
 
 signals:

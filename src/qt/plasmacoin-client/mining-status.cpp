@@ -55,7 +55,7 @@ void Status::HideVisuals() {
 }
 
 // Set the heading
-void Status::SetHeading(string text) {
+void Status::SetHeading(const string& text) {
 	m_Heading->setHtml(
 		QString(
 			string(
@@ -81,7 +81,7 @@ void Status::SetHeading(string text) {
 }
 
 // Set the hash
-void Status::SetHash(string text) {
+void Status::SetHash(const string& text) {
 	m_HashView->setHtml(
 		QString(
 			string(
