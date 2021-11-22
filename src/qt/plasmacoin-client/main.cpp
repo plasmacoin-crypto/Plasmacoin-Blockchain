@@ -14,9 +14,17 @@ void minePage(MainWindow& window) {
 	window.m_Status->m_Heading->setVisible(true);
 
 	// Mine a block when the correct button is clicked
-	window.connect(window.btn_mine, &QPushButton::released, &window, &MainWindow::StartMining);
+	window.connect(window.btn_mine, &QPushButton::released, &window, [&window]() {
+		window.m_Status->SetHeading("Mining Block #" + std::to_string(window.m_User->m_BlockchainCopy->Size()));
 
-	window.connect(&window, &MainWindow::DoneMining, &window, &MainWindow::ResetBlock);
+		std::thread mineThread(&MainWindow::StartMining, &window);
+		mineThread.detach();
+	});
+
+	window.connect(&window, &MainWindow::MiningSuccess, &window, [&window]() {
+		window.ResetBlock();
+		window.UpdateStatus(window.m_LastBlock, window.m_LastMiningDur);
+	});
 }
 
 // Allow the user to type information in forms (QLineEdits) and be authenticated to
