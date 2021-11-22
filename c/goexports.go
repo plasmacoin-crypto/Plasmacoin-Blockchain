@@ -76,17 +76,25 @@ func receive(protocol, host, port C.cchar_t) byte {
 
 	defer listener.Close()
 
+	connChan := make(chan net.Conn)
+
 	// Wait for a connection.
-	conn, err := listener.Accept()
-	netutils.Check(err, 73)
+	go func(ch chan<- net.Conn) {
+		conn, err := listener.Accept()
+		netutils.Check(err, 84)
+
+		ch <- conn
+	}(connChan)
+
+	conn := <-connChan
 
 	ch := make(chan byte)
 
 	// Handle the connection
-	go func(ch chan<- byte) {
+	go func(ch chan<- byte, conn net.Conn) {
 		out := handler.HandleConnection(conn)
 		ch <- out
-	}(ch)
+	}(ch, conn)
 
 	out := <-ch
 	return out
