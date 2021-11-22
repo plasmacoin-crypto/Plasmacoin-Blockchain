@@ -53,8 +53,8 @@ public:
 private:
 	const int DIFFICULTY = 5;
 
-	vector<Block*> m_Chain;
 	vector<Transaction*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
+	vector<Block*> m_Chain;
 
 	void Save(Block* block) const;
 	void Compress();
