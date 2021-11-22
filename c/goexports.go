@@ -66,25 +66,23 @@ func receive(protocol, host, port C.cchar_t) byte {
 		goPort     = C.GoString(port)
 	)
 
-	fmt.Println(goHost)
+	//fmt.Println(goProtocol)
 
 	// Listen for a connection
 	listener, err := tcpnet.Listen(goProtocol, goHost, goPort)
-	netutils.Check(err, 69)
-
-	fmt.Println(host)
+	netutils.Check(err, 73)
 
 	defer listener.Close()
 
 	connChan := make(chan net.Conn)
 
 	// Wait for a connection.
-	go func(ch chan<- net.Conn) {
+	go func(ch chan<- net.Conn, listener net.Listener) {
 		conn, err := listener.Accept()
-		netutils.Check(err, 84)
+		netutils.Check(err, 82)
 
 		ch <- conn
-	}(connChan)
+	}(connChan, listener)
 
 	conn := <-connChan
 
@@ -107,16 +105,16 @@ func gzipCompress(filename C.cchar_t) C.cchar_t {
 
 	// Open the file
 	file, err := os.Open(goFilename)
-	netutils.Check(err, 53)
+	netutils.Check(err, 108)
 
 	// Read the contents of the file
 	reader := bufio.NewReader(file)
 	contents, err := ioutil.ReadAll(reader)
-	netutils.Check(err, 57)
+	netutils.Check(err, 113)
 
 	// Create the compressed file (.gz)
 	comp, err := os.Create(goFilename + ".gz")
-	netutils.Check(err, 62)
+	netutils.Check(err, 117)
 
 	// Make a new writer
 	gzwriter := gzip.NewWriter(comp)
@@ -129,7 +127,7 @@ func gzipCompress(filename C.cchar_t) C.cchar_t {
 
 	// Write the compressed data to the file
 	_, err = gzwriter.Write(contents)
-	netutils.Check(err, 75)
+	netutils.Check(err, 130)
 
 	return C.CString(comp.Name())
 }
@@ -141,28 +139,28 @@ func gzipDecompress(filename C.cchar_t) C.cchar_t {
 
 	// Open the file for reading and writing
 	input, err := os.OpenFile(goFilename, os.O_RDONLY, 0)
-	netutils.Check(err, 87)
+	netutils.Check(err, 142)
 
 	defer input.Close()
 
 	// Read the file as a byte slice
 	b, err := ioutil.ReadFile(input.Name())
-	netutils.Check(err, 93)
+	netutils.Check(err, 148)
 
 	// Create a byte reader and use it to make a gzip reader
 	breader := bytes.NewReader(b)
 	gzreader, err := gzip.NewReader(breader)
 
-	netutils.Check(err, 99)
+	netutils.Check(err, 154)
 	defer gzreader.Close()
 
 	// Create a destination file
 	output, err := os.Create(strings.SplitAfterN(goFilename, ".gz", 1)[0])
-	netutils.Check(err, 104)
+	netutils.Check(err, 159)
 
 	// Copy the decompressed data from the gzip reader to the destination file
 	if _, err = io.Copy(output, gzreader); err != nil {
-		netutils.Check(err, 108)
+		netutils.Check(err, 163)
 	}
 
 	os.Remove(goFilename) // Delete the compressed data
