@@ -7,15 +7,13 @@
 
 #include "mainwindow.h"
 
-using std::chrono::high_resolution_clock;
-using std::chrono::seconds;
-
 MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
 	m_Authenticator(new Auth()),
 	//m_SettingsManager(new SettingsManager()),
-	m_TList(new TransactionList(Ui::MainWindow::transactionList))
+	m_TList(new TransactionList(Ui::MainWindow::transactionList)),
+	m_LastBlock(Block(0, "", {nullptr}, false))
 {
 	setupUi(this);
 	this->DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
@@ -57,6 +55,7 @@ MainWindow::~MainWindow() {
 	delete m_Authenticator;
 	delete m_TList;
 	delete m_AccPgs;
+	delete m_FileBrowser;
 }
 
 // Create QTextBrowsers to display on the mining tab
@@ -84,8 +83,6 @@ AccountPages* MainWindow::CreatePages() {
 
 // Call block mining code and make visual changes to the GUI once it's done
 void MainWindow::StartMining() {
-	m_Status->SetHeading("Mining Block #" + std::to_string(m_User->m_BlockchainCopy->Size()));
-
 	Block* latest = m_User->m_BlockchainCopy->GetLatest(); // Get the latest block
 	Block newBlock(latest->m_Index + 1, latest->m_Hash, m_BlockContents); // Create a new block
 
@@ -93,26 +90,29 @@ void MainWindow::StartMining() {
 
 	bool success = false, valid = false;
 	uint8_t code;
+
 	std::tie(success, code) = m_User->m_BlockchainCopy->Mine(newBlock); // Mine the block
 
 	std::cout << "Success: " << success << std::endl;
 	std::cout << "Code: " << (uint)code << std::endl;
 
 	auto stop = high_resolution_clock::now(); // End timing
-	auto duration = std::chrono::duration_cast<seconds>(stop - start); // Find the duration
+	m_LastMiningDur = std::chrono::duration_cast<seconds>(stop - start); // Find the duration
 
 	// NOTE: Ideally, the blockchain will be validated without altering even the user's
 	// personal copy first.
 	if (success) {
 		m_User->m_BlockchainCopy->Add(&newBlock);
 		valid = m_User->m_BlockchainCopy->Validate();
+		m_LastBlock = *m_User->m_BlockchainCopy->GetLatest();
 	}
 
 	if (valid) {
-		UpdateStatus(newBlock, duration);
+		emit MiningSuccess();
 	}
-
-	emit DoneMining();
+	else {
+		emit MiningFailure();
+	}
 }
 
 void MainWindow::ResetBlock() {
@@ -120,7 +120,9 @@ void MainWindow::ResetBlock() {
 	blockTransactionList->clear();
 }
 
-void MainWindow::UpdateStatus(Block& block, seconds time) {
+void MainWindow::UpdateStatus(const Block& block, seconds time) {
+	m_Status->SetHeading("Finishing Block #" + std::to_string(m_User->m_BlockchainCopy->GetLatest()->m_Index));
+
 	m_Status->SetHash(block.m_Hash);
 	m_Status->SetNonce(block.m_Nonce);
 	m_Status->SetTime(time);
