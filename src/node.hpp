@@ -13,7 +13,6 @@
 #include <utility>
 #include <sstream>
 #include <functional>
-#include <tuple>
 
 #include "cryptopp-sha256-libs.h"
 
@@ -53,7 +52,7 @@ public:
 	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
 
 	// Sign and verify transactions with RSA
-	std::tuple<byte*, size_t> Sign(Transaction& transaction) noexcept(false);
+	pair<byte*, size_t> Sign(Transaction& transaction) noexcept(false);
 	bool Verify(Transaction& transaction, byte* signature, size_t length, RSA::PublicKey publicKey);
 
 	Blockchain* m_BlockchainCopy = new Blockchain(); // The node's copy of the blockchain

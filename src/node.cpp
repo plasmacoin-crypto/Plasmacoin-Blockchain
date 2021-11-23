@@ -86,7 +86,7 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 }
 
 // Sign a transaction with the sender's private key. Return the signature, as well as its length.
-std::tuple<byte*, size_t> Node::Sign(Transaction& transaction) noexcept(false) {
+pair<byte*, size_t> Node::Sign(Transaction& transaction) noexcept(false) {
 	CryptoPP::AutoSeededRandomPool rng;
 	string message = transaction.m_Content;
 
