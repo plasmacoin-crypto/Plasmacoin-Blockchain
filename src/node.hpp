@@ -43,6 +43,8 @@ public:
 		const string& name, const string& username, const string& password,
 		const string& ip, string keyPath = rsafs::DIR_PATH, bool isMaster = false
 	);
+	~Node();
+
 	Transaction* MakeTransaction(const Node& recipient, float amount, string content) const;
 
 	// Some getters

@@ -29,6 +29,10 @@ Node::Node(const string& name, const string& username, const string& password, c
 	m_Address = CreateAddress(m_PubKey);
 }
 
+Node::~Node() {
+	delete m_BlockchainCopy;
+}
+
 // Create a new transaction to a recipient on the blockchain network
 Transaction* Node::MakeTransaction(const Node& recipient, float amount, string content) const {
 	// From Transaction::m_Condensed:
