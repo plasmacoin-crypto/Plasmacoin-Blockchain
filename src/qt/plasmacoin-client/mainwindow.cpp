@@ -12,8 +12,7 @@ MainWindow::MainWindow(QWidget* parent):
 	parent(parent),
 	m_Authenticator(new Auth()),
 	//m_SettingsManager(new SettingsManager()),
-	m_TList(new TransactionList(Ui::MainWindow::transactionList)),
-	m_LastBlock(Block(0, "", {nullptr}, false))
+	m_TList(new TransactionList(Ui::MainWindow::transactionList))
 {
 	setupUi(this);
 	this->DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
@@ -104,7 +103,6 @@ void MainWindow::StartMining() {
 	if (success) {
 		m_User->m_BlockchainCopy->Add(&newBlock);
 		valid = m_User->m_BlockchainCopy->Validate();
-		m_LastBlock = *m_User->m_BlockchainCopy->GetLatest();
 	}
 
 	if (valid) {
@@ -121,7 +119,7 @@ void MainWindow::ResetBlock() {
 }
 
 void MainWindow::UpdateStatus(const Block& block, seconds time) {
-	m_Status->SetHeading("Finishing Block #" + std::to_string(m_User->m_BlockchainCopy->GetLatest()->m_Index));
+	m_Status->SetHeading("Finishing Block #" + std::to_string(block.m_Index));
 
 	m_Status->SetHash(block.m_Hash);
 	m_Status->SetNonce(block.m_Nonce);

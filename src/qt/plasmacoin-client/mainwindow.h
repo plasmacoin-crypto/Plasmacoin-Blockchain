@@ -59,7 +59,6 @@ public:
 
 	std::vector<Transaction*> m_BlockContents;
 	std::chrono::seconds m_LastMiningDur;
-	Block m_LastBlock;
 
 private:
 	QTabWidget* m_TabBar = Ui::MainWindow::tabWidget;

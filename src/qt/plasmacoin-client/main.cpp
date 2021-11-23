@@ -23,7 +23,7 @@ void minePage(MainWindow& window) {
 
 	window.connect(&window, &MainWindow::MiningSuccess, &window, [&window]() {
 		window.ResetBlock();
-		window.UpdateStatus(window.m_LastBlock, window.m_LastMiningDur);
+		window.UpdateStatus(*window.m_User->m_BlockchainCopy->GetLatest(), window.m_LastMiningDur);
 	});
 }
 
