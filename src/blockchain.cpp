@@ -26,7 +26,7 @@ int Blockchain::Add(Block* block) {
 		return -1;
 	}
 	else {
-		m_Chain.push_back(block);
+		m_Chain.push_back(new Block(*block));
 	}
 
 	Save(block);
@@ -115,7 +115,12 @@ pair<bool, uint8_t> Blockchain::Mine(Block& newBlock) {
 	// By this point, if the node hasn't recieved information that the current block has been
 	// completed, broadcast to the network that this node has completed it first.
 	if (success) {
+		std::cout << "Success" << std::endl;
 		future<void> dial = std::async(&go::dial, "tcp", "192.168.1.6", "8080", 1);
+	}
+	else {
+		std::cout << "Failure" << std::endl;
+		future<void> dial = std::async(&go::dial, "tcp", "192.168.1.6", "8080", 4);
 	}
 
 	return std::make_pair(success, handle.get());
@@ -134,7 +139,7 @@ bool Blockchain::Consensus(Block& block, future<void> exitSignal) {
 		hash.substr(0, strNonce.size()) != strNonce &&
 		exitSignal.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout
 	) {
-		std::cout << "Nonce: " << block.m_Nonce << std::endl;
+		//std::cout << "Nonce: " << block.m_Nonce << std::endl;
 		hash = Hash(block); // Hash the block
 
 		if (ValidateHash(hash)) {
@@ -205,7 +210,6 @@ string Blockchain::Hash(const Transaction& transaction) {
 // Hash a block by constructing a Merkle Tree. Each block hash will be make up of hashes of
 // concatenations of hashes until a root node for the tree is generated.
 string Blockchain::Hash(const Block& block) {
-
 	if (block.m_IsGenesis) {
 		return string(64, '0');
 	}
