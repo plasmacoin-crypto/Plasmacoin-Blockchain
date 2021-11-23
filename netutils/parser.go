@@ -16,6 +16,7 @@ const (
 	finished
 	transaction
 	block
+	failure
 )
 
 type dialer interface {
@@ -33,5 +34,7 @@ func (d DialInstance) Parse(signal int) {
 		fmt.Println(Ping("localhost"))
 	case finished:
 		fmt.Println("Detected finished mining")
+	case failure:
+		fmt.Println("Failure")
 	}
 }
