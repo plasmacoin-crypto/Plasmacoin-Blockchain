@@ -101,7 +101,7 @@ pair<byte*, size_t> Node::Sign(Transaction& transaction) noexcept(false) {
 
 	size_t length = m_Signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
 
-	return std::make_tuple(signature, length);
+	return std::make_pair(signature, length);
 }
 
 // Verify a transaction using the sender's public key. Returns true if verification succeded,
