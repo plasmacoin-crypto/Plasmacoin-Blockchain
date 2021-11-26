@@ -7,7 +7,10 @@
 
 #include "node.hpp"
 
-Node::Node(const string& name, const string& username, const string& password, const string& ip, string keyPath, bool isMaster):
+Node::Node(
+	const string& name, const string& username, const string& password,
+	const string& ip, string keyPath = rsafs::DIR_PATH, bool isMaster = false
+):
 	// User data
 	m_Name(name),
 	m_Username(username),
