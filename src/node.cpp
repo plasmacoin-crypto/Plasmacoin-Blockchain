@@ -9,7 +9,7 @@
 
 Node::Node(
 	const string& name, const string& username, const string& password,
-	const string& ip, string keyPath = rsafs::DIR_PATH, bool isMaster = false
+	const string& ip, string keyPath, bool isMaster
 ):
 	// User data
 	m_Name(name),
