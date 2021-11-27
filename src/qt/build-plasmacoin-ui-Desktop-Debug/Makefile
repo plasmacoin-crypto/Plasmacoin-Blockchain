@@ -12,6 +12,12 @@ EQ            	 = =
 
 ####### Compiler, tools and options
 
+#
+# To use ThreadSanitizer:
+# CXXFLAGS - add -fsanitize=thread -fopenmp=libomp
+# LFLAGS - add -fsanitize=thread
+#
+
 CC            	 = clang
 CXX           	 = clang++
 GO 			  	 = /usr/bin/go
@@ -89,6 +95,8 @@ OBJECTS = 	main.o \
 			moc_firebase_auth.o \
 			account-pages.o \
 			dat-fs.o \
+			address-book.o \
+			contact.o \
 			#settings-manager.o
 
 MOC = 		moc_mainwindow.cpp \
@@ -342,11 +350,15 @@ DIST = 		/usr/lib/qt/mkspecs/features/spec_pre.prf \
 			../plasmacoin-client/transaction-list.h ../plasmacoin-client/transaction-list.cpp \
 			../plasmacoin-client/mining-status.h ../plasmacoin-client/mining-status.cpp \
 			../plasmacoin-client/recipient-list.h ../plasmacoin-client/recipient-list.cpp \
-			../plasmacoin-client/firebase-auth.h ../plasmacoin/firebase-auth.cpp \
-			../plasmacoin-client/account-pages.h ../plasmacoin/account-pages.cpp \
+			../plasmacoin-client/firebase-auth.h ../plasmacoin-client/firebase-auth.cpp \
+			../plasmacoin-client/account-pages.h ../plasmacoin-client/account-pages.cpp \
+			../plasmacoin-client/address-book.h ../plasmacoin-client/address-book.cpp \
+			../plasmacoin-client/contact.h ../plasmacoin-client/contact.cpp \
 			\
-			../../net/go/compression/compression.go ../../net/go/netdial/netdial.go \
-			../../net/go/netlisten/netlisten.go  ../../net/go/netutils/netutils.go \
+			../../../c/goexports.go ../../../c/goexports.h \
+			../../../handler/handler.go \
+			../../../netutils/compression.go ../../../netutils/netutils.go ../../../netutils/parser.go \
+			../../../tcpnet/netdial.go ../../../tcpnet/netlisten.go \
 			#../plasmacoin-client/settings-manager.h ../plasmacoin/settings-manager.cpp
 
 QMAKE_TARGET  = plasmacoin-client
@@ -990,6 +1002,13 @@ firebase-auth.o: ../plasmacoin-client/firebase-auth.cpp ../plasmacoin-client/fir
 account-pages.o: ../plasmacoin-client/account-pages.cpp ../plasmacoin-client/account-pages.h \
 				 ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o account-pages.o ../plasmacoin-client/account-pages.cpp
+
+address-book.o: ../plasmacoin-client/address-book.cpp ../plasmacoin-client/address-book.h \
+				ui_mainwindow.h ../plasmacoin-client/contact.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o address-book.o ../plasmacoin-client/address-book.cpp
+
+contact.o: ../plasmacoin-client/contact.cpp ../plasmacoin-client/contact.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o contact.o ../plasmacoin-client/contact.cpp
 
 # settings-manager.o: ../plasmacoin-client/settings-manager.cpp ../plasmacoin-client/settings-manager.h \
 # 					ui_mainwindow.h
