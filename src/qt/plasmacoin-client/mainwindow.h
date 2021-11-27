@@ -19,12 +19,14 @@
 #include <QThread>
 #include <QtWidgets/QListWidgetItem>
 #include <QFileDialog>
+#include <QDateEdit>
 
 #include "ui_mainwindow.h"
 
 #include "transaction-list.h"
 #include "mining-status.h"
 #include "account-pages.h"
+#include "address-book.h"
 //#include "settings-manager.h"
 
 #include "block.hpp"
@@ -47,14 +49,15 @@ public:
 
 	void StartMining(); // Initiate the mining process
 	void ResetBlock();	// Reset the user's block
-
 	void UpdateStatus(const Block& block, std::chrono::seconds time); // Update the mining status while a block is being mined
+	void ShowContact(Contact* contact);
 
 	QWidget* parent;
 	Status* m_Status;
 	Auth* m_Authenticator;
 	TransactionList* m_TList;
 	AccountPages* m_AccPgs;
+	AddressBook* m_AddressBook;
 	//SettingsManager* m_SettingsManager;
 
 	std::vector<Transaction*> m_BlockContents;

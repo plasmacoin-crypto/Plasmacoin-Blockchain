@@ -19,6 +19,11 @@ MainWindow::MainWindow(QWidget* parent):
 
 	m_Status = CreateMiningVisuals();
 	m_AccPgs = CreatePages();
+	m_AddressBook = new AddressBook(
+						Ui::MainWindow::contactsList, Ui::MainWindow::nameDisplay, Ui::MainWindow::nameField,
+						Ui::MainWindow::usernameDisplay, Ui::MainWindow::usernameField, Ui::MainWindow::addressDisplay,
+						Ui::MainWindow::addressField, Ui::MainWindow::birthday
+					);
 
 	// Create some temporary nodes to make transactions between
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
@@ -31,22 +36,34 @@ MainWindow::MainWindow(QWidget* parent):
 
 	std::cout << transaction1->m_Condensed << std::endl;
 
-	m_TList->Add(transaction1); // Load items into the transaction list
-	m_TList->Add(transaction2); // Load items into the transaction list
-	m_TList->Add(transaction3); // Load items into the transaction list
+	// Load items into the transaction list
+	m_TList->Add(transaction1);
+	m_TList->Add(transaction2);
+	m_TList->Add(transaction3);
 
 	m_Status->SetHeading("Building Block #" + std::to_string(m_User->m_BlockchainCopy->Size()));
 
 	// Allow tab switching
 	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
 
-	connect(Ui::MainWindow::btn_choosePath, &QPushButton::released, this, [this]() {
+	connect(Ui::MainWindow::btn_choosePath, &QPushButton::released, this, [=]() {
 		qDebug() << this->m_FileBrowser->getSaveFileName(
 											Ui::MainWindow::settings, QFileDialog::tr("Choose an RSA output location"),
 											QString::fromStdString(rsafs::HOME_DIR), QFileDialog::tr("Text Files (*.txt);;All Files (*.*, *)"),
 											nullptr, QFileDialog::DontUseNativeDialog
 										);
 	});
+
+	// Add a contact to the list
+	Contact* contact1 = new Contact("Ryan", "rmsmith", "pca12345", QDate(2005, 2, 16));
+	Contact* contact2 = new Contact("John", "jdoe", "pca67890", QDate(1999, 9, 9));
+	Contact* contact3 = new Contact("Alexander", "alex", "pca31415", QDate(2000, 1, 1));
+
+	m_AddressBook->Add(contact1);
+	m_AddressBook->Add(contact2);
+	m_AddressBook->Add(contact3);
+
+	m_AddressBook->Sort();
 }
 
 MainWindow::~MainWindow() {
@@ -55,12 +72,12 @@ MainWindow::~MainWindow() {
 	delete m_TList;
 	delete m_AccPgs;
 	delete m_FileBrowser;
+	delete m_AddressBook;
 }
 
 // Create QTextBrowsers to display on the mining tab
 Status* MainWindow::CreateMiningVisuals() {
-	// The four widgets to display on the screen once a block has
-	// been mined.
+	// The four widgets to display on the screen once a block has been mined.
 	QTextBrowser *browser1 = new QTextBrowser(Ui::MainWindow::mineCoins),
 				 *browser2 = new QTextBrowser(Ui::MainWindow::mineCoins),
 				 *browser3 = new QTextBrowser(Ui::MainWindow::mineCoins),
@@ -126,6 +143,20 @@ void MainWindow::UpdateStatus(const Block& block, seconds time) {
 	m_Status->SetTime(time);
 
 	m_Status->LoadVisuals();
+}
+
+void MainWindow::ShowContact(Contact* contact) {
+	// Set the read only fields
+	nameDisplay->setText(QString::fromStdString(contact->GetName()));
+	usernameDisplay->setText(QString::fromStdString(contact->GetUsername()));
+	addressDisplay->setText(QString::fromStdString(contact->GetAddress()));
+
+	// Set the writable fields
+	nameField->setText(QString::fromStdString(contact->GetName()));
+	usernameField->setText(QString::fromStdString(contact->GetUsername()));
+	addressField->setText(QString::fromStdString(contact->GetAddress()));
+
+	birthday->setDate(contact->GetBirthday()); // Set the birthday
 }
 
 // Definitions for slots
