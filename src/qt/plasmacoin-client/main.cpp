@@ -1,9 +1,11 @@
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QListWidgetItem>
+#include <QApplication>
+#include <QPushButton>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include <QSplashScreen>
+#include <QDialogButtonBox>
+#include <QSignalBlocker>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -11,7 +13,7 @@
 
 // Allow the user to mine their block
 void minePage(MainWindow& window) {
-	window.m_Status->m_Heading->setVisible(true);
+	window.m_Status->m_Heading->setVisible(true); // Show the status heading
 
 	// Mine a block when the correct button is clicked
 	window.connect(window.btn_mine, &QPushButton::released, &window, [&window]() {
@@ -21,6 +23,7 @@ void minePage(MainWindow& window) {
 		mineThread.detach();
 	});
 
+	// Update the mining status on success
 	window.connect(&window, &MainWindow::MiningSuccess, &window, [&window]() {
 		window.ResetBlock();
 		window.UpdateStatus(*window.m_User->m_BlockchainCopy->GetLatest(), window.m_LastMiningDur);
@@ -65,6 +68,7 @@ void accountPages(MainWindow& window) {
 		window.m_AccPgs->m_UsernameWarning->setVisible(false);
 		window.m_AccPgs->m_PasswordSignUpWarning->setVisible(false);
 
+		// Use bit masking to warn about certain errors
 		for (uint8_t code = Auth::EMAIL_EXISTS, i = 0; i < Auth::LAST; code = 1 << ++i) {
 			if (window.m_Authenticator->m_Errors & code) {
 				switch (code) {
@@ -145,6 +149,85 @@ void accountPages(MainWindow& window) {
 	});
 }
 
+void addressBook(MainWindow& window) {
+	window.btndiag_confirm->setVisible(false);
+
+	// Display contact info when the corresponding table object is selected
+	window.connect(window.contactsList, &QTableWidget::itemSelectionChanged, &window, [&window]() {
+		int row = window.contactsList->currentRow();
+		window.ShowContact(window.m_AddressBook->At(row));
+	});
+
+	// Allow the user to add a contact
+	window.connect(window.btn_addContact, &QToolButton::released, &window, [&window]() {
+		Contact* contact = new Contact("New Contact", "", "", QDate());
+		window.m_AddressBook->Add(contact);
+
+		window.contactsList->selectRow(window.m_AddressBook->GetRowOf(contact));
+		window.m_AddressBook->SetEditing(true);
+
+		emit window.btn_edit->released();
+		window.m_AddressBook->SetInsertion(true);
+	});
+
+	// Allow the user to delete a contact
+	window.connect(window.btn_delete, &QPushButton::released, &window, [&window]() {
+		int row = window.contactsList->currentRow();
+		window.m_AddressBook->Delete(row);
+	});
+
+	// Allow the user to edit a contact
+	window.connect(window.btn_edit, &QPushButton::released, &window, [&window]() {
+		window.btn_edit->setVisible(false);
+		window.btndiag_confirm->setVisible(true);
+		window.btn_delete->move(930, 520);
+
+		int row = window.contactsList->currentRow();
+		window.m_AddressBook->SetEditing(true);
+	});
+
+	// Allow the user to apply changes to contacts
+	window.connect(window.btndiag_confirm, &QDialogButtonBox::accepted, &window, [&window]() {
+		window.btndiag_confirm->setVisible(false);
+		window.btn_edit->setVisible(true);
+		window.btn_delete->move(900, 520);
+
+		int row = window.contactsList->currentRow();
+		Contact* contact = window.m_AddressBook->At(row);
+
+		contact->Update(
+			window.nameField->text().toStdString(), window.usernameField->text().toStdString(),
+			window.addressField->text().toStdString(), window.birthday->date()
+		);
+		window.m_AddressBook->Update(contact, row);
+
+		window.m_AddressBook->SetEditing(false);
+		window.contactsList->selectRow(window.m_AddressBook->GetRowOf(contact));
+
+		window.m_AddressBook->SetInsertion(false);
+	});
+
+	// Allow the user to cancel changes to contacts
+	window.connect(window.btndiag_confirm, &QDialogButtonBox::rejected, &window, [&window]() {
+		window.btndiag_confirm->setVisible(false);
+		window.btn_edit->setVisible(true);
+		window.btn_delete->move(900, 520);
+
+		int row = window.contactsList->currentRow();
+		Contact* contact = window.m_AddressBook->At(row);
+
+		window.m_AddressBook->SetEditing(false);
+		window.ShowContact(contact); // Ensure all changes have been reset, then reshow the contact info
+
+		if (window.m_AddressBook->IsInserting()) {
+			window.m_AddressBook->Delete(row);
+		}
+
+		window.m_AddressBook->SetInsertion(false);
+	});
+
+}
+
 // Allow the user to add transactions to their block
 void addToBlock(MainWindow& window) {
 	window.connect(window.plusSign, &QToolButton::released, &window, [&window]() {
@@ -209,9 +292,10 @@ int main(int argc, char* argv[]) {
 
 	// Connect everything
 	minePage(window);
+	accountPages(window);
+	addressBook(window);
 	addToBlock(window);
 	removeFromBlock(window);
-	accountPages(window);
 
 	return app.exec();
 }
