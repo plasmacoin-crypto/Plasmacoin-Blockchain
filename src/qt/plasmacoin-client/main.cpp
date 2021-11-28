@@ -158,6 +158,8 @@ void addressBook(MainWindow& window) {
 		window.ShowContact(window.m_AddressBook->At(row));
 	});
 
+	window.contactsList->selectRow(0);
+
 	// Allow the user to add a contact
 	window.connect(window.btn_addContact, &QToolButton::released, &window, [&window]() {
 		Contact* contact = new Contact("New Contact", "", "", QDate());
