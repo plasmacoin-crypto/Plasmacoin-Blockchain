@@ -22,7 +22,6 @@ AddressBook::AddressBook(
 	m_Birthday(birthday)
 {
 	m_ContactsList->setRowCount(0);
-
 	SetEditing(false);
 }
 
