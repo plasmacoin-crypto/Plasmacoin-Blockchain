@@ -99,6 +99,8 @@ OBJECTS = 	main.o \
 			contact.o \
 			#settings-manager.o
 
+BASE_OBJ =  transaction.o node.o block.o blockchain.o merkle-helpers.o
+
 MOC = 		moc_mainwindow.cpp \
 			moc_transactionlist.cpp \
 			moc_mining_status.cpp \
@@ -844,7 +846,7 @@ qmake: FORCE
 
 qmake_all: FORCE
 
-all: Makefile goexports.so plasmacoin-client
+all: Makefile goexports.so libplasmacoin.so plasmacoin-client
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
@@ -861,7 +863,8 @@ distdir: FORCE
 clean: compiler_clean
 	-$(DEL_FILE) $(OBJECTS)
 	-$(DEL_FILE) *~ core *.core
-	-$(DEL_FILE) ../../../c/goexports.h ../../../c/goexports.so
+	-$(DEL_FILE) ../../../c/goexports.h
+	-$(DEL_DIR) ../../../lib
 
 
 distclean: clean
@@ -1017,8 +1020,15 @@ contact.o: ../plasmacoin-client/contact.cpp ../plasmacoin-client/contact.h
 # Compile the Go code into a C header
 
 goexports.h goexports.so: ../../../c/goexports.go
+	$(MKDIR) ../../../lib
 	$(GO) build $(GOFLAGS) -o ../../../c/goexports.so ../../../c/goexports.go
-	$(INSTALL_FILE) ../../../c/goexports.so /usr/lib/
+	$(MOVE) ../../../c/goexports.so ../../../lib
+	$(INSTALL_FILE) ../../../lib/goexports.so /usr/lib/
+
+# Compile Plasmacoin base libraries into a shared object
+libplasmacoin.so: $(BASE_OBJ)
+	$(CXX) -shared $(BASE_OBJ) -o ../../../lib/libplasmacoin.so
+	$(INSTALL_FILE) ../../../lib/libplasmacoin.so /usr/lib/
 
 ####### Install
 
