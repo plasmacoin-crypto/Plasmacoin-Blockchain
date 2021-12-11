@@ -48,8 +48,8 @@ DISTNAME      	 = plasmacoin-client-$(VERSION)
 DISTDIR 	  	 = ./.tmp/plasmacoin-client-$(VERSION)
 HEADER_DIR		 = /usr/include/plasmacoin
 LINK          	 = clang++
-LFLAGS        	 = -ccc-gcc-name g++
-GOLIBS			 = /usr/lib/goexports.so
+LFLAGS        	 = -ccc-gcc-name g++ -L/usr/lib/plasmacoin
+GOLIBS			 = /usr/lib/plasmacoin/goexports.so
 QTLIBS 			 = /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Core.so
 SUBLIBS			 =
 LIBS          	 = $(QTLIBS) $(GOLIBS) -lGL -lpthread -lcryptopp -lstdc++fs
@@ -86,6 +86,7 @@ OBJECTS = 	main.o \
 			blockchain.o \
 			merkle-helpers.o \
 			rsa-fs.o \
+			dat-fs.o \
 			mainwindow.o \
 			moc_mainwindow.o \
 			transaction-list.o \
@@ -95,12 +96,17 @@ OBJECTS = 	main.o \
 			firebase-auth.o \
 			moc_firebase_auth.o \
 			account-pages.o \
-			dat-fs.o \
 			address-book.o \
 			contact.o \
 			#settings-manager.o
 
-BASE_OBJ =  transaction.o node.o block.o blockchain.o merkle-helpers.o
+BASE_OBJ = 	transaction.o \
+			node.o \
+			block.o \
+			blockchain.o \
+			merkle-helpers.o \
+			rsa-fs.o \
+			dat-fs.o
 
 MOC = 		moc_mainwindow.cpp \
 			moc_transactionlist.cpp \
@@ -1022,22 +1028,23 @@ contact.o: ../plasmacoin-client/contact.cpp ../plasmacoin-client/contact.h
 
 # Compile the Go code into a C header
 goexports.h goexports.so: ../../../c/goexports.go
-	$(MKDIR) ../../../lib
+	$(MKDIR) ../../../lib /usr/lib/plasmacoin
 	$(GO) build $(GOFLAGS) -o ../../../c/goexports.so ../../../c/goexports.go
 	$(MOVE) ../../../c/goexports.so ../../../lib
-	$(INSTALL_FILE) ../../../lib/goexports.so /usr/lib/
+	$(INSTALL_FILE) ../../../lib/goexports.so /usr/lib/plasmacoin
 
 # Compile Plasmacoin base libraries into a shared object and make the necessary headers
 # publicly accessible across the system.
 libplasmacoin.so: $(BASE_OBJ)
-	$(CXX) -shared $(BASE_OBJ) -o ../../../lib/libplasmacoin.so
-	$(INSTALL_FILE) ../../../lib/libplasmacoin.so /usr/lib/
+	$(CXX) -shared $(BASE_OBJ) -o ../../../lib/libplasmacoin.so -lcryptopp
+	$(INSTALL_FILE) ../../../lib/libplasmacoin.so /usr/lib/plasmacoin
 
 	$(MKDIR) $(HEADER_DIR)
 
+	$(eval STANDALONE_HEADERS = ../../merkle-helpers.h ../../cryptopp-sha256-libs.h ../../../c/goexports.h)
 	$(eval HEADERS := $(filter-out merkle-helpers.o, $(BASE_OBJ)))
 	$(eval HEADERS := $(HEADERS:%o=../../%hpp))
-	$(eval HEADERS += ../../merkle-helpers.h ../../cryptopp-sha256-libs.h)
+	$(eval HEADERS += $(STANDALONE_HEADERS))
 
 	$(COPY_FILE) $(HEADERS) $(HEADER_DIR)
 
