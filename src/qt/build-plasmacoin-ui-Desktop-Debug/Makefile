@@ -46,6 +46,7 @@ TAR           	 = tar -cf
 COMPRESS      	 = gzip -9f
 DISTNAME      	 = plasmacoin-client-$(VERSION)
 DISTDIR 	  	 = ./.tmp/plasmacoin-client-$(VERSION)
+HEADER_DIR		 = /usr/include/plasmacoin
 LINK          	 = clang++
 LFLAGS        	 = -ccc-gcc-name g++
 GOLIBS			 = /usr/lib/goexports.so
@@ -1017,18 +1018,28 @@ contact.o: ../plasmacoin-client/contact.cpp ../plasmacoin-client/contact.h
 # 					ui_mainwindow.h
 # 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings-manager.o ../plasmacoin-client/settings-manager.cpp
 
-# Compile the Go code into a C header
+# Shared Objects
 
+# Compile the Go code into a C header
 goexports.h goexports.so: ../../../c/goexports.go
 	$(MKDIR) ../../../lib
 	$(GO) build $(GOFLAGS) -o ../../../c/goexports.so ../../../c/goexports.go
 	$(MOVE) ../../../c/goexports.so ../../../lib
 	$(INSTALL_FILE) ../../../lib/goexports.so /usr/lib/
 
-# Compile Plasmacoin base libraries into a shared object
+# Compile Plasmacoin base libraries into a shared object and make the necessary headers
+# publicly accessible across the system.
 libplasmacoin.so: $(BASE_OBJ)
 	$(CXX) -shared $(BASE_OBJ) -o ../../../lib/libplasmacoin.so
 	$(INSTALL_FILE) ../../../lib/libplasmacoin.so /usr/lib/
+
+	$(MKDIR) $(HEADER_DIR)
+
+	$(eval HEADERS := $(filter-out merkle-helpers.o, $(BASE_OBJ)))
+	$(eval HEADERS := $(HEADERS:%o=../../%hpp))
+	$(eval HEADERS += ../../merkle-helpers.h ../../cryptopp-sha256-libs.h)
+
+	$(COPY_FILE) $(HEADERS) $(HEADER_DIR)
 
 ####### Install
 
