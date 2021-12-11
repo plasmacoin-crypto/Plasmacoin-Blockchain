@@ -6,6 +6,7 @@ pcblkchn
 src/qt/build-plasmacoin-ui-Desktop-Debug/plasmacoin-client
 
 # Ignore shared libraries
+lib
 *.so
 
 # Ignore object files
