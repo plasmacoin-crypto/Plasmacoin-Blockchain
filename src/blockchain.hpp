@@ -48,7 +48,7 @@ public:
 
 	vector<Block*> Get() const;
 	Block* GetLatest() const;
-	constexpr size_t Size() const;
+	size_t Size() const;
 
 private:
 	const int DIFFICULTY = 5;
@@ -74,7 +74,7 @@ private:
 };
 
 // Get the number of blocks in the blockchain
-inline constexpr size_t Blockchain::Size() const {
+inline size_t Blockchain::Size() const {
 	return m_Chain.size();
 }
 
