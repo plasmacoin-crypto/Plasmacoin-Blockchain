@@ -40,11 +40,11 @@ class Node {
 public:
 	Node(
 		const string& name, const string& username, const string& password,
-		const string& ip, string keyPath = rsafs::DIR_PATH, bool isMaster = false
+		const string& ip, const string& keyPath = rsafs::DIR_PATH, bool isMaster = false
 	);
 	~Node();
 
-	Transaction* MakeTransaction(const Node& recipient, float amount, string content) const;
+	Transaction* MakeTransaction(const Node& recipient, float amount, const string& content) const;
 
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
@@ -52,19 +52,19 @@ public:
 	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
 
 	// Sign and verify transactions with RSA
-	pair<byte*, size_t> Sign(Transaction& transaction) noexcept(false);
-	bool Verify(Transaction& transaction, byte* signature, size_t length, RSA::PublicKey publicKey);
+	pair<byte*, size_t> Sign(const Transaction& transaction) noexcept(false);
+	bool Verify(const Transaction& transaction, byte* signature, size_t length, const RSA::PublicKey& publicKey);
 
 	Blockchain* m_BlockchainCopy = new Blockchain(); // The node's copy of the blockchain
 
 	RSA::PublicKey m_PubKey;
 
 private:
-	string Hash(string input);
-	string Hash(Transaction transaction);
-	string RIPEMD160(string input);
+	string Hash(const string& input);
+	string Hash(const Transaction& transaction);
+	string RIPEMD160(const string& input);
 
-	string CreateAddress(RSA::PublicKey pubKey);
+	string CreateAddress(const RSA::PublicKey& pubKey);
 
 	string m_Name, m_Username, m_Password, m_IPAddr, m_KeyPath, m_Address;
 	RSA::PrivateKey m_PrivKey;

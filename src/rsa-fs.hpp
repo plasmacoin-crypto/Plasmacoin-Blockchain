@@ -51,14 +51,14 @@ namespace rsafs {
 	const string DIR_PATH = HOME_DIR + DELIM + ".ssh" + DELIM;
 	//const string RSA_PATH = /*C:\ ?*/ DIR_PATH + FILENAME;
 
-	fs::path writeKeys(CryptoPP::InvertibleRSAFunction keys, string path = DIR_PATH);
-	void readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, string path = DIR_PATH);
+	fs::path writeKeys(const CryptoPP::InvertibleRSAFunction& keys, const string& path = DIR_PATH);
+	void readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, const string& path = DIR_PATH);
 
-	void saveHex(string filename, const CryptoPP::BufferedTransformation& bt);
-	void loadHex(string filename, CryptoPP::BufferedTransformation& bt);
+	void saveHex(const string& filename, const CryptoPP::BufferedTransformation& bt);
+	void loadHex(const string& filename, CryptoPP::BufferedTransformation& bt);
 
-	void createRSAPath(string dirpath = DIR_PATH);
-	bool pathOkay(string path);
+	void createRSAPath(const string& dirpath = DIR_PATH);
+	bool pathOkay(const string& path);
 	string dirName(const string& path);
 }
 

@@ -9,7 +9,7 @@
 
 Node::Node(
 	const string& name, const string& username, const string& password,
-	const string& ip, string keyPath, bool isMaster
+	const string& ip, const string& keyPath, bool isMaster
 ):
 	// User data
 	m_Name(name),
@@ -37,7 +37,7 @@ Node::~Node() {
 }
 
 // Create a new transaction to a recipient on the blockchain network
-Transaction* Node::MakeTransaction(const Node& recipient, float amount, string content) const {
+Transaction* Node::MakeTransaction(const Node& recipient, float amount, const string& content) const {
 	// From Transaction::m_Condensed:
 	// <SENDER_ADDR> -> <RECIEVER_ADDR> : <AMOUNT>
 	string condensed = this->GetAddress() + " -> " + recipient.GetAddress() + " : " + std::to_string(amount);
@@ -89,7 +89,7 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 }
 
 // Sign a transaction with the sender's private key. Return the signature, as well as its length.
-pair<byte*, size_t> Node::Sign(Transaction& transaction) noexcept(false) {
+pair<byte*, size_t> Node::Sign(const Transaction& transaction) noexcept(false) {
 	CryptoPP::AutoSeededRandomPool rng;
 	string message = transaction.m_Content;
 
@@ -109,7 +109,7 @@ pair<byte*, size_t> Node::Sign(Transaction& transaction) noexcept(false) {
 
 // Verify a transaction using the sender's public key. Returns true if verification succeded,
 // false otherwise.
-bool Node::Verify(Transaction& transaction, byte* signature, size_t length, RSA::PublicKey publicKey) {
+bool Node::Verify(const Transaction& transaction, byte* signature, size_t length, const RSA::PublicKey& publicKey) {
 	CryptoPP::AutoSeededRandomPool rng;
 	CryptoPP::InvertibleRSAFunction params;
 	string message = transaction.m_Content;
@@ -124,7 +124,7 @@ bool Node::Verify(Transaction& transaction, byte* signature, size_t length, RSA:
 }
 
 // Use Crypto++ to hash a string
-string Node::Hash(string input) {
+string Node::Hash(const string& input) {
 	CryptoPP::SHA256 hash;
 	string digest; // The result
 
@@ -145,7 +145,7 @@ string Node::Hash(string input) {
 }
 
 // Use Crypto++ to hash the transaction data
-string Node::Hash(Transaction transaction) {
+string Node::Hash(const Transaction& transaction) {
 	CryptoPP::SHA256 hash;
 	string digest; // The result
 	string message = transaction.m_Condensed;
@@ -166,7 +166,7 @@ string Node::Hash(Transaction transaction) {
 	return digest;
 }
 
-string Node::RIPEMD160(string input) {
+string Node::RIPEMD160(const string& input) {
 	CryptoPP::RIPEMD160 hash;
 	string digest; // The result
 
@@ -186,7 +186,7 @@ string Node::RIPEMD160(string input) {
 	return digest;
 }
 
-string Node::CreateAddress(RSA::PublicKey pubKey) {
+string Node::CreateAddress(const RSA::PublicKey& pubKey) {
 	string strPubKey;
 	pubKey.Save(CryptoPP::StringSink(strPubKey).Ref());
 

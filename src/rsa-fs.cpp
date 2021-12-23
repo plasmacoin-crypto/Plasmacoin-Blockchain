@@ -10,7 +10,7 @@
 // Write a user's RSA keys to their filesystem, either at the default path or
 // at a custom path the user provided. If the provided path doesn't exist, those
 // directories and/or files are created first.
-fs::path rsafs::writeKeys(CryptoPP::InvertibleRSAFunction keys, string path) {
+fs::path rsafs::writeKeys(const CryptoPP::InvertibleRSAFunction& keys, const string& path) {
 	if (
 		!fs::exists(path) ||
 		!fs::exists(path + rsafs::PUB_FILENAME) ||
@@ -36,7 +36,7 @@ fs::path rsafs::writeKeys(CryptoPP::InvertibleRSAFunction keys, string path) {
 }
 
 // Read the user's RSA keys from the key file
-void rsafs::readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, string path) {
+void rsafs::readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, const string& path) {
 	string pubKeyPath = path + rsafs::PUB_FILENAME;
 	string privKeyPath = path + rsafs::PRIV_FILENAME;
 
@@ -53,7 +53,7 @@ void rsafs::readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, string pa
     privKey.Load(queue);
 }
 
-void rsafs::saveHex(string filename, const CryptoPP::BufferedTransformation& bt) {
+void rsafs::saveHex(const string& filename, const CryptoPP::BufferedTransformation& bt) {
 	CryptoPP::HexEncoder encoder;
 
 	bt.CopyTo(encoder);
@@ -65,7 +65,7 @@ void rsafs::saveHex(string filename, const CryptoPP::BufferedTransformation& bt)
     file.MessageEnd();
 }
 
-void rsafs::loadHex(string filename, CryptoPP::BufferedTransformation& bt) {
+void rsafs::loadHex(const string& filename, CryptoPP::BufferedTransformation& bt) {
 	CryptoPP::HexDecoder decoder;
 
 	bt.CopyTo(decoder);
@@ -81,14 +81,14 @@ void rsafs::loadHex(string filename, CryptoPP::BufferedTransformation& bt) {
 // On Windows, this creates a file in `%USERPROFILE%\\.ssh` by default. On Linux
 // and macOS, the file is created in `$HOME/.ssh`. On all platforms, the file's name
 // is `pc_rsa_keys`.
-void rsafs::createRSAPath(string path) {
+void rsafs::createRSAPath(const string& path) {
 	fs::create_directory(path);
 	std::ofstream rsaPubKeyFile(path + rsafs::PUB_FILENAME);
 	std::ofstream rsaPrivKeyFile(path + rsafs::PRIV_FILENAME);
 }
 
 // Check if a given path exists and is not an empty string
-bool rsafs::pathOkay(string path) {
+bool rsafs::pathOkay(const string& path) {
 	return fs::exists(path) && !path.empty();
 }
 
