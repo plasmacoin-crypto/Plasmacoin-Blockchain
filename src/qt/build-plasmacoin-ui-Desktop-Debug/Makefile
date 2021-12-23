@@ -73,6 +73,7 @@ SOURCES = 	../../transaction.cpp ../../node.cpp ../../block.cpp \
 			../plasmacoin-client/mining-status.cpp ../plasmacoin-client/moc_mining_status.cpp \
 			../plasmacoin-client/recipient-list.cpp ../plasmacoin-client/firebase-auth.cpp \
 			moc_firebase_auth.cpp ../plasmacoin-client/account-pages.cpp \
+			../plasmacoin-client/transaction-manager.cpp \
 			\
 			../../../tcpnet/netdial.go ../../../tcpnet/netlisten.go \
 			../../../netutils/compression.go ../../../netutils/netutils.go ../../../netutils/parser.go \
@@ -98,6 +99,7 @@ OBJECTS = 	main.o \
 			account-pages.o \
 			address-book.o \
 			contact.o \
+			transaction-manager.o \
 			#settings-manager.o
 
 BASE_OBJ = 	transaction.o \
@@ -363,6 +365,7 @@ DIST = 		/usr/lib/qt/mkspecs/features/spec_pre.prf \
 			../plasmacoin-client/account-pages.h ../plasmacoin-client/account-pages.cpp \
 			../plasmacoin-client/address-book.h ../plasmacoin-client/address-book.cpp \
 			../plasmacoin-client/contact.h ../plasmacoin-client/contact.cpp \
+			../plasmacoin-client/transaction-manager.h ../plasmacoin-client/transaction-manager.cpp \
 			\
 			../../../c/goexports.go ../../../c/goexports.h \
 			../../../handler/handler.go \
@@ -979,7 +982,7 @@ main.o: ../plasmacoin-client/main.cpp ../plasmacoin-client/mainwindow.h \
 
 mainwindow.o: ../plasmacoin-client/mainwindow.cpp ../plasmacoin-client/mainwindow.h \
 			  ui_mainwindow.h ../plasmacoin-client/mining-status.h ../plasmacoin-client/account-pages.h \
-			../../rsa-fs.hpp # ../plasmacoin-client/settings-manager.h
+			  ../plasmacoin-client/transaction-manager.h ../../rsa-fs.hpp # ../plasmacoin-client/settings-manager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../plasmacoin-client/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp
@@ -1019,6 +1022,10 @@ address-book.o: ../plasmacoin-client/address-book.cpp ../plasmacoin-client/addre
 
 contact.o: ../plasmacoin-client/contact.cpp ../plasmacoin-client/contact.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o contact.o ../plasmacoin-client/contact.cpp
+
+transaction-manager.o: ../plasmacoin-client/transaction-manager.cpp ../plasmacoin-client/transaction-manager.h \
+					   ui_mainwindow.h ../plasmacoin-client/address-book.h ../plasmacoin-client/contact.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction-manager.o ../plasmacoin-client/transaction-manager.cpp
 
 # settings-manager.o: ../plasmacoin-client/settings-manager.cpp ../plasmacoin-client/settings-manager.h \
 # 					ui_mainwindow.h
