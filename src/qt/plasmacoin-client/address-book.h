@@ -39,6 +39,7 @@ public:
 	void Sort();
 	void SetEditing(bool editing);
 	int GetRowOf(Contact* contact);
+	inline size_t Size();
 
 	void SetInsertion(bool insertion);
 	bool IsInserting() const;
@@ -58,5 +59,9 @@ private:
 	std::vector<Contact*> m_Contacts;
 	bool m_IsInserting = false;
 };
+
+inline size_t AddressBook::Size() {
+	return m_ContactsList->rowCount();
+}
 
 #endif // ADDRESS_BOOK_H
