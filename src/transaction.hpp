@@ -13,26 +13,31 @@
 
 using std::string;
 
+#include <cryptopp/rsa.h> 		 // Use Crypto++'s RSA functionality
+#include <cryptopp/config_int.h> // Use CryptoPP::byte
+
+using CryptoPP::byte;
+using CryptoPP::RSA;
+
 class Node;
+
+struct Signature {
+	byte* m_signature;
+	RSA::PublicKey m_PublicKey;
+	size_t m_Length;
+}
 
 class Transaction {
 public:
-	Transaction(const Node* sender, const Node* recipient, const string& content, float amount, const string& condensed);
-	void Update(int nonce);
+	Transaction(const string& senderAddr, const string& recipientAddr, float amount, float fee, const string& content);
 
-	const Node* m_Sender;
-	const Node* m_Recipient;
-
-	float m_Amount;
+	string m_SenderAddr, m_RecipientAddr;
+	float m_Amount, m_Fee;
 	string m_Content;
 
 	// A sender and reciever signature used for verifying the transaction
 	// on the block
-	string m_SSignature, m_RSignature;
-
-	// A condensed version of the transaction in the form:
-	// <SENDER_ADDR> -> <RECIEVER_ADDR> : <AMOUNT>
-	string m_Condensed;
+	Signature* signature;
 };
 
 #endif // TRANSACTION_HPP
