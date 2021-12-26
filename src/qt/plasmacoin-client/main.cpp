@@ -6,6 +6,8 @@
 #include <QSplashScreen>
 #include <QDialogButtonBox>
 #include <QSignalBlocker>
+#include <QDialogButtonBox>
+#include <QLineEdit>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -230,6 +232,59 @@ void addressBook(MainWindow& window) {
 
 }
 
+void transactionPage(MainWindow& window) {
+	// Set an initial value for the total
+	double amount = window.amountSelector->value();
+	double fee = window.feeSelector->value();
+	int precision = window.amountSelector->decimals();
+	window.total->setText(QString::number(amount + fee, 'f', precision));
+
+	// Allow a user to select a recipient for the transaction
+	window.connect(window.contacts, &QListWidget::itemSelectionChanged, &window, [&window]() {
+		int row = window.contacts->currentRow();
+		window.selectedContact->setText(window.contacts->item(row)->text());
+	});
+
+	// Update the total when the transaction amount changes
+	window.connect(window.amountSelector, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &window, [&window](double amount) {
+		double fee = window.feeSelector->value();
+		int precision = window.amountSelector->decimals();
+
+		window.total->setText(QString::number(amount + fee, 'f', precision));
+	});
+
+	// Update the total when the transaction fee changes
+	window.connect(window.feeSelector, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &window, [&window](double fee) {
+		double amount = window.amountSelector->value();
+		int precision = window.amountSelector->decimals();
+
+		window.total->setText(QString::number(amount + fee, 'f', precision));
+	});
+
+	// Update the character count while typing a message to the recipient
+	window.connect(window.messageField, &QLineEdit::textChanged, &window, [&window](const QString& text) {
+		window.charCount->setText(
+			"<html><head/><body><p align=\"right\"><span style=\"font-size:8pt;\">" + \
+			QString::number(text.size()) + "/200</span></p></body></html>"
+		);
+	});
+
+	// Create and broadcast the user's transaction
+	window.connect(window.btndiag_send, &QDialogButtonBox::accepted, &window, [&window]() {
+		int row = window.contacts->currentRow();
+
+		// Collect transaction data
+		string recipientAddr = window.m_AddressBook->At(row)->GetAddress();
+		double amount = window.amountSelector->value();
+		double fee = window.feeSelector->value();
+		string content = window.messageField->text();
+
+		// Create a new transaction
+		Transaction* transaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
+		transaction->m_Hash = window.m_User->Hash(*transaction);
+	});
+}
+
 // Allow the user to add transactions to their block
 void addToBlock(MainWindow& window) {
 	window.connect(window.plusSign, &QToolButton::released, &window, [&window]() {
@@ -299,6 +354,7 @@ int main(int argc, char* argv[]) {
 	minePage(window);
 	accountPages(window);
 	addressBook(window);
+	transactionPage(window);
 	addToBlock(window);
 	removeFromBlock(window);
 
