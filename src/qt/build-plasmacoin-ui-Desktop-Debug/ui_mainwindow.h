@@ -14,7 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDateEdit>
 #include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
@@ -74,12 +74,20 @@ public:
     QLabel *nameDisplay;
     QDialogButtonBox *btndiag_confirm;
     QWidget *transactions;
-    QTextBrowser *textBrowser;
-    QDialogButtonBox *buttonBox;
-    QWidget *formLayoutWidget;
-    QFormLayout *formLayout;
     QLabel *amountLabel;
-    QLineEdit *amountLineEdit;
+    QLineEdit *messageField;
+    QDoubleSpinBox *amountSelector;
+    QDoubleSpinBox *feeSelector;
+    QLineEdit *total;
+    QLabel *feeLabel;
+    QLabel *totalLabel;
+    QLabel *charCount;
+    QDialogButtonBox *btndiag_send;
+    QLabel *trxnsHeading1;
+    QLabel *trxnsHeading2;
+    QListWidget *contacts;
+    QListWidget *transactionLog;
+    QLineEdit *selectedContact;
     QWidget *account;
     QStackedWidget *accountView;
     QWidget *signIn;
@@ -321,30 +329,57 @@ public:
         stackedWidget->addWidget(addressBook);
         transactions = new QWidget();
         transactions->setObjectName(QString::fromUtf8("transactions"));
-        textBrowser = new QTextBrowser(transactions);
-        textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
-        textBrowser->setGeometry(QRect(40, 20, 341, 31));
-        buttonBox = new QDialogButtonBox(transactions);
-        buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
-        buttonBox->setGeometry(QRect(40, 110, 174, 34));
-        buttonBox->setFocusPolicy(Qt::StrongFocus);
-        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-        formLayoutWidget = new QWidget(transactions);
-        formLayoutWidget->setObjectName(QString::fromUtf8("formLayoutWidget"));
-        formLayoutWidget->setGeometry(QRect(40, 70, 341, 41));
-        formLayout = new QFormLayout(formLayoutWidget);
-        formLayout->setObjectName(QString::fromUtf8("formLayout"));
-        formLayout->setContentsMargins(0, 0, 0, 0);
-        amountLabel = new QLabel(formLayoutWidget);
+        amountLabel = new QLabel(transactions);
         amountLabel->setObjectName(QString::fromUtf8("amountLabel"));
-
-        formLayout->setWidget(0, QFormLayout::LabelRole, amountLabel);
-
-        amountLineEdit = new QLineEdit(formLayoutWidget);
-        amountLineEdit->setObjectName(QString::fromUtf8("amountLineEdit"));
-
-        formLayout->setWidget(0, QFormLayout::FieldRole, amountLineEdit);
-
+        amountLabel->setGeometry(QRect(460, 180, 58, 31));
+        messageField = new QLineEdit(transactions);
+        messageField->setObjectName(QString::fromUtf8("messageField"));
+        messageField->setGeometry(QRect(460, 120, 381, 32));
+        amountSelector = new QDoubleSpinBox(transactions);
+        amountSelector->setObjectName(QString::fromUtf8("amountSelector"));
+        amountSelector->setGeometry(QRect(530, 180, 121, 32));
+        amountSelector->setDecimals(10);
+        amountSelector->setMaximum(100.000000000000000);
+        feeSelector = new QDoubleSpinBox(transactions);
+        feeSelector->setObjectName(QString::fromUtf8("feeSelector"));
+        feeSelector->setGeometry(QRect(530, 220, 121, 32));
+        feeSelector->setDecimals(5);
+        feeSelector->setMaximum(2.000000000000000);
+        feeSelector->setSingleStep(0.000010000000000);
+        total = new QLineEdit(transactions);
+        total->setObjectName(QString::fromUtf8("total"));
+        total->setGeometry(QRect(530, 260, 121, 32));
+        total->setReadOnly(true);
+        feeLabel = new QLabel(transactions);
+        feeLabel->setObjectName(QString::fromUtf8("feeLabel"));
+        feeLabel->setGeometry(QRect(460, 220, 58, 31));
+        totalLabel = new QLabel(transactions);
+        totalLabel->setObjectName(QString::fromUtf8("totalLabel"));
+        totalLabel->setGeometry(QRect(460, 260, 58, 31));
+        charCount = new QLabel(transactions);
+        charCount->setObjectName(QString::fromUtf8("charCount"));
+        charCount->setGeometry(QRect(787, 150, 51, 21));
+        btndiag_send = new QDialogButtonBox(transactions);
+        btndiag_send->setObjectName(QString::fromUtf8("btndiag_send"));
+        btndiag_send->setGeometry(QRect(760, 180, 81, 71));
+        btndiag_send->setOrientation(Qt::Vertical);
+        btndiag_send->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Reset);
+        trxnsHeading1 = new QLabel(transactions);
+        trxnsHeading1->setObjectName(QString::fromUtf8("trxnsHeading1"));
+        trxnsHeading1->setGeometry(QRect(60, 40, 381, 31));
+        trxnsHeading2 = new QLabel(transactions);
+        trxnsHeading2->setObjectName(QString::fromUtf8("trxnsHeading2"));
+        trxnsHeading2->setGeometry(QRect(870, 40, 381, 31));
+        contacts = new QListWidget(transactions);
+        contacts->setObjectName(QString::fromUtf8("contacts"));
+        contacts->setGeometry(QRect(60, 80, 381, 501));
+        transactionLog = new QListWidget(transactions);
+        transactionLog->setObjectName(QString::fromUtf8("transactionLog"));
+        transactionLog->setGeometry(QRect(870, 80, 381, 501));
+        selectedContact = new QLineEdit(transactions);
+        selectedContact->setObjectName(QString::fromUtf8("selectedContact"));
+        selectedContact->setGeometry(QRect(460, 80, 381, 32));
+        selectedContact->setReadOnly(true);
         stackedWidget->addWidget(transactions);
         account = new QWidget();
         account->setObjectName(QString::fromUtf8("account"));
@@ -441,7 +476,7 @@ public:
         scrollArea->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         scrollAreaContent = new QWidget();
         scrollAreaContent->setObjectName(QString::fromUtf8("scrollAreaContent"));
-        scrollAreaContent->setGeometry(QRect(0, 0, 550, 550));
+        scrollAreaContent->setGeometry(QRect(0, 0, 1249, 789));
         QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Minimum);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
@@ -643,7 +678,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(2);
+        stackedWidget->setCurrentIndex(3);
         accountView->setCurrentIndex(0);
 
 
@@ -677,8 +712,12 @@ public:
         usernameDisplay->setText(QString());
         addressDisplay->setText(QString());
         nameDisplay->setText(QString());
-        amountLabel->setText(QCoreApplication::translate("MainWindow", "Amount", nullptr));
-        amountLineEdit->setText(QString());
+        amountLabel->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\">Amount</p></body></html>", nullptr));
+        feeLabel->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\">Fee</p></body></html>", nullptr));
+        totalLabel->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\">Total</p></body></html>", nullptr));
+        charCount->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\"><span style=\" font-size:8pt;\">0/200</span></p></body></html>", nullptr));
+        trxnsHeading1->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Make Transactions</span></p></body></html>", nullptr));
+        trxnsHeading2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Transaction Log</span></p></body></html>", nullptr));
         s_EmailField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
         btn_signIn->setText(QCoreApplication::translate("MainWindow", "Sign In", nullptr));
         signInTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:20pt;\">Sign in to your Plasmacoin Account</span></p></body></html>", nullptr));
