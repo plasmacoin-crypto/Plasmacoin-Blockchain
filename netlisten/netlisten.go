@@ -5,7 +5,7 @@
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
 
-package tcpnet
+package netlisten
 
 import (
 	"fmt"
@@ -14,8 +14,6 @@ import (
 
 	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/handler"
 )
-
-type Dialer struct{}
 
 // Check for errors
 func check(err error, line int) {
@@ -36,7 +34,7 @@ func Listen(protocol, host, port string) (net.Listener, error) {
 }
 
 // Listen for and accept TCP/UDP connections
-func (d *Dialer) Receive(protocol, host, port string) {
+func Receive(protocol, host, port string) {
 	fmt.Println(host)
 
 	// Listen for a connection

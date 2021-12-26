@@ -75,10 +75,10 @@ extern "C" {
 
 
 // Attempt to send a message to a specified host and port
-extern void dial(cchar_t protocol, cchar_t host, cchar_t port, GoUint8 message);
+extern void dial(cchar_t protocol, cchar_t host, cchar_t port, GoSlice data);
 
 // Listen for and accept TCP/UDP connections
-extern GoUint8 receive(cchar_t protocol, cchar_t host, cchar_t port);
+extern void receive(cchar_t protocol, cchar_t host, cchar_t port);
 
 // Compress a file using gzip
 extern cchar_t gzipCompress(cchar_t filename);

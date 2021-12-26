@@ -18,7 +18,6 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -28,21 +27,44 @@ import (
 	"strings"
 	"time"
 
+	bccnstrx "github.com/plasmacoin-crypto/Plasmacoin-Blockchain/blockchainconstructs"
 	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/handler"
+	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/netlisten"
 	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/netutils"
-	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/tcpnet"
+)
+
+const (
+	IDCode = uint8(iota)
+	Transaction
+	Block
 )
 
 // Attempt to send a message to a specified host and port
 //export dial
-func dial(protocol, host, port C.cchar_t, message byte) {
-	fmt.Println("Dialing...")
+func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 	// Convert the C strings to Go strings
 	var (
 		goProtocol = C.GoString(protocol)
 		goHost     = C.GoString(host)
 		goPort     = C.GoString(port)
+		goData     = make([]string, len(data))
 	)
+
+	for i, str := range data {
+		goData[i] = C.GoString(str)
+	}
+
+	// Determine what is being sent over TCP
+	var jsonData interface{}
+
+	switch dataType {
+	case IDCode:
+		break
+	case Transaction:
+		jsonData = bccnstrx.MakeTransaction(goData)
+	case Block:
+		break
+	}
 
 	conn, err := net.Dial(goProtocol, net.JoinHostPort(goHost, goPort))
 
@@ -50,15 +72,17 @@ func dial(protocol, host, port C.cchar_t, message byte) {
 		log.Fatal(err)
 	}
 
-	_, err = conn.Write([]byte{message})
-	netutils.Check(err, 41)
+	jsonBytes, _ := json.Marshal(jsonData)
+
+	_, err = conn.Write(jsonBytes)
+	netutils.Check(err, 100)
 
 	conn.Close()
 }
 
 // Listen for and accept TCP/UDP connections
 //export receive
-func receive(protocol, host, port C.cchar_t) byte {
+func receive(protocol, host, port C.cchar_t) C.cchar_t {
 	// Convert the C strings to Go strings
 	var (
 		goProtocol = C.GoString(protocol)
@@ -69,8 +93,8 @@ func receive(protocol, host, port C.cchar_t) byte {
 	//fmt.Println(goProtocol)
 
 	// Listen for a connection
-	listener, err := tcpnet.Listen(goProtocol, goHost, goPort)
-	netutils.Check(err, 73)
+	listener, err := netlisten.Listen(goProtocol, goHost, goPort)
+	netutils.Check(err, 119)
 
 	defer listener.Close()
 
@@ -79,23 +103,23 @@ func receive(protocol, host, port C.cchar_t) byte {
 	// Wait for a connection.
 	go func(ch chan<- net.Conn, listener net.Listener) {
 		conn, err := listener.Accept()
-		netutils.Check(err, 82)
+		netutils.Check(err, 128)
 
 		ch <- conn
 	}(connChan, listener)
 
 	conn := <-connChan
 
-	ch := make(chan byte)
+	ch := make(chan string)
 
 	// Handle the connection
-	go func(ch chan<- byte, conn net.Conn) {
+	go func(ch chan<- string, conn net.Conn) {
 		out := handler.HandleConnection(conn)
-		ch <- out
+		ch <- string(out)
 	}(ch, conn)
 
 	out := <-ch
-	return out
+	return C.CString(out)
 }
 
 // Compress a file using gzip
@@ -105,16 +129,16 @@ func gzipCompress(filename C.cchar_t) C.cchar_t {
 
 	// Open the file
 	file, err := os.Open(goFilename)
-	netutils.Check(err, 108)
+	netutils.Check(err, 154)
 
 	// Read the contents of the file
 	reader := bufio.NewReader(file)
 	contents, err := ioutil.ReadAll(reader)
-	netutils.Check(err, 113)
+	netutils.Check(err, 159)
 
 	// Create the compressed file (.gz)
 	comp, err := os.Create(goFilename + ".gz")
-	netutils.Check(err, 117)
+	netutils.Check(err, 163)
 
 	// Make a new writer
 	gzwriter := gzip.NewWriter(comp)
@@ -127,7 +151,7 @@ func gzipCompress(filename C.cchar_t) C.cchar_t {
 
 	// Write the compressed data to the file
 	_, err = gzwriter.Write(contents)
-	netutils.Check(err, 130)
+	netutils.Check(err, 75)
 
 	return C.CString(comp.Name())
 }
@@ -139,28 +163,28 @@ func gzipDecompress(filename C.cchar_t) C.cchar_t {
 
 	// Open the file for reading and writing
 	input, err := os.OpenFile(goFilename, os.O_RDONLY, 0)
-	netutils.Check(err, 142)
+	netutils.Check(err, 87)
 
 	defer input.Close()
 
 	// Read the file as a byte slice
 	b, err := ioutil.ReadFile(input.Name())
-	netutils.Check(err, 148)
+	netutils.Check(err, 93)
 
 	// Create a byte reader and use it to make a gzip reader
 	breader := bytes.NewReader(b)
 	gzreader, err := gzip.NewReader(breader)
 
-	netutils.Check(err, 154)
+	netutils.Check(err, 99)
 	defer gzreader.Close()
 
 	// Create a destination file
 	output, err := os.Create(strings.SplitAfterN(goFilename, ".gz", 1)[0])
-	netutils.Check(err, 159)
+	netutils.Check(err, 104)
 
 	// Copy the decompressed data from the gzip reader to the destination file
 	if _, err = io.Copy(output, gzreader); err != nil {
-		netutils.Check(err, 163)
+		netutils.Check(err, 108)
 	}
 
 	os.Remove(goFilename) // Delete the compressed data
