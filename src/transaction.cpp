@@ -8,9 +8,8 @@
 #include "transaction.hpp"
 
 Transaction::Transaction(const string& senderAddr, const string& recipientAddr, float amount, float fee, const string& content):
-	m_Sender(sender),
-	m_Recipient(recipient),
+	m_SenderAddr(senderAddr),
+	m_RecipientAddr(recipientAddr),
 	m_Amount(amount),
-	m_Content(content),
-	m_Condensed(condensed)
+	m_Content(content)
 {}
