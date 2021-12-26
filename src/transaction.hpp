@@ -38,6 +38,8 @@ public:
 	// A sender and reciever signature used for verifying the transaction
 	// on the block
 	Signature m_Signature;
+
+	string m_Hash;
 };
 
 #endif // TRANSACTION_HPP
