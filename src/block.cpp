@@ -81,8 +81,8 @@ string Block::Stringify() {
 
 	// The genesis block has no transactions
 	if (!m_IsGenesis) {
-		for (auto t: m_Transactions) {
-			result += "transaction: " + t->m_Condensed + "\n";  	// Transactions
+		for (auto trxn: m_Transactions) {
+			result += "transaction: " + trxn->m_Hash + "\n";  		// Transactions
 		}
 	}
 
