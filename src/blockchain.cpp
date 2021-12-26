@@ -204,7 +204,11 @@ string Blockchain::Hash(const string& input) {
 
 // Use Crypto++ to hash the transaction data
 string Blockchain::Hash(const Transaction& transaction) {
-	return Hash(transaction.m_Condensed);
+	string message = transaction.m_SenderAddr + transaction.m_RecipientAddr + \
+					 std::to_string(transaction.m_Amount + transaction.m_Fee) + \
+					 transaction.m_Content;
+
+	return Hash(message);
 }
 
 // Hash a block by constructing a Merkle Tree. Each block hash will be make up of hashes of
