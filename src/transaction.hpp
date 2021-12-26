@@ -22,10 +22,10 @@ using CryptoPP::RSA;
 class Node;
 
 struct Signature {
-	byte* m_signature;
+	byte* m_Signature;
 	RSA::PublicKey m_PublicKey;
 	size_t m_Length;
-}
+};
 
 class Transaction {
 public:
@@ -37,7 +37,7 @@ public:
 
 	// A sender and reciever signature used for verifying the transaction
 	// on the block
-	Signature* signature;
+	Signature* m_Signature;
 };
 
 #endif // TRANSACTION_HPP
