@@ -22,7 +22,7 @@ TransactionList::~TransactionList() {
 void TransactionList::Add(Transaction*& transaction) {
 	m_List.push_back(transaction);
 
-	QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(transaction->m_Condensed), m_TransactionList);
+	QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(transaction->m_Hash), m_TransactionList);
 	item->setData(Qt::UserRole, m_TransactionList->count() + 1);
 	m_TransactionList->addItem(item);
 }
