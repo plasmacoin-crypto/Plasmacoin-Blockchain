@@ -27,6 +27,7 @@
 #include "mining-status.h"
 #include "account-pages.h"
 #include "address-book.h"
+#include "transaction-manager.h"
 //#include "settings-manager.h"
 
 #include "block.hpp"
@@ -58,6 +59,7 @@ public:
 	TransactionList* m_TList;
 	AccountPages* m_AccPgs;
 	AddressBook* m_AddressBook;
+	TransactionManager* m_TransactionManager;
 	//SettingsManager* m_SettingsManager;
 
 	std::vector<Transaction*> m_BlockContents;

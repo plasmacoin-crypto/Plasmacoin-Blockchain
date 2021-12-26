@@ -24,17 +24,16 @@ MainWindow::MainWindow(QWidget* parent):
 						Ui::MainWindow::usernameDisplay, Ui::MainWindow::usernameField, Ui::MainWindow::addressDisplay,
 						Ui::MainWindow::addressField, Ui::MainWindow::birthday
 					);
+	m_TransactionManager = new TransactionManager(Ui::MainWindow::contacts, Ui::MainWindow::transactionLog);
 
 	// Create some temporary nodes to make transactions between
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
 	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", "/home/rmsmith/.ssh/node2keys/");
 	Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8", "/home/rmsmith/.ssh/node3keys/");
 
-	Transaction* transaction1 = node1->MakeTransaction(*node2, 1.0, "Here's some money");
-	Transaction* transaction2 = node2->MakeTransaction(*node3, 5.7, "Here's some money");
-	Transaction* transaction3 = node3->MakeTransaction(*node1, 2.1, "Here's some money");
-
-	std::cout << transaction1->m_Condensed << std::endl;
+	Transaction* transaction1 = node1->MakeTransaction(node2->GetAddress(), 1.0, 0.1, "Here's some money");
+	Transaction* transaction2 = node2->MakeTransaction(node3->GetAddress(), 5.7, 0.1, "Here's some money");
+	Transaction* transaction3 = node3->MakeTransaction(node1->GetAddress(), 2.1, 0.1, "Here's some money");
 
 	// Load items into the transaction list
 	m_TList->Add(transaction1);
@@ -64,6 +63,8 @@ MainWindow::MainWindow(QWidget* parent):
 	m_AddressBook->Add(contact3);
 
 	m_AddressBook->Sort();
+
+	m_TransactionManager->UpdateContactsList(m_AddressBook);
 }
 
 MainWindow::~MainWindow() {
