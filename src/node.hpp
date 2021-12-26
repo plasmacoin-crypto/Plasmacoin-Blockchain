@@ -44,7 +44,7 @@ public:
 	);
 	~Node();
 
-	Transaction* MakeTransaction(const Node& recipient, float amount, const string& content) const;
+	Transaction* MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content) const;
 
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
@@ -52,7 +52,7 @@ public:
 	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
 
 	// Sign and verify transactions with RSA
-	pair<byte*, size_t> Sign(const Transaction& transaction) noexcept(false);
+	void Sign(Transaction& transaction) noexcept(false);
 	bool Verify(const Transaction& transaction, byte* signature, size_t length, const RSA::PublicKey& publicKey);
 
 	Blockchain* m_BlockchainCopy = new Blockchain(); // The node's copy of the blockchain
@@ -60,9 +60,9 @@ public:
 	RSA::PublicKey m_PubKey;
 
 private:
-	string Hash(const string& input);
-	string Hash(const Transaction& transaction);
-	string RIPEMD160(const string& input);
+	string Hash(const string& input) const;
+	string Hash(const Transaction& transaction) const;
+	string RIPEMD160(const string& input) const;
 
 	string CreateAddress(const RSA::PublicKey& pubKey);
 

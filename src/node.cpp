@@ -37,14 +37,11 @@ Node::~Node() {
 }
 
 // Create a new transaction to a recipient on the blockchain network
-Transaction* Node::MakeTransaction(const Node& recipient, float amount, const string& content) const {
-	// From Transaction::m_Condensed:
-	// <SENDER_ADDR> -> <RECIEVER_ADDR> : <AMOUNT>
-	string condensed = this->GetAddress() + " -> " + recipient.GetAddress() + " : " + std::to_string(amount);
+Transaction* Node::MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content) const {
+	Transaction* transaction = new Transaction(GetAddress(), recipientAddr, amount, fee, content);
+	transaction->m_Hash = Hash(*transaction);
 
-	// A new transaction between the current user and another user in the
-	// network.
-	return new Transaction(this, &recipient, content, amount, condensed);
+	return transaction;
 }
 
 // Get the user's name
@@ -89,7 +86,7 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 }
 
 // Sign a transaction with the sender's private key. Return the signature, as well as its length.
-pair<byte*, size_t> Node::Sign(const Transaction& transaction) noexcept(false) {
+void Node::Sign(Transaction& transaction) noexcept(false) {
 	CryptoPP::AutoSeededRandomPool rng;
 	string message = transaction.m_Content;
 
@@ -104,7 +101,7 @@ pair<byte*, size_t> Node::Sign(const Transaction& transaction) noexcept(false) {
 
 	size_t length = m_Signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
 
-	return std::make_pair(signature, length);
+	transaction.m_Signature = Signature {signature, m_PubKey, length};
 }
 
 // Verify a transaction using the sender's public key. Returns true if verification succeded,
@@ -124,7 +121,7 @@ bool Node::Verify(const Transaction& transaction, byte* signature, size_t length
 }
 
 // Use Crypto++ to hash a string
-string Node::Hash(const string& input) {
+string Node::Hash(const string& input) const {
 	CryptoPP::SHA256 hash;
 	string digest; // The result
 
@@ -145,28 +142,15 @@ string Node::Hash(const string& input) {
 }
 
 // Use Crypto++ to hash the transaction data
-string Node::Hash(const Transaction& transaction) {
-	CryptoPP::SHA256 hash;
-	string digest; // The result
-	string message = transaction.m_Condensed;
+string Node::Hash(const Transaction& transaction) const {
+	string message = transaction.m_SenderAddr + transaction.m_RecipientAddr + \
+					 std::to_string(transaction.m_Amount + transaction.m_Fee) + \
+					 transaction.m_Content;
 
-	// Hash the transaction data
-	//
-	// No objects have to be freed because of Crypto++'s pipelining
-	// functionality
-	//
-	CryptoPP::StringSource ssource(message, true,
-		new CryptoPP::HashFilter(hash,
-			new CryptoPP::HexEncoder(
-				new CryptoPP::StringSink(digest)
-			)
-		)
-	);
-
-	return digest;
+	return Hash(message);
 }
 
-string Node::RIPEMD160(const string& input) {
+string Node::RIPEMD160(const string& input) const {
 	CryptoPP::RIPEMD160 hash;
 	string digest; // The result
 
