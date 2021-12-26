@@ -37,7 +37,7 @@ public:
 
 	// A sender and reciever signature used for verifying the transaction
 	// on the block
-	Signature* m_Signature;
+	Signature m_Signature;
 };
 
 #endif // TRANSACTION_HPP
