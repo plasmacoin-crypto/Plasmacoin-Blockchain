@@ -9,7 +9,7 @@
 
 Node::Node(
 	const string& name, const string& username, const string& password,
-	const string& ip, const string& keyPath, bool isMaster
+	const string& ip, const string& keyPath, Node::NodeType type
 ):
 	// User data
 	m_Name(name),
@@ -17,7 +17,7 @@ Node::Node(
 	m_Password(password),
 	m_IPAddr(ip),
 	m_KeyPath(keyPath),
-	isMaster(isMaster)
+	m_NodeType(type)
 {
 	if (!rsafs::pathOkay(m_KeyPath + rsafs::PUB_FILENAME) && !rsafs::pathOkay(m_KeyPath + rsafs::PRIV_FILENAME)) {
 		std::tie(m_PubKey, m_PrivKey) = GenerateKeys(); // Generate a set of RSA keys for the user

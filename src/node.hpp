@@ -38,9 +38,11 @@ using CryptoPP::byte;
 
 class Node {
 public:
+	enum class NodeType: uint8_t {LIGHT = 0, FULL, MINING};
+
 	Node(
 		const string& name, const string& username, const string& password,
-		const string& ip, const string& keyPath = rsafs::DIR_PATH, bool isMaster = false
+		const string& ip, const string& keyPath = rsafs::DIR_PATH, Node::NodeType type = NodeType::LIGHT
 	);
 	~Node();
 
@@ -68,7 +70,7 @@ private:
 
 	string m_Name, m_Username, m_Password, m_IPAddr, m_KeyPath, m_Address;
 	RSA::PrivateKey m_PrivKey;
-	bool isMaster;
+	NodeType m_NodeType;
 
 	CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Signer m_Signer;
 	CryptoPP::InvertibleRSAFunction m_Keys;
