@@ -18,12 +18,14 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -59,7 +61,10 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 
 	switch dataType {
 	case IDCode:
-		break
+		id, _ := strconv.ParseInt(goData[0], 10, 32)
+		jsonData = &struct {
+			Code int `json:"code"`
+		}{Code: int(id)}
 	case Transaction:
 		jsonData = bccnstrx.MakeTransaction(goData)
 	case Block:
@@ -73,6 +78,7 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 	}
 
 	jsonBytes, _ := json.Marshal(jsonData)
+	fmt.Println(string(jsonBytes))
 
 	_, err = conn.Write(jsonBytes)
 	netutils.Check(err, 100)
