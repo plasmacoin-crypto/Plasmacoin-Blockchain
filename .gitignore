@@ -1,4 +1,5 @@
 .vscode
+.DS_Store
 
 # Ignore any binaries
 a.out
