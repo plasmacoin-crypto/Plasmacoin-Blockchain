@@ -9,6 +9,7 @@ src/qt/build-plasmacoin-ui-Desktop-Debug/plasmacoin-client
 # Ignore shared libraries
 lib
 *.so
+*.dylib
 
 # Ignore object files
 *.o
