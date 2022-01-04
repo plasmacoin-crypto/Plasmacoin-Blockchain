@@ -15,21 +15,22 @@ MainWindow::MainWindow(QWidget* parent):
 	m_TList(new TransactionList(Ui::MainWindow::transactionList))
 {
 	setupUi(this);
-	this->DisplayPage(0); // Reset the QStackedWidget to page 1 (index 0)
+	tabWidget->setCurrentIndex(0);
 
 	m_Status = CreateMiningVisuals();
 	m_AccPgs = CreatePages();
 	m_AddressBook = new AddressBook(
-						Ui::MainWindow::contactsList, Ui::MainWindow::nameDisplay, Ui::MainWindow::nameField,
-						Ui::MainWindow::usernameDisplay, Ui::MainWindow::usernameField, Ui::MainWindow::addressDisplay,
-						Ui::MainWindow::addressField, Ui::MainWindow::birthday
+						Ui::MainWindow::contactsList, m_NameDisplay, Ui::MainWindow::nameField, m_UsernameDisplay,
+						Ui::MainWindow::usernameField, m_AddressDisplay, Ui::MainWindow::addressField,
+						Ui::MainWindow::birthday, Ui::MainWindow::btndiag_confirm, Ui::MainWindow::field1,
+						Ui::MainWindow::field2, Ui::MainWindow::field3, Ui::MainWindow::field4
 					);
 	m_TransactionManager = new TransactionManager(Ui::MainWindow::contacts, Ui::MainWindow::transactionLog);
 
 	// Create some temporary nodes to make transactions between
 	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
-	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", "/home/rmsmith/.ssh/node2keys/");
-	Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8", "/home/rmsmith/.ssh/node3keys/");
+	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", string(getenv("HOME")) + "/.ssh/node2keys/");
+	Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8", string(getenv("HOME")) + "/.ssh/node3keys/");
 
 	Transaction* transaction1 = node1->MakeTransaction(node2->GetAddress(), 1.0, 0.1, "Here's some money");
 	Transaction* transaction2 = node2->MakeTransaction(node3->GetAddress(), 5.7, 0.1, "Here's some money");
@@ -42,12 +43,9 @@ MainWindow::MainWindow(QWidget* parent):
 
 	m_Status->SetHeading("Building Block #" + std::to_string(m_User->m_BlockchainCopy->Size()));
 
-	// Allow tab switching
-	connect(Ui::MainWindow::tabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::DisplayPage);
-
 	connect(Ui::MainWindow::btn_choosePath, &QPushButton::released, this, [=]() {
 		qDebug() << this->m_FileBrowser->getSaveFileName(
-											Ui::MainWindow::settings, QFileDialog::tr("Choose an RSA output location"),
+											Ui::MainWindow::Settings, QFileDialog::tr("Choose an RSA output location"),
 											QString::fromStdString(rsafs::HOME_DIR), QFileDialog::tr("Text Files (*.txt);;All Files (*.*, *)"),
 											nullptr, QFileDialog::DontUseNativeDialog
 										);
@@ -79,10 +77,10 @@ MainWindow::~MainWindow() {
 // Create QTextBrowsers to display on the mining tab
 Status* MainWindow::CreateMiningVisuals() {
 	// The four widgets to display on the screen once a block has been mined.
-	QTextBrowser *browser1 = new QTextBrowser(Ui::MainWindow::mineCoins),
-				 *browser2 = new QTextBrowser(Ui::MainWindow::mineCoins),
-				 *browser3 = new QTextBrowser(Ui::MainWindow::mineCoins),
-				 *browser4 = new QTextBrowser(Ui::MainWindow::mineCoins);
+	QTextBrowser *browser1 = new QTextBrowser(Ui::MainWindow::Mine),
+				 *browser2 = new QTextBrowser(Ui::MainWindow::Mine),
+				 *browser3 = new QTextBrowser(Ui::MainWindow::Mine),
+				 *browser4 = new QTextBrowser(Ui::MainWindow::Mine);
 
  	return new Status(browser1, browser2, browser3, browser4);
 }
@@ -148,9 +146,9 @@ void MainWindow::UpdateStatus(const Block& block, seconds time) {
 
 void MainWindow::ShowContact(Contact* contact) {
 	// Set the read only fields
-	nameDisplay->setText(QString::fromStdString(contact->GetName()));
-	usernameDisplay->setText(QString::fromStdString(contact->GetUsername()));
-	addressDisplay->setText(QString::fromStdString(contact->GetAddress()));
+	m_NameDisplay->setText(QString::fromStdString(contact->GetName()));
+	m_UsernameDisplay->setText(QString::fromStdString(contact->GetUsername()));
+	m_AddressDisplay->setText(QString::fromStdString(contact->GetAddress()));
 
 	// Set the writable fields
 	nameField->setText(QString::fromStdString(contact->GetName()));
@@ -158,12 +156,4 @@ void MainWindow::ShowContact(Contact* contact) {
 	addressField->setText(QString::fromStdString(contact->GetAddress()));
 
 	birthday->setDate(contact->GetBirthday()); // Set the birthday
-}
-
-// Definitions for slots
-
-// Display a certain page of the app
-void MainWindow::DisplayPage(int index) const {
-	stackedWidget->setCurrentIndex(index);
-	tabWidget->setCurrentIndex(index);
 }
