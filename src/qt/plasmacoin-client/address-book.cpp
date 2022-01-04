@@ -45,9 +45,9 @@ AddressBook::~AddressBook() {
 	delete m_AddressField;
 	delete m_Birthday;
 	delete m_ButtonBox;
-	delete m_NameLayout
-	delete m_UsernameLayout
-	delete m_AddressLayout
+	delete m_NameLayout;
+	delete m_UsernameLayout;
+	delete m_AddressLayout;
 	delete m_BirthdayLayout;
 	delete m_EditButton;
 	delete m_DeleteButton;
