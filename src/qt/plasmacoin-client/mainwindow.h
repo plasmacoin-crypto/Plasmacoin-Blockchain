@@ -14,12 +14,13 @@
 #include <iostream>
 #include <chrono>
 
-#include <QtWidgets/QMainWindow>
+#include <QMainWindow>
 #include <QStringList>
 #include <QThread>
-#include <QtWidgets/QListWidgetItem>
+#include <QListWidgetItem>
 #include <QFileDialog>
 #include <QDateEdit>
+#include <QMessageBox>
 
 #include "ui_mainwindow.h"
 
@@ -65,6 +66,8 @@ public:
 	QLabel* m_NameDisplay = new QLabel();
 	QLabel* m_UsernameDisplay = new QLabel();
 	QLabel* m_AddressDisplay = new QLabel();
+
+	QMessageBox* m_FormErrorAlert;
 
 	std::vector<Transaction*> m_BlockContents;
 	std::chrono::seconds m_LastMiningDur;

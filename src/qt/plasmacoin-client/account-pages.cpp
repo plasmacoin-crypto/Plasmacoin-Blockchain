@@ -10,15 +10,15 @@
 
 AccountPages::AccountPages(
 	QStackedWidget*& pages, QLabel* label1, QLabel* label2,
-	QLabel* label3, QLabel* label4, QLabel* label5
+	QLabel* label3, QLabel* label4, QLabel* label5, QMessageBox* messageBox
 ):
 	m_EmailSignInWarning(label1),
 	m_PasswordSignInWarning(label2),
 	m_EmailSignUpWarning(label3),
 	m_UsernameWarning(label4),
 	m_PasswordSignUpWarning(label5),
-
-	m_AccountView(pages)
+	m_AccountView(pages),
+	m_FormErrorAlert(messageBox)
 {
 	// Style all of the warning labels and position them on the screen
 	m_EmailSignInWarning->setStyleSheet(STYLE);
@@ -119,4 +119,16 @@ std::tuple<QString, QString, QString> AccountPages::ReadText() {
 	}
 
 	return std::make_tuple("", "", ""); // The default return value
+}
+
+void AccountPages::DisplayErrorMsg(const std::string& detailedText, PageType page) {
+	std::string action = (page == PageType::SIGN_IN)? "sign in" : "sign up";
+
+	m_FormErrorAlert = new QMessageBox(
+		QMessageBox::Warning, "Plasmacoin Client", QString::fromStdString("Errors occured during " + action),
+		QMessageBox::StandardButton::Ok
+	);
+	m_FormErrorAlert->setDetailedText(QString::fromStdString(detailedText));
+
+	m_FormErrorAlert->exec();
 }

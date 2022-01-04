@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget* parent):
 	setupUi(this);
 	tabWidget->setCurrentIndex(0);
 
+	m_FormErrorAlert = new QMessageBox();
+
 	m_Status = CreateMiningVisuals();
 	m_AccPgs = CreatePages();
 	m_AddressBook = new AddressBook(
@@ -93,7 +95,7 @@ AccountPages* MainWindow::CreatePages() {
 	 	   *label4 = new QLabel("", Ui::MainWindow::signUp),
 	 	   *label5 = new QLabel("", Ui::MainWindow::signUp);
 
-	return new AccountPages(Ui::MainWindow::accountView, label1, label2, label3, label4, label5);
+	return new AccountPages(Ui::MainWindow::accountView, label1, label2, label3, label4, label5, m_FormErrorAlert);
 }
 
 // Call block mining code and make visual changes to the GUI once it's done
