@@ -21,8 +21,6 @@
 using std::vector;
 
 class TransactionList : public QMainWindow, public Ui_MainWindow {
-	Q_OBJECT
-
 public:
 	TransactionList(QListWidget*& list);
 	~TransactionList();
