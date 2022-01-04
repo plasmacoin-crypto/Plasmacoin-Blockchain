@@ -116,7 +116,7 @@ public:
 
 private:
 	void ParseResponse(const QByteArray& response);
-	std::string EncryptPassword(std::string _password) const;
+	std::string EncryptPassword(const std::string& _password) const;
 };
 
 #endif // FIREBASE_AUTH_H

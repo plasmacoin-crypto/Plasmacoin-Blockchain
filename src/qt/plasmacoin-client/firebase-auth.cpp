@@ -270,7 +270,7 @@ void Auth::ParseResponse(const QByteArray& response) {
 // Encrypt a user's password. This is done by combining a cryptographic salt with the
 // password, then using SHA-256 to hash the resulting string. Here, all the work is done
 // using PBKDF2 rather than each step being perfomred separately.
-std::string Auth::EncryptPassword(std::string _password) const {
+std::string Auth::EncryptPassword(const std::string& _password) const {
 	// ----------------------------------
 
 	// Use Crypto++ to generate a random number. On Linux-based systems, /dev/random or /dev/urandom
