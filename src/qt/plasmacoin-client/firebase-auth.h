@@ -75,8 +75,8 @@ private:
 	QByteArray m_LastResponse; // The last JSON response from the REST API
 	QRegularExpressionValidator *m_UsernameValidator, *m_PasswordValidator;
 
-	QRegularExpression m_UsernameRegex = QRegularExpression("^([^\\.\\-])([_]{0,})(?=.{2,20}$)(?<![\\.\\-])(?!.*[_\\.\\-]{})[\\w_\\.\\-]+([^\\._\\-]|(?![_]))(?!\\.\\-)(?<![\\.\\-])$");
-	QRegularExpression m_PasswordRegex = QRegularExpression("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{6,})\\S$");
+	QRegularExpression* m_UsernameRegex = new QRegularExpression("^([^\\.\\-])([_]{0,})(?=.{2,20}$)(?<![\\.\\-])(?!.*[_\\.\\-]{})[\\w_\\.\\-]+([^\\._\\-]|(?![_]))(?!\\.\\-)(?<![\\.\\-])$");
+	QRegularExpression* m_PasswordRegex = new QRegularExpression("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{6,})\\S$");
 
 	uint8_t m_Errors = 0; // Stores a number that corresponds to certain authentication errors
 

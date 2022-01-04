@@ -26,7 +26,10 @@ Auth::Auth():
 	});
 }
 
-Auth::~Auth() {}
+Auth::~Auth() {
+	delete m_UsernameRegex;
+	delete m_PasswordRegex;
+}
 
 // Sign a user up for a Plasmacoin Account
 void Auth::SignUp(const QString& email, const QString& username, const QString& password) {
@@ -139,11 +142,11 @@ void Auth::ModUsername(const QString& username) {
 }
 
 bool Auth::ValidateUsername(const QString& username) {
-	return m_UsernameRegex.match(username).hasMatch();
+	return m_UsernameRegex->match(username).hasMatch();
 }
 
 bool Auth::ValidatePassword(const QString& password) {
-	return m_PasswordRegex.match(password).hasMatch();
+	return m_PasswordRegex->match(password).hasMatch();
 }
 
 // Use a POST request to write data to a certain Firebase API endpoint
