@@ -90,13 +90,6 @@ signals:
 	void UserSignedIn();
 	void RequestedToken();
 
-	void EmailExists();
-	void UsernameTaken();
-
-	void InvalidEmail();
-	void InvalidUsername();
-	void InvalidPassword();
-
 	void FoundAuthErrors();
 	void FoundEmptyField();
 
