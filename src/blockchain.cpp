@@ -77,23 +77,23 @@ pair<bool, uint8_t> Blockchain::Mine(Block& newBlock) {
 	std::promise<void> exitSignal;
 	future<void> exitFuture = exitSignal.get_future();
 
-	auto receiver = []() -> uint8_t {
-		uint8_t out = go::receive("tcp", "192.168.1.6", "8080");
-		std::cout << "Output from C++: " << (uint)out << std::endl;
-		return out;
+	auto receiver = []() -> string {
+		const char* out = go::receive("tcp", "192.168.1.6", "8080");
+		std::cout << "Output from C++: " << string(out) << std::endl;
+		return string(out);
 	};
 
-	auto handler = [&](future<uint8_t>& receive, std::promise<void> exitSignal) -> uint8_t {
+	auto handler = [&](future<string>& receive, std::promise<void> exitSignal) -> string {
 		receive.wait();
-		uint8_t results = receive.get();
+		string results = receive.get();
 
 		exitSignal.set_value();
 		return results;
 	};
 
 	// Set up futures to check for and receive data from other mining nodes on the network
-	future<uint8_t> receive = std::async(std::launch::deferred, receiver);
-	future<uint8_t> handle = std::async(handler, std::ref(receive), std::move(exitSignal)); // This blocks a title change
+	future<string> receive = std::async(std::launch::deferred, receiver);
+	future<string> handle = std::async(handler, std::ref(receive), std::move(exitSignal)); // This blocks a title change
 
 	// auto c = [=](Block newBlock, future<void> exitFuture) -> bool {
 	// 	return this->Consensus(newBlock, std::move(exitFuture));
@@ -116,14 +116,22 @@ pair<bool, uint8_t> Blockchain::Mine(Block& newBlock) {
 	// completed, broadcast to the network that this node has completed it first.
 	if (success) {
 		std::cout << "Success" << std::endl;
-		future<void> dial = std::async(&go::dial, "tcp", "192.168.1.6", "8080", 1);
+
+		const char* code[] = {"0"};
+		go::GoSlice slice = {code, 1, 1};
+
+		future<void> dial = std::async(&go::dial, "tcp", "192.168.1.6", "8080", go::dataCodes::IDCode, slice);
 	}
 	else {
 		std::cout << "Failure" << std::endl;
-		future<void> dial = std::async(&go::dial, "tcp", "192.168.1.6", "8080", 4);
+
+		const char* code[] = {"4"};
+		go::GoSlice slice = {code, 1, 1};
+
+		future<void> dial = std::async(&go::dial, "tcp", "192.168.1.6", "8080", go::dataCodes::IDCode, slice);
 	}
 
-	return std::make_pair(success, handle.get());
+	return std::make_pair(success, std::atoi(handle.get().c_str()));
 }
 
 // Complete the Proof-of-Work consensus protocol on a block. Return true
