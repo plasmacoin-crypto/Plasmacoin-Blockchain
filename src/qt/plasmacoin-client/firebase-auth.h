@@ -46,23 +46,26 @@ class Auth : public QMainWindow, public Ui_MainWindow {
 	Q_OBJECT
 
 public:
-	Auth();
-
-	void SignUp(const QString& email, const QString& username, const QString& password);
-	void SignIn(const QString& email, const QString& password);
-
-	uint8_t m_Errors = 0; // Stores a number that corresponds to certain login errors
-
 	// I'd love Go's `iota` feature right about now...
-	enum m_ErrorCodes: uint8_t {
+	enum class ErrorCodes: uint8_t {
 		EMAIL_EXISTS 	 = 1 << 0,
 		USERNAME_TAKEN 	 = 1 << 1,
 		INVALID_EMAIL	 = 1 << 2,
 		INVALID_USERNAME = 1 << 3,
 		INVALID_PASSWORD = 1 << 4,
+		EMPTY_FIELD		 = 1 << 5,
 
-		LAST			 = 5	// This is probably okay
+		LAST			 = 6	// This is probably okay
 	};
+
+	Auth();
+	~Auth();
+
+	void SignUp(const QString& email, const QString& username, const QString& password);
+	void SignIn(const QString& email, const QString& password);
+
+	uint8_t GetErrors() const;
+	inline void AddError(ErrorCodes error);
 
 private:
 	QNetworkAccessManager* m_Manager;
@@ -74,6 +77,8 @@ private:
 
 	QRegularExpression m_UsernameRegex = QRegularExpression("^([^\\.\\-])([_]{0,})(?=.{2,20}$)(?<![\\.\\-])(?!.*[_\\.\\-]{})[\\w_\\.\\-]+([^\\._\\-]|(?![_]))(?!\\.\\-)(?<![\\.\\-])$");
 	QRegularExpression m_PasswordRegex = QRegularExpression("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{6,})\\S$");
+
+	uint8_t m_Errors = 0; // Stores a number that corresponds to certain authentication errors
 
 public:
 	bool ValidateUsername(const QString& username);
@@ -93,6 +98,7 @@ signals:
 	void InvalidPassword();
 
 	void FoundAuthErrors();
+	void FoundEmptyField();
 
 public slots:
 	void NetworkReplyReady();
@@ -111,12 +117,16 @@ private:
 	void Patch(const QString& url, const QJsonDocument& payload, const QString& header = "application/json");
 
 public:
-	void Get();
+	void Get(); // HTTP GET request
 	bool SearchFor(QString query);
 
 private:
 	void ParseResponse(const QByteArray& response);
 	std::string EncryptPassword(const std::string& _password) const;
 };
+
+inline void Auth::AddError(ErrorCodes error) {
+	m_Errors |= static_cast<uint8_t>(error);
+}
 
 #endif // FIREBASE_AUTH_H

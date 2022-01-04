@@ -14,7 +14,19 @@ Auth::Auth():
 
 	//m_UsernameValidator(new QRegularExpressionValidator(QRegularExpression(USERNAME_REGEX), this)),
 	//m_PasswordValidator(new QRegularExpressionValidator(QRegularExpression(PASSWORD_REGEX), this))
-{}
+{
+	connect(this, &Auth::FinishedRequest, this, [this]() {
+		if (m_Errors != 0) {
+			emit FoundAuthErrors();
+		}
+	});
+
+	connect(this, &Auth::FoundEmptyField, this, [this]() {
+		AddError(ErrorCodes::EMPTY_FIELD);
+	});
+}
+
+Auth::~Auth() {}
 
 // Sign a user up for a Plasmacoin Account
 void Auth::SignUp(const QString& email, const QString& username, const QString& password) {
@@ -26,11 +38,16 @@ void Auth::SignUp(const QString& email, const QString& username, const QString& 
 	//
 
 	if (username != "" && !ValidateUsername(username)) {
-		m_Errors |= INVALID_USERNAME;
+		AddError(ErrorCodes::INVALID_USERNAME);
 	}
 
 	if (password != "" && !ValidatePassword(password)) {
-		m_Errors |= INVALID_PASSWORD;
+		AddError(ErrorCodes::INVALID_PASSWORD);
+	}
+
+	// Check if any of the fields are empty
+	if (email.isEmpty() || username.isEmpty() || password.isEmpty()) {
+		AddError(ErrorCodes::EMPTY_FIELD);
 	}
 
 	// The API URL
@@ -50,17 +67,18 @@ void Auth::SignUp(const QString& email, const QString& username, const QString& 
 		this->AddUser(email, username, password, this->m_UserID);
 		this->ModUsername(username);
 	});
-
-	connect(this, &Auth::FinishedRequest, this, [this]() {
-		if (this->m_Errors != 0) {
-			emit this->FoundAuthErrors();
-		}
-	});
 }
 
 // Sign a user into their Plasmacoin account
 void Auth::SignIn(const QString& email, const QString& password) {
 	m_Errors = 0;
+
+	// Check if any of the fields are empty
+	if (email.isEmpty() || password.isEmpty()) {
+		AddError(ErrorCodes::EMPTY_FIELD);
+	}
+
+	std::cout << (uint)GetErrors() << std::endl;
 
 	// The API URL
 	QString endpoint = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + m_APIKey;
@@ -73,12 +91,10 @@ void Auth::SignIn(const QString& email, const QString& password) {
 
 	QJsonDocument jsonPayload = QJsonDocument::fromVariant(payload); // Load the QVariant as JSON
 	Post(endpoint, jsonPayload); // Make a post request
+}
 
-	connect(this, &Auth::FinishedRequest, this, [this]() {
-		if (this->m_Errors != 0) {
-			emit this->FoundAuthErrors();
-		}
-	});
+uint8_t Auth::GetErrors() const {
+	return m_Errors;
 }
 
 // A slot that perform actions on API response data
@@ -231,10 +247,10 @@ void Auth::ParseResponse(const QByteArray& response) {
 		// is more specific, so handle that case first.
 		//
 		if (errorMap["message"].toString() == "EMAIL_EXISTS") {
-			m_Errors |= EMAIL_EXISTS;
+			AddError(ErrorCodes::EMAIL_EXISTS);
 		}
-		else if (errorMap["message"].toString() == "INVALID_EMAIL") {
-			m_Errors |= INVALID_EMAIL;
+		else if (errorMap["message"].toString() == "INVALID_EMAIL" || errorMap["message"].toString() == "EMAIL_NOT_FOUND") {
+			AddError(ErrorCodes::INVALID_EMAIL);
 		}
 
 		// Handle a password error
@@ -242,7 +258,7 @@ void Auth::ParseResponse(const QByteArray& response) {
 			errorMap["message"].toString() == "WEAK_PASSWORD" ||
 			errorMap["message"].toString() == "INVALID_PASSWORD"
 		) {
-			m_Errors |= INVALID_PASSWORD;
+			AddError(ErrorCodes::INVALID_PASSWORD);
 		}
 	}
 	else if (jsonDocument.object().value("kind") == "identitytoolkit#VerifyPasswordResponse") {
