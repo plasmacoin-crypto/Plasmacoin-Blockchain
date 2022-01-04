@@ -62,6 +62,10 @@ public:
 	TransactionManager* m_TransactionManager;
 	//SettingsManager* m_SettingsManager;
 
+	QLabel* m_NameDisplay = new QLabel();
+	QLabel* m_UsernameDisplay = new QLabel();
+	QLabel* m_AddressDisplay = new QLabel();
+
 	std::vector<Transaction*> m_BlockContents;
 	std::chrono::seconds m_LastMiningDur;
 
@@ -77,9 +81,6 @@ public:
 signals:
 	void MiningSuccess();
 	void MiningFailure();
-
-private slots:
-	void DisplayPage(int index) const; // Actually set the index of the stack widget
 };
 
 #endif // MAINWINDOW_H
