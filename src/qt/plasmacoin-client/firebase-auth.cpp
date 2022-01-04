@@ -224,14 +224,21 @@ void Auth::ParseResponse(const QByteArray& response) {
 		// Get the JSON dictionary called "error" within the response object
 		QVariantMap errorMap = jsonDocument.object().toVariantMap()["error"].toMap();
 
-		// Handle a failure
+		//
+		// Handle an email error.
+		//
+		// If the email is in use, it is also technically invalid, but saying it exists
+		// is more specific, so handle that case first.
+		//
 		if (errorMap["message"].toString() == "EMAIL_EXISTS") {
 			m_Errors |= EMAIL_EXISTS;
 		}
 		else if (errorMap["message"].toString() == "INVALID_EMAIL") {
 			m_Errors |= INVALID_EMAIL;
 		}
-		else if (
+
+		// Handle a password error
+		if (
 			errorMap["message"].toString() == "WEAK_PASSWORD" ||
 			errorMap["message"].toString() == "INVALID_PASSWORD"
 		) {
