@@ -15,10 +15,10 @@
 #include <chrono>
 #include <functional>
 #include <utility>
+#include <string>
+#include <cstdlib>
 
 #include <unistd.h>
-
-#include <QDebug>
 
 // This header file groups three Crypto++ headers to save space
 // and also provide them with a descriptive, overall name.
@@ -30,12 +30,14 @@
 
 // Include Go code
 namespace go {
-	#include "goexports.h"
+	#include "pcnetworkd.h"
+	enum dataCodes: uint8_t {IDCode, Transaction, Block};
 }
 
 using std::vector;
 using std::pair;
 using std::future;
+using std::string;
 
 class Blockchain {
 public:
