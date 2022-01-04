@@ -17,6 +17,10 @@
 #include <QTableWidget>
 #include <QAbstractItemView>
 #include <QStringList>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QLayout>
+#include <QLayoutItem>
 
 #include "ui_mainwindow.h"
 
@@ -27,7 +31,9 @@ public:
 	AddressBook(
 		QTableWidget*& tableWidget, QLabel* nameDisplay, QLineEdit* nameField,
 		QLabel* usernameDisplay, QLineEdit* usernameField, QLabel* addressDisplay,
-		QLineEdit* addressField, QDateEdit* birthday
+		QLineEdit* addressField, QDateEdit* birthday, QDialogButtonBox* buttonBox,
+		QLayout* nameLayout, QLayout* usernameLayout, QLayout* addressLayout,
+		QLayout* birthdayLayout
 	);
 	~AddressBook();
 
@@ -55,6 +61,11 @@ private:
 	QLabel *m_NameDisplay, *m_UsernameDisplay, *m_AddressDisplay;
 	QLineEdit *m_NameField, *m_UsernameField, *m_AddressField;
 	QDateEdit* m_Birthday;
+	QDialogButtonBox* m_ButtonBox;
+	QLayout *m_NameLayout, *m_UsernameLayout, *m_AddressLayout, *m_BirthdayLayout;
+
+	QPushButton* m_EditButton = new QPushButton("Edit Contact");
+	QPushButton* m_DeleteButton = new QPushButton("Delete Contact");
 
 	std::vector<Contact*> m_Contacts;
 	bool m_IsInserting = false;

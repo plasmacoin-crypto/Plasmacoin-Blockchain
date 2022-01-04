@@ -10,7 +10,9 @@
 AddressBook::AddressBook(
 	QTableWidget*& tableWidget, QLabel* nameDisplay, QLineEdit* nameField,
 	QLabel* usernameDisplay, QLineEdit* usernameField, QLabel* addressDisplay,
-	QLineEdit* addressField, QDateEdit* birthday
+	QLineEdit* addressField, QDateEdit* birthday, QDialogButtonBox* buttonBox,
+	QLayout* nameLayout, QLayout* usernameLayout, QLayout* addressLayout,
+	QLayout* birthdayLayout
 ):
 	m_ContactsList(tableWidget),
 	m_NameDisplay(nameDisplay),
@@ -19,7 +21,12 @@ AddressBook::AddressBook(
 	m_NameField(nameField),
 	m_UsernameField(usernameField),
 	m_AddressField(addressField),
-	m_Birthday(birthday)
+	m_Birthday(birthday),
+	m_ButtonBox(buttonBox),
+	m_NameLayout(nameLayout),
+	m_UsernameLayout(usernameLayout),
+	m_AddressLayout(addressLayout),
+	m_BirthdayLayout(birthdayLayout)
 {
 	m_ContactsList->setRowCount(0);
 	SetEditing(false);
@@ -90,15 +97,34 @@ bool AddressBook::IsInserting() const {
 
 // Hide all writable fields and make sure everything is read only
 void AddressBook::Lock() {
-	// Hide the writable fields
-	m_NameField->setVisible(false);
-	m_UsernameField->setVisible(false);
-	m_AddressField->setVisible(false);
+	m_ButtonBox->clear();
+
+	// Copy the edit button
+	QPushButton* editButton = new QPushButton(m_EditButton);
+	editButton->setText(m_EditButton->text());
+
+	// Copy the delete button
+	QPushButton* deleteButton = new QPushButton(m_DeleteButton);
+	deleteButton->setText(m_DeleteButton->text());
+
+	// Add the buttons to the widget
+	m_ButtonBox->addButton(editButton, QDialogButtonBox::ActionRole);
+	m_ButtonBox->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
 
 	// Show the read only fields
 	m_NameDisplay->setVisible(true);
 	m_UsernameDisplay->setVisible(true);
 	m_AddressDisplay->setVisible(true);
+
+	// Hide the writable fields
+	m_NameField->setVisible(false);
+	m_UsernameField->setVisible(false);
+	m_AddressField->setVisible(false);
+
+	// Replace the writable widgets with the read only widgets in the layouts
+	m_NameLayout->replaceWidget(m_NameField, m_NameDisplay);
+	m_UsernameLayout->replaceWidget(m_UsernameField, m_UsernameDisplay);
+	m_AddressLayout->replaceWidget(m_AddressField, m_AddressDisplay);
 
 	// Make the birthday field read only
 	m_Birthday->setReadOnly(true);
@@ -109,15 +135,31 @@ void AddressBook::Lock() {
 
 // Show writable fields and allow write access
 void AddressBook::Unlock() {
+	m_ButtonBox->clear();
+
+	// Copy the delete button
+	QPushButton* deleteButton = new QPushButton(m_DeleteButton);
+	deleteButton->setText(m_DeleteButton->text());
+
+	// Add the delete button along with Qt's default "Ok" and "Cancel" buttons
+	m_ButtonBox->addButton(QDialogButtonBox::Ok);
+	m_ButtonBox->addButton(QDialogButtonBox::Cancel);
+	m_ButtonBox->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
+
 	// Hide the read only fields
 	m_NameDisplay->setVisible(false);
 	m_UsernameDisplay->setVisible(false);
 	m_AddressDisplay->setVisible(false);
 
-	// Show the read only fields
+	// Show the writable fields
 	m_NameField->setVisible(true);
 	m_UsernameField->setVisible(true);
 	m_AddressField->setVisible(true);
+
+	// Replace the read only widgets with the writable widgets in the layouts
+	m_NameLayout->replaceWidget(m_NameDisplay, m_NameField);
+	m_UsernameLayout->replaceWidget(m_UsernameDisplay, m_UsernameField);
+	m_AddressLayout->replaceWidget(m_AddressDisplay, m_AddressField);
 
 	// Allow write access to the birthday field
 	m_Birthday->setReadOnly(false);

@@ -8,6 +8,7 @@
 #include <QSignalBlocker>
 #include <QDialogButtonBox>
 #include <QLineEdit>
+#include <QAbstractButton>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -152,8 +153,6 @@ void accountPages(MainWindow& window) {
 }
 
 void addressBook(MainWindow& window) {
-	window.btndiag_confirm->setVisible(false);
-
 	// Display contact info when the corresponding table object is selected
 	window.connect(window.contactsList, &QTableWidget::itemSelectionChanged, &window, [&window]() {
 		int row = window.contactsList->currentRow();
@@ -170,32 +169,28 @@ void addressBook(MainWindow& window) {
 		window.contactsList->selectRow(window.m_AddressBook->GetRowOf(contact));
 		window.m_AddressBook->SetEditing(true);
 
-		emit window.btn_edit->released();
+		//emit window.btndiag_confirm->released();
 		window.m_AddressBook->SetInsertion(true);
 	});
 
-	// Allow the user to delete a contact
-	window.connect(window.btn_delete, &QPushButton::released, &window, [&window]() {
-		int row = window.contactsList->currentRow();
-		window.m_AddressBook->Delete(row);
-	});
+	// Allow the user to edit or delete a contact, depending on what button is clicked
+	window.connect(window.btndiag_confirm, &QDialogButtonBox::clicked, &window, [&window](QAbstractButton* button) {
+		QDialogButtonBox::ButtonRole role = window.btndiag_confirm->buttonRole(button);
 
-	// Allow the user to edit a contact
-	window.connect(window.btn_edit, &QPushButton::released, &window, [&window]() {
-		window.btn_edit->setVisible(false);
-		window.btndiag_confirm->setVisible(true);
-		window.btn_delete->move(930, 520);
-
-		int row = window.contactsList->currentRow();
-		window.m_AddressBook->SetEditing(true);
+		switch (role) {
+			case QDialogButtonBox::ActionRole: // The edit button
+				window.m_AddressBook->SetEditing(true);
+				break;
+			case QDialogButtonBox::DestructiveRole: // The delete button
+				window.m_AddressBook->Delete(window.contactsList->currentRow());
+				break;
+			default:
+				break;
+		}
 	});
 
 	// Allow the user to apply changes to contacts
 	window.connect(window.btndiag_confirm, &QDialogButtonBox::accepted, &window, [&window]() {
-		window.btndiag_confirm->setVisible(false);
-		window.btn_edit->setVisible(true);
-		window.btn_delete->move(900, 520);
-
 		int row = window.contactsList->currentRow();
 		Contact* contact = window.m_AddressBook->At(row);
 
@@ -213,10 +208,6 @@ void addressBook(MainWindow& window) {
 
 	// Allow the user to cancel changes to contacts
 	window.connect(window.btndiag_confirm, &QDialogButtonBox::rejected, &window, [&window]() {
-		window.btndiag_confirm->setVisible(false);
-		window.btn_edit->setVisible(true);
-		window.btn_delete->move(900, 520);
-
 		int row = window.contactsList->currentRow();
 		Contact* contact = window.m_AddressBook->At(row);
 
@@ -277,11 +268,10 @@ void transactionPage(MainWindow& window) {
 		string recipientAddr = window.m_AddressBook->At(row)->GetAddress();
 		double amount = window.amountSelector->value();
 		double fee = window.feeSelector->value();
-		string content = window.messageField->text();
+		string content = window.messageField->text().toStdString();
 
 		// Create a new transaction
 		Transaction* transaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
-		transaction->m_Hash = window.m_User->Hash(*transaction);
 	});
 }
 
