@@ -1,7 +1,7 @@
 /********************************************************************************
-** Form generated from reading UI file 'mainwindow.ui'
+** Form generated from reading UI file 'macos.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.2
+** Created by: Qt User Interface Compiler version 6.2.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,10 +11,13 @@
 
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDateEdit>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
@@ -23,6 +26,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QScrollArea>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
@@ -38,213 +42,377 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
+    QHBoxLayout *horizontalLayout_24;
     QTabWidget *tabWidget;
     QWidget *Wallet;
-    QWidget *Mine;
-    QWidget *AddressBookTab;
-    QWidget *Transactions;
-    QWidget *Account;
-    QWidget *Settings;
-    QStackedWidget *stackedWidget;
-    QWidget *wallet;
+    QVBoxLayout *verticalLayout_7;
     QLCDNumber *usdollars;
     QLCDNumber *plasmacoins;
-    QWidget *mineCoins;
-    QPushButton *btn_mine;
+    QWidget *Mine;
+    QHBoxLayout *horizontalLayout_25;
+    QWidget *transactions;
+    QVBoxLayout *verticalLayout;
     QListWidget *transactionList;
-    QListWidget *blockTransactionList;
-    QTextBrowser *blockSize;
+    QHBoxLayout *mineLayout1;
+    QSpacerItem *horizontalSpacer_2;
     QToolButton *plusSign;
     QToolButton *minusSign;
+    QWidget *userBlock;
+    QVBoxLayout *verticalLayout_3;
+    QListWidget *blockTransactionList;
+    QHBoxLayout *mineLayout2;
+    QSpacerItem *horizontalSpacer;
+    QTextBrowser *blockSize;
+    QPushButton *btn_mine;
+    QWidget *AddressBookTab;
+    QHBoxLayout *horizontalLayout_8;
     QWidget *addressBook;
+    QVBoxLayout *verticalLayout_2;
     QTableWidget *contactsList;
-    QLineEdit *nameField;
-    QLabel *contactImage;
-    QLabel *addrBookSub2;
-    QDateEdit *birthday;
-    QLabel *addrBookSub3;
+    QHBoxLayout *buttonLayout;
     QToolButton *btn_addContact;
-    QPushButton *btn_edit;
-    QPushButton *btn_delete;
+    QSpacerItem *horizontalSpacer_3;
+    QToolButton *btn_filler;
+    QWidget *contactInfo;
+    QVBoxLayout *verticalLayout_4;
+    QHBoxLayout *field1;
+    QLabel *contactImage;
+    QSpacerItem *horizontalSpacer_11;
+    QLineEdit *nameField;
+    QSpacerItem *horizontalSpacer_10;
+    QHBoxLayout *field2;
     QLabel *addrBookSub1;
+    QSpacerItem *horizontalSpacer_7;
     QLineEdit *usernameField;
+    QSpacerItem *horizontalSpacer_4;
+    QHBoxLayout *field3;
+    QLabel *addrBookSub2;
+    QSpacerItem *horizontalSpacer_13;
     QLineEdit *addressField;
-    QLabel *usernameDisplay;
-    QLabel *addressDisplay;
-    QLabel *nameDisplay;
+    QSpacerItem *horizontalSpacer_6;
+    QHBoxLayout *field4;
+    QSpacerItem *horizontalSpacer_9;
+    QLabel *addrBookSub3;
+    QSpacerItem *horizontalSpacer_12;
+    QDateEdit *birthday;
+    QSpacerItem *horizontalSpacer_8;
+    QSpacerItem *horizontalSpacer_5;
+    QHBoxLayout *dialogLayout;
     QDialogButtonBox *btndiag_confirm;
-    QWidget *transactions;
-    QLabel *amountLabel;
-    QLineEdit *messageField;
-    QDoubleSpinBox *amountSelector;
-    QDoubleSpinBox *feeSelector;
-    QLineEdit *total;
-    QLabel *feeLabel;
-    QLabel *totalLabel;
-    QLabel *charCount;
-    QDialogButtonBox *btndiag_send;
+    QSpacerItem *verticalSpacer;
+    QWidget *Transactions;
+    QHBoxLayout *horizontalLayout_9;
+    QWidget *contactsView;
+    QVBoxLayout *verticalLayout_5;
     QLabel *trxnsHeading1;
-    QLabel *trxnsHeading2;
     QListWidget *contacts;
-    QListWidget *transactionLog;
+    QSpacerItem *horizontalSpacer_30;
+    QWidget *makeTransactions;
+    QVBoxLayout *verticalLayout_10;
+    QWidget *dialogs;
+    QVBoxLayout *verticalLayout_9;
+    QLabel *trxnsHeading1_2;
+    QSpacerItem *verticalSpacer_4;
     QLineEdit *selectedContact;
-    QWidget *account;
+    QLineEdit *messageField;
+    QLabel *charCount;
+    QHBoxLayout *selectionLayout;
+    QWidget *selectors;
+    QVBoxLayout *verticalLayout_8;
+    QHBoxLayout *amountView;
+    QLabel *amountLabel;
+    QSpacerItem *horizontalSpacer_15;
+    QDoubleSpinBox *amountSelector;
+    QHBoxLayout *feeView;
+    QLabel *feeLabel;
+    QSpacerItem *horizontalSpacer_16;
+    QDoubleSpinBox *feeSelector;
+    QHBoxLayout *totalView;
+    QLabel *totalLabel;
+    QSpacerItem *horizontalSpacer_17;
+    QLineEdit *total;
+    QSpacerItem *horizontalSpacer_14;
+    QDialogButtonBox *btndiag_send;
+    QVBoxLayout *spacerLayout1;
+    QSpacerItem *verticalSpacer_3;
+    QSpacerItem *verticalSpacer_2;
+    QSpacerItem *horizontalSpacer_18;
+    QWidget *trxnLogView;
+    QVBoxLayout *verticalLayout_6;
+    QLabel *trxnsHeading2;
+    QListWidget *transactionLog;
+    QWidget *Account;
+    QHBoxLayout *horizontalLayout_16;
     QStackedWidget *accountView;
     QWidget *signIn;
-    QLineEdit *s_EmailField;
-    QPushButton *btn_signIn;
+    QHBoxLayout *horizontalLayout_17;
+    QSpacerItem *horizontalSpacer_20;
+    QWidget *widget_8;
+    QVBoxLayout *verticalLayout_18;
+    QSpacerItem *verticalSpacer_6;
     QLabel *signInTitle;
+    QSpacerItem *verticalSpacer_8;
+    QVBoxLayout *verticalLayout_17;
+    QLineEdit *s_EmailField;
     QLineEdit *s_PasswordField;
+    QSpacerItem *verticalSpacer_7;
+    QPushButton *btn_signIn;
     QPushButton *btn_create;
+    QSpacerItem *verticalSpacer_5;
+    QSpacerItem *horizontalSpacer_21;
+    QWidget *widget_9;
+    QVBoxLayout *verticalLayout_20;
     QWidget *banner1;
+    QVBoxLayout *verticalLayout_21;
     QLabel *bannerText1;
+    QSpacerItem *horizontalSpacer_22;
     QWidget *signUp;
+    QHBoxLayout *horizontalLayout_18;
+    QSpacerItem *horizontalSpacer_23;
+    QWidget *widget_10;
+    QVBoxLayout *verticalLayout_13;
+    QSpacerItem *verticalSpacer_11;
     QLabel *createTitle;
-    QPushButton *btn_signUp;
-    QPushButton *btn_back;
+    QSpacerItem *verticalSpacer_10;
+    QVBoxLayout *verticalLayout_12;
     QLineEdit *c_EmailField;
     QLineEdit *c_UsernameField;
     QLineEdit *c_PasswordField;
+    QSpacerItem *verticalSpacer_9;
+    QPushButton *btn_signUp;
+    QPushButton *btn_back;
+    QSpacerItem *verticalSpacer_12;
+    QSpacerItem *horizontalSpacer_25;
+    QWidget *widget_11;
+    QVBoxLayout *verticalLayout_16;
     QWidget *banner2;
+    QVBoxLayout *verticalLayout_15;
     QLabel *bannerText2;
+    QSpacerItem *horizontalSpacer_24;
     QWidget *loggedIn;
-    QWidget *verticalLayoutWidget;
+    QHBoxLayout *horizontalLayout_15;
     QVBoxLayout *pageContainer;
     QScrollArea *scrollArea;
     QWidget *scrollAreaContent;
+    QHBoxLayout *horizontalLayout_22;
+    QSpacerItem *horizontalSpacer_26;
     QWidget *contentContainer;
     QVBoxLayout *pageLayout;
     QWidget *address;
-    QToolButton *addressCopy;
-    QLineEdit *walletAddress;
-    QLabel *addressSubtitle;
+    QVBoxLayout *verticalLayout_22;
     QLabel *addressTitle;
+    QLabel *addressSubtitle;
+    QHBoxLayout *horizontalLayout_19;
+    QLineEdit *walletAddress;
+    QToolButton *addressCopy;
     QWidget *rsaKeys;
+    QVBoxLayout *verticalLayout_19;
     QLabel *rsaTitle;
-    QToolButton *privKeyShow;
+    QHBoxLayout *horizontalLayout_20;
     QLineEdit *publicKey;
-    QToolButton *pubKeyCopy;
     QToolButton *pubKeyShow;
-    QToolButton *privKeyCopy;
+    QToolButton *pubKeyCopy;
+    QHBoxLayout *horizontalLayout_21;
     QLineEdit *privateKey;
+    QToolButton *privKeyShow;
+    QToolButton *privKeyCopy;
     QWidget *pubIPAddr;
+    QVBoxLayout *verticalLayout_24;
     QLabel *pubIPAddrTitle;
-    QTextBrowser *publicIPAddress;
     QLabel *pubIPAddrSubtitle;
-    QWidget *settings;
+    QTextBrowser *publicIPAddress;
+    QSpacerItem *horizontalSpacer_27;
+    QWidget *Settings;
+    QVBoxLayout *verticalLayout_28;
     QLabel *settingsTitle;
+    QGridLayout *gridLayout_2;
     QWidget *rsaKeyPath;
-    QToolButton *btn_reset;
-    QPushButton *btn_choosePath;
-    QTextBrowser *rsaKeyView;
+    QVBoxLayout *verticalLayout_25;
     QLabel *rsaKeyTitle;
     QLabel *rsaKeySubtitle;
+    QHBoxLayout *horizontalLayout_23;
+    QTextBrowser *rsaKeyView;
+    QPushButton *btn_choosePath;
+    QToolButton *btn_reset;
+    QSpacerItem *verticalSpacer_13;
     QWidget *changePassword;
+    QVBoxLayout *verticalLayout_27;
     QLabel *chgPsswdTitle;
     QLabel *chgPsswdSubtitle;
+    QVBoxLayout *verticalLayout_26;
     QLineEdit *currPassField;
     QLineEdit *newPassField;
     QPushButton *btn_confirm;
+    QSpacerItem *verticalSpacer_14;
+    QSpacerItem *horizontalSpacer_28;
+    QSpacerItem *horizontalSpacer_29;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1262, 872);
+        MainWindow->resize(1309, 980);
         QIcon icon;
-        icon.addFile(QString::fromUtf8("../../../../../../.designer/assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
         MainWindow->setIconSize(QSize(200, 100));
         MainWindow->setToolButtonStyle(Qt::ToolButtonIconOnly);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
+        horizontalLayout_24 = new QHBoxLayout(centralwidget);
+        horizontalLayout_24->setObjectName(QString::fromUtf8("horizontalLayout_24"));
+        horizontalLayout_24->setContentsMargins(0, -1, 0, -1);
         tabWidget = new QTabWidget(centralwidget);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
-        tabWidget->setGeometry(QRect(0, 0, 1251, 31));
-        QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(tabWidget->sizePolicy().hasHeightForWidth());
         tabWidget->setSizePolicy(sizePolicy);
-        tabWidget->setMaximumSize(QSize(1401, 31));
+        tabWidget->setMaximumSize(QSize(16777215, 16777215));
         tabWidget->setFocusPolicy(Qt::NoFocus);
         tabWidget->setTabPosition(QTabWidget::North);
         tabWidget->setTabShape(QTabWidget::Rounded);
-        tabWidget->setMovable(false);
         Wallet = new QWidget();
         Wallet->setObjectName(QString::fromUtf8("Wallet"));
-        tabWidget->addTab(Wallet, QString());
-        Mine = new QWidget();
-        Mine->setObjectName(QString::fromUtf8("Mine"));
-        tabWidget->addTab(Mine, QString());
-        AddressBookTab = new QWidget();
-        AddressBookTab->setObjectName(QString::fromUtf8("AddressBookTab"));
-        tabWidget->addTab(AddressBookTab, QString());
-        Transactions = new QWidget();
-        Transactions->setObjectName(QString::fromUtf8("Transactions"));
-        tabWidget->addTab(Transactions, QString());
-        Account = new QWidget();
-        Account->setObjectName(QString::fromUtf8("Account"));
-        tabWidget->addTab(Account, QString());
-        Settings = new QWidget();
-        Settings->setObjectName(QString::fromUtf8("Settings"));
-        tabWidget->addTab(Settings, QString());
-        stackedWidget = new QStackedWidget(centralwidget);
-        stackedWidget->setObjectName(QString::fromUtf8("stackedWidget"));
-        stackedWidget->setEnabled(true);
-        stackedWidget->setGeometry(QRect(-10, 30, 1261, 821));
-        stackedWidget->setLayoutDirection(Qt::LeftToRight);
-        wallet = new QWidget();
-        wallet->setObjectName(QString::fromUtf8("wallet"));
-        usdollars = new QLCDNumber(wallet);
+        verticalLayout_7 = new QVBoxLayout(Wallet);
+        verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
+        usdollars = new QLCDNumber(Wallet);
         usdollars->setObjectName(QString::fromUtf8("usdollars"));
-        usdollars->setGeometry(QRect(520, 60, 241, 71));
         usdollars->setSmallDecimalPoint(false);
         usdollars->setDigitCount(5);
         usdollars->setMode(QLCDNumber::Dec);
         usdollars->setSegmentStyle(QLCDNumber::Filled);
-        plasmacoins = new QLCDNumber(wallet);
+
+        verticalLayout_7->addWidget(usdollars);
+
+        plasmacoins = new QLCDNumber(Wallet);
         plasmacoins->setObjectName(QString::fromUtf8("plasmacoins"));
-        plasmacoins->setGeometry(QRect(30, 60, 241, 71));
         plasmacoins->setLayoutDirection(Qt::LeftToRight);
         plasmacoins->setSmallDecimalPoint(false);
         plasmacoins->setDigitCount(5);
         plasmacoins->setMode(QLCDNumber::Dec);
         plasmacoins->setSegmentStyle(QLCDNumber::Filled);
-        stackedWidget->addWidget(wallet);
-        mineCoins = new QWidget();
-        mineCoins->setObjectName(QString::fromUtf8("mineCoins"));
-        btn_mine = new QPushButton(mineCoins);
-        btn_mine->setObjectName(QString::fromUtf8("btn_mine"));
-        btn_mine->setGeometry(QRect(840, 730, 84, 31));
-        transactionList = new QListWidget(mineCoins);
+
+        verticalLayout_7->addWidget(plasmacoins);
+
+        tabWidget->addTab(Wallet, QString());
+        Mine = new QWidget();
+        Mine->setObjectName(QString::fromUtf8("Mine"));
+        horizontalLayout_25 = new QHBoxLayout(Mine);
+        horizontalLayout_25->setObjectName(QString::fromUtf8("horizontalLayout_25"));
+        transactions = new QWidget(Mine);
+        transactions->setObjectName(QString::fromUtf8("transactions"));
+        QSizePolicy sizePolicy1(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(transactions->sizePolicy().hasHeightForWidth());
+        transactions->setSizePolicy(sizePolicy1);
+        verticalLayout = new QVBoxLayout(transactions);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        transactionList = new QListWidget(transactions);
         transactionList->setObjectName(QString::fromUtf8("transactionList"));
-        transactionList->setGeometry(QRect(40, 80, 611, 651));
+        sizePolicy.setHeightForWidth(transactionList->sizePolicy().hasHeightForWidth());
+        transactionList->setSizePolicy(sizePolicy);
         transactionList->setFocusPolicy(Qt::NoFocus);
-        blockTransactionList = new QListWidget(mineCoins);
-        blockTransactionList->setObjectName(QString::fromUtf8("blockTransactionList"));
-        blockTransactionList->setGeometry(QRect(690, 240, 551, 471));
-        blockSize = new QTextBrowser(mineCoins);
-        blockSize->setObjectName(QString::fromUtf8("blockSize"));
-        blockSize->setGeometry(QRect(690, 730, 141, 31));
-        plusSign = new QToolButton(mineCoins);
+
+        verticalLayout->addWidget(transactionList);
+
+        mineLayout1 = new QHBoxLayout();
+        mineLayout1->setObjectName(QString::fromUtf8("mineLayout1"));
+        mineLayout1->setSizeConstraint(QLayout::SetFixedSize);
+        mineLayout1->setContentsMargins(0, -1, 1, -1);
+        horizontalSpacer_2 = new QSpacerItem(40, 40, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        mineLayout1->addItem(horizontalSpacer_2);
+
+        plusSign = new QToolButton(transactions);
         plusSign->setObjectName(QString::fromUtf8("plusSign"));
-        plusSign->setGeometry(QRect(590, 730, 33, 31));
+        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(plusSign->sizePolicy().hasHeightForWidth());
+        plusSign->setSizePolicy(sizePolicy2);
+        plusSign->setMaximumSize(QSize(16777215, 34));
         QIcon icon1;
-        icon1.addFile(QString::fromUtf8("../../../../../../.designer/assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon1.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../.designer/assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
         plusSign->setIcon(icon1);
         plusSign->setIconSize(QSize(24, 24));
-        minusSign = new QToolButton(mineCoins);
+
+        mineLayout1->addWidget(plusSign);
+
+        minusSign = new QToolButton(transactions);
         minusSign->setObjectName(QString::fromUtf8("minusSign"));
-        minusSign->setGeometry(QRect(620, 730, 33, 31));
+        sizePolicy2.setHeightForWidth(minusSign->sizePolicy().hasHeightForWidth());
+        minusSign->setSizePolicy(sizePolicy2);
+        minusSign->setMaximumSize(QSize(16777215, 34));
         QIcon icon2;
-        icon2.addFile(QString::fromUtf8("../../../../../../.designer/assets/minus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon2.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../.designer/assets/minus.png"), QSize(), QIcon::Normal, QIcon::Off);
         minusSign->setIcon(icon2);
         minusSign->setIconSize(QSize(24, 24));
-        stackedWidget->addWidget(mineCoins);
-        addressBook = new QWidget();
+
+        mineLayout1->addWidget(minusSign);
+
+
+        verticalLayout->addLayout(mineLayout1);
+
+
+        horizontalLayout_25->addWidget(transactions);
+
+        userBlock = new QWidget(Mine);
+        userBlock->setObjectName(QString::fromUtf8("userBlock"));
+        sizePolicy.setHeightForWidth(userBlock->sizePolicy().hasHeightForWidth());
+        userBlock->setSizePolicy(sizePolicy);
+        verticalLayout_3 = new QVBoxLayout(userBlock);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        blockTransactionList = new QListWidget(userBlock);
+        blockTransactionList->setObjectName(QString::fromUtf8("blockTransactionList"));
+
+        verticalLayout_3->addWidget(blockTransactionList);
+
+        mineLayout2 = new QHBoxLayout();
+        mineLayout2->setObjectName(QString::fromUtf8("mineLayout2"));
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        mineLayout2->addItem(horizontalSpacer);
+
+        blockSize = new QTextBrowser(userBlock);
+        blockSize->setObjectName(QString::fromUtf8("blockSize"));
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(blockSize->sizePolicy().hasHeightForWidth());
+        blockSize->setSizePolicy(sizePolicy3);
+        blockSize->setMaximumSize(QSize(200, 30));
+
+        mineLayout2->addWidget(blockSize);
+
+        btn_mine = new QPushButton(userBlock);
+        btn_mine->setObjectName(QString::fromUtf8("btn_mine"));
+        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(btn_mine->sizePolicy().hasHeightForWidth());
+        btn_mine->setSizePolicy(sizePolicy4);
+
+        mineLayout2->addWidget(btn_mine);
+
+
+        verticalLayout_3->addLayout(mineLayout2);
+
+
+        horizontalLayout_25->addWidget(userBlock);
+
+        tabWidget->addTab(Mine, QString());
+        AddressBookTab = new QWidget();
+        AddressBookTab->setObjectName(QString::fromUtf8("AddressBookTab"));
+        horizontalLayout_8 = new QHBoxLayout(AddressBookTab);
+        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
+        addressBook = new QWidget(AddressBookTab);
         addressBook->setObjectName(QString::fromUtf8("addressBook"));
+        verticalLayout_2 = new QVBoxLayout(addressBook);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         contactsList = new QTableWidget(addressBook);
         if (contactsList->columnCount() < 2)
             contactsList->setColumnCount(2);
@@ -253,7 +421,6 @@ public:
         QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
         contactsList->setHorizontalHeaderItem(1, __qtablewidgetitem1);
         contactsList->setObjectName(QString::fromUtf8("contactsList"));
-        contactsList->setGeometry(QRect(30, 40, 531, 711));
         contactsList->setFocusPolicy(Qt::NoFocus);
         contactsList->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         contactsList->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -265,421 +432,1056 @@ public:
         contactsList->horizontalHeader()->setDefaultSectionSize(132);
         contactsList->horizontalHeader()->setStretchLastSection(true);
         contactsList->verticalHeader()->setStretchLastSection(false);
-        nameField = new QLineEdit(addressBook);
-        nameField->setObjectName(QString::fromUtf8("nameField"));
-        nameField->setGeometry(QRect(840, 100, 391, 31));
-        contactImage = new QLabel(addressBook);
+
+        verticalLayout_2->addWidget(contactsList);
+
+        buttonLayout = new QHBoxLayout();
+        buttonLayout->setObjectName(QString::fromUtf8("buttonLayout"));
+        btn_addContact = new QToolButton(addressBook);
+        btn_addContact->setObjectName(QString::fromUtf8("btn_addContact"));
+        QSizePolicy sizePolicy5(QSizePolicy::Ignored, QSizePolicy::Fixed);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(btn_addContact->sizePolicy().hasHeightForWidth());
+        btn_addContact->setSizePolicy(sizePolicy5);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8("../../../../../../../../../../../../../../.designer/assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_addContact->setIcon(icon3);
+        btn_addContact->setIconSize(QSize(24, 24));
+
+        buttonLayout->addWidget(btn_addContact);
+
+        horizontalSpacer_3 = new QSpacerItem(100, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        buttonLayout->addItem(horizontalSpacer_3);
+
+        btn_filler = new QToolButton(addressBook);
+        btn_filler->setObjectName(QString::fromUtf8("btn_filler"));
+        btn_filler->setEnabled(false);
+        sizePolicy2.setHeightForWidth(btn_filler->sizePolicy().hasHeightForWidth());
+        btn_filler->setSizePolicy(sizePolicy2);
+        btn_filler->setIcon(icon3);
+        btn_filler->setIconSize(QSize(24, 24));
+
+        buttonLayout->addWidget(btn_filler);
+
+
+        verticalLayout_2->addLayout(buttonLayout);
+
+
+        horizontalLayout_8->addWidget(addressBook);
+
+        contactInfo = new QWidget(AddressBookTab);
+        contactInfo->setObjectName(QString::fromUtf8("contactInfo"));
+        contactInfo->setEnabled(true);
+        sizePolicy3.setHeightForWidth(contactInfo->sizePolicy().hasHeightForWidth());
+        contactInfo->setSizePolicy(sizePolicy3);
+        verticalLayout_4 = new QVBoxLayout(contactInfo);
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(-1, -1, -1, 10);
+        field1 = new QHBoxLayout();
+        field1->setObjectName(QString::fromUtf8("field1"));
+        contactImage = new QLabel(contactInfo);
         contactImage->setObjectName(QString::fromUtf8("contactImage"));
-        contactImage->setGeometry(QRect(650, 40, 151, 151));
-        contactImage->setPixmap(QPixmap(QString::fromUtf8("../assets/contact-default.png")));
-        addrBookSub2 = new QLabel(addressBook);
+        sizePolicy2.setHeightForWidth(contactImage->sizePolicy().hasHeightForWidth());
+        contactImage->setSizePolicy(sizePolicy2);
+        contactImage->setPixmap(QPixmap(QString::fromUtf8("../../assets/contact-default.png")));
+
+        field1->addWidget(contactImage);
+
+        horizontalSpacer_11 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+        field1->addItem(horizontalSpacer_11);
+
+        nameField = new QLineEdit(contactInfo);
+        nameField->setObjectName(QString::fromUtf8("nameField"));
+        nameField->setEnabled(true);
+        QSizePolicy sizePolicy6(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(nameField->sizePolicy().hasHeightForWidth());
+        nameField->setSizePolicy(sizePolicy6);
+        nameField->setMaximumSize(QSize(425, 30));
+
+        field1->addWidget(nameField);
+
+        horizontalSpacer_10 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+        field1->addItem(horizontalSpacer_10);
+
+
+        verticalLayout_4->addLayout(field1);
+
+        field2 = new QHBoxLayout();
+        field2->setObjectName(QString::fromUtf8("field2"));
+        addrBookSub1 = new QLabel(contactInfo);
+        addrBookSub1->setObjectName(QString::fromUtf8("addrBookSub1"));
+        sizePolicy2.setHeightForWidth(addrBookSub1->sizePolicy().hasHeightForWidth());
+        addrBookSub1->setSizePolicy(sizePolicy2);
+        addrBookSub1->setMaximumSize(QSize(70, 16777215));
+        addrBookSub1->setStyleSheet(QString::fromUtf8("text-align: center"));
+
+        field2->addWidget(addrBookSub1);
+
+        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+        field2->addItem(horizontalSpacer_7);
+
+        usernameField = new QLineEdit(contactInfo);
+        usernameField->setObjectName(QString::fromUtf8("usernameField"));
+        usernameField->setEnabled(true);
+        QSizePolicy sizePolicy7(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy7.setHorizontalStretch(0);
+        sizePolicy7.setVerticalStretch(0);
+        sizePolicy7.setHeightForWidth(usernameField->sizePolicy().hasHeightForWidth());
+        usernameField->setSizePolicy(sizePolicy7);
+        usernameField->setMaximumSize(QSize(500, 30));
+
+        field2->addWidget(usernameField);
+
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+        field2->addItem(horizontalSpacer_4);
+
+
+        verticalLayout_4->addLayout(field2);
+
+        field3 = new QHBoxLayout();
+        field3->setObjectName(QString::fromUtf8("field3"));
+        addrBookSub2 = new QLabel(contactInfo);
         addrBookSub2->setObjectName(QString::fromUtf8("addrBookSub2"));
-        addrBookSub2->setGeometry(QRect(660, 310, 91, 41));
+        QSizePolicy sizePolicy8(QSizePolicy::Fixed, QSizePolicy::Minimum);
+        sizePolicy8.setHorizontalStretch(0);
+        sizePolicy8.setVerticalStretch(0);
+        sizePolicy8.setHeightForWidth(addrBookSub2->sizePolicy().hasHeightForWidth());
+        addrBookSub2->setSizePolicy(sizePolicy8);
+        addrBookSub2->setMaximumSize(QSize(70, 16777215));
         addrBookSub2->setStyleSheet(QString::fromUtf8("text-align: center"));
-        birthday = new QDateEdit(addressBook);
+
+        field3->addWidget(addrBookSub2);
+
+        horizontalSpacer_13 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+        field3->addItem(horizontalSpacer_13);
+
+        addressField = new QLineEdit(contactInfo);
+        addressField->setObjectName(QString::fromUtf8("addressField"));
+        addressField->setEnabled(true);
+        sizePolicy7.setHeightForWidth(addressField->sizePolicy().hasHeightForWidth());
+        addressField->setSizePolicy(sizePolicy7);
+        addressField->setMaximumSize(QSize(500, 30));
+
+        field3->addWidget(addressField);
+
+        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+        field3->addItem(horizontalSpacer_6);
+
+
+        verticalLayout_4->addLayout(field3);
+
+        field4 = new QHBoxLayout();
+        field4->setObjectName(QString::fromUtf8("field4"));
+        horizontalSpacer_9 = new QSpacerItem(0, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        field4->addItem(horizontalSpacer_9);
+
+        addrBookSub3 = new QLabel(contactInfo);
+        addrBookSub3->setObjectName(QString::fromUtf8("addrBookSub3"));
+        sizePolicy2.setHeightForWidth(addrBookSub3->sizePolicy().hasHeightForWidth());
+        addrBookSub3->setSizePolicy(sizePolicy2);
+        addrBookSub3->setMaximumSize(QSize(70, 16777215));
+        addrBookSub3->setStyleSheet(QString::fromUtf8("text-align: center"));
+
+        field4->addWidget(addrBookSub3);
+
+        horizontalSpacer_12 = new QSpacerItem(50, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+        field4->addItem(horizontalSpacer_12);
+
+        birthday = new QDateEdit(contactInfo);
         birthday->setObjectName(QString::fromUtf8("birthday"));
         birthday->setEnabled(true);
-        birthday->setGeometry(QRect(660, 440, 110, 32));
+        sizePolicy7.setHeightForWidth(birthday->sizePolicy().hasHeightForWidth());
+        birthday->setSizePolicy(sizePolicy7);
+        birthday->setMaximumSize(QSize(127, 32));
         birthday->setFocusPolicy(Qt::NoFocus);
         birthday->setReadOnly(false);
         birthday->setCalendarPopup(true);
-        addrBookSub3 = new QLabel(addressBook);
-        addrBookSub3->setObjectName(QString::fromUtf8("addrBookSub3"));
-        addrBookSub3->setGeometry(QRect(660, 400, 91, 41));
-        addrBookSub3->setStyleSheet(QString::fromUtf8("text-align: center"));
-        btn_addContact = new QToolButton(addressBook);
-        btn_addContact->setObjectName(QString::fromUtf8("btn_addContact"));
-        btn_addContact->setGeometry(QRect(530, 760, 31, 31));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8("../assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_addContact->setIcon(icon3);
-        btn_addContact->setIconSize(QSize(24, 24));
-        btn_edit = new QPushButton(addressBook);
-        btn_edit->setObjectName(QString::fromUtf8("btn_edit"));
-        btn_edit->setGeometry(QRect(780, 520, 101, 34));
-        btn_edit->setChecked(false);
-        btn_edit->setFlat(false);
-        btn_delete = new QPushButton(addressBook);
-        btn_delete->setObjectName(QString::fromUtf8("btn_delete"));
-        btn_delete->setGeometry(QRect(900, 520, 101, 34));
-        addrBookSub1 = new QLabel(addressBook);
-        addrBookSub1->setObjectName(QString::fromUtf8("addrBookSub1"));
-        addrBookSub1->setGeometry(QRect(660, 220, 101, 41));
-        addrBookSub1->setStyleSheet(QString::fromUtf8("text-align: center"));
-        usernameField = new QLineEdit(addressBook);
-        usernameField->setObjectName(QString::fromUtf8("usernameField"));
-        usernameField->setGeometry(QRect(660, 260, 461, 32));
-        addressField = new QLineEdit(addressBook);
-        addressField->setObjectName(QString::fromUtf8("addressField"));
-        addressField->setGeometry(QRect(660, 350, 461, 32));
-        usernameDisplay = new QLabel(addressBook);
-        usernameDisplay->setObjectName(QString::fromUtf8("usernameDisplay"));
-        usernameDisplay->setGeometry(QRect(660, 260, 461, 31));
-        addressDisplay = new QLabel(addressBook);
-        addressDisplay->setObjectName(QString::fromUtf8("addressDisplay"));
-        addressDisplay->setGeometry(QRect(660, 350, 461, 31));
-        nameDisplay = new QLabel(addressBook);
-        nameDisplay->setObjectName(QString::fromUtf8("nameDisplay"));
-        nameDisplay->setGeometry(QRect(840, 100, 391, 31));
-        btndiag_confirm = new QDialogButtonBox(addressBook);
+
+        field4->addWidget(birthday);
+
+        horizontalSpacer_8 = new QSpacerItem(373, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        field4->addItem(horizontalSpacer_8);
+
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+        field4->addItem(horizontalSpacer_5);
+
+
+        verticalLayout_4->addLayout(field4);
+
+        dialogLayout = new QHBoxLayout();
+        dialogLayout->setObjectName(QString::fromUtf8("dialogLayout"));
+        dialogLayout->setSizeConstraint(QLayout::SetNoConstraint);
+        btndiag_confirm = new QDialogButtonBox(contactInfo);
         btndiag_confirm->setObjectName(QString::fromUtf8("btndiag_confirm"));
-        btndiag_confirm->setGeometry(QRect(750, 520, 174, 34));
+        sizePolicy7.setHeightForWidth(btndiag_confirm->sizePolicy().hasHeightForWidth());
+        btndiag_confirm->setSizePolicy(sizePolicy7);
         btndiag_confirm->setOrientation(Qt::Horizontal);
         btndiag_confirm->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-        stackedWidget->addWidget(addressBook);
-        transactions = new QWidget();
-        transactions->setObjectName(QString::fromUtf8("transactions"));
-        amountLabel = new QLabel(transactions);
-        amountLabel->setObjectName(QString::fromUtf8("amountLabel"));
-        amountLabel->setGeometry(QRect(460, 180, 58, 31));
-        messageField = new QLineEdit(transactions);
+
+        dialogLayout->addWidget(btndiag_confirm);
+
+
+        verticalLayout_4->addLayout(dialogLayout);
+
+        verticalSpacer = new QSpacerItem(20, 500, QSizePolicy::Minimum, QSizePolicy::Maximum);
+
+        verticalLayout_4->addItem(verticalSpacer);
+
+
+        horizontalLayout_8->addWidget(contactInfo);
+
+        tabWidget->addTab(AddressBookTab, QString());
+        Transactions = new QWidget();
+        Transactions->setObjectName(QString::fromUtf8("Transactions"));
+        horizontalLayout_9 = new QHBoxLayout(Transactions);
+        horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
+        contactsView = new QWidget(Transactions);
+        contactsView->setObjectName(QString::fromUtf8("contactsView"));
+        sizePolicy.setHeightForWidth(contactsView->sizePolicy().hasHeightForWidth());
+        contactsView->setSizePolicy(sizePolicy);
+        verticalLayout_5 = new QVBoxLayout(contactsView);
+        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
+        trxnsHeading1 = new QLabel(contactsView);
+        trxnsHeading1->setObjectName(QString::fromUtf8("trxnsHeading1"));
+
+        verticalLayout_5->addWidget(trxnsHeading1);
+
+        contacts = new QListWidget(contactsView);
+        contacts->setObjectName(QString::fromUtf8("contacts"));
+
+        verticalLayout_5->addWidget(contacts);
+
+
+        horizontalLayout_9->addWidget(contactsView);
+
+        horizontalSpacer_30 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
+
+        horizontalLayout_9->addItem(horizontalSpacer_30);
+
+        makeTransactions = new QWidget(Transactions);
+        makeTransactions->setObjectName(QString::fromUtf8("makeTransactions"));
+        QSizePolicy sizePolicy9(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy9.setHorizontalStretch(0);
+        sizePolicy9.setVerticalStretch(0);
+        sizePolicy9.setHeightForWidth(makeTransactions->sizePolicy().hasHeightForWidth());
+        makeTransactions->setSizePolicy(sizePolicy9);
+        verticalLayout_10 = new QVBoxLayout(makeTransactions);
+        verticalLayout_10->setObjectName(QString::fromUtf8("verticalLayout_10"));
+        dialogs = new QWidget(makeTransactions);
+        dialogs->setObjectName(QString::fromUtf8("dialogs"));
+        sizePolicy.setHeightForWidth(dialogs->sizePolicy().hasHeightForWidth());
+        dialogs->setSizePolicy(sizePolicy);
+        verticalLayout_9 = new QVBoxLayout(dialogs);
+        verticalLayout_9->setObjectName(QString::fromUtf8("verticalLayout_9"));
+        trxnsHeading1_2 = new QLabel(dialogs);
+        trxnsHeading1_2->setObjectName(QString::fromUtf8("trxnsHeading1_2"));
+
+        verticalLayout_9->addWidget(trxnsHeading1_2);
+
+        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_9->addItem(verticalSpacer_4);
+
+        selectedContact = new QLineEdit(dialogs);
+        selectedContact->setObjectName(QString::fromUtf8("selectedContact"));
+        sizePolicy9.setHeightForWidth(selectedContact->sizePolicy().hasHeightForWidth());
+        selectedContact->setSizePolicy(sizePolicy9);
+        selectedContact->setMaximumSize(QSize(16777215, 50));
+        selectedContact->setReadOnly(true);
+
+        verticalLayout_9->addWidget(selectedContact);
+
+        messageField = new QLineEdit(dialogs);
         messageField->setObjectName(QString::fromUtf8("messageField"));
-        messageField->setGeometry(QRect(460, 120, 381, 32));
-        amountSelector = new QDoubleSpinBox(transactions);
+        sizePolicy9.setHeightForWidth(messageField->sizePolicy().hasHeightForWidth());
+        messageField->setSizePolicy(sizePolicy9);
+        messageField->setMaximumSize(QSize(16777215, 50));
+
+        verticalLayout_9->addWidget(messageField);
+
+        charCount = new QLabel(dialogs);
+        charCount->setObjectName(QString::fromUtf8("charCount"));
+        sizePolicy.setHeightForWidth(charCount->sizePolicy().hasHeightForWidth());
+        charCount->setSizePolicy(sizePolicy);
+        charCount->setMaximumSize(QSize(16777215, 8));
+
+        verticalLayout_9->addWidget(charCount);
+
+
+        verticalLayout_10->addWidget(dialogs);
+
+        selectionLayout = new QHBoxLayout();
+        selectionLayout->setObjectName(QString::fromUtf8("selectionLayout"));
+        selectors = new QWidget(makeTransactions);
+        selectors->setObjectName(QString::fromUtf8("selectors"));
+        sizePolicy.setHeightForWidth(selectors->sizePolicy().hasHeightForWidth());
+        selectors->setSizePolicy(sizePolicy);
+        verticalLayout_8 = new QVBoxLayout(selectors);
+        verticalLayout_8->setObjectName(QString::fromUtf8("verticalLayout_8"));
+        amountView = new QHBoxLayout();
+        amountView->setObjectName(QString::fromUtf8("amountView"));
+        amountLabel = new QLabel(selectors);
+        amountLabel->setObjectName(QString::fromUtf8("amountLabel"));
+        QSizePolicy sizePolicy10(QSizePolicy::Maximum, QSizePolicy::Expanding);
+        sizePolicy10.setHorizontalStretch(0);
+        sizePolicy10.setVerticalStretch(0);
+        sizePolicy10.setHeightForWidth(amountLabel->sizePolicy().hasHeightForWidth());
+        amountLabel->setSizePolicy(sizePolicy10);
+
+        amountView->addWidget(amountLabel);
+
+        horizontalSpacer_15 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        amountView->addItem(horizontalSpacer_15);
+
+        amountSelector = new QDoubleSpinBox(selectors);
         amountSelector->setObjectName(QString::fromUtf8("amountSelector"));
-        amountSelector->setGeometry(QRect(530, 180, 121, 32));
+        QSizePolicy sizePolicy11(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        sizePolicy11.setHorizontalStretch(0);
+        sizePolicy11.setVerticalStretch(0);
+        sizePolicy11.setHeightForWidth(amountSelector->sizePolicy().hasHeightForWidth());
+        amountSelector->setSizePolicy(sizePolicy11);
+        amountSelector->setMaximumSize(QSize(16777215, 30));
+        amountSelector->setLayoutDirection(Qt::LeftToRight);
+        amountSelector->setButtonSymbols(QAbstractSpinBox::UpDownArrows);
         amountSelector->setDecimals(10);
         amountSelector->setMaximum(100.000000000000000);
-        feeSelector = new QDoubleSpinBox(transactions);
+        amountSelector->setValue(0.000000000000000);
+
+        amountView->addWidget(amountSelector);
+
+
+        verticalLayout_8->addLayout(amountView);
+
+        feeView = new QHBoxLayout();
+        feeView->setObjectName(QString::fromUtf8("feeView"));
+        feeLabel = new QLabel(selectors);
+        feeLabel->setObjectName(QString::fromUtf8("feeLabel"));
+        sizePolicy11.setHeightForWidth(feeLabel->sizePolicy().hasHeightForWidth());
+        feeLabel->setSizePolicy(sizePolicy11);
+
+        feeView->addWidget(feeLabel);
+
+        horizontalSpacer_16 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        feeView->addItem(horizontalSpacer_16);
+
+        feeSelector = new QDoubleSpinBox(selectors);
         feeSelector->setObjectName(QString::fromUtf8("feeSelector"));
-        feeSelector->setGeometry(QRect(530, 220, 121, 32));
+        sizePolicy11.setHeightForWidth(feeSelector->sizePolicy().hasHeightForWidth());
+        feeSelector->setSizePolicy(sizePolicy11);
+        feeSelector->setMaximumSize(QSize(16777215, 30));
         feeSelector->setDecimals(5);
         feeSelector->setMaximum(2.000000000000000);
         feeSelector->setSingleStep(0.000010000000000);
-        total = new QLineEdit(transactions);
-        total->setObjectName(QString::fromUtf8("total"));
-        total->setGeometry(QRect(530, 260, 121, 32));
-        total->setReadOnly(true);
-        feeLabel = new QLabel(transactions);
-        feeLabel->setObjectName(QString::fromUtf8("feeLabel"));
-        feeLabel->setGeometry(QRect(460, 220, 58, 31));
-        totalLabel = new QLabel(transactions);
+
+        feeView->addWidget(feeSelector);
+
+
+        verticalLayout_8->addLayout(feeView);
+
+        totalView = new QHBoxLayout();
+        totalView->setObjectName(QString::fromUtf8("totalView"));
+        totalLabel = new QLabel(selectors);
         totalLabel->setObjectName(QString::fromUtf8("totalLabel"));
-        totalLabel->setGeometry(QRect(460, 260, 58, 31));
-        charCount = new QLabel(transactions);
-        charCount->setObjectName(QString::fromUtf8("charCount"));
-        charCount->setGeometry(QRect(787, 150, 51, 21));
-        btndiag_send = new QDialogButtonBox(transactions);
+        sizePolicy11.setHeightForWidth(totalLabel->sizePolicy().hasHeightForWidth());
+        totalLabel->setSizePolicy(sizePolicy11);
+
+        totalView->addWidget(totalLabel);
+
+        horizontalSpacer_17 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        totalView->addItem(horizontalSpacer_17);
+
+        total = new QLineEdit(selectors);
+        total->setObjectName(QString::fromUtf8("total"));
+        sizePolicy11.setHeightForWidth(total->sizePolicy().hasHeightForWidth());
+        total->setSizePolicy(sizePolicy11);
+        total->setMaximumSize(QSize(16777215, 30));
+        total->setReadOnly(true);
+
+        totalView->addWidget(total);
+
+
+        verticalLayout_8->addLayout(totalView);
+
+
+        selectionLayout->addWidget(selectors);
+
+        horizontalSpacer_14 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        selectionLayout->addItem(horizontalSpacer_14);
+
+        btndiag_send = new QDialogButtonBox(makeTransactions);
         btndiag_send->setObjectName(QString::fromUtf8("btndiag_send"));
-        btndiag_send->setGeometry(QRect(760, 180, 81, 71));
+        QSizePolicy sizePolicy12(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy12.setHorizontalStretch(0);
+        sizePolicy12.setVerticalStretch(0);
+        sizePolicy12.setHeightForWidth(btndiag_send->sizePolicy().hasHeightForWidth());
+        btndiag_send->setSizePolicy(sizePolicy12);
         btndiag_send->setOrientation(Qt::Vertical);
         btndiag_send->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Reset);
-        trxnsHeading1 = new QLabel(transactions);
-        trxnsHeading1->setObjectName(QString::fromUtf8("trxnsHeading1"));
-        trxnsHeading1->setGeometry(QRect(60, 40, 381, 31));
-        trxnsHeading2 = new QLabel(transactions);
+
+        selectionLayout->addWidget(btndiag_send);
+
+
+        verticalLayout_10->addLayout(selectionLayout);
+
+        spacerLayout1 = new QVBoxLayout();
+        spacerLayout1->setObjectName(QString::fromUtf8("spacerLayout1"));
+        spacerLayout1->setContentsMargins(-1, -1, -1, 0);
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+        spacerLayout1->addItem(verticalSpacer_3);
+
+        verticalSpacer_2 = new QSpacerItem(40, 525, QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+        spacerLayout1->addItem(verticalSpacer_2);
+
+
+        verticalLayout_10->addLayout(spacerLayout1);
+
+
+        horizontalLayout_9->addWidget(makeTransactions);
+
+        horizontalSpacer_18 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
+
+        horizontalLayout_9->addItem(horizontalSpacer_18);
+
+        trxnLogView = new QWidget(Transactions);
+        trxnLogView->setObjectName(QString::fromUtf8("trxnLogView"));
+        sizePolicy.setHeightForWidth(trxnLogView->sizePolicy().hasHeightForWidth());
+        trxnLogView->setSizePolicy(sizePolicy);
+        verticalLayout_6 = new QVBoxLayout(trxnLogView);
+        verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
+        trxnsHeading2 = new QLabel(trxnLogView);
         trxnsHeading2->setObjectName(QString::fromUtf8("trxnsHeading2"));
-        trxnsHeading2->setGeometry(QRect(870, 40, 381, 31));
-        contacts = new QListWidget(transactions);
-        contacts->setObjectName(QString::fromUtf8("contacts"));
-        contacts->setGeometry(QRect(60, 80, 381, 501));
-        transactionLog = new QListWidget(transactions);
+
+        verticalLayout_6->addWidget(trxnsHeading2);
+
+        transactionLog = new QListWidget(trxnLogView);
         transactionLog->setObjectName(QString::fromUtf8("transactionLog"));
-        transactionLog->setGeometry(QRect(870, 80, 381, 501));
-        selectedContact = new QLineEdit(transactions);
-        selectedContact->setObjectName(QString::fromUtf8("selectedContact"));
-        selectedContact->setGeometry(QRect(460, 80, 381, 32));
-        selectedContact->setReadOnly(true);
-        stackedWidget->addWidget(transactions);
-        account = new QWidget();
-        account->setObjectName(QString::fromUtf8("account"));
-        accountView = new QStackedWidget(account);
+
+        verticalLayout_6->addWidget(transactionLog);
+
+
+        horizontalLayout_9->addWidget(trxnLogView);
+
+        tabWidget->addTab(Transactions, QString());
+        Account = new QWidget();
+        Account->setObjectName(QString::fromUtf8("Account"));
+        horizontalLayout_16 = new QHBoxLayout(Account);
+        horizontalLayout_16->setObjectName(QString::fromUtf8("horizontalLayout_16"));
+        accountView = new QStackedWidget(Account);
         accountView->setObjectName(QString::fromUtf8("accountView"));
-        accountView->setGeometry(QRect(0, 20, 1261, 801));
         signIn = new QWidget();
         signIn->setObjectName(QString::fromUtf8("signIn"));
-        s_EmailField = new QLineEdit(signIn);
-        s_EmailField->setObjectName(QString::fromUtf8("s_EmailField"));
-        s_EmailField->setGeometry(QRect(230, 380, 241, 31));
-        s_EmailField->setClearButtonEnabled(true);
-        btn_signIn = new QPushButton(signIn);
-        btn_signIn->setObjectName(QString::fromUtf8("btn_signIn"));
-        btn_signIn->setGeometry(QRect(250, 500, 81, 31));
-        signInTitle = new QLabel(signIn);
+        horizontalLayout_17 = new QHBoxLayout(signIn);
+        horizontalLayout_17->setObjectName(QString::fromUtf8("horizontalLayout_17"));
+        horizontalSpacer_20 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_17->addItem(horizontalSpacer_20);
+
+        widget_8 = new QWidget(signIn);
+        widget_8->setObjectName(QString::fromUtf8("widget_8"));
+        verticalLayout_18 = new QVBoxLayout(widget_8);
+        verticalLayout_18->setObjectName(QString::fromUtf8("verticalLayout_18"));
+        verticalSpacer_6 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_18->addItem(verticalSpacer_6);
+
+        signInTitle = new QLabel(widget_8);
         signInTitle->setObjectName(QString::fromUtf8("signInTitle"));
-        signInTitle->setGeometry(QRect(130, 230, 451, 81));
-        s_PasswordField = new QLineEdit(signIn);
+
+        verticalLayout_18->addWidget(signInTitle);
+
+        verticalSpacer_8 = new QSpacerItem(20, 30, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_18->addItem(verticalSpacer_8);
+
+        verticalLayout_17 = new QVBoxLayout();
+        verticalLayout_17->setObjectName(QString::fromUtf8("verticalLayout_17"));
+        verticalLayout_17->setContentsMargins(-1, 0, -1, 0);
+        s_EmailField = new QLineEdit(widget_8);
+        s_EmailField->setObjectName(QString::fromUtf8("s_EmailField"));
+        QSizePolicy sizePolicy13(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+        sizePolicy13.setHorizontalStretch(0);
+        sizePolicy13.setVerticalStretch(0);
+        sizePolicy13.setHeightForWidth(s_EmailField->sizePolicy().hasHeightForWidth());
+        s_EmailField->setSizePolicy(sizePolicy13);
+        s_EmailField->setMaximumSize(QSize(16777215, 35));
+        s_EmailField->setClearButtonEnabled(true);
+
+        verticalLayout_17->addWidget(s_EmailField);
+
+        s_PasswordField = new QLineEdit(widget_8);
         s_PasswordField->setObjectName(QString::fromUtf8("s_PasswordField"));
-        s_PasswordField->setGeometry(QRect(230, 420, 241, 31));
+        sizePolicy9.setHeightForWidth(s_PasswordField->sizePolicy().hasHeightForWidth());
+        s_PasswordField->setSizePolicy(sizePolicy9);
+        s_PasswordField->setMaximumSize(QSize(16777215, 35));
         s_PasswordField->setEchoMode(QLineEdit::Password);
         s_PasswordField->setClearButtonEnabled(true);
-        btn_create = new QPushButton(signIn);
+
+        verticalLayout_17->addWidget(s_PasswordField);
+
+        verticalSpacer_7 = new QSpacerItem(20, 30, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_17->addItem(verticalSpacer_7);
+
+        btn_signIn = new QPushButton(widget_8);
+        btn_signIn->setObjectName(QString::fromUtf8("btn_signIn"));
+        sizePolicy12.setHeightForWidth(btn_signIn->sizePolicy().hasHeightForWidth());
+        btn_signIn->setSizePolicy(sizePolicy12);
+
+        verticalLayout_17->addWidget(btn_signIn);
+
+        btn_create = new QPushButton(widget_8);
         btn_create->setObjectName(QString::fromUtf8("btn_create"));
-        btn_create->setGeometry(QRect(350, 500, 81, 31));
-        banner1 = new QWidget(signIn);
+        sizePolicy12.setHeightForWidth(btn_create->sizePolicy().hasHeightForWidth());
+        btn_create->setSizePolicy(sizePolicy12);
+
+        verticalLayout_17->addWidget(btn_create);
+
+
+        verticalLayout_18->addLayout(verticalLayout_17);
+
+        verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_18->addItem(verticalSpacer_5);
+
+
+        horizontalLayout_17->addWidget(widget_8);
+
+        horizontalSpacer_21 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_17->addItem(horizontalSpacer_21);
+
+        widget_9 = new QWidget(signIn);
+        widget_9->setObjectName(QString::fromUtf8("widget_9"));
+        verticalLayout_20 = new QVBoxLayout(widget_9);
+        verticalLayout_20->setObjectName(QString::fromUtf8("verticalLayout_20"));
+        banner1 = new QWidget(widget_9);
         banner1->setObjectName(QString::fromUtf8("banner1"));
-        banner1->setGeometry(QRect(650, 40, 591, 721));
         banner1->setStyleSheet(QString::fromUtf8("background-color: rgb(115, 233, 255);\n"
 "border: 4px solid rgb(115, 233, 255);\n"
 "border-radius: 4px"));
+        verticalLayout_21 = new QVBoxLayout(banner1);
+        verticalLayout_21->setObjectName(QString::fromUtf8("verticalLayout_21"));
         bannerText1 = new QLabel(banner1);
         bannerText1->setObjectName(QString::fromUtf8("bannerText1"));
-        bannerText1->setGeometry(QRect(0, 0, 591, 721));
         bannerText1->setStyleSheet(QString::fromUtf8(""));
+
+        verticalLayout_21->addWidget(bannerText1);
+
+
+        verticalLayout_20->addWidget(banner1);
+
+
+        horizontalLayout_17->addWidget(widget_9);
+
+        horizontalSpacer_22 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_17->addItem(horizontalSpacer_22);
+
         accountView->addWidget(signIn);
         signUp = new QWidget();
         signUp->setObjectName(QString::fromUtf8("signUp"));
-        createTitle = new QLabel(signUp);
+        horizontalLayout_18 = new QHBoxLayout(signUp);
+        horizontalLayout_18->setObjectName(QString::fromUtf8("horizontalLayout_18"));
+        horizontalSpacer_23 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_18->addItem(horizontalSpacer_23);
+
+        widget_10 = new QWidget(signUp);
+        widget_10->setObjectName(QString::fromUtf8("widget_10"));
+        verticalLayout_13 = new QVBoxLayout(widget_10);
+        verticalLayout_13->setObjectName(QString::fromUtf8("verticalLayout_13"));
+        verticalSpacer_11 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_13->addItem(verticalSpacer_11);
+
+        createTitle = new QLabel(widget_10);
         createTitle->setObjectName(QString::fromUtf8("createTitle"));
-        createTitle->setGeometry(QRect(60, 190, 611, 101));
-        btn_signUp = new QPushButton(signUp);
-        btn_signUp->setObjectName(QString::fromUtf8("btn_signUp"));
-        btn_signUp->setGeometry(QRect(250, 510, 81, 31));
-        btn_back = new QPushButton(signUp);
-        btn_back->setObjectName(QString::fromUtf8("btn_back"));
-        btn_back->setGeometry(QRect(350, 510, 81, 31));
-        c_EmailField = new QLineEdit(signUp);
+
+        verticalLayout_13->addWidget(createTitle);
+
+        verticalSpacer_10 = new QSpacerItem(20, 30, QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+        verticalLayout_13->addItem(verticalSpacer_10);
+
+        verticalLayout_12 = new QVBoxLayout();
+        verticalLayout_12->setObjectName(QString::fromUtf8("verticalLayout_12"));
+        c_EmailField = new QLineEdit(widget_10);
         c_EmailField->setObjectName(QString::fromUtf8("c_EmailField"));
-        c_EmailField->setGeometry(QRect(230, 350, 241, 31));
+        sizePolicy9.setHeightForWidth(c_EmailField->sizePolicy().hasHeightForWidth());
+        c_EmailField->setSizePolicy(sizePolicy9);
+        c_EmailField->setMaximumSize(QSize(16777215, 35));
         c_EmailField->setClearButtonEnabled(true);
-        c_UsernameField = new QLineEdit(signUp);
+
+        verticalLayout_12->addWidget(c_EmailField);
+
+        c_UsernameField = new QLineEdit(widget_10);
         c_UsernameField->setObjectName(QString::fromUtf8("c_UsernameField"));
-        c_UsernameField->setGeometry(QRect(230, 390, 241, 31));
+        sizePolicy9.setHeightForWidth(c_UsernameField->sizePolicy().hasHeightForWidth());
+        c_UsernameField->setSizePolicy(sizePolicy9);
+        c_UsernameField->setMaximumSize(QSize(16777215, 35));
         c_UsernameField->setClearButtonEnabled(true);
-        c_PasswordField = new QLineEdit(signUp);
+
+        verticalLayout_12->addWidget(c_UsernameField);
+
+        c_PasswordField = new QLineEdit(widget_10);
         c_PasswordField->setObjectName(QString::fromUtf8("c_PasswordField"));
-        c_PasswordField->setGeometry(QRect(230, 430, 241, 31));
+        sizePolicy9.setHeightForWidth(c_PasswordField->sizePolicy().hasHeightForWidth());
+        c_PasswordField->setSizePolicy(sizePolicy9);
+        c_PasswordField->setMaximumSize(QSize(16777215, 35));
         c_PasswordField->setEchoMode(QLineEdit::Password);
         c_PasswordField->setClearButtonEnabled(true);
-        banner2 = new QWidget(signUp);
+
+        verticalLayout_12->addWidget(c_PasswordField);
+
+        verticalSpacer_9 = new QSpacerItem(20, 30, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_12->addItem(verticalSpacer_9);
+
+        btn_signUp = new QPushButton(widget_10);
+        btn_signUp->setObjectName(QString::fromUtf8("btn_signUp"));
+        sizePolicy12.setHeightForWidth(btn_signUp->sizePolicy().hasHeightForWidth());
+        btn_signUp->setSizePolicy(sizePolicy12);
+
+        verticalLayout_12->addWidget(btn_signUp);
+
+        btn_back = new QPushButton(widget_10);
+        btn_back->setObjectName(QString::fromUtf8("btn_back"));
+        sizePolicy12.setHeightForWidth(btn_back->sizePolicy().hasHeightForWidth());
+        btn_back->setSizePolicy(sizePolicy12);
+
+        verticalLayout_12->addWidget(btn_back);
+
+
+        verticalLayout_13->addLayout(verticalLayout_12);
+
+        verticalSpacer_12 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_13->addItem(verticalSpacer_12);
+
+
+        horizontalLayout_18->addWidget(widget_10);
+
+        horizontalSpacer_25 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_18->addItem(horizontalSpacer_25);
+
+        widget_11 = new QWidget(signUp);
+        widget_11->setObjectName(QString::fromUtf8("widget_11"));
+        verticalLayout_16 = new QVBoxLayout(widget_11);
+        verticalLayout_16->setObjectName(QString::fromUtf8("verticalLayout_16"));
+        banner2 = new QWidget(widget_11);
         banner2->setObjectName(QString::fromUtf8("banner2"));
-        banner2->setGeometry(QRect(650, 40, 591, 721));
         banner2->setStyleSheet(QString::fromUtf8("background-color: rgb(115, 233, 255);\n"
 "border: 4px solid rgb(115, 233, 255);\n"
 "border-radius: 4px"));
+        verticalLayout_15 = new QVBoxLayout(banner2);
+        verticalLayout_15->setObjectName(QString::fromUtf8("verticalLayout_15"));
         bannerText2 = new QLabel(banner2);
         bannerText2->setObjectName(QString::fromUtf8("bannerText2"));
-        bannerText2->setGeometry(QRect(0, 0, 591, 721));
         bannerText2->setStyleSheet(QString::fromUtf8(""));
+
+        verticalLayout_15->addWidget(bannerText2);
+
+
+        verticalLayout_16->addWidget(banner2);
+
+
+        horizontalLayout_18->addWidget(widget_11);
+
+        horizontalSpacer_24 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_18->addItem(horizontalSpacer_24);
+
         accountView->addWidget(signUp);
         loggedIn = new QWidget();
         loggedIn->setObjectName(QString::fromUtf8("loggedIn"));
-        verticalLayoutWidget = new QWidget(loggedIn);
-        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(10, 0, 1251, 791));
-        pageContainer = new QVBoxLayout(verticalLayoutWidget);
+        horizontalLayout_15 = new QHBoxLayout(loggedIn);
+        horizontalLayout_15->setObjectName(QString::fromUtf8("horizontalLayout_15"));
+        pageContainer = new QVBoxLayout();
         pageContainer->setObjectName(QString::fromUtf8("pageContainer"));
-        pageContainer->setContentsMargins(0, 0, 0, 0);
-        scrollArea = new QScrollArea(verticalLayoutWidget);
+        scrollArea = new QScrollArea(loggedIn);
         scrollArea->setObjectName(QString::fromUtf8("scrollArea"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(scrollArea->sizePolicy().hasHeightForWidth());
-        scrollArea->setSizePolicy(sizePolicy1);
+        scrollArea->setEnabled(true);
+        sizePolicy3.setHeightForWidth(scrollArea->sizePolicy().hasHeightForWidth());
+        scrollArea->setSizePolicy(sizePolicy3);
         scrollArea->setMinimumSize(QSize(0, 0));
+        scrollArea->setStyleSheet(QString::fromUtf8("QScrollArea { background: transparent; }\n"
+"QScrollArea > QWidget > QWidget { background: transparent; }\n"
+"QScrollArea > QWidget > QScrollBar { background: palette(base); }"));
         scrollArea->setFrameShape(QFrame::NoFrame);
-        scrollArea->setFrameShadow(QFrame::Sunken);
+        scrollArea->setFrameShadow(QFrame::Plain);
         scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         scrollArea->setWidgetResizable(true);
         scrollArea->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         scrollAreaContent = new QWidget();
         scrollAreaContent->setObjectName(QString::fromUtf8("scrollAreaContent"));
-        scrollAreaContent->setGeometry(QRect(0, 0, 1249, 789));
-        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(scrollAreaContent->sizePolicy().hasHeightForWidth());
-        scrollAreaContent->setSizePolicy(sizePolicy2);
+        scrollAreaContent->setEnabled(true);
+        scrollAreaContent->setGeometry(QRect(0, 0, 1253, 856));
+        QSizePolicy sizePolicy14(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy14.setHorizontalStretch(0);
+        sizePolicy14.setVerticalStretch(0);
+        sizePolicy14.setHeightForWidth(scrollAreaContent->sizePolicy().hasHeightForWidth());
+        scrollAreaContent->setSizePolicy(sizePolicy14);
         scrollAreaContent->setMinimumSize(QSize(550, 550));
+        scrollAreaContent->setAutoFillBackground(false);
+        horizontalLayout_22 = new QHBoxLayout(scrollAreaContent);
+        horizontalLayout_22->setObjectName(QString::fromUtf8("horizontalLayout_22"));
+        horizontalSpacer_26 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_22->addItem(horizontalSpacer_26);
+
         contentContainer = new QWidget(scrollAreaContent);
         contentContainer->setObjectName(QString::fromUtf8("contentContainer"));
-        contentContainer->setGeometry(QRect(0, 0, 631, 671));
-        sizePolicy2.setHeightForWidth(contentContainer->sizePolicy().hasHeightForWidth());
-        contentContainer->setSizePolicy(sizePolicy2);
+        sizePolicy14.setHeightForWidth(contentContainer->sizePolicy().hasHeightForWidth());
+        contentContainer->setSizePolicy(sizePolicy14);
         pageLayout = new QVBoxLayout(contentContainer);
         pageLayout->setObjectName(QString::fromUtf8("pageLayout"));
         pageLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
         address = new QWidget(contentContainer);
         address->setObjectName(QString::fromUtf8("address"));
-        addressCopy = new QToolButton(address);
-        addressCopy->setObjectName(QString::fromUtf8("addressCopy"));
-        addressCopy->setGeometry(QRect(340, 100, 33, 31));
-        QSizePolicy sizePolicy3(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(addressCopy->sizePolicy().hasHeightForWidth());
-        addressCopy->setSizePolicy(sizePolicy3);
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8("../../../../../../../../../../.designer/assets/clipboard.png"), QSize(), QIcon::Normal, QIcon::Off);
-        addressCopy->setIcon(icon4);
-        walletAddress = new QLineEdit(address);
-        walletAddress->setObjectName(QString::fromUtf8("walletAddress"));
-        walletAddress->setGeometry(QRect(10, 100, 321, 31));
-        QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(walletAddress->sizePolicy().hasHeightForWidth());
-        walletAddress->setSizePolicy(sizePolicy4);
-        walletAddress->setReadOnly(true);
-        addressSubtitle = new QLabel(address);
-        addressSubtitle->setObjectName(QString::fromUtf8("addressSubtitle"));
-        addressSubtitle->setGeometry(QRect(10, 50, 491, 41));
-        QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy5.setHorizontalStretch(0);
-        sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(addressSubtitle->sizePolicy().hasHeightForWidth());
-        addressSubtitle->setSizePolicy(sizePolicy5);
+        address->setEnabled(true);
+        verticalLayout_22 = new QVBoxLayout(address);
+        verticalLayout_22->setObjectName(QString::fromUtf8("verticalLayout_22"));
         addressTitle = new QLabel(address);
         addressTitle->setObjectName(QString::fromUtf8("addressTitle"));
-        addressTitle->setGeometry(QRect(10, 10, 231, 31));
-        sizePolicy5.setHeightForWidth(addressTitle->sizePolicy().hasHeightForWidth());
-        addressTitle->setSizePolicy(sizePolicy5);
+        sizePolicy12.setHeightForWidth(addressTitle->sizePolicy().hasHeightForWidth());
+        addressTitle->setSizePolicy(sizePolicy12);
+
+        verticalLayout_22->addWidget(addressTitle);
+
+        addressSubtitle = new QLabel(address);
+        addressSubtitle->setObjectName(QString::fromUtf8("addressSubtitle"));
+        sizePolicy12.setHeightForWidth(addressSubtitle->sizePolicy().hasHeightForWidth());
+        addressSubtitle->setSizePolicy(sizePolicy12);
+
+        verticalLayout_22->addWidget(addressSubtitle);
+
+        horizontalLayout_19 = new QHBoxLayout();
+        horizontalLayout_19->setObjectName(QString::fromUtf8("horizontalLayout_19"));
+        walletAddress = new QLineEdit(address);
+        walletAddress->setObjectName(QString::fromUtf8("walletAddress"));
+        sizePolicy12.setHeightForWidth(walletAddress->sizePolicy().hasHeightForWidth());
+        walletAddress->setSizePolicy(sizePolicy12);
+        walletAddress->setMaximumSize(QSize(16777215, 30));
+        walletAddress->setReadOnly(true);
+
+        horizontalLayout_19->addWidget(walletAddress);
+
+        addressCopy = new QToolButton(address);
+        addressCopy->setObjectName(QString::fromUtf8("addressCopy"));
+        sizePolicy2.setHeightForWidth(addressCopy->sizePolicy().hasHeightForWidth());
+        addressCopy->setSizePolicy(sizePolicy2);
+        addressCopy->setMaximumSize(QSize(34, 34));
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png"), QSize(), QIcon::Normal, QIcon::Off);
+        addressCopy->setIcon(icon4);
+
+        horizontalLayout_19->addWidget(addressCopy);
+
+
+        verticalLayout_22->addLayout(horizontalLayout_19);
+
 
         pageLayout->addWidget(address);
 
         rsaKeys = new QWidget(contentContainer);
         rsaKeys->setObjectName(QString::fromUtf8("rsaKeys"));
         rsaKeys->setMinimumSize(QSize(0, 0));
+        verticalLayout_19 = new QVBoxLayout(rsaKeys);
+        verticalLayout_19->setObjectName(QString::fromUtf8("verticalLayout_19"));
         rsaTitle = new QLabel(rsaKeys);
         rsaTitle->setObjectName(QString::fromUtf8("rsaTitle"));
-        rsaTitle->setGeometry(QRect(10, 10, 111, 31));
-        sizePolicy5.setHeightForWidth(rsaTitle->sizePolicy().hasHeightForWidth());
-        rsaTitle->setSizePolicy(sizePolicy5);
-        privKeyShow = new QToolButton(rsaKeys);
-        privKeyShow->setObjectName(QString::fromUtf8("privKeyShow"));
-        privKeyShow->setGeometry(QRect(350, 89, 33, 31));
-        sizePolicy3.setHeightForWidth(privKeyShow->sizePolicy().hasHeightForWidth());
-        privKeyShow->setSizePolicy(sizePolicy3);
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8("../../../../../../../../../../.designer/assets/no-view.png"), QSize(), QIcon::Normal, QIcon::Off);
-        privKeyShow->setIcon(icon5);
+        sizePolicy12.setHeightForWidth(rsaTitle->sizePolicy().hasHeightForWidth());
+        rsaTitle->setSizePolicy(sizePolicy12);
+
+        verticalLayout_19->addWidget(rsaTitle);
+
+        horizontalLayout_20 = new QHBoxLayout();
+        horizontalLayout_20->setObjectName(QString::fromUtf8("horizontalLayout_20"));
         publicKey = new QLineEdit(rsaKeys);
         publicKey->setObjectName(QString::fromUtf8("publicKey"));
-        publicKey->setGeometry(QRect(10, 50, 331, 31));
-        sizePolicy4.setHeightForWidth(publicKey->sizePolicy().hasHeightForWidth());
-        publicKey->setSizePolicy(sizePolicy4);
+        sizePolicy12.setHeightForWidth(publicKey->sizePolicy().hasHeightForWidth());
+        publicKey->setSizePolicy(sizePolicy12);
+        publicKey->setMaximumSize(QSize(16777215, 30));
         publicKey->setReadOnly(true);
-        pubKeyCopy = new QToolButton(rsaKeys);
-        pubKeyCopy->setObjectName(QString::fromUtf8("pubKeyCopy"));
-        pubKeyCopy->setGeometry(QRect(390, 50, 33, 31));
-        sizePolicy3.setHeightForWidth(pubKeyCopy->sizePolicy().hasHeightForWidth());
-        pubKeyCopy->setSizePolicy(sizePolicy3);
-        pubKeyCopy->setIcon(icon4);
+
+        horizontalLayout_20->addWidget(publicKey);
+
         pubKeyShow = new QToolButton(rsaKeys);
         pubKeyShow->setObjectName(QString::fromUtf8("pubKeyShow"));
-        pubKeyShow->setGeometry(QRect(350, 50, 33, 31));
-        sizePolicy3.setHeightForWidth(pubKeyShow->sizePolicy().hasHeightForWidth());
-        pubKeyShow->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(pubKeyShow->sizePolicy().hasHeightForWidth());
+        pubKeyShow->setSizePolicy(sizePolicy2);
+        pubKeyShow->setMaximumSize(QSize(34, 34));
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png"), QSize(), QIcon::Normal, QIcon::Off);
         pubKeyShow->setIcon(icon5);
-        privKeyCopy = new QToolButton(rsaKeys);
-        privKeyCopy->setObjectName(QString::fromUtf8("privKeyCopy"));
-        privKeyCopy->setGeometry(QRect(390, 90, 33, 31));
-        sizePolicy3.setHeightForWidth(privKeyCopy->sizePolicy().hasHeightForWidth());
-        privKeyCopy->setSizePolicy(sizePolicy3);
-        privKeyCopy->setIcon(icon4);
+
+        horizontalLayout_20->addWidget(pubKeyShow);
+
+        pubKeyCopy = new QToolButton(rsaKeys);
+        pubKeyCopy->setObjectName(QString::fromUtf8("pubKeyCopy"));
+        sizePolicy2.setHeightForWidth(pubKeyCopy->sizePolicy().hasHeightForWidth());
+        pubKeyCopy->setSizePolicy(sizePolicy2);
+        pubKeyCopy->setMaximumSize(QSize(34, 34));
+        pubKeyCopy->setIcon(icon4);
+
+        horizontalLayout_20->addWidget(pubKeyCopy);
+
+
+        verticalLayout_19->addLayout(horizontalLayout_20);
+
+        horizontalLayout_21 = new QHBoxLayout();
+        horizontalLayout_21->setObjectName(QString::fromUtf8("horizontalLayout_21"));
         privateKey = new QLineEdit(rsaKeys);
         privateKey->setObjectName(QString::fromUtf8("privateKey"));
-        privateKey->setGeometry(QRect(10, 90, 331, 31));
-        sizePolicy4.setHeightForWidth(privateKey->sizePolicy().hasHeightForWidth());
-        privateKey->setSizePolicy(sizePolicy4);
+        sizePolicy12.setHeightForWidth(privateKey->sizePolicy().hasHeightForWidth());
+        privateKey->setSizePolicy(sizePolicy12);
+        privateKey->setMaximumSize(QSize(16777215, 30));
         privateKey->setReadOnly(true);
+
+        horizontalLayout_21->addWidget(privateKey);
+
+        privKeyShow = new QToolButton(rsaKeys);
+        privKeyShow->setObjectName(QString::fromUtf8("privKeyShow"));
+        sizePolicy2.setHeightForWidth(privKeyShow->sizePolicy().hasHeightForWidth());
+        privKeyShow->setSizePolicy(sizePolicy2);
+        privKeyShow->setMaximumSize(QSize(34, 34));
+        privKeyShow->setIcon(icon5);
+
+        horizontalLayout_21->addWidget(privKeyShow);
+
+        privKeyCopy = new QToolButton(rsaKeys);
+        privKeyCopy->setObjectName(QString::fromUtf8("privKeyCopy"));
+        sizePolicy2.setHeightForWidth(privKeyCopy->sizePolicy().hasHeightForWidth());
+        privKeyCopy->setSizePolicy(sizePolicy2);
+        privKeyCopy->setMaximumSize(QSize(34, 34));
+        privKeyCopy->setIcon(icon4);
+
+        horizontalLayout_21->addWidget(privKeyCopy);
+
+
+        verticalLayout_19->addLayout(horizontalLayout_21);
+
 
         pageLayout->addWidget(rsaKeys);
 
         pubIPAddr = new QWidget(contentContainer);
         pubIPAddr->setObjectName(QString::fromUtf8("pubIPAddr"));
+        verticalLayout_24 = new QVBoxLayout(pubIPAddr);
+        verticalLayout_24->setObjectName(QString::fromUtf8("verticalLayout_24"));
         pubIPAddrTitle = new QLabel(pubIPAddr);
         pubIPAddrTitle->setObjectName(QString::fromUtf8("pubIPAddrTitle"));
-        pubIPAddrTitle->setGeometry(QRect(10, 10, 201, 31));
-        sizePolicy5.setHeightForWidth(pubIPAddrTitle->sizePolicy().hasHeightForWidth());
-        pubIPAddrTitle->setSizePolicy(sizePolicy5);
-        publicIPAddress = new QTextBrowser(pubIPAddr);
-        publicIPAddress->setObjectName(QString::fromUtf8("publicIPAddress"));
-        publicIPAddress->setGeometry(QRect(10, 140, 256, 31));
-        sizePolicy4.setHeightForWidth(publicIPAddress->sizePolicy().hasHeightForWidth());
-        publicIPAddress->setSizePolicy(sizePolicy4);
+        sizePolicy12.setHeightForWidth(pubIPAddrTitle->sizePolicy().hasHeightForWidth());
+        pubIPAddrTitle->setSizePolicy(sizePolicy12);
+
+        verticalLayout_24->addWidget(pubIPAddrTitle);
+
         pubIPAddrSubtitle = new QLabel(pubIPAddr);
         pubIPAddrSubtitle->setObjectName(QString::fromUtf8("pubIPAddrSubtitle"));
-        pubIPAddrSubtitle->setGeometry(QRect(10, 50, 521, 81));
-        sizePolicy5.setHeightForWidth(pubIPAddrSubtitle->sizePolicy().hasHeightForWidth());
-        pubIPAddrSubtitle->setSizePolicy(sizePolicy5);
+        sizePolicy12.setHeightForWidth(pubIPAddrSubtitle->sizePolicy().hasHeightForWidth());
+        pubIPAddrSubtitle->setSizePolicy(sizePolicy12);
+
+        verticalLayout_24->addWidget(pubIPAddrSubtitle);
+
+        publicIPAddress = new QTextBrowser(pubIPAddr);
+        publicIPAddress->setObjectName(QString::fromUtf8("publicIPAddress"));
+        QSizePolicy sizePolicy15(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy15.setHorizontalStretch(0);
+        sizePolicy15.setVerticalStretch(0);
+        sizePolicy15.setHeightForWidth(publicIPAddress->sizePolicy().hasHeightForWidth());
+        publicIPAddress->setSizePolicy(sizePolicy15);
+        publicIPAddress->setMaximumSize(QSize(16777215, 30));
+
+        verticalLayout_24->addWidget(publicIPAddress);
+
 
         pageLayout->addWidget(pubIPAddr);
+
+
+        horizontalLayout_22->addWidget(contentContainer);
+
+        horizontalSpacer_27 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_22->addItem(horizontalSpacer_27);
 
         scrollArea->setWidget(scrollAreaContent);
 
         pageContainer->addWidget(scrollArea);
 
+
+        horizontalLayout_15->addLayout(pageContainer);
+
         accountView->addWidget(loggedIn);
-        stackedWidget->addWidget(account);
-        settings = new QWidget();
-        settings->setObjectName(QString::fromUtf8("settings"));
-        settingsTitle = new QLabel(settings);
+
+        horizontalLayout_16->addWidget(accountView);
+
+        tabWidget->addTab(Account, QString());
+        Settings = new QWidget();
+        Settings->setObjectName(QString::fromUtf8("Settings"));
+        verticalLayout_28 = new QVBoxLayout(Settings);
+        verticalLayout_28->setObjectName(QString::fromUtf8("verticalLayout_28"));
+        settingsTitle = new QLabel(Settings);
         settingsTitle->setObjectName(QString::fromUtf8("settingsTitle"));
-        settingsTitle->setGeometry(QRect(30, 20, 91, 41));
-        rsaKeyPath = new QWidget(settings);
+
+        verticalLayout_28->addWidget(settingsTitle);
+
+        gridLayout_2 = new QGridLayout();
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        rsaKeyPath = new QWidget(Settings);
         rsaKeyPath->setObjectName(QString::fromUtf8("rsaKeyPath"));
-        rsaKeyPath->setGeometry(QRect(30, 60, 431, 101));
-        btn_reset = new QToolButton(rsaKeyPath);
-        btn_reset->setObjectName(QString::fromUtf8("btn_reset"));
-        btn_reset->setGeometry(QRect(370, 60, 33, 31));
-        QIcon icon6;
-        icon6.addFile(QString::fromUtf8("../../../../../../.designer/assets/reset.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_reset->setIcon(icon6);
-        btn_choosePath = new QPushButton(rsaKeyPath);
-        btn_choosePath->setObjectName(QString::fromUtf8("btn_choosePath"));
-        btn_choosePath->setGeometry(QRect(260, 60, 101, 31));
-        rsaKeyView = new QTextBrowser(rsaKeyPath);
-        rsaKeyView->setObjectName(QString::fromUtf8("rsaKeyView"));
-        rsaKeyView->setGeometry(QRect(0, 60, 251, 31));
+        verticalLayout_25 = new QVBoxLayout(rsaKeyPath);
+        verticalLayout_25->setObjectName(QString::fromUtf8("verticalLayout_25"));
         rsaKeyTitle = new QLabel(rsaKeyPath);
         rsaKeyTitle->setObjectName(QString::fromUtf8("rsaKeyTitle"));
-        rsaKeyTitle->setGeometry(QRect(0, 0, 101, 31));
+
+        verticalLayout_25->addWidget(rsaKeyTitle);
+
         rsaKeySubtitle = new QLabel(rsaKeyPath);
         rsaKeySubtitle->setObjectName(QString::fromUtf8("rsaKeySubtitle"));
-        rsaKeySubtitle->setGeometry(QRect(0, 30, 431, 31));
-        changePassword = new QWidget(settings);
+
+        verticalLayout_25->addWidget(rsaKeySubtitle);
+
+        horizontalLayout_23 = new QHBoxLayout();
+        horizontalLayout_23->setObjectName(QString::fromUtf8("horizontalLayout_23"));
+        rsaKeyView = new QTextBrowser(rsaKeyPath);
+        rsaKeyView->setObjectName(QString::fromUtf8("rsaKeyView"));
+        sizePolicy12.setHeightForWidth(rsaKeyView->sizePolicy().hasHeightForWidth());
+        rsaKeyView->setSizePolicy(sizePolicy12);
+        rsaKeyView->setMaximumSize(QSize(16777215, 30));
+
+        horizontalLayout_23->addWidget(rsaKeyView);
+
+        btn_choosePath = new QPushButton(rsaKeyPath);
+        btn_choosePath->setObjectName(QString::fromUtf8("btn_choosePath"));
+        sizePolicy12.setHeightForWidth(btn_choosePath->sizePolicy().hasHeightForWidth());
+        btn_choosePath->setSizePolicy(sizePolicy12);
+        btn_choosePath->setMaximumSize(QSize(16777215, 32));
+
+        horizontalLayout_23->addWidget(btn_choosePath);
+
+        btn_reset = new QToolButton(rsaKeyPath);
+        btn_reset->setObjectName(QString::fromUtf8("btn_reset"));
+        sizePolicy11.setHeightForWidth(btn_reset->sizePolicy().hasHeightForWidth());
+        btn_reset->setSizePolicy(sizePolicy11);
+        btn_reset->setMaximumSize(QSize(34, 34));
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../.designer/assets/reset.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_reset->setIcon(icon6);
+
+        horizontalLayout_23->addWidget(btn_reset);
+
+
+        verticalLayout_25->addLayout(horizontalLayout_23);
+
+        verticalSpacer_13 = new QSpacerItem(20, 700, QSizePolicy::Minimum, QSizePolicy::Maximum);
+
+        verticalLayout_25->addItem(verticalSpacer_13);
+
+
+        gridLayout_2->addWidget(rsaKeyPath, 0, 2, 1, 1);
+
+        changePassword = new QWidget(Settings);
         changePassword->setObjectName(QString::fromUtf8("changePassword"));
-        changePassword->setGeometry(QRect(30, 170, 561, 231));
+        verticalLayout_27 = new QVBoxLayout(changePassword);
+        verticalLayout_27->setObjectName(QString::fromUtf8("verticalLayout_27"));
         chgPsswdTitle = new QLabel(changePassword);
         chgPsswdTitle->setObjectName(QString::fromUtf8("chgPsswdTitle"));
-        chgPsswdTitle->setGeometry(QRect(0, 10, 141, 31));
-        sizePolicy5.setHeightForWidth(chgPsswdTitle->sizePolicy().hasHeightForWidth());
-        chgPsswdTitle->setSizePolicy(sizePolicy5);
+        sizePolicy12.setHeightForWidth(chgPsswdTitle->sizePolicy().hasHeightForWidth());
+        chgPsswdTitle->setSizePolicy(sizePolicy12);
+
+        verticalLayout_27->addWidget(chgPsswdTitle);
+
         chgPsswdSubtitle = new QLabel(changePassword);
         chgPsswdSubtitle->setObjectName(QString::fromUtf8("chgPsswdSubtitle"));
-        chgPsswdSubtitle->setGeometry(QRect(0, 40, 551, 61));
-        sizePolicy5.setHeightForWidth(chgPsswdSubtitle->sizePolicy().hasHeightForWidth());
-        chgPsswdSubtitle->setSizePolicy(sizePolicy5);
+        sizePolicy12.setHeightForWidth(chgPsswdSubtitle->sizePolicy().hasHeightForWidth());
+        chgPsswdSubtitle->setSizePolicy(sizePolicy12);
+
+        verticalLayout_27->addWidget(chgPsswdSubtitle);
+
+        verticalLayout_26 = new QVBoxLayout();
+        verticalLayout_26->setObjectName(QString::fromUtf8("verticalLayout_26"));
         currPassField = new QLineEdit(changePassword);
         currPassField->setObjectName(QString::fromUtf8("currPassField"));
-        currPassField->setGeometry(QRect(0, 110, 241, 31));
+        sizePolicy12.setHeightForWidth(currPassField->sizePolicy().hasHeightForWidth());
+        currPassField->setSizePolicy(sizePolicy12);
+        currPassField->setMaximumSize(QSize(16777215, 30));
         currPassField->setEchoMode(QLineEdit::Password);
         currPassField->setClearButtonEnabled(true);
+
+        verticalLayout_26->addWidget(currPassField);
+
         newPassField = new QLineEdit(changePassword);
         newPassField->setObjectName(QString::fromUtf8("newPassField"));
-        newPassField->setGeometry(QRect(0, 150, 241, 31));
+        sizePolicy12.setHeightForWidth(newPassField->sizePolicy().hasHeightForWidth());
+        newPassField->setSizePolicy(sizePolicy12);
+        newPassField->setMaximumSize(QSize(16777215, 30));
         newPassField->setEchoMode(QLineEdit::Password);
         newPassField->setClearButtonEnabled(true);
+
+        verticalLayout_26->addWidget(newPassField);
+
         btn_confirm = new QPushButton(changePassword);
         btn_confirm->setObjectName(QString::fromUtf8("btn_confirm"));
-        btn_confirm->setGeometry(QRect(0, 190, 81, 31));
-        stackedWidget->addWidget(settings);
+        sizePolicy12.setHeightForWidth(btn_confirm->sizePolicy().hasHeightForWidth());
+        btn_confirm->setSizePolicy(sizePolicy12);
+
+        verticalLayout_26->addWidget(btn_confirm);
+
+        verticalSpacer_14 = new QSpacerItem(20, 600, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_26->addItem(verticalSpacer_14);
+
+
+        verticalLayout_27->addLayout(verticalLayout_26);
+
+
+        gridLayout_2->addWidget(changePassword, 0, 1, 1, 1);
+
+        horizontalSpacer_28 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_28, 0, 3, 1, 1);
+
+        horizontalSpacer_29 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_29, 0, 0, 1, 1);
+
+
+        verticalLayout_28->addLayout(gridLayout_2);
+
+        tabWidget->addTab(Settings, QString());
+
+        horizontalLayout_24->addWidget(tabWidget);
+
         MainWindow->setCentralWidget(centralwidget);
-        stackedWidget->raise();
-        tabWidget->raise();
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
-        QWidget::setTabOrder(blockSize, btn_mine);
-        QWidget::setTabOrder(btn_mine, s_EmailField);
-        QWidget::setTabOrder(s_EmailField, s_PasswordField);
-        QWidget::setTabOrder(s_PasswordField, btn_signIn);
-        QWidget::setTabOrder(btn_signIn, btn_create);
-        QWidget::setTabOrder(btn_create, c_EmailField);
-        QWidget::setTabOrder(c_EmailField, c_UsernameField);
-        QWidget::setTabOrder(c_UsernameField, c_PasswordField);
-        QWidget::setTabOrder(c_PasswordField, btn_signUp);
-        QWidget::setTabOrder(btn_signUp, btn_back);
-        QWidget::setTabOrder(btn_back, blockTransactionList);
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
-        stackedWidget->setCurrentIndex(3);
-        accountView->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
+        accountView->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -689,44 +1491,38 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Plasmacoin Client", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Wallet), QCoreApplication::translate("MainWindow", "Wallet", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(Mine), QCoreApplication::translate("MainWindow", " Mine Coins", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(AddressBookTab), QCoreApplication::translate("MainWindow", "Address Book", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(Settings), QCoreApplication::translate("MainWindow", "Settings", nullptr));
-        btn_mine->setText(QCoreApplication::translate("MainWindow", "Mine", nullptr));
         plusSign->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         minusSign->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        btn_mine->setText(QCoreApplication::translate("MainWindow", "Mine", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Mine), QCoreApplication::translate("MainWindow", "Mine Coins", nullptr));
         QTableWidgetItem *___qtablewidgetitem = contactsList->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
         QTableWidgetItem *___qtablewidgetitem1 = contactsList->horizontalHeaderItem(1);
         ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Address", nullptr));
-        contactImage->setText(QString());
-        addrBookSub2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt;\">Address</span></p></body></html>", nullptr));
-        birthday->setDisplayFormat(QCoreApplication::translate("MainWindow", "M/d/yyyy", nullptr));
-        addrBookSub3->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt;\">Birthday</span></p></body></html>", nullptr));
         btn_addContact->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
-        btn_edit->setText(QCoreApplication::translate("MainWindow", "Edit Contact", nullptr));
-        btn_delete->setText(QCoreApplication::translate("MainWindow", "Delete Contact", nullptr));
+        btn_filler->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        contactImage->setText(QString());
         addrBookSub1->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt;\">Username</span></p></body></html>", nullptr));
-        usernameDisplay->setText(QString());
-        addressDisplay->setText(QString());
-        nameDisplay->setText(QString());
+        addrBookSub2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt;\">Address</span></p></body></html>", nullptr));
+        addrBookSub3->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt;\">Birthday</span></p></body></html>", nullptr));
+        birthday->setDisplayFormat(QCoreApplication::translate("MainWindow", "M/d/yyyy", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(AddressBookTab), QCoreApplication::translate("MainWindow", "Address Book", nullptr));
+        trxnsHeading1->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Contacts</span></p></body></html>", nullptr));
+        trxnsHeading1_2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Make Transactions</span></p></body></html>", nullptr));
+        selectedContact->setText(QString());
+        charCount->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\"><span style=\" font-size:8pt;\">0/200</span></p></body></html>", nullptr));
         amountLabel->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\">Amount</p></body></html>", nullptr));
         feeLabel->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\">Fee</p></body></html>", nullptr));
         totalLabel->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\">Total</p></body></html>", nullptr));
-        charCount->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\"><span style=\" font-size:8pt;\">0/200</span></p></body></html>", nullptr));
-        trxnsHeading1->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Make Transactions</span></p></body></html>", nullptr));
         trxnsHeading2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Transaction Log</span></p></body></html>", nullptr));
-        s_EmailField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
-        btn_signIn->setText(QCoreApplication::translate("MainWindow", "Sign In", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
         signInTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:20pt;\">Sign in to your Plasmacoin Account</span></p></body></html>", nullptr));
+        s_EmailField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
         s_PasswordField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Password", nullptr));
+        btn_signIn->setText(QCoreApplication::translate("MainWindow", "Sign In", nullptr));
         btn_create->setText(QCoreApplication::translate("MainWindow", "Create...", nullptr));
         bannerText1->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; color:#000000;\">Welcome Back!</span></p><p align=\"center\"><span style=\" font-size:24pt; color:#000000;\">Please sign in to continue.</span><span style=\" color:#000000;\"><br/></span></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/><br/></p><p align=\"center\"><img src=\":/assets/plasmacoin-banner.png\" width=\"550\" height=\"150\"/></p></body></html>", nullptr));
         createTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:20pt;\">Create your Plasmacoin account</span></p></body></html>", nullptr));
-        btn_signUp->setText(QCoreApplication::translate("MainWindow", "Sign Up", nullptr));
-        btn_back->setText(QCoreApplication::translate("MainWindow", "Go Back...", nullptr));
         c_EmailField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
 #if QT_CONFIG(statustip)
         c_UsernameField->setStatusTip(QCoreApplication::translate("MainWindow", "Your username can contain alphanumeric characters, dashes, underscores, and periods", nullptr));
@@ -737,23 +1533,26 @@ public:
 #endif // QT_CONFIG(statustip)
         c_PasswordField->setInputMask(QString());
         c_PasswordField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Password", nullptr));
+        btn_signUp->setText(QCoreApplication::translate("MainWindow", "Sign Up", nullptr));
+        btn_back->setText(QCoreApplication::translate("MainWindow", "Go Back...", nullptr));
         bannerText2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">What is my account for?</span></p><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">Your Plasmacoin account registers you for the desktop app.<br/>This registers your computer as a Plasmacoin node and also<br/>gives you access to the offical Plasmacoin software wallet.</span></p><p align=\"center\"><span style=\" color:#000000;\"><br/></span></p><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">Credentials</span></p><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">Once you 're signed in, you'll have access to your public and<br/>private keys, as well as your Plasmacoin address, which is what<br/>you'll use to send and recieve transactions.</span></p><p align=\"center\"><span style=\" color:#000000;\"><br/></span></p><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">Address Book</span></p><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\""
                         ">With your account, you can access the built-in address book,<br/>which allows you to save the addresses of other Plasmacoin<br/>users.</span></p><p align=\"center\"><br/></p><p align=\"center\"><img src=\":/newPrefix/plasmacoin-banner.png\" width=\"550\" height=\"150\"/></p></body></html>", nullptr));
-        addressCopy->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
-        addressSubtitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt;\">Your Plasmacoin address identifies your node as the sender or reciever<br/>in a transaction. It is also the way Plasmacoin is sent to your node.</span></p></body></html>", nullptr));
         addressTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt;\">Your Wallet Address</span></p></body></html>", nullptr));
+        addressSubtitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt;\">Your Plasmacoin address identifies your node as the sender or reciever<br/>in a transaction. It is also the way Plasmacoin is sent to your node.</span></p></body></html>", nullptr));
+        addressCopy->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         rsaTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt;\">RSA Keys</span></p></body></html>", nullptr));
-        privKeyShow->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
-        pubKeyCopy->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         pubKeyShow->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        pubKeyCopy->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        privKeyShow->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         privKeyCopy->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         pubIPAddrTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt;\">Public IP Address</span></p></body></html>", nullptr));
         pubIPAddrSubtitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt;\">Your public IP address is what is used to send your Plasmacoin to once<br>the block with your transaction(s) is confirmed to the blockchain. Your<br>IP address is neither stored on the blockchain nor directly traceable from<br>a transaction</span></p></body></html>", nullptr));
-        settingsTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt;\">Settings</span></p></body></html>", nullptr));
-        btn_reset->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
-        btn_choosePath->setText(QCoreApplication::translate("MainWindow", "Choose Path...", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Account), QCoreApplication::translate("MainWindow", "Account", nullptr));
+        settingsTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">Settings</span></p></body></html>", nullptr));
         rsaKeyTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; text-decoration: underline;\">RSA Key Path</span></p></body></html>", nullptr));
         rsaKeySubtitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Choose the path where your RSA public-private key pair will be stored.</p></body></html>", nullptr));
+        btn_choosePath->setText(QCoreApplication::translate("MainWindow", "Choose Path...", nullptr));
+        btn_reset->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         chgPsswdTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; text-decoration: underline;\">Change Password</span></p></body></html>", nullptr));
         chgPsswdSubtitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p>Change the password for your Plasmacoin Account. Remember that your password<br/>must be at least 6 characters long and contain at least 1 capital letter, 1 special character,<br/>and 1 number.</p></body></html>", nullptr));
         currPassField->setInputMask(QString());
@@ -761,6 +1560,7 @@ public:
         newPassField->setInputMask(QString());
         newPassField->setPlaceholderText(QCoreApplication::translate("MainWindow", "New Password", nullptr));
         btn_confirm->setText(QCoreApplication::translate("MainWindow", "Confirm", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(Settings), QCoreApplication::translate("MainWindow", "Settings", nullptr));
     } // retranslateUi
 
 };
