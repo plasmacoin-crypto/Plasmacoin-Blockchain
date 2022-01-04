@@ -258,7 +258,7 @@ void Auth::ParseResponse(const QByteArray& response) {
 
 		// Handle a password error
 		if (errorMap["message"].toString() == "MISSING_PASSWORD") {
-			AddError(ErrorCodes::FIELD_EMPTY);
+			AddError(ErrorCodes::EMPTY_FIELD);
 		}
 		else if (
 			errorMap["message"].toString() == "WEAK_PASSWORD" ||
