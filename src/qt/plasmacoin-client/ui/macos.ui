@@ -16,7 +16,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
+    <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -28,7 +28,7 @@
    <enum>Qt::ToolButtonIconOnly</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_23">
+   <layout class="QHBoxLayout" name="horizontalLayout_24">
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -59,7 +59,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="Wallet">
        <attribute name="title">
@@ -107,8 +107,8 @@
        <attribute name="title">
         <string>Mine Coins</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_25">
+        <item>
          <widget class="QWidget" name="transactions" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
@@ -173,7 +173,7 @@
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -202,7 +202,7 @@
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../../../../../.designer/assets/minus.png</normaloff>../../../../../../../../../../../../../../.designer/assets/minus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/minus.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/minus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -217,7 +217,7 @@
           </layout>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item>
          <widget class="QWidget" name="userBlock" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -286,7 +286,7 @@
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
-         <widget class="QWidget" name="widget" native="true">
+         <widget class="QWidget" name="addressBook" native="true">
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QTableWidget" name="contactsList">
@@ -336,7 +336,7 @@
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout">
+            <layout class="QHBoxLayout" name="buttonLayout">
              <item>
               <widget class="QToolButton" name="btn_addContact">
                <property name="sizePolicy">
@@ -350,7 +350,7 @@
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../.designer/assets/plus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -389,7 +389,7 @@
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../.designer/assets/plus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -405,7 +405,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QWidget" name="widget_2" native="true">
+         <widget class="QWidget" name="contactInfo" native="true">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -420,7 +420,7 @@
             <number>10</number>
            </property>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <layout class="QHBoxLayout" name="field1">
              <item>
               <widget class="QLabel" name="contactImage">
                <property name="sizePolicy">
@@ -433,7 +433,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap>../../../../../../.designer/assets/contact-default.png</pixmap>
+                <pixmap>../../assets/contact-default.png</pixmap>
                </property>
               </widget>
              </item>
@@ -491,7 +491,7 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <layout class="QHBoxLayout" name="field2">
              <item>
               <widget class="QLabel" name="addrBookSub1">
                <property name="sizePolicy">
@@ -568,7 +568,7 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <layout class="QHBoxLayout" name="field3">
              <item>
               <widget class="QLabel" name="addrBookSub2">
                <property name="sizePolicy">
@@ -645,7 +645,7 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <layout class="QHBoxLayout" name="field4">
              <item>
               <spacer name="horizontalSpacer_9">
                <property name="orientation">
@@ -766,7 +766,7 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <layout class="QHBoxLayout" name="dialogLayout">
              <property name="sizeConstraint">
               <enum>QLayout::SetNoConstraint</enum>
              </property>
@@ -789,24 +789,20 @@
             </layout>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_11">
-             <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Maximum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>500</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Maximum</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>500</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
@@ -819,7 +815,7 @@
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
-         <widget class="QWidget" name="widget_3" native="true">
+         <widget class="QWidget" name="contactsView" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -841,30 +837,23 @@
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_13">
-          <property name="rightMargin">
-           <number>0</number>
+         <spacer name="horizontalSpacer_30">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <item>
-           <spacer name="horizontalSpacer_18">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Preferred</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
-         <widget class="QWidget" name="widget_5" native="true">
+         <widget class="QWidget" name="makeTransactions" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -873,7 +862,7 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_10">
            <item>
-            <widget class="QWidget" name="widget_7" native="true">
+            <widget class="QWidget" name="dialogs" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -962,9 +951,9 @@
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <layout class="QHBoxLayout" name="selectionLayout">
              <item>
-              <widget class="QWidget" name="widget_6" native="true">
+              <widget class="QWidget" name="selectors" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -973,7 +962,7 @@
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_8">
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_10">
+                 <layout class="QHBoxLayout" name="amountView">
                   <item>
                    <widget class="QLabel" name="amountLabel">
                     <property name="sizePolicy">
@@ -1034,7 +1023,7 @@
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <layout class="QHBoxLayout" name="feeView">
                   <item>
                    <widget class="QLabel" name="feeLabel">
                     <property name="sizePolicy">
@@ -1089,7 +1078,7 @@
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_11">
+                 <layout class="QHBoxLayout" name="totalView">
                   <item>
                    <widget class="QLabel" name="totalLabel">
                     <property name="sizePolicy">
@@ -1172,7 +1161,7 @@
             </layout>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_14">
+            <layout class="QVBoxLayout" name="spacerLayout1">
              <property name="bottomMargin">
               <number>0</number>
              </property>
@@ -1180,6 +1169,9 @@
               <spacer name="verticalSpacer_3">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Preferred</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -1195,7 +1187,7 @@
                 <enum>Qt::Vertical</enum>
                </property>
                <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
+                <enum>QSizePolicy::Preferred</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -1211,30 +1203,23 @@
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_14">
-          <property name="rightMargin">
-           <number>0</number>
+         <spacer name="horizontalSpacer_18">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <item>
-           <spacer name="horizontalSpacer_19">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Preferred</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
-         <widget class="QWidget" name="widget_4" native="true">
+         <widget class="QWidget" name="trxnLogView" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -1265,7 +1250,7 @@
         <item>
          <widget class="QStackedWidget" name="accountView">
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="signIn">
            <layout class="QHBoxLayout" name="horizontalLayout_17">
@@ -1909,7 +1894,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -1980,7 +1965,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2003,7 +1988,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2049,7 +2034,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2072,7 +2057,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2244,7 +2229,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../../../../../../../../../../../../../.designer/assets/reset.png</normaloff>../../../../../../../../../../../../../../.designer/assets/reset.png</iconset>
+                   <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/reset.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/reset.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -2427,7 +2412,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="../assets/plasmacoin-banner.qrc"/>
+  <include location="../../assets/plasmacoin-banner.qrc"/>
  </resources>
  <connections/>
 </ui>
