@@ -35,6 +35,22 @@ AddressBook::AddressBook(
 AddressBook::~AddressBook() {
 	m_ContactsList->clear();
 	m_ContactsList->setRowCount(0);
+
+	delete m_ContactsList;
+	delete m_NameDisplay;
+	delete m_UsernameDisplay;
+	delete m_AddressDisplay;
+	delete m_NameField;
+	delete m_UsernameField;
+	delete m_AddressField;
+	delete m_Birthday;
+	delete m_ButtonBox;
+	delete m_NameLayout
+	delete m_UsernameLayout
+	delete m_AddressLayout
+	delete m_BirthdayLayout;
+	delete m_EditButton;
+	delete m_DeleteButton;
 }
 
 // Add a row to the contacts list
