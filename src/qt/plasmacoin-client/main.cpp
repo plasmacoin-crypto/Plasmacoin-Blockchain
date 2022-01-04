@@ -1,4 +1,6 @@
 
+#include <string>
+
 #include <QApplication>
 #include <QPushButton>
 #include <QListWidget>
@@ -13,6 +15,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "firebase-auth.h"
+
+using std::string;
 
 // Allow the user to mine their block
 void minePage(MainWindow& window) {
@@ -64,35 +68,37 @@ void accountPages(MainWindow& window) {
 
 	// Check the current form for authentication errors
 	window.connect(window.m_Authenticator, &Auth::FoundAuthErrors, &window, [&window]() {
-		// Hide all the warning labels
-		window.m_AccPgs->m_EmailSignInWarning->setVisible(false);
-		window.m_AccPgs->m_PasswordSignInWarning->setVisible(false);
-		window.m_AccPgs->m_EmailSignUpWarning->setVisible(false);
-		window.m_AccPgs->m_UsernameWarning->setVisible(false);
-		window.m_AccPgs->m_PasswordSignUpWarning->setVisible(false);
+		std::cout << "Found auth errors" << std::endl;
+
+		AccountPages::PageType page = static_cast<AccountPages::PageType>(window.accountView->currentIndex());
+		string detailedText = ""; // Store explaination strings for all auth errors
 
 		// Use bit masking to warn about certain errors
-		for (uint8_t code = Auth::EMAIL_EXISTS, i = 0; i < Auth::LAST; code = 1 << ++i) {
-			if (window.m_Authenticator->m_Errors & code) {
+		for (uint8_t code = static_cast<uint8_t>(Auth::ErrorCodes::EMAIL_EXISTS), i = 0; i < static_cast<uint8_t>(Auth::ErrorCodes::LAST); code = 1 << ++i) {
+			if (window.m_Authenticator->GetErrors() & code) {
 				switch (code) {
-					case Auth::EMAIL_EXISTS:
-						emit window.m_Authenticator->EmailExists();
+					case static_cast<uint8_t>(Auth::ErrorCodes::EMAIL_EXISTS):
+						detailedText += "Email already in use\n";
 						break;
 
-					case Auth::USERNAME_TAKEN:
-						emit window.m_Authenticator->UsernameTaken();
+					case static_cast<uint8_t>(Auth::ErrorCodes::USERNAME_TAKEN):
+						detailedText += "Username already in use\n";
 						break;
 
-					case Auth::INVALID_EMAIL:
-						emit window.m_Authenticator->InvalidEmail();
+					case static_cast<uint8_t>(Auth::ErrorCodes::INVALID_EMAIL):
+						detailedText += "Invalid email\n";
 						break;
 
-					case Auth::INVALID_USERNAME:
-						emit window.m_Authenticator->InvalidUsername();
+					case static_cast<uint8_t>(Auth::ErrorCodes::INVALID_USERNAME):
+						detailedText += "Invalid username\n";
 						break;
 
-					case Auth::INVALID_PASSWORD:
-						emit window.m_Authenticator->InvalidPassword();
+					case static_cast<uint8_t>(Auth::ErrorCodes::INVALID_PASSWORD):
+						detailedText += "Invalid password\n";
+						break;
+
+					case static_cast<uint8_t>(Auth::ErrorCodes::EMPTY_FIELD):
+						detailedText += "One or more fields are empty\n";
 						break;
 
 					default:
@@ -100,55 +106,8 @@ void accountPages(MainWindow& window) {
 				}
 			}
 		}
-	});
 
-	// Take the user to the logged in view if Firebase successfully logged them in
-	window.connect(window.m_Authenticator, &Auth::FinishedRequest, &window, [&window]() {
-		if (!window.m_Authenticator->SearchFor("error") && window.m_Authenticator->m_Errors == 0) {
-			window.m_AccPgs->DisplayPage(2);
-		}
-	});
-
-	// Display a warning when a user tries to create an account with an email that's in use
-	window.connect(window.m_Authenticator, &Auth::EmailExists, &window, [&window]() {
-		window.m_AccPgs->m_EmailSignUpWarning->setText("Email in use");
-		window.m_AccPgs->m_EmailSignUpWarning->setVisible(true);
-	});
-
-	// Display a warning when a user tries to create an account with an invalid email
-	window.connect(window.m_Authenticator, &Auth::InvalidEmail, &window, [&window]() {
-		if (window.accountView->currentIndex() == 0) {
-			window.m_AccPgs->m_EmailSignInWarning->setText("Invalid Email");
-			window.m_AccPgs->m_EmailSignInWarning->setVisible(true);
-		}
-		else {
-			window.m_AccPgs->m_EmailSignUpWarning->setText("Invalid email");
-			window.m_AccPgs->m_EmailSignUpWarning->setVisible(true);
-		}
-	});
-
-	// Display a warning when a user tries to create an account with an email that's in use
-	window.connect(window.m_Authenticator, &Auth::UsernameTaken, &window, [&window]() {
-		window.m_AccPgs->m_UsernameWarning->setText("Username already in use");
-		window.m_AccPgs->m_UsernameWarning->setVisible(true);
-	});
-
-	// Display a warning when a user tries to create an account with an invalid username
-	window.connect(window.m_Authenticator, &Auth::InvalidUsername, &window, [&window]() {
-		window.m_AccPgs->m_UsernameWarning->setText("Username invalid");
-		window.m_AccPgs->m_UsernameWarning->setVisible(true);
-	});
-
-	// Display a warning when a user tries to create an account with an invalid password
-	window.connect(window.m_Authenticator, &Auth::InvalidPassword, &window, [&window]() {
-		if (window.accountView->currentIndex() == 0) {
-			window.m_AccPgs->m_PasswordSignInWarning->setText("Password invalid");
-			window.m_AccPgs->m_PasswordSignInWarning->setVisible(true);
-		}
-		else {
-			window.m_AccPgs->m_PasswordSignUpWarning->setText("Password invalid");
-			window.m_AccPgs->m_PasswordSignUpWarning->setVisible(true);
-		}
+		window.m_AccPgs->DisplayErrorMsg(detailedText, page);
 	});
 }
 
