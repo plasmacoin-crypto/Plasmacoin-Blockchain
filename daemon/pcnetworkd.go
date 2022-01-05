@@ -1,5 +1,5 @@
 //
-// FILENAME: goexports.go | Plasmacoin Cryptocurrency
+// FILENAME: pcnetworkd.go | Plasmacoin Cryptocurrency
 // DESCRIPTION: Go functions to be exported as C functions
 // CREATED: 2021-10-16 @ 9:28 PM
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
@@ -35,6 +35,7 @@ import (
 	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/netutils"
 )
 
+// Types of blockchain constructs
 const (
 	IDCode = uint8(iota)
 	Transaction
@@ -54,6 +55,10 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 
 	for i, str := range data {
 		goData[i] = C.GoString(str)
+	}
+
+	if true {
+
 	}
 
 	// Determine what is being sent over TCP
