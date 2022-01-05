@@ -57,10 +57,6 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 		goData[i] = C.GoString(str)
 	}
 
-	if true {
-
-	}
-
 	// Determine what is being sent over TCP
 	var jsonData interface{}
 
