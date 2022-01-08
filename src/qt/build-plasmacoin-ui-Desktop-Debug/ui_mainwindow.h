@@ -1480,7 +1480,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(4);
         accountView->setCurrentIndex(1);
 
 
