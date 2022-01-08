@@ -1,5 +1,5 @@
 //
-// FILENAME: pcnetworkd.go | Plasmacoin Cryptocurrency
+// FILENAME: goexports.go | Plasmacoin Cryptocurrency
 // DESCRIPTION: Go functions to be exported as C functions
 // CREATED: 2021-10-16 @ 9:28 PM
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
@@ -35,7 +35,6 @@ import (
 	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/netutils"
 )
 
-// Types of blockchain constructs
 const (
 	IDCode = uint8(iota)
 	Transaction
@@ -117,16 +116,25 @@ func receive(protocol, host, port C.cchar_t) C.cchar_t {
 
 	conn := <-connChan
 
-	ch := make(chan string)
+	ch := make(chan struct {
+		string
+		uint8
+	})
 
 	// Handle the connection
-	go func(ch chan<- string, conn net.Conn) {
-		out := handler.HandleConnection(conn)
-		ch <- string(out)
+	go func(ch chan<- struct {
+		string
+		uint8
+	}, conn net.Conn) {
+		out, packetType := handler.HandleConnection(conn)
+		ch <- struct {
+			string
+			uint8
+		}{string(out), packetType}
 	}(ch, conn)
 
-	out := <-ch
-	return C.CString(out)
+	connData := <-ch
+	return C.CString(connData.string)
 }
 
 // Compress a file using gzip
