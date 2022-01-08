@@ -14,17 +14,18 @@
 using std::string;
 
 #include <cryptopp/rsa.h> 		 // Use Crypto++'s RSA functionality
-#include <cryptopp/config_int.h> // Use CryptoPP::byte
+#include <cryptopp/secblock.h>	 // Use SecByteBlock
 
 using CryptoPP::byte;
 using CryptoPP::RSA;
+using CryptoPP::SecByteBlock;
 
 class Node;
 
 struct Signature {
-	byte* m_Signature;
-	RSA::PublicKey m_PublicKey;
-	size_t m_Length;
+	SecByteBlock 	m_Signature;
+	RSA::PublicKey 	m_PublicKey;
+	size_t 			m_Length;
 };
 
 class Transaction {
