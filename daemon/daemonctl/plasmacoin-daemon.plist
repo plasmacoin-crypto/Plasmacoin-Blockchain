@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>DYLD_LIBRARY_PATH</key>
+        <string>/usr/local/cryptopp:/usr/local/lib/plasmacoin:</string>
+    </dict>
+    
+    <key>Label</key>
+    <string>plasmacoin-daemon</string>
+    <key>ServiceDescription</key>
+    <string>Plasmacoin TCP/IP Daemon</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/rmsmith/Projects/Plasmacoin/Plasmacoin-Blockchain/src/qt/build-plasmacoin-ui-Desktop-Debug/pcnetworkd</string>
+    </array>
+    <key>StandardOutPath</key>
+    <string>/var/log/pcnetworkd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/var/log/pcnetworkd.log</string>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>KeepAlive</key>
+    <true/>
+</dict>
+</plist>

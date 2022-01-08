@@ -1,0 +1,15 @@
+[Unit]
+Description=Plasmacoin TCP/IP daemon
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=rmsmith
+ExecStart=/home/rmsmith/Projects/Plasmacoin/Plasmacoin-Blockchain/daemon
+StartLimitIntervalSec=0
+
+[Install]
+WantedBy=multi-user.target
