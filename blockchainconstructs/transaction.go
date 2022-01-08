@@ -16,6 +16,7 @@ type Signature struct {
 }
 
 type Transaction struct {
+	PacketType    int       `json:"type"`
 	SenderAddr    string    `json:"senderAddr"`
 	RecipientAddr string    `json:"recipientAddr"`
 	Amount        float32   `json:"amount"`
@@ -32,36 +33,40 @@ func MakeTransaction(data []string) *Transaction {
 	// When this function receives the data, all data points will be strings and
 	// are guaranteed be in the following order:
 	//
-	// 1. Address of sender
-	// 2. Address of recipient
-	// 3. Transaction amount
-	// 4. Transaction fee
-	// 5. The transaction signature
-	// 6. The sender's public key
-	// 7. The length of the signature
-	// 8. The SHA-256 hash of the transaction
+	// 1. The packet type (as an integer)		(data[0])
+	// 2. Address of sender 					(data[1])
+	// 3. Address of recipient 					(data[2])
+	// 4. Transaction amount 					(data[3])
+	// 5. Transaction fee 						(data[4])
+	// 6. The transaction content 				(data[5])
+	// 7. The transaction signature 			(data[6])
+	// 8. The sender's public key 				(data[7])
+	// 9. The length of the signature 			(data[8])
+	// 10. The SHA-256 hash of the transaction 	(data[9])
 	//
 
 	// Convert some stringified numeric values back to numeric values
-	amount, _ := strconv.ParseFloat(data[2], 32)
-	fee, _ := strconv.ParseFloat(data[3], 32)
-	siglen, _ := strconv.ParseInt(data[6], 10, 32)
+	packetType, _ := strconv.ParseInt(data[0], 10, 32)
+	amount, _ := strconv.ParseFloat(data[3], 32)
+	fee, _ := strconv.ParseFloat(data[4], 32)
+	siglen, _ := strconv.ParseInt(data[8], 10, 32)
 
 	// Construct the signature field
-	signature := Signature {
-		Signature: data[4],
-		PublicKey: []byte(data[5]),
+	signature := Signature{
+		Signature: data[6],
+		PublicKey: []byte(data[7]),
 		Length:    int(siglen),
 	}
 
 	// Construct the transaction
-	return &Transaction {
-		SenderAddr:    data[0],
-		RecipientAddr: data[1],
+	return &Transaction{
+		PacketType:    int(packetType),
+		SenderAddr:    data[1],
+		RecipientAddr: data[2],
 		Amount:        float32(amount),
 		Fee:           float32(fee),
-		Content:       data[4],
+		Content:       data[5],
 		Signature:     signature,
-		Hash:          data[7],
+		Hash:          data[9],
 	}
 }
