@@ -17,6 +17,13 @@ import (
 	bccnstrx "github.com/plasmacoin-crypto/Plasmacoin-Blockchain/blockchainconstructs"
 )
 
+// Types of blockchain constructs
+const (
+	IDCode = uint8(iota)
+	Transaction
+	Block
+)
+
 // Check for errors
 func check(err error, line int) {
 	if err != nil {
@@ -25,16 +32,42 @@ func check(err error, line int) {
 }
 
 // Read the data from a connection
-func HandleConnection(conn net.Conn) []byte {
+func HandleConnection(conn net.Conn) ([]byte, uint8) {
 	data, _ := bufio.NewReader(conn).ReadBytes(0)
 
-	var transaction bccnstrx.Transaction
+	var packet bccnstrx.PacketType
 
-	// Convert the packet to JSON data
-	err := json.Unmarshal(data, &transaction)
-	check(err, 35)
+	// Isolate the packet type
+	err := json.Unmarshal(data, &packet)
+	check(err, 36)
+
+	fullPacket := getStruct(data, packet.Type) // Convert the packet to the correct Go struct
 
 	// Marshal the data
-	jsonBytes, _ := json.Marshal(transaction)
-	return jsonBytes
+	jsonBytes, _ := json.Marshal(fullPacket)
+	return jsonBytes, packet.Type
+}
+
+// Unmarshal a TCP packet (as JSON) into its corresponding Go struct
+func getStruct(data []byte, packetType uint8) interface{} {
+	switch packetType {
+	case IDCode:
+		var idCode bccnstrx.IDCode
+
+		err := json.Unmarshal(data, &idCode)
+		check(err, 68)
+
+		return idCode
+	case Transaction:
+		var transaction bccnstrx.Transaction
+
+		err := json.Unmarshal(data, &transaction)
+		check(err, 75)
+
+		return transaction
+	default:
+		break
+	}
+
+	return struct{}{}
 }
