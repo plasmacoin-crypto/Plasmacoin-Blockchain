@@ -37,9 +37,10 @@ Node::~Node() {
 }
 
 // Create a new transaction to a recipient on the blockchain network
-Transaction* Node::MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content) const {
+Transaction* Node::MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content) {
 	Transaction* transaction = new Transaction(GetAddress(), recipientAddr, amount, fee, content);
 	transaction->m_Hash = Hash(*transaction);
+	Sign(*transaction);
 
 	return transaction;
 }
@@ -61,6 +62,10 @@ string Node::GetIP() const {
 
 string Node::GetAddress() const {
 	return m_Address;
+}
+
+Node::NodeType Node::GetType() const {
+	return m_NodeType;
 }
 
 // Generate public and private RSA keys for signing transactions
@@ -91,22 +96,24 @@ void Node::Sign(Transaction& transaction) noexcept(false) {
 	string message = transaction.m_Content;
 
 	//string signature;
-	m_Signer = CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Signer(m_PrivKey);
+	m_Signer = CryptoPP::RSASSA_PKCS1v15_SHA_Signer(m_PrivKey);
 
-	byte* signature = new byte[m_Signer.MaxSignatureLength()];
+	size_t length = m_Signer.MaxSignatureLength();
+	CryptoPP::SecByteBlock signature(length);
 
-	if (signature == nullptr) {
-		throw std::runtime_error("Transaction signing failed. Aborting.");
-	}
+	// if (signature == nullptr) {
+	// 	throw std::runtime_error("Transaction signing failed. Aborting.");
+	// }
 
-	size_t length = m_Signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
+	length = m_Signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
+	signature.resize(length);
 
 	transaction.m_Signature = Signature {signature, m_PubKey, length};
 }
 
 // Verify a transaction using the sender's public key. Returns true if verification succeded,
 // false otherwise.
-bool Node::Verify(const Transaction& transaction, byte* signature, size_t length, const RSA::PublicKey& publicKey) {
+bool Node::Verify(const Transaction& transaction, const SecByteBlock& signature, size_t length, const RSA::PublicKey& publicKey) {
 	CryptoPP::AutoSeededRandomPool rng;
 	CryptoPP::InvertibleRSAFunction params;
 	string message = transaction.m_Content;
@@ -115,8 +122,6 @@ bool Node::Verify(const Transaction& transaction, byte* signature, size_t length
 	CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Verifier verifier(publicKey);
 
 	bool result = verifier.VerifyMessage((const byte*)message.c_str(), message.length(), signature, length);
-
-	delete[] signature;
 	return result;
 }
 

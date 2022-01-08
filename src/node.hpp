@@ -31,6 +31,7 @@ using std::pair;
 #include <cryptopp/cryptlib.h> 	// Use GenerateRandomWithKeySize
 #include <cryptopp/pssr.h>		// Use PSSR
 #include <cryptopp/ripemd.h>	// Use the RIPEMD hash function
+#include <cryptopp/secblock.h> 	// Use SecByteBlock
 
 using CryptoPP::RSA;
 using CryptoPP::Integer;
@@ -46,16 +47,17 @@ public:
 	);
 	~Node();
 
-	Transaction* MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content) const;
+	Transaction* MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content);
 
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
+	NodeType GetType() const;
 
 	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
 
 	// Sign and verify transactions with RSA
 	void Sign(Transaction& transaction) noexcept(false);
-	bool Verify(const Transaction& transaction, byte* signature, size_t length, const RSA::PublicKey& publicKey);
+	bool Verify(const Transaction& transaction, const SecByteBlock& signature, size_t length, const RSA::PublicKey& publicKey);
 
 	Blockchain* m_BlockchainCopy = new Blockchain(); // The node's copy of the blockchain
 
@@ -72,7 +74,7 @@ private:
 	RSA::PrivateKey m_PrivKey;
 	NodeType m_NodeType;
 
-	CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Signer m_Signer;
+	CryptoPP::RSASSA_PKCS1v15_SHA_Signer m_Signer;
 	CryptoPP::InvertibleRSAFunction m_Keys;
 };
 
