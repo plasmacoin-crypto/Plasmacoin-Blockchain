@@ -6,6 +6,7 @@ a.out
 pcblkchn
 src/qt/build-plasmacoin-ui-Desktop-Debug/plasmacoin-client
 src/qt/build-plasmacoin-ui-Desktop-Debug/plasmacoin-client.app
+src/qt/build-plasmacoin-ui-Desktop-Debug/pcnetworkd
 
 # Ignore shared libraries
 lib
