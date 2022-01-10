@@ -15,6 +15,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "firebase-auth.h"
+#include "transmitter.hpp"
 
 using std::string;
 
@@ -231,6 +232,12 @@ void transactionPage(MainWindow& window) {
 
 		// Create a new transaction
 		Transaction* transaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
+
+		Transmitter* transmitter = new Transmitter(window.m_AddressBook);
+		auto data = transmitter->Format(transaction);
+		transmitter->Transmit(data, std::stoi(data[0]));
+
+		delete transmitter;
 	});
 }
 
