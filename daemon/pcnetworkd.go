@@ -1,5 +1,5 @@
 //
-// FILENAME: dnsseederd.go | Plasmacoin Cryptocurrency
+// FILENAME: pcnetworkd.go | Plasmacoin Cryptocurrency
 // DESCRIPTION: Go functions to be exported as C functions
 // CREATED: 2021-10-16 @ 9:28 PM
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
