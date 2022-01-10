@@ -7,8 +7,37 @@
 
 package blockchainconstructs
 
+import "strconv"
+
 type NodeData struct {
-	IP       string
-	Address  string
-	NodeType uint8
+	PacketType int    `json:"type"`
+	IP         string `json:"ip"`
+	Address    string `json:"address"`
+	NodeType   int    `json:"nodetype"`
+}
+
+func MakeNode(data []string) *NodeData {
+	//
+	// About the data slice
+	//
+	// When this function receives the data, all data points will be strings and
+	// are guaranteed be in the following order:
+	//
+	// 1. The packet type (as an integer)		(data[0])
+	// 2. The node's IP Address 				(data[1])
+	// 3. The node's Plasmacoin address 		(data[2])
+	// 3. The type of node 						(data[3])
+	//
+
+	// Convert some stringified numeric values back to numeric values
+	packetType, _ := strconv.ParseInt(data[0], 10, 32)
+	nodeType, _ := strconv.ParseInt(data[3], 10, 32)
+
+	// Construct the transaction
+	return &NodeData{
+		PacketType: int(packetType),
+		IP:         data[1],
+		Address:    data[2],
+		NodeType:   int(nodeType),
+	}
 }
