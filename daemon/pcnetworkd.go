@@ -1,5 +1,5 @@
 //
-// FILENAME: goexports.go | Plasmacoin Cryptocurrency
+// FILENAME: dnsseederd.go | Plasmacoin Cryptocurrency
 // DESCRIPTION: Go functions to be exported as C functions
 // CREATED: 2021-10-16 @ 9:28 PM
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
@@ -39,6 +39,8 @@ const (
 	IDCode = uint8(iota)
 	Transaction
 	Block
+	Node
+	NodeList
 )
 
 // Attempt to send a message to a specified host and port
@@ -69,6 +71,10 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 		jsonData = bccnstrx.MakeTransaction(goData)
 	case Block:
 		break
+	case Node:
+		jsonData = bccnstrx.MakeNode(goData)
+	case NodeList:
+		jsonData = bccnstrx.MakeNodeList(goData)
 	}
 
 	conn, err := net.Dial(goProtocol, net.JoinHostPort(goHost, goPort))
@@ -81,7 +87,7 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 	fmt.Println(string(jsonBytes))
 
 	_, err = conn.Write(jsonBytes)
-	netutils.Check(err, 100)
+	netutils.Check(err, 90)
 
 	conn.Close()
 }
@@ -100,7 +106,7 @@ func receive(protocol, host, port C.cchar_t) C.cchar_t {
 
 	// Listen for a connection
 	listener, err := netlisten.Listen(goProtocol, goHost, goPort)
-	netutils.Check(err, 119)
+	netutils.Check(err, 109)
 
 	defer listener.Close()
 
@@ -109,7 +115,7 @@ func receive(protocol, host, port C.cchar_t) C.cchar_t {
 	// Wait for a connection.
 	go func(ch chan<- net.Conn, listener net.Listener) {
 		conn, err := listener.Accept()
-		netutils.Check(err, 128)
+		netutils.Check(err, 118)
 
 		ch <- conn
 	}(connChan, listener)
@@ -144,16 +150,16 @@ func gzipCompress(filename C.cchar_t) C.cchar_t {
 
 	// Open the file
 	file, err := os.Open(goFilename)
-	netutils.Check(err, 154)
+	netutils.Check(err, 153)
 
 	// Read the contents of the file
 	reader := bufio.NewReader(file)
 	contents, err := ioutil.ReadAll(reader)
-	netutils.Check(err, 159)
+	netutils.Check(err, 158)
 
 	// Create the compressed file (.gz)
 	comp, err := os.Create(goFilename + ".gz")
-	netutils.Check(err, 163)
+	netutils.Check(err, 162)
 
 	// Make a new writer
 	gzwriter := gzip.NewWriter(comp)
@@ -166,7 +172,7 @@ func gzipCompress(filename C.cchar_t) C.cchar_t {
 
 	// Write the compressed data to the file
 	_, err = gzwriter.Write(contents)
-	netutils.Check(err, 75)
+	netutils.Check(err, 175)
 
 	return C.CString(comp.Name())
 }
@@ -178,28 +184,28 @@ func gzipDecompress(filename C.cchar_t) C.cchar_t {
 
 	// Open the file for reading and writing
 	input, err := os.OpenFile(goFilename, os.O_RDONLY, 0)
-	netutils.Check(err, 87)
+	netutils.Check(err, 187)
 
 	defer input.Close()
 
 	// Read the file as a byte slice
 	b, err := ioutil.ReadFile(input.Name())
-	netutils.Check(err, 93)
+	netutils.Check(err, 193)
 
 	// Create a byte reader and use it to make a gzip reader
 	breader := bytes.NewReader(b)
 	gzreader, err := gzip.NewReader(breader)
 
-	netutils.Check(err, 99)
+	netutils.Check(err, 199)
 	defer gzreader.Close()
 
 	// Create a destination file
 	output, err := os.Create(strings.SplitAfterN(goFilename, ".gz", 1)[0])
-	netutils.Check(err, 104)
+	netutils.Check(err, 204)
 
 	// Copy the decompressed data from the gzip reader to the destination file
 	if _, err = io.Copy(output, gzreader); err != nil {
-		netutils.Check(err, 108)
+		netutils.Check(err, 208)
 	}
 
 	os.Remove(goFilename) // Delete the compressed data
