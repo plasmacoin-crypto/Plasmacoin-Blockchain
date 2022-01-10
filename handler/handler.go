@@ -22,6 +22,8 @@ const (
 	IDCode = uint8(iota)
 	Transaction
 	Block
+	Node
+	NodeList
 )
 
 // Check for errors
@@ -41,6 +43,8 @@ func HandleConnection(conn net.Conn) ([]byte, uint8) {
 	err := json.Unmarshal(data, &packet)
 	check(err, 36)
 
+	fmt.Println(data, packet.Type)
+
 	fullPacket := getStruct(data, packet.Type) // Convert the packet to the correct Go struct
 
 	// Marshal the data
@@ -55,16 +59,31 @@ func getStruct(data []byte, packetType uint8) interface{} {
 		var idCode bccnstrx.IDCode
 
 		err := json.Unmarshal(data, &idCode)
-		check(err, 68)
+		check(err, 60)
 
 		return idCode
 	case Transaction:
 		var transaction bccnstrx.Transaction
 
 		err := json.Unmarshal(data, &transaction)
-		check(err, 75)
+		check(err, 67)
 
 		return transaction
+	case Node:
+		var nodeData bccnstrx.NodeData
+
+		err := json.Unmarshal(data, &nodeData)
+		check(err, 74)
+
+		return nodeData
+	case NodeList:
+		var nodeList bccnstrx.NodeList
+
+		err := json.Unmarshal(data, &nodeList)
+		check(err, 81)
+
+		fmt.Println(nodeList)
+		return nodeList
 	default:
 		break
 	}
