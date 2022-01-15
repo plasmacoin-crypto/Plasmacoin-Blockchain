@@ -13,17 +13,12 @@
 #include <utility>
 #include <sstream>
 #include <functional>
-
-#include "cryptopp-sha256-libs.h"
-
-#include "transaction.hpp"
-#include "block.hpp"
-#include "blockchain.hpp"
-#include "rsa-fs.hpp"
-#include "dat-fs.hpp"
+#include <vector>
 
 using std::string;
 using std::pair;
+
+#include <QJsonObject>
 
 #include <cryptopp/rsa.h> 		// Use Crypto++'s RSA functionality
 #include <cryptopp/osrng.h> 	// Use AutoSeededRandomPool
@@ -36,6 +31,22 @@ using std::pair;
 using CryptoPP::RSA;
 using CryptoPP::Integer;
 using CryptoPP::byte;
+
+#include "cryptopp-sha256-libs.h"
+
+#include "transaction.hpp"
+#include "block.hpp"
+#include "blockchain.hpp"
+#include "rsa-fs.hpp"
+#include "dat-fs.hpp"
+#include "packet-types.h"
+#include "transmitter.hpp"
+#include "shared-mem.hpp"
+#include "parse-json.hpp"
+
+namespace go {
+	#include "pcnetworkd.h"
+}
 
 class Node {
 public:
@@ -76,6 +87,8 @@ private:
 
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer m_Signer;
 	CryptoPP::InvertibleRSAFunction m_Keys;
+
+	std::vector<string> m_KnownHosts;
 };
 
 #endif // NODE_HPP
