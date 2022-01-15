@@ -5,6 +5,9 @@
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
 
+#ifndef TRANSMITTER_HPP
+#define TRANSMITTER_HPP
+
 #include <string>
 #include <vector>
 
@@ -14,10 +17,10 @@
 #include <cryptopp/hex.h>		 	// Use HexEncoder
 #include <cryptopp/secblock.h>	 	// Use CryptoPP::SecByteBlock
 
-#include "address-book.h"
 #include "transaction.hpp"
 #include "node.hpp"
 #include "block.hpp"
+#include "packet-types.h"
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -28,7 +31,7 @@ using std::string;
 
 class Transmitter {
 public:
-	Transmitter(AddressBook* addressBook);
+	Transmitter();
 	~Transmitter();
 
 	void Transmit(const vector<string>& data, uint8_t type);
@@ -39,7 +42,7 @@ public:
 	vector<string> Format(Block* block);
 
 private:
-	AddressBook* m_AddressBook;
-
 	vector<string> m_KnownHosts = {"192.168.1.44"};
 };
+
+#endif // TRANSMITTER_HPP
