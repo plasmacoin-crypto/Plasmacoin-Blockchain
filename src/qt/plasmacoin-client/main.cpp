@@ -233,7 +233,7 @@ void transactionPage(MainWindow& window) {
 		// Create a new transaction
 		Transaction* transaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
 
-		Transmitter* transmitter = new Transmitter(window.m_AddressBook);
+		Transmitter* transmitter = new Transmitter();
 		auto data = transmitter->Format(transaction);
 		transmitter->Transmit(data, std::stoi(data[0]));
 
