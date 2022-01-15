@@ -30,18 +30,18 @@ MainWindow::MainWindow(QWidget* parent):
 	m_TransactionManager = new TransactionManager(Ui::MainWindow::contacts, Ui::MainWindow::transactionLog);
 
 	// Create some temporary nodes to make transactions between
-	Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
-	Node* node2 = new Node("John", "john", "4567", "192.168.1.7", string(getenv("HOME")) + "/.ssh/node2keys/");
-	Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8", string(getenv("HOME")) + "/.ssh/node3keys/");
+	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
+	// Node* node2 = new Node("John", "john", "4567", "192.168.1.7", string(getenv("HOME")) + "/.ssh/node2keys/");
+	// Node* node3 = new Node("Bill", "bill", "8901", "192.168.1.8", string(getenv("HOME")) + "/.ssh/node3keys/");
 
-	Transaction* transaction1 = node1->MakeTransaction(node2->GetAddress(), 1.0, 0.1, "Here's some money");
-	Transaction* transaction2 = node2->MakeTransaction(node3->GetAddress(), 5.7, 0.1, "Here's some money");
-	Transaction* transaction3 = node3->MakeTransaction(node1->GetAddress(), 2.1, 0.1, "Here's some money");
+	// Transaction* transaction1 = node1->MakeTransaction(node2->GetAddress(), 1.0, 0.1, "Here's some money");
+	// Transaction* transaction2 = node2->MakeTransaction(node3->GetAddress(), 5.7, 0.1, "Here's some money");
+	// Transaction* transaction3 = node3->MakeTransaction(node1->GetAddress(), 2.1, 0.1, "Here's some money");
 
 	// Load items into the transaction list
-	m_TList->Add(transaction1);
-	m_TList->Add(transaction2);
-	m_TList->Add(transaction3);
+	// m_TList->Add(transaction1);
+	// m_TList->Add(transaction2);
+	// m_TList->Add(transaction3);
 
 	m_Status->SetHeading("Building Block #" + std::to_string(m_User->m_BlockchainCopy->Size()));
 
