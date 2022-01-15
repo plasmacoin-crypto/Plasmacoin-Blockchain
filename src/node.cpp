@@ -30,6 +30,18 @@ Node::Node(
 	datfs::createDataPath(); // Create a place to store blockchain data
 
 	m_Address = CreateAddress(m_PubKey);
+
+	// Register that the node is online
+	Transmitter* transmitter = new Transmitter();
+	auto data = transmitter->Format(this);
+	std::cout << data[0] << std::endl;
+	transmitter->Transmit(data, std::stoi(data[0]));
+
+	string result = shared_mem::readMemory(); // Read the shared memory
+
+	// Parse the JSON string
+	QJsonObject object = json::parse(result);
+	m_KnownHosts = json::parseArray(object, "nodes");
 }
 
 Node::~Node() {
