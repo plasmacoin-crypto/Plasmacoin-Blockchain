@@ -27,11 +27,11 @@
 #include "block.hpp"
 #include "merkle-helpers.h"
 #include "dat-fs.hpp"
+#include "packet-types.h"
 
 // Include Go code
 namespace go {
 	#include "pcnetworkd.h"
-	enum DataCodes: uint8_t {ID_CODE, TRANSACTION, BLOCK, NODE};
 }
 
 using std::vector;
