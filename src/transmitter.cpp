@@ -7,13 +7,8 @@
 
 #include "transmitter.hpp"
 
-Transmitter::Transmitter(AddressBook* addressBook):
-	m_AddressBook(addressBook)
-{}
-
-Transmitter::~Transmitter() {
-	delete m_AddressBook;
-}
+Transmitter::Transmitter() {}
+Transmitter::~Transmitter() {}
 
 void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type) {
 	const size_t SIZE = data.size();
@@ -24,20 +19,35 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type) {
 		carray[i] = data[i].c_str();
 	}
 
-	for (auto ip: m_KnownHosts) {
-		//
-		// A slice is the closest thing to a dynamic list in Go, so convert the C array
-		// to a Go slice. Through cgo, we can do this by creating an instance of the GoSlice
-		// struct. In Go, a slice accepts an array, a size, and a capacity. We don't plan to
-		// change the size, so the size will equal the capacity.
-		//
-		// Because we have to use cgo's "go-between" types, the sizes need to be converted to
-		// type `GoInt` (a typedef for `long long`)
-		//
-		go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
+	switch (type) {
+		case static_cast<uint8_t>(go::PacketTypes::NODE): {
+			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
+			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
+			break;
+		}
 
-		// Send the data to another node
-		future<void> dial = std::async(&go::dial, "tcp", ip.c_str(), "8080", type, slice);
+		case static_cast<uint8_t>(go::PacketTypes::TRANSACTION): {
+			for (auto ip: m_KnownHosts) {
+				//
+				// A slice is the closest thing to a dynamic list in Go, so convert the C array
+				// to a Go slice. Through cgo, we can do this by creating an instance of the GoSlice
+				// struct. In Go, a slice accepts an array, a size, and a capacity. We don't plan to
+				// change the size, so the size will equal the capacity.
+				//
+				// Because we have to use cgo's "go-between" types, the sizes need to be converted to
+				// type `GoInt` (a typedef for `long long`)
+				//
+				go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
+
+				// Send the data to another node
+				future<void> dial = std::async(&go::dial, "tcp", ip.c_str(), "8080", type, slice);
+			}
+
+			break;
+		}
+
+		default:
+			break;
 	}
 }
 
@@ -58,7 +68,7 @@ vector<string> Transmitter::Format(Transaction* transaction) {
     keyEncoder.MessageEnd();
 
 	return vector<string> {
-		std::to_string(go::DataCodes::TRANSACTION),
+		std::to_string(static_cast<uint8_t>(go::PacketTypes::TRANSACTION)),
 		transaction->m_SenderAddr,
 		transaction->m_RecipientAddr,
 		std::to_string(transaction->m_Amount),
@@ -76,6 +86,7 @@ vector<string> Transmitter::Format(Transaction* transaction) {
 
 vector<string> Transmitter::Format(Node* node) {
 	return vector<string> {
+		std::to_string(static_cast<uint8_t>(go::PacketTypes::NODE)),
 		node->GetIP(),
 		node->GetAddress(),
 		std::to_string(static_cast<uint8_t>(node->GetType()))
