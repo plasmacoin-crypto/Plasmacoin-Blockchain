@@ -15,9 +15,13 @@ namespace go {
 	#include "pcnetworkd.h"
 }
 
+#include "shared-mem.hpp"
+
 void networkDaemon() {
 	std::future<const char*> fut = std::async(&go::receive, "tcp", "192.168.1.44", "8080");
-	std::cout << std::string(fut.get()) << std::endl;
+	std::string data = fut.get();
+	
+	shared_mem::writeMemory(data);
 }
 
 int main() {
