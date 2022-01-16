@@ -11,5 +11,6 @@ Transaction::Transaction(const string& senderAddr, const string& recipientAddr, 
 	m_SenderAddr(senderAddr),
 	m_RecipientAddr(recipientAddr),
 	m_Amount(amount),
+	m_Fee(fee),
 	m_Content(content)
 {}
