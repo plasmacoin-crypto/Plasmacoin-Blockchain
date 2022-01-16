@@ -19,30 +19,31 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type) {
 		carray[i] = data[i].c_str();
 	}
 
+	//
+	// A slice is the closest thing to a dynamic list in Go, so convert the C array
+	// to a Go slice. Through cgo, we can do this by creating an instance of the GoSlice
+	// struct. In Go, a slice accepts an array, a size, and a capacity. We don't plan to
+	// change the size, so the size will equal the capacity.
+	//
+	// Because we have to use cgo's "go-between" types, the sizes need to be converted to
+	// type `GoInt` (`long long`)
+	//
 	switch (type) {
-		case static_cast<uint8_t>(go::PacketTypes::NODE): {
-			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
-			break;
-		}
-
 		case static_cast<uint8_t>(go::PacketTypes::TRANSACTION): {
 			for (auto ip: m_KnownHosts) {
-				//
-				// A slice is the closest thing to a dynamic list in Go, so convert the C array
-				// to a Go slice. Through cgo, we can do this by creating an instance of the GoSlice
-				// struct. In Go, a slice accepts an array, a size, and a capacity. We don't plan to
-				// change the size, so the size will equal the capacity.
-				//
-				// Because we have to use cgo's "go-between" types, the sizes need to be converted to
-				// type `GoInt` (a typedef for `long long`)
-				//
 				go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
 
 				// Send the data to another node
 				future<void> dial = std::async(&go::dial, "tcp", ip.c_str(), "8080", type, slice);
 			}
 
+			break;
+		}
+
+		case static_cast<uint8_t>(go::PacketTypes::BLOCK):
+		case static_cast<uint8_t>(go::PacketTypes::NODE): {
+			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
+			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
 			break;
 		}
 
@@ -93,4 +94,21 @@ vector<string> Transmitter::Format(Node* node) {
 	};
 }
 
-vector<string> Transmitter::Format(Block* block) {}
+vector<string> Transmitter::Format(Block* block) {
+	vector<string> returnVec {
+		std::to_string(static_cast<uint8_t>(go::PacketTypes::BLOCK)),
+		std::to_string(block->m_Index),
+		std::to_string(block->m_Nonce),
+		block->m_Hash,
+		block->m_PrevHash,
+		block->m_Timestamp,
+		std::to_string(block->m_IsGenesis)
+	};
+
+	for (auto trxn: block->m_Transactions) {
+		auto trxnData = Format(trxn);
+		std::copy(trxnData.begin(), trxnData.end(), std::back_inserter(returnVec));
+	}
+
+	return returnVec;
+}

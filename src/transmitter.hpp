@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <iterator>
 
 #include <cryptopp/filters.h>	 	// Use StringSink
 #include <cryptopp/queue.h>    	 	// Use ByteQueue
