@@ -1,6 +1,6 @@
 //
 // FILENAME: nodelist.go | Plasmacoin Cryptocurrency
-// DESCRIPTION: A list of IP addresses sent to nodes when they connect to a DNS Seeder
+// DESCRIPTION: A list of IP addresses sent to nodes when they connect to an Address Lookup tool
 // CREATED: 2022-01-09 @ 8:06 PM
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
