@@ -35,6 +35,12 @@ void minePage(MainWindow& window) {
 	window.connect(&window, &MainWindow::MiningSuccess, &window, [&window]() {
 		window.ResetBlock();
 		window.UpdateStatus(*window.m_User->m_BlockchainCopy->GetLatest(), window.m_LastMiningDur);
+
+		Transmitter* transmitter = new Transmitter();
+		auto data = transmitter->Format(window.m_User->m_BlockchainCopy->GetLatest());
+		transmitter->Transmit(data, std::stoi(data[0]));
+
+		delete transmitter;
 	});
 }
 
