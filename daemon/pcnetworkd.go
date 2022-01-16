@@ -70,7 +70,7 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 	case Transaction:
 		jsonData = bccnstrx.MakeTransaction(goData)
 	case Block:
-		break
+		jsonData = bccnstrx.MakeBlock(goData)
 	case Node:
 		jsonData = bccnstrx.MakeNode(goData)
 	case NodeList:

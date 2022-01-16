@@ -69,6 +69,13 @@ func getStruct(data []byte, packetType uint8) interface{} {
 		check(err, 67)
 
 		return transaction
+	case Block:
+		var block bccnstrx.Block
+
+		err := json.Unmarshal(data, &block)
+		check(err, 76)
+
+		return block
 	case Node:
 		var nodeData bccnstrx.NodeData
 
