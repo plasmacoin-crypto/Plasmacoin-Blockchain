@@ -40,10 +40,15 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type) {
 			break;
 		}
 
-		case static_cast<uint8_t>(go::PacketTypes::BLOCK):
-		case static_cast<uint8_t>(go::PacketTypes::NODE): {
+		case static_cast<uint8_t>(go::PacketTypes::BLOCK): {
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
 			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
+			break;
+		}
+
+		case static_cast<uint8_t>(go::PacketTypes::NODE): {
+			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
+			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
 			break;
 		}
 
