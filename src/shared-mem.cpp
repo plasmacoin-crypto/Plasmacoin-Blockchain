@@ -6,38 +6,77 @@
 //
 
 #include "shared-mem.hpp"
-#include <iostream>
 
+// Read from a block of shared memory
 std::string shared_mem::readMemory() {
-	sem_unlink("/tmp/sem");
+	// Unlink any semaphores that may be left over
+	sem_unlink(shared_mem::READER_FILENAME);
+	sem_unlink(shared_mem::WRITER_FILENAME);
 
-	std::cout << "Reading memory" << std::endl;
-	int shmid = shmget(shared_mem::KEY, shared_mem::MEM_SIZE, 0666);
-	void* memory = shmat(shmid, nullptr, 0);
+	// Initialize new semaphores
+	sem_t* writer = sem_open(shared_mem::WRITER_FILENAME, IPC_CREAT, 0660, 0);
+	sem_t* reader = sem_open(shared_mem::READER_FILENAME, IPC_CREAT, 0660, 1);
 
-	sem_t* sem = sem_open("/tmp/sem", 0);
-	//sem_t* consumer = sem_open("/tmp/consumer", IPC_CREAT, 0660, 1);
+	key_t key = ftok(shared_mem::FILENAME, 0);
+	int shmid = shmget(key, shared_mem::BLOCK_SIZE, 0666 | IPC_CREAT);
 
-	sem_wait(sem);
-	return std::string(reinterpret_cast<const char*>(memory));
-	sem_post(sem);
+	// Read from the shared memory block
+	sem_wait(writer);
+	char* memory = reinterpret_cast<char*>(shmat(shmid, nullptr, 0));
+	std::string strmem = const_cast<const char*>(memory);
+	sem_post(reader);
 
-	sem_close(sem);
-	//sem_close(consumer);
+	// Close the semaphores
+	sem_close(reader);
+	sem_close(writer);
+
+	std::cout << "Read: " << strmem << std::endl;
+
+	shared_mem::detatch(memory); // Detatch from the memory
+	return strmem;
 }
 
+// Write to a block of shared memory
 void shared_mem::writeMemory(std::string data) {
-	std::cout << "Writing memory" << std::endl;
-	int shmid = shmget(shared_mem::KEY, shared_mem::MEM_SIZE, 0666 | IPC_CREAT);
+	// Access the semaphores
+	sem_t* writer = sem_open(shared_mem::WRITER_FILENAME, 0);
+	sem_t* reader = sem_open(shared_mem::READER_FILENAME, 0);
+
+	key_t key = ftok(shared_mem::FILENAME, 0);
+	int shmid = shmget(key, shared_mem::BLOCK_SIZE, 0666 | IPC_CREAT);
+	char* memory = reinterpret_cast<char*>(shmat(shmid, nullptr, 0));
+
+	// Write to the shared memory block
+	sem_wait(reader);
+	strncpy(memory, data.c_str(), shared_mem::BLOCK_SIZE);
+	sem_post(writer);
+
+	sem_close(writer);
+	sem_close(reader);
+
+	std::cout << "Wrote: " << data << std::endl;
+
+	shared_mem::detatch(memory); // Detatch from the memory
+}
+
+// Detatch from a block of shared memory
+void shared_mem::detatch(void* block) {
+	shmdt(block);
+}
+
+// Delete a block of shared memory
+void shared_mem::deleteMemory(const char* const filename) {
+	// Get the ID and a pointer to the memory itself
+	key_t key = ftok(shared_mem::FILENAME, 0);
+	int shmid = shmget(key, shared_mem::BLOCK_SIZE, 0666);
 	void* memory = shmat(shmid, nullptr, 0);
 
-	sem_t* sem = sem_open("/tmp/sem", IPC_CREAT, 0660, 1);
-	//sem_t* consumer = sem_open("/tmp/consumer", 0);
-
-	sem_wait(sem);
-	strcpy(reinterpret_cast<char*>(memory), data.c_str());
-	sem_post(sem);
-
-	sem_close(sem);
-	//sem_close(consumer);
+	shared_mem::detatch(memory);
+	shmctl(shmid, IPC_RMID, nullptr);
 }
+
+// Delete a semaphore
+void shared_mem::deleteSemaphore(const char* const sem) {
+	sem_unlink(sem);
+}
+

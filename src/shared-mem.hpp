@@ -10,17 +10,28 @@
 
 #include <string>
 #include <cstring>
+#include <new>
+#include <iostream>
+#include <unistd.h>
 
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <semaphore.h>
 
 namespace shared_mem {
-	const int32_t MEM_SIZE = 1024;
-	const key_t KEY = ftok("/", 97);
+	const int32_t BLOCK_SIZE = 4096;
+
+	const char* const FILENAME = "shared-memory";
+	const char* const READER_FILENAME = "/reader";
+	const char* const WRITER_FILENAME = "/writer";
+
+	static sem_t* sem = sem_open("/tmp/sem", IPC_CREAT, 0660, 1);
 
 	std::string readMemory();
 	void writeMemory(std::string data);
+	void detatch(void* block);
+	void deleteMemory(const char* const filename);
+	void deleteSemaphore(const char* const sem);
 }
 
 #endif // SHARED_MEM_HPP
