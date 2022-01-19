@@ -20,12 +20,9 @@
 
 namespace shared_mem {
 	const int32_t BLOCK_SIZE = 4096;
-
 	const char* const FILENAME = "shared-memory";
 	const char* const READER_FILENAME = "/reader";
 	const char* const WRITER_FILENAME = "/writer";
-
-	static sem_t* sem = sem_open("/tmp/sem", IPC_CREAT, 0660, 1);
 
 	std::string readMemory();
 	void writeMemory(std::string data);
