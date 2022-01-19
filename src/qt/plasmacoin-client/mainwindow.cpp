@@ -74,6 +74,11 @@ MainWindow::~MainWindow() {
 	delete m_AccPgs;
 	delete m_FileBrowser;
 	delete m_AddressBook;
+
+	// Clear and free any shared memory that was used
+	shared_mem::deleteSemaphore(shared_mem::READER_FILENAME);
+	shared_mem::deleteSemaphore(shared_mem::WRITER_FILENAME);
+	shared_mem::deleteMemory(shared_mem::FILENAME);
 }
 
 // Create QTextBrowsers to display on the mining tab
