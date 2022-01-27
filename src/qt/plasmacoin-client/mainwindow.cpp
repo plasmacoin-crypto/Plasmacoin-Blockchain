@@ -12,8 +12,10 @@ MainWindow::MainWindow(QWidget* parent):
 	parent(parent),
 	m_Authenticator(new Auth()),
 	//m_SettingsManager(new SettingsManager()),
-	m_TList(new TransactionList(Ui::MainWindow::transactionList))
+	m_TransactionList(new TransactionList(Ui::MainWindow::transactionList))
 {
+	shared_mem::deleteMemory(shared_mem::FILENAME);
+
 	setupUi(this);
 	tabWidget->setCurrentIndex(0);
 
@@ -28,6 +30,7 @@ MainWindow::MainWindow(QWidget* parent):
 						Ui::MainWindow::field2, Ui::MainWindow::field3, Ui::MainWindow::field4
 					);
 	m_TransactionManager = new TransactionManager(Ui::MainWindow::contacts, Ui::MainWindow::transactionLog);
+	m_TransactionView = new TransactionView(Ui::MainWindow::transactionView, amountSelector->decimals(), feeSelector->decimals());
 
 	// Create some temporary nodes to make transactions between
 	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
@@ -70,7 +73,7 @@ MainWindow::MainWindow(QWidget* parent):
 MainWindow::~MainWindow() {
 	delete m_Status;
 	delete m_Authenticator;
-	delete m_TList;
+	delete m_TransactionList;
 	delete m_AccPgs;
 	delete m_FileBrowser;
 	delete m_AddressBook;
@@ -106,29 +109,34 @@ AccountPages* MainWindow::CreatePages() {
 // Call block mining code and make visual changes to the GUI once it's done
 void MainWindow::StartMining() {
 	Block* latest = m_User->m_BlockchainCopy->GetLatest(); // Get the latest block
-	Block newBlock(latest->m_Index + 1, latest->m_Hash, m_BlockContents); // Create a new block
-
-	auto start = high_resolution_clock::now(); // Begin timing the function
+	Block newBlock(latest->m_Index + 1, latest->m_Hash, m_BlockContents, m_User->m_BlockchainCopy->GetDifficulty()); // Create a new block
 
 	bool success = false, valid = false;
 	uint8_t code;
 
+	auto start = high_resolution_clock::now(); // Begin timing the function
 	std::tie(success, code) = m_User->m_BlockchainCopy->Mine(newBlock); // Mine the block
+	auto stop = high_resolution_clock::now(); // End timing
 
 	std::cout << "Success: " << success << std::endl;
 	std::cout << "Code: " << (uint)code << std::endl;
 
-	auto stop = high_resolution_clock::now(); // End timing
 	m_LastMiningDur = std::chrono::duration_cast<seconds>(stop - start); // Find the duration
 
-	// NOTE: Ideally, the blockchain will be validated without altering even the user's
-	// personal copy first.
+	// Verify and append the block
 	if (success) {
-		m_User->m_BlockchainCopy->Add(&newBlock);
-		valid = m_User->m_BlockchainCopy->Validate();
+		Blockchain* tempChain = new Blockchain(*m_User->m_BlockchainCopy);
+		tempChain->Add(&newBlock);
+		valid = validation::validate(*tempChain);
 	}
 
 	if (valid) {
+		m_User->m_BlockchainCopy->Add(&newBlock);
+
+		Transmitter* transmitter = new Transmitter();
+		auto data = transmitter->Format(&newBlock);
+		transmitter->Transmit(data, std::stoi(data[0]));
+
 		emit MiningSuccess();
 	}
 	else {
