@@ -14,3 +14,16 @@ Transaction::Transaction(const string& senderAddr, const string& recipientAddr, 
 	m_Fee(fee),
 	m_Content(content)
 {}
+
+Transaction::Transaction(
+	const string& senderAddr, const string& recipientAddr, float amount, float fee, const string& content,
+	Signature* signature, const string& hash
+):
+	m_SenderAddr(senderAddr),
+	m_RecipientAddr(recipientAddr),
+	m_Amount(amount),
+	m_Fee(fee),
+	m_Content(content),
+	m_Signature(*signature),
+	m_Hash(hash)
+{}

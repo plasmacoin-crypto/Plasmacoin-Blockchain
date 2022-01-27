@@ -20,8 +20,6 @@ using CryptoPP::byte;
 using CryptoPP::RSA;
 using CryptoPP::SecByteBlock;
 
-class Node;
-
 struct Signature {
 	SecByteBlock 	m_Signature;
 	RSA::PublicKey 	m_PublicKey;
@@ -31,6 +29,10 @@ struct Signature {
 class Transaction {
 public:
 	Transaction(const string& senderAddr, const string& recipientAddr, float amount, float fee, const string& content);
+	Transaction(
+		const string& senderAddr, const string& recipientAddr, float amount, float fee, const string& content,
+		Signature* signature, const string& hash
+	);
 
 	string m_SenderAddr, m_RecipientAddr;
 	float m_Amount, m_Fee;
