@@ -12,6 +12,7 @@ import "strconv"
 type Block struct {
 	PacketType   int           `json:"type"`
 	Index        int           `json:"index"`
+	Difficulty   int64         `json:"difficulty"`
 	Nonce        int           `json:"nonce"`
 	Hash         string        `json:"hash"`
 	PrevHash     string        `json:"prevhash"`
@@ -29,14 +30,15 @@ func MakeBlock(data []string) *Block {
 	//
 	// 1. The packet type (as an integer)					(data[0])
 	// 2. The index of the block  							(data[1])
-	// 3. The correct nonce 								(data[2])
-	// 4. The block's Merkle Root hash 						(data[3])
-	// 5. The previous block's hash 						(data[4])
-	// 6. The timestamp 									(data[5])
-	// 7. Whether or not the block is the genesis block 	(data[6])
-	// 8. A list of transactions on the block				(data[7])
+	// 3. The difficulty for the block 						(data[2])
+	// 4. The correct nonce 								(data[3])
+	// 5. The block's Merkle Root hash 						(data[4])
+	// 6. The previous block's hash 						(data[5])
+	// 7. The timestamp 									(data[6])
+	// 8. Whether or not the block is the genesis block 	(data[7])
+	// 9. A list of transactions on the block				(data[8])
 	//
-	// The transaction data comes in sets of 10. This means that data[7] - data[16] are
+	// The transaction data comes in sets of 10. This means that data[8] - data[17] are
 	// all part of the same transaction.
 	//
 	// For more information on what makes up a transaction, see `MakeTransaction` in
@@ -46,13 +48,14 @@ func MakeBlock(data []string) *Block {
 	// Convert some stringified numeric values back to numeric values
 	packetType, _ := strconv.ParseInt(data[0], 10, 32)
 	index, _ := strconv.ParseInt(data[1], 10, 32)
-	nonce, _ := strconv.ParseInt(data[2], 10, 32)
-	isGenesis, _ := strconv.ParseBool(data[6])
+	difficulty, _ := strconv.ParseInt(data[2], 10, 64)
+	nonce, _ := strconv.ParseInt(data[3], 10, 32)
+	isGenesis, _ := strconv.ParseBool(data[7])
 
 	trxnCount := (len(data) - 7) / 10 // Find the number of transactions in the block
 	transactions := make([]Transaction, 0, trxnCount)
 
-	for i := 7; i < len(data); i += 10 {
+	for i := 8; i < len(data); i += 10 {
 		// Get the current indices of transaction data. Using these in a slice selects
 		// 10 elements in the interval [min, max).
 		min, max := i, i + 10
@@ -63,10 +66,11 @@ func MakeBlock(data []string) *Block {
 	return &Block{
 		PacketType:   int(packetType),
 		Index:        int(index),
+		Difficulty:   int64(difficulty),
 		Nonce:        int(nonce),
-		Hash:         data[3],
-		PrevHash:     data[4],
-		Timestamp:    data[5],
+		Hash:         data[4],
+		PrevHash:     data[5],
+		Timestamp:    data[6],
 		IsGenesis:    isGenesis,
 		Transactions: transactions,
 	}
