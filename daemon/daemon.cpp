@@ -20,23 +20,33 @@ namespace go {
 void networkDaemon() {
 	std::future<const char*> fut = std::async(&go::receive, "tcp", "192.168.1.44", "8080");
 	std::string data = fut.get();
-	
+
 	shared_mem::writeMemory(data);
 }
 
-int main() {
+void process() {
+	auto start = std::chrono::high_resolution_clock::now(); // Begin timing the function
+
 	std::thread receive(networkDaemon);
 	std::this_thread::sleep_for(std::chrono::seconds(1));
-
 	receive.join();
 
+	auto stop = std::chrono::high_resolution_clock::now(); // End timing
+	auto duration = std::chrono::duration_cast<std::chrono::seconds>(stop - start); // Find the duration
+}
+
+int main() {
 	#ifdef __APPLE__
 		//
 		// On macOS, launchd will think the daemon has crashed if execution time is less than 10
-		// seconds, even if nothing is actually wrong. To fix this, wait for 12 seconds after the
-		// thread exits on Macs.
+		// seconds, even if nothing is actually wrong. To fix this, run the code in a loop on macOS
+		// instead of running the executable over and over.
 		//
-		std::this_thread::sleep_for(std::chrono::seconds(12));
+		while (true) {
+			process();
+		}
+	#else
+		process();
 	#endif
 
 	return 0;
