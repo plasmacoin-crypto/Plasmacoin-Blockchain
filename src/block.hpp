@@ -22,7 +22,14 @@ using std::vector;
 
 class Block {
 public:
-	Block(int index, string prevHash, vector<Transaction*> transactions, bool genesis = false);
+	Block(
+		int index, const string& prevHash, const vector<Transaction*>& transactions,
+		int64_t difficulty, bool genesis = false
+	);
+	Block(
+		int index, int nonce, const string& hash, const string& prevHash, const string& timestamp,
+		const vector<Transaction*>& transactions, int64_t difficulty, bool genesis = false
+	);
 
 	bool Validate(const string& hash, const string& prevHash, const int& DIFFICULTY);
 	bool ValidateHash(const string& orig, const string& val, const int& DIFFICULTY);
@@ -31,6 +38,7 @@ public:
 
 	// The block contents
 	int m_Index, m_Nonce = 0;
+	int64_t m_Difficulty;
 	string m_Hash, m_PrevHash, m_Timestamp;
 	bool m_IsGenesis;
 

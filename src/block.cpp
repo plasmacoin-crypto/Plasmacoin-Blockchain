@@ -8,8 +8,12 @@
 #include "block.hpp"
 #include <iostream>
 
-Block::Block(int index, string prevHash, vector<Transaction*> transactions, bool genesis):
+Block::Block(
+	int index, const string& prevHash, const vector<Transaction*>& transactions,
+	int64_t difficulty, bool genesis
+):
 	m_Index(index),
+	m_Difficulty(difficulty),
 	m_PrevHash(prevHash),
 	m_IsGenesis(genesis),
 	m_Transactions(transactions)
@@ -24,6 +28,20 @@ Block::Block(int index, string prevHash, vector<Transaction*> transactions, bool
 		m_Hash = string(64, '0');
 	}
 }
+
+Block::Block(
+	int index, int nonce, const string& hash, const string& prevHash, const string& timestamp,
+	const vector<Transaction*>& transactions, int64_t difficulty, bool genesis
+):
+	m_Index(index),
+	m_Nonce(nonce),
+	m_Difficulty(difficulty),
+	m_Hash(hash),
+	m_PrevHash(prevHash),
+	m_Timestamp(timestamp),
+	m_IsGenesis(genesis),
+	m_Transactions(transactions)
+{}
 
 // Make sure the block is valid
 bool Block::Validate(const string& hash, const string& prevHash, const int& DIFFICULTY) {
