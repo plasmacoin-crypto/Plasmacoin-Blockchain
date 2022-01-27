@@ -8,7 +8,7 @@
 #include "shared-mem.hpp"
 
 // Read from a block of shared memory
-std::string shared_mem::readMemory() {
+std::string shared_mem::readMemory(bool immediate) {
 	// Unlink any semaphores that may be left over
 	sem_unlink(shared_mem::READER_FILENAME);
 	sem_unlink(shared_mem::WRITER_FILENAME);
@@ -20,8 +20,18 @@ std::string shared_mem::readMemory() {
 	key_t key = ftok(shared_mem::FILENAME, 0);
 	int shmid = shmget(key, shared_mem::BLOCK_SIZE, 0666 | IPC_CREAT);
 
-	// Read from the shared memory block
-	sem_wait(writer);
+	// Read from the shared memory block. If `immediate` is true, only read if a semaphore
+	// decrement is immediately possible.
+	if (immediate) {
+		int result = sem_trywait(writer);
+		if (result == EAGAIN) {
+			return shared_mem::NO_DATA;
+		}
+	}
+	else {
+		sem_wait(writer);
+	}
+
 	char* memory = reinterpret_cast<char*>(shmat(shmid, nullptr, 0));
 	std::string strmem = const_cast<const char*>(memory);
 	sem_post(reader);

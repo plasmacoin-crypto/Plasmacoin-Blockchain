@@ -23,8 +23,9 @@ namespace shared_mem {
 	const char* const FILENAME = "shared-memory";
 	const char* const READER_FILENAME = "/reader";
 	const char* const WRITER_FILENAME = "/writer";
+	const char* const NO_DATA = "";
 
-	std::string readMemory();
+	std::string readMemory(bool immediate = false);
 	void writeMemory(std::string data);
 	void detatch(void* block);
 	void deleteMemory(const char* const filename);
