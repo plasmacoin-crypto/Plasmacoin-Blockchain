@@ -28,6 +28,7 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type) {
 	// Because we have to use cgo's "go-between" types, the sizes need to be converted to
 	// type `GoInt` (`long long`)
 	//
+
 	switch (type) {
 		case static_cast<uint8_t>(go::PacketTypes::TRANSACTION): {
 			for (auto ip: m_KnownHosts) {
@@ -103,6 +104,7 @@ vector<string> Transmitter::Format(Block* block) {
 	vector<string> returnVec {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::BLOCK)),
 		std::to_string(block->m_Index),
+		std::to_string(block->m_Difficulty),
 		std::to_string(block->m_Nonce),
 		block->m_Hash,
 		block->m_PrevHash,
