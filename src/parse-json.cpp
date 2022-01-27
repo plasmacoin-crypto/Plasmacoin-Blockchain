@@ -27,3 +27,75 @@ vector<string> json::parseArray(const QJsonObject& object, const string& key) {
 
 	return result;
 }
+
+uint8_t json::getPacketType(const QJsonObject& object) {
+	return object["type"].toInt();
+}
+
+Block* json::toBlock(const QJsonObject& object) {
+	if (json::getPacketType(object) != static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
+		return nullptr;
+	}
+
+	// PacketType   int           `json:"type"`
+	// Index        int           `json:"index"`
+	// Nonce        int           `json:"nonce"`
+	// Hash         string        `json:"hash"`
+	// PrevHash     string        `json:"prevhash"`
+	// Timestamp    string        `json:"timestamp"`
+	// IsGenesis    bool          `json:"genesis"`
+	// Transactions []Transaction `json:"transactions"`
+
+	int index = object["index"].toInt();
+	int nonce = object["nonce"].toInt();
+	string hash = object["hash"].toString().toStdString();
+	string prevHash = object["prevhash"].toString().toStdString();
+	string timestamp = object["timestamp"].toString().toStdString();
+	bool isGenesis = object["genesis"].toBool();
+
+	vector<Transaction*> transactions;
+	auto array = object["transactions"].toArray();
+
+	for (auto trxn: array) {
+		transactions.push_back(json::toTransaction(trxn.toObject()));
+	}
+
+	Block* block = new Block(index, nonce, hash, prevHash, timestamp, transactions, isGenesis);
+	return block;
+}
+
+Transaction* json::toTransaction(const QJsonObject& object) {
+	// SenderAddr    string    `json:"senderAddr"`
+	// RecipientAddr string    `json:"recipientAddr"`
+	// Amount        float32   `json:"amount"`
+	// Fee           float32   `json:"fee"`
+	// Content       string    `json:"content"`
+	// Signature     Signature `json:"sigfield"`
+	// Hash          string    `json:"hash"`
+
+	string senderAddr = object["senderaddr"].toString().toStdString();
+	string recipientAddr = object["recipient"].toString().toStdString();
+	float amount = object["amount"].toDouble();
+	float fee = object["fee"].toDouble();
+	string content = object["content"].toString().toStdString();
+	Signature* signature = json::toSignature(object["sigfield"].toObject());
+	string hash = object["hash"].toString().toStdString();
+
+	Transaction* transaction = new Transaction(senderAddr, recipientAddr, amount, fee, content, signature, hash);
+	return transaction;
+}
+
+Signature* json::toSignature(const QJsonObject& object) {
+	string signature = object["signature"].toString().toStdString();
+	string strPublicKey = object["pubkey"].toString().toStdString();
+	size_t length = object["length"].toInt();
+
+	CryptoPP::SecByteBlock sbb(reinterpret_cast<const unsigned char*>(signature.data()), signature.size());
+
+	CryptoPP::StringSource ssource(strPublicKey, true);
+	CryptoPP::RSA::PublicKey publicKey;
+	publicKey.Load(ssource);
+
+	Signature* sigfield = new Signature {sbb, publicKey, length};
+	return sigfield;
+}
