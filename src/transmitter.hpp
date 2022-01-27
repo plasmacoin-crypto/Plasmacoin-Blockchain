@@ -30,6 +30,8 @@ namespace go {
 using std::vector;
 using std::string;
 
+class Node;
+
 class Transmitter {
 public:
 	Transmitter();
