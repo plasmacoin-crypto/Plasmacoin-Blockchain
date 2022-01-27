@@ -17,6 +17,7 @@
 #include <utility>
 #include <string>
 #include <cstdlib>
+#include <cmath>
 
 #include <unistd.h>
 
@@ -24,10 +25,16 @@
 // and also provide them with a descriptive, overall name.
 #include "cryptopp-sha256-libs.h"
 
+#include <boost/multiprecision/cpp_int.hpp>
+
 #include "block.hpp"
 #include "merkle-helpers.h"
 #include "dat-fs.hpp"
 #include "packet-types.h"
+#include "shared-mem.hpp"
+#include "parse-json.hpp"
+#include "validation.hpp"
+#include "hashing.hpp"
 
 // Include Go code
 namespace go {
@@ -39,6 +46,8 @@ using std::pair;
 using std::future;
 using std::string;
 
+using boost::multiprecision::int256_t;
+
 class Blockchain {
 public:
 	Blockchain();
@@ -48,12 +57,17 @@ public:
 	int Add(Block* block); // Add a block with a confirmed transaction to the blockchain
 	int AddToLedger(Transaction* transaction); // Add an unconfirmed transaction to the ledger
 
-	vector<Block*> Get() const;
+	vector<Block*> GetBlockchain() const;
 	Block* GetLatest() const;
 	size_t Size() const;
+	int64_t GetDifficulty() const;
+	int256_t GetTarget() const;
 
 private:
-	const int DIFFICULTY = 5;
+	// "0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+	const int256_t MAX_TARGET {"0x00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+	int256_t m_Target = MAX_TARGET;
+	int64_t m_Difficulty = boost::lexical_cast<int64_t>(MAX_TARGET / m_Target);
 
 	vector<Transaction*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
 	vector<Block*> m_Chain;
@@ -62,12 +76,11 @@ private:
 	void Compress();
 	template<typename T> bool IsReady(const future<T>& future);
 
+	//float CalcDifficulty();
+
 public:
 	pair<bool, uint8_t> Mine(Block& newBlock);
 	bool Consensus(Block& block, future<void> exitSignal); // Evaluate Proof-of-Work
-
-	bool Validate();
-	bool ValidateHash(const string& hash);
 
 private:
 	string Hash(const string& input);

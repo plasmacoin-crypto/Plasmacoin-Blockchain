@@ -10,7 +10,7 @@
 
 Blockchain::Blockchain() {
 	// Add a Genesis block
-	Block* genesis = new Block(0, "", {nullptr}, true);
+	Block* genesis = new Block(0, "", {nullptr}, GetDifficulty(), true);
 	Add(genesis);
 }
 
@@ -27,9 +27,8 @@ int Blockchain::Add(Block* block) {
 	}
 	else {
 		m_Chain.push_back(new Block(*block));
+		Save(block);
 	}
-
-	Save(block);
 
 	return 0;
 }
@@ -47,13 +46,21 @@ int Blockchain::AddToLedger(Transaction* transaction) {
 }
 
 // Get the blockchain
-vector<Block*> Blockchain::Get() const {
+vector<Block*> Blockchain::GetBlockchain() const {
 	return m_Chain;
 }
 
 // Get the block that was most recently added to the blockchain
 Block* Blockchain::GetLatest() const {
 	return m_Chain.back();
+}
+
+int64_t Blockchain::GetDifficulty() const {
+	return m_Difficulty;
+}
+
+int256_t Blockchain::GetTarget() const {
+	return m_Target;
 }
 
 void Blockchain::Save(Block* block) const {
@@ -117,18 +124,20 @@ pair<bool, uint8_t> Blockchain::Mine(Block& newBlock) {
 	if (success) {
 		std::cout << "Success" << std::endl;
 
-		const char* code[] = {"0"};
-		go::GoSlice slice = {code, 1, 1};
+		// const char* code[] = {"0"};
+		// go::GoSlice slice = {code, 1, 1};
 
-		future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", static_cast<uint8_t>(go::PacketTypes::ID_CODE), slice);
+		// future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", static_cast<uint8_t>(go::PacketTypes::ID_CODE), slice);
 	}
 	else {
 		std::cout << "Failure" << std::endl;
 
-		const char* code[] = {"4"};
-		go::GoSlice slice = {code, 1, 1};
+		std::cout << newBlock.m_Hash << std::endl;
 
-		future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", static_cast<uint8_t>(go::PacketTypes::ID_CODE), slice);
+		// const char* code[] = {"4"};
+		// go::GoSlice slice = {code, 1, 1};
+
+		// future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", static_cast<uint8_t>(go::PacketTypes::ID_CODE), slice);
 	}
 
 	return std::make_pair(success, 0);
@@ -140,17 +149,27 @@ pair<bool, uint8_t> Blockchain::Mine(Block& newBlock) {
 bool Blockchain::Consensus(Block& block, future<void> exitSignal) {
 	// Get the nonce. If the difficulty is 5, the string representation
 	// of the nonce will be "00000".
-	string strNonce = string(DIFFICULTY, '0');
-	string hash;
+	//string strNonce = string(DIFFICULTY, '0');
+	string hash = "";
 
-	while (
-		hash.substr(0, strNonce.size()) != strNonce &&
-		exitSignal.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout
-	) {
+	//exitSignal.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout
+
+	while (!validation::validate(hash, MAX_TARGET)) {
+		constexpr bool immediate = true;
+		string data = shared_mem::readMemory(immediate);
+		QJsonObject object = json::parse(data);
+
+		// If a new block is received, stop trying to solve the current block.
+		if (!object.empty() && !data.empty() && json::getPacketType(object) == static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
+			block = *json::toBlock(json::parse(data));
+			return false;
+		}
+
 		//std::cout << "Nonce: " << block.m_Nonce << std::endl;
-		hash = Hash(block); // Hash the block
+		hash = hashing::hash(block); // Hash the block
+		std::cout << block.m_Nonce << std::endl;
 
-		if (ValidateHash(hash)) {
+		if (validation::validate(hash, MAX_TARGET)) {
 			break;
 		}
 
@@ -161,33 +180,37 @@ bool Blockchain::Consensus(Block& block, future<void> exitSignal) {
 
 	block.m_Hash = hash;
 
-	return true && block.Validate(block.m_Hash, block.m_PrevHash, DIFFICULTY);
+	return true && validation::validate(block.m_Hash, MAX_TARGET);
 }
 
 // Make sure the blockchain isn't corrupted
-bool Blockchain::Validate() {
-	string hash;
+// bool Blockchain::Validate() {
+// 	string hash;
 
-	std::cout << "Validating Blockchain" << std::endl;
+// 	std::cout << "Validating Blockchain" << std::endl;
 
-	for (auto block: m_Chain) {
-		hash = Hash(*block); // Regenerate the block hash
+// 	for (auto block: m_Chain) {
+// 		hash = hashing::hash(*block); // Regenerate the block hash
 
-		// Make sure the block is valid. One invalid block invalidates the whole
-		// chain, because the previous hashes of all the following blocks will
-		// be invalid.
-		if (!block->Validate(block->m_Hash, block->m_PrevHash, DIFFICULTY)) {
-			return false;
-		}
-	}
+// 		// Make sure the block is valid. One invalid block invalidates the whole
+// 		// chain, because the previous hashes of all the following blocks will
+// 		// be invalid.
+// 		if (!block->Validate(block->m_Hash, block->m_PrevHash, DIFFICULTY)) {
+// 			return false;
+// 		}
+// 	}
 
-	return true;
-}
+// 	return true;
+// }
 
-bool Blockchain::ValidateHash(const string& hash) {
-	string substring = hash.substr(0, DIFFICULTY); // The first characters of the hash that represent the difficulty
-	return substring.find(string(DIFFICULTY, '0')) != string::npos;
-}
+// bool Blockchain::ValidateHash(const string& hash) {
+// 	if (hash.empty()) {
+// 		return false;
+// 	}
+
+// 	string substring = hash.substr(0, DIFFICULTY); // The first characters of the hash that represent the difficulty
+// 	return substring.find(string(DIFFICULTY, '0')) != string::npos;
+// }
 
 // Use Crypto++ to hash a string
 string Blockchain::Hash(const string& input) {
