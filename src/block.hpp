@@ -22,6 +22,8 @@ using std::vector;
 
 class Block {
 public:
+	Block() = default;
+	Block(int index, const vector<Transaction*>& transactions, int64_t difficulty, bool genesis = true);
 	Block(
 		int index, const string& prevHash, const vector<Transaction*>& transactions,
 		int64_t difficulty, bool genesis = false

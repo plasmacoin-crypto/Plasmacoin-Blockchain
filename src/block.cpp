@@ -43,6 +43,10 @@ Block::Block(
 	m_Transactions(transactions)
 {}
 
+Block::Block(int index, const vector<Transaction*>& transactions, int64_t difficulty, bool genesis):
+	Block(index, "", transactions, difficulty, genesis)
+{}
+
 // Make sure the block is valid
 bool Block::Validate(const string& hash, const string& prevHash, const int& DIFFICULTY) {
 	if (m_IsGenesis) {
