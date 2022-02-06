@@ -38,6 +38,7 @@ Node::Node(
 	transmitter->Transmit(data, std::stoi(data[0]));
 
 	string result = shared_mem::readMemory(); // Read the shared memory
+	std::cout << "Node Result: " << result << std::endl;
 
 	// Parse the JSON string
 	QJsonObject object = json::parse(result);
@@ -52,7 +53,6 @@ Node::~Node() {
 Transaction* Node::MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content) {
 	Transaction* transaction = new Transaction(GetAddress(), recipientAddr, amount, fee, content);
 	transaction->m_Hash = Hash(*transaction);
-	Sign(*transaction);
 
 	return transaction;
 }
@@ -102,7 +102,7 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 	return std::make_pair(pubKey, privKey);
 }
 
-// Sign a transaction with the sender's private key. Return the signature, as well as its length.
+// Sign a transaction with the sender's private key.
 void Node::Sign(Transaction& transaction) noexcept(false) {
 	CryptoPP::AutoSeededRandomPool rng;
 	string message = transaction.m_Content;
