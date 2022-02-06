@@ -8,11 +8,7 @@
 #include "blockchain.hpp"
 #include <iostream>
 
-Blockchain::Blockchain() {
-	// Add a Genesis block
-	Block* genesis = new Block(0, "", {nullptr}, GetDifficulty(), true);
-	Add(genesis);
-}
+Blockchain::Blockchain() {}
 
 Blockchain::~Blockchain() {
 	for (auto block: m_Chain) {
@@ -61,6 +57,22 @@ int64_t Blockchain::GetDifficulty() const {
 
 int256_t Blockchain::GetTarget() const {
 	return m_Target;
+}
+
+bool Blockchain::Find(Transaction* transaction) {
+	for (auto blockchainIter = m_Chain.begin(); blockchainIter != m_Chain.end(); std::advance(blockchainIter, 1)) {
+		for (auto trxnIter = (*blockchainIter)->m_Transactions.begin(); trxnIter != (*blockchainIter)->m_Transactions.end(); std::advance(trxnIter, 1))   {
+			if ((*trxnIter)->m_Hash == transaction->m_Hash) {
+				return true;
+			}
+
+			std::advance(trxnIter, 1);
+		}
+
+		std::advance(blockchainIter, 1);
+	}
+
+	return false;
 }
 
 void Blockchain::Save(Block* block) const {
@@ -154,7 +166,7 @@ bool Blockchain::Consensus(Block& block, future<void> exitSignal) {
 
 	//exitSignal.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout
 
-	while (!validation::validate(hash, MAX_TARGET)) {
+	while (!validation::validate(hash, m_Target)) {
 		constexpr bool immediate = true;
 		string data = shared_mem::readMemory(immediate);
 		QJsonObject object = json::parse(data);
@@ -169,7 +181,7 @@ bool Blockchain::Consensus(Block& block, future<void> exitSignal) {
 		hash = hashing::hash(block); // Hash the block
 		std::cout << block.m_Nonce << std::endl;
 
-		if (validation::validate(hash, MAX_TARGET)) {
+		if (validation::validate(hash, m_Target)) {
 			break;
 		}
 
@@ -180,7 +192,7 @@ bool Blockchain::Consensus(Block& block, future<void> exitSignal) {
 
 	block.m_Hash = hash;
 
-	return true && validation::validate(block.m_Hash, MAX_TARGET);
+	return true && validation::validate(block.m_Hash, m_Target);
 }
 
 // Make sure the blockchain isn't corrupted

@@ -63,6 +63,8 @@ public:
 	int64_t GetDifficulty() const;
 	int256_t GetTarget() const;
 
+	bool Find(Transaction* transaction);
+
 private:
 	// "0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
 	const int256_t MAX_TARGET {"0x00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
