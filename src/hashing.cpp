@@ -39,10 +39,7 @@ string hashing::hash(const Transaction& transaction) {
 
 // Hash a block using a Merkle Tree
 string hashing::hash(const Block& block) {
-	if (block.m_IsGenesis) {
-		return string(64, '0');
-	}
-	else if (block.m_Transactions.size() == 1) {
+	if (block.m_Transactions.size() == 1) {
 		return hashing::hash(hashing::hash(*block.m_Transactions[0]) + std::to_string(block.m_Nonce));
 	}
 
