@@ -21,7 +21,7 @@ Block::Block(
 	// Get a timestamp for the block
 	time_t now = time(0);
 	char* time = ctime(&now);
-	m_Timestamp = string(time).substr(0, strlen(time) - 1);
+	m_CreationTime = string(time).substr(0, strlen(time) - 1);
 
 	// The genesis block will have a hash of 0x0
 	if (m_IsGenesis) {
@@ -30,15 +30,16 @@ Block::Block(
 }
 
 Block::Block(
-	int index, int nonce, const string& hash, const string& prevHash, const string& timestamp,
-	const vector<Transaction*>& transactions, int64_t difficulty, bool genesis
+	int index, int nonce, const string& hash, const string& prevHash, const string& creationTime,
+	const string& mineTime, const vector<Transaction*>& transactions, int64_t difficulty, bool genesis
 ):
 	m_Index(index),
 	m_Nonce(nonce),
 	m_Difficulty(difficulty),
 	m_Hash(hash),
 	m_PrevHash(prevHash),
-	m_Timestamp(timestamp),
+	m_CreationTime(creationTime),
+	m_MineTime(mineTime),
 	m_IsGenesis(genesis),
 	m_Transactions(transactions)
 {}
@@ -97,7 +98,8 @@ string Block::Stringify() {
 	result += "BEGIN BLOCK\n"; 			 		   		   			// Header
 	result += "index: " 		+ std::to_string(m_Index) + "\n";	// Index
 	result += "nonce: " 		+ std::to_string(m_Nonce) + "\n";	// Nonce
-	result += "timestamp: " 	+ m_Timestamp 	  		  + "\n"; 	// Timestamp
+	result += "created: " 		+ m_CreationTime 	  	  + "\n"; 	// Creation time
+	result += "mined: " 		+ m_MineTime 	  		  + "\n"; 	// Time mined
 	result += "hash: " 			+ m_Hash 				  + "\n";	// Hash
 	result += "previous_hash: " + prevHash 		  		  + "\n";	// Previous hash
 

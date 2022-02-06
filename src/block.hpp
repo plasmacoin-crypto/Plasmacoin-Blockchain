@@ -29,8 +29,8 @@ public:
 		int64_t difficulty, bool genesis = false
 	);
 	Block(
-		int index, int nonce, const string& hash, const string& prevHash, const string& timestamp,
-		const vector<Transaction*>& transactions, int64_t difficulty, bool genesis = false
+		int index, int nonce, const string& hash, const string& prevHash, const string& creationTime,
+		const string& mineTime, const vector<Transaction*>& transactions, int64_t difficulty, bool genesis = false
 	);
 
 	bool Validate(const string& hash, const string& prevHash, const int& DIFFICULTY);
@@ -41,7 +41,8 @@ public:
 	// The block contents
 	int m_Index, m_Nonce = 0;
 	int64_t m_Difficulty;
-	string m_Hash, m_PrevHash, m_Timestamp;
+	string m_Hash, m_PrevHash;
+	string m_CreationTime, m_MineTime;
 	bool m_IsGenesis;
 
 	vector<Transaction*> m_Transactions;
