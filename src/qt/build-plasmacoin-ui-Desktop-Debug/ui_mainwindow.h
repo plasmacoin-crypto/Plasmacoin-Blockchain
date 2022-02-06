@@ -59,6 +59,7 @@ public:
     QToolButton *minusSign;
     QWidget *userBlock;
     QVBoxLayout *verticalLayout_3;
+    QTableWidget *transactionView;
     QListWidget *blockTransactionList;
     QHBoxLayout *mineLayout2;
     QSpacerItem *horizontalSpacer;
@@ -111,7 +112,7 @@ public:
     QVBoxLayout *verticalLayout_10;
     QWidget *dialogs;
     QVBoxLayout *verticalLayout_9;
-    QLabel *trxnsHeading1_2;
+    QLabel *trxnsHeading2;
     QSpacerItem *verticalSpacer_4;
     QLineEdit *selectedContact;
     QLineEdit *messageField;
@@ -139,7 +140,7 @@ public:
     QSpacerItem *horizontalSpacer_18;
     QWidget *trxnLogView;
     QVBoxLayout *verticalLayout_6;
-    QLabel *trxnsHeading2;
+    QLabel *trxnsHeading3;
     QListWidget *transactionLog;
     QWidget *Account;
     QHBoxLayout *horizontalLayout_16;
@@ -366,6 +367,19 @@ public:
         userBlock->setSizePolicy(sizePolicy);
         verticalLayout_3 = new QVBoxLayout(userBlock);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        transactionView = new QTableWidget(userBlock);
+        if (transactionView->columnCount() < 2)
+            transactionView->setColumnCount(2);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        transactionView->setHorizontalHeaderItem(0, __qtablewidgetitem);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        transactionView->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        transactionView->setObjectName(QString::fromUtf8("transactionView"));
+        transactionView->horizontalHeader()->setStretchLastSection(true);
+        transactionView->verticalHeader()->setVisible(false);
+
+        verticalLayout_3->addWidget(transactionView);
+
         blockTransactionList = new QListWidget(userBlock);
         blockTransactionList->setObjectName(QString::fromUtf8("blockTransactionList"));
 
@@ -416,10 +430,10 @@ public:
         contactsList = new QTableWidget(addressBook);
         if (contactsList->columnCount() < 2)
             contactsList->setColumnCount(2);
-        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
-        contactsList->setHorizontalHeaderItem(0, __qtablewidgetitem);
-        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
-        contactsList->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
+        contactsList->setHorizontalHeaderItem(0, __qtablewidgetitem2);
+        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
+        contactsList->setHorizontalHeaderItem(1, __qtablewidgetitem3);
         contactsList->setObjectName(QString::fromUtf8("contactsList"));
         contactsList->setFocusPolicy(Qt::NoFocus);
         contactsList->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -687,10 +701,10 @@ public:
         dialogs->setSizePolicy(sizePolicy);
         verticalLayout_9 = new QVBoxLayout(dialogs);
         verticalLayout_9->setObjectName(QString::fromUtf8("verticalLayout_9"));
-        trxnsHeading1_2 = new QLabel(dialogs);
-        trxnsHeading1_2->setObjectName(QString::fromUtf8("trxnsHeading1_2"));
+        trxnsHeading2 = new QLabel(dialogs);
+        trxnsHeading2->setObjectName(QString::fromUtf8("trxnsHeading2"));
 
-        verticalLayout_9->addWidget(trxnsHeading1_2);
+        verticalLayout_9->addWidget(trxnsHeading2);
 
         verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -868,10 +882,10 @@ public:
         trxnLogView->setSizePolicy(sizePolicy);
         verticalLayout_6 = new QVBoxLayout(trxnLogView);
         verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
-        trxnsHeading2 = new QLabel(trxnLogView);
-        trxnsHeading2->setObjectName(QString::fromUtf8("trxnsHeading2"));
+        trxnsHeading3 = new QLabel(trxnLogView);
+        trxnsHeading3->setObjectName(QString::fromUtf8("trxnsHeading3"));
 
-        verticalLayout_6->addWidget(trxnsHeading2);
+        verticalLayout_6->addWidget(trxnsHeading3);
 
         transactionLog = new QListWidget(trxnLogView);
         transactionLog->setObjectName(QString::fromUtf8("transactionLog"));
@@ -1137,7 +1151,7 @@ public:
         scrollAreaContent = new QWidget();
         scrollAreaContent->setObjectName(QString::fromUtf8("scrollAreaContent"));
         scrollAreaContent->setEnabled(true);
-        scrollAreaContent->setGeometry(QRect(0, 0, 1253, 856));
+        scrollAreaContent->setGeometry(QRect(0, 0, 550, 550));
         QSizePolicy sizePolicy14(QSizePolicy::Minimum, QSizePolicy::Minimum);
         sizePolicy14.setHorizontalStretch(0);
         sizePolicy14.setVerticalStretch(0);
@@ -1480,7 +1494,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(4);
+        tabWidget->setCurrentIndex(3);
         accountView->setCurrentIndex(1);
 
 
@@ -1493,12 +1507,16 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(Wallet), QCoreApplication::translate("MainWindow", "Wallet", nullptr));
         plusSign->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         minusSign->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        QTableWidgetItem *___qtablewidgetitem = transactionView->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Field", nullptr));
+        QTableWidgetItem *___qtablewidgetitem1 = transactionView->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Value", nullptr));
         btn_mine->setText(QCoreApplication::translate("MainWindow", "Mine", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Mine), QCoreApplication::translate("MainWindow", "Mine Coins", nullptr));
-        QTableWidgetItem *___qtablewidgetitem = contactsList->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
-        QTableWidgetItem *___qtablewidgetitem1 = contactsList->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Address", nullptr));
+        QTableWidgetItem *___qtablewidgetitem2 = contactsList->horizontalHeaderItem(0);
+        ___qtablewidgetitem2->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
+        QTableWidgetItem *___qtablewidgetitem3 = contactsList->horizontalHeaderItem(1);
+        ___qtablewidgetitem3->setText(QCoreApplication::translate("MainWindow", "Address", nullptr));
         btn_addContact->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         btn_filler->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         contactImage->setText(QString());
@@ -1508,13 +1526,13 @@ public:
         birthday->setDisplayFormat(QCoreApplication::translate("MainWindow", "M/d/yyyy", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(AddressBookTab), QCoreApplication::translate("MainWindow", "Address Book", nullptr));
         trxnsHeading1->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Contacts</span></p></body></html>", nullptr));
-        trxnsHeading1_2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Make Transactions</span></p></body></html>", nullptr));
+        trxnsHeading2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Make Transactions</span></p></body></html>", nullptr));
         selectedContact->setText(QString());
         charCount->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\"><span style=\" font-size:8pt;\">0/200</span></p></body></html>", nullptr));
         amountLabel->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\">Amount</p></body></html>", nullptr));
         feeLabel->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\">Fee</p></body></html>", nullptr));
         totalLabel->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"right\">Total</p></body></html>", nullptr));
-        trxnsHeading2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Transaction Log</span></p></body></html>", nullptr));
+        trxnsHeading3->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Transaction Log</span></p></body></html>", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Transactions), QCoreApplication::translate("MainWindow", "Transactions", nullptr));
         signInTitle->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:20pt;\">Sign in to your Plasmacoin Account</span></p></body></html>", nullptr));
         s_EmailField->setPlaceholderText(QCoreApplication::translate("MainWindow", "Email Address", nullptr));
