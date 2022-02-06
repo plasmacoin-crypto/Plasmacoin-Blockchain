@@ -11,17 +11,24 @@
 #include <QDialogButtonBox>
 #include <QLineEdit>
 #include <QAbstractButton>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "firebase-auth.h"
 #include "transmitter.hpp"
+#include "shared-mem.hpp"
+#include "packet-types.h"
+#include "parse-json.hpp"
+#include "dssize.hpp"
 
 using std::string;
 
+double calculateFee(MainWindow& window);
+
 // Allow the user to mine their block
 void minePage(MainWindow& window) {
-	window.m_Status->m_Heading->setVisible(true); // Show the status heading
+	//window.m_Status->m_Heading->setVisible(true); // Show the status heading
 
 	// Mine a block when the correct button is clicked
 	window.connect(window.btn_mine, &QPushButton::released, &window, [&window]() {
@@ -41,6 +48,12 @@ void minePage(MainWindow& window) {
 		transmitter->Transmit(data, std::stoi(data[0]));
 
 		delete transmitter;
+	});
+
+	// Display information about a transaction when a user selects it
+	window.connect(window.transactionList, &QListWidget::itemSelectionChanged, &window, [&window]() {
+		int row = window.transactionList->currentRow();
+		window.m_TransactionView->Display(window.m_TransactionList->At(row));
 	});
 }
 
@@ -194,12 +207,21 @@ void transactionPage(MainWindow& window) {
 	double amount = window.amountSelector->value();
 	double fee = window.feeSelector->value();
 	int precision = window.amountSelector->decimals();
+	Transaction* finalTransaction = nullptr;
+
 	window.total->setText(QString::number(amount + fee, 'f', precision));
 
 	// Allow a user to select a recipient for the transaction
 	window.connect(window.contacts, &QListWidget::itemSelectionChanged, &window, [&window]() {
 		int row = window.contacts->currentRow();
 		window.selectedContact->setText(window.contacts->item(row)->text());
+
+		if (window.m_TransactionManager->CheckFields()) {
+			window.m_TransactionManager->AllowSend();
+		}
+		else {
+			window.m_TransactionManager->DisallowSend();
+		}
 	});
 
 	// Update the total when the transaction amount changes
@@ -208,6 +230,13 @@ void transactionPage(MainWindow& window) {
 		int precision = window.amountSelector->decimals();
 
 		window.total->setText(QString::number(amount + fee, 'f', precision));
+
+		if (window.m_TransactionManager->CheckFields()) {
+			window.m_TransactionManager->AllowSend();
+		}
+		else {
+			window.m_TransactionManager->DisallowSend();
+		}
 	});
 
 	// Update the total when the transaction fee changes
@@ -216,6 +245,13 @@ void transactionPage(MainWindow& window) {
 		int precision = window.amountSelector->decimals();
 
 		window.total->setText(QString::number(amount + fee, 'f', precision));
+
+		if (window.m_TransactionManager->CheckFields()) {
+			window.m_TransactionManager->AllowSend();
+		}
+		else {
+			window.m_TransactionManager->DisallowSend();
+		}
 	});
 
 	// Update the character count while typing a message to the recipient
@@ -226,24 +262,48 @@ void transactionPage(MainWindow& window) {
 		);
 	});
 
-	// Create and broadcast the user's transaction
-	window.connect(window.btndiag_send, &QDialogButtonBox::accepted, &window, [&window]() {
+	// Create a new transaction
+	window.connect(window.btndiag_send, &QDialogButtonBox::accepted, &window, [&window, finalTransaction]() mutable {
 		int row = window.contacts->currentRow();
 
 		// Collect transaction data
 		string recipientAddr = window.m_AddressBook->At(row)->GetAddress();
 		double amount = window.amountSelector->value();
 		double fee = window.feeSelector->value();
-		string content = window.messageField->text().toStdString();
+
+		QString text = window.messageField->text();
+		string content = text.isEmpty()? "" : text.toStdString();
 
 		// Create a new transaction
-		Transaction* transaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
+		finalTransaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
 
-		Transmitter* transmitter = new Transmitter();
-		auto data = transmitter->Format(transaction);
-		transmitter->Transmit(data, std::stoi(data[0]));
+		int result = window.m_TransactionManager->ConfirmTrxn(finalTransaction);
 
-		delete transmitter;
+		// If the OK button is pressed, sign and broadcast the transaction
+		if (result == QMessageBox::Ok) {
+			window.m_User->Sign(*finalTransaction);
+
+			Transmitter* transmitter = new Transmitter();
+			auto data = transmitter->Format(finalTransaction);
+			transmitter->Transmit(data, std::stoi(data[0]));
+
+			window.m_TransactionList->Add(finalTransaction);
+
+			string result = shared_mem::readMemory();
+			std::cout << "Result: " << result << std::endl;
+
+			delete transmitter;
+		}
+	});
+
+	// Calculate transaction fees for the user when the button is clicked
+	window.connect(window.btndiag_send, &QDialogButtonBox::clicked, &window, [&window](QAbstractButton* button) {
+		QDialogButtonBox::ButtonRole role = window.btndiag_send->buttonRole(button);
+
+		// The fee calculation button
+		if (role == QDialogButtonBox::ActionRole) {
+			window.feeSelector->setValue(calculateFee(window));
+		}
 	});
 }
 
@@ -261,7 +321,7 @@ void addToBlock(MainWindow& window) {
 		if ((selected.size() != 0) && (window.blockTransactionList->findItems(selected.front()->text(), Qt::MatchFixedString).size() == 0)) {
 			QListWidgetItem* item = window.transactionList->item(row); // Get the item at the currently selected row
 
-			window.m_BlockContents.push_back(window.m_TList->m_List[row]); // Record the selected item
+			window.m_BlockContents.push_back(window.m_TransactionList->At(row)); // Record the selected item
 			window.blockTransactionList->addItem(item->text());
 		}
 	});
@@ -280,6 +340,43 @@ void removeFromBlock(MainWindow& window) {
 			window.blockTransactionList->takeItem(row);
 		}
 	});
+}
+
+void manageSharedMem() {
+	constexpr bool immediate = true;
+
+	string data = shared_mem::readMemory(immediate);
+	QJsonObject object = json::parse(data);
+
+	uint8_t packetType = json::getPacketType(object);
+
+	switch (packetType) {
+		case static_cast<uint8_t>(go::PacketTypes::TRANSACTION):
+			break;
+	}
+}
+
+double calculateFee(MainWindow& window) {
+	int row = window.contacts->currentRow();
+
+	// Collect transaction data
+	string recipientAddr = window.m_AddressBook->At(row)->GetAddress();
+	double amount = window.amountSelector->value();
+	double fee = window.feeSelector->value();
+
+	QString text = window.messageField->text();
+	string content = text.isEmpty()? "" : text.toStdString();
+
+	// Create a new transaction. This transaction's size will be calulated using the current working
+	// transaction data to give the user an idea of how much they will pay in transaction fees.
+	Transaction* transaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
+	window.m_User->Sign(*transaction); // Simulate signing the transaction
+
+	// The transaction fee is 0.00001 Plasmacoins per byte of transaction data
+	double predictedFee = pow(10, -5) * dssize::size(*transaction);
+
+	delete transaction;
+	return predictedFee;
 }
 
 // Run the application
