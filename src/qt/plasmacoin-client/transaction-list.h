@@ -11,27 +11,33 @@
 #include <vector>
 #include <string>
 
-#include "transaction.hpp"
-
 #include <QtWidgets/QMainWindow>
 #include <QList>
 
+#include <boost/multiprecision/cpp_int.hpp>
+
 #include "ui_mainwindow.h"
+#include "transaction.hpp"
+#include "validation.hpp"
 
 using std::vector;
+
+using boost::multiprecision::int256_t;
 
 class TransactionList : public QMainWindow, public Ui_MainWindow {
 public:
 	TransactionList(QListWidget*& list);
 	~TransactionList();
 
-	void Add(Transaction*& transaction);
-	void Pop();
+	void Add(Transaction* transaction);
+	void Delete(int row);
+	Transaction* At(int row);
 
-	vector<Transaction*> m_List; // The corresponding transactions
+	bool ConfirmToMempool(Transaction* transaction, int256_t target);
 
 private:
-	QListWidget*& m_TransactionList; // The QListWidget
+	QListWidget*& m_TransactionList;
+	vector<Transaction*> m_List; // The corresponding transactions
 };
 
 #endif // TRANSACTION_LIST_H

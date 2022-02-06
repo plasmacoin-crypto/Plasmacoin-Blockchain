@@ -9,17 +9,18 @@
 #include <iostream>
 
 TransactionList::TransactionList(QListWidget*& list):
-	//QMainWindow(parent)
 	m_TransactionList(list)
 {}
 
 TransactionList::~TransactionList() {
-	for (auto t: m_List) {
-		delete t;
+	for (auto trxn: m_List) {
+		delete trxn;
 	}
+
+	delete m_TransactionList;
 }
 
-void TransactionList::Add(Transaction*& transaction) {
+void TransactionList::Add(Transaction* transaction) {
 	m_List.push_back(transaction);
 
 	QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(transaction->m_Hash), m_TransactionList);
@@ -27,10 +28,20 @@ void TransactionList::Add(Transaction*& transaction) {
 	m_TransactionList->addItem(item);
 }
 
-void TransactionList::Pop() {
-	// Transaction* front = m_List.front();
-	// m_List.pop();
+void TransactionList::Delete(int row) {
+	m_TransactionList->takeItem(row);
+}
 
-	// return front;
-	m_TransactionList->takeItem(0);
+Transaction* TransactionList::At(int row) {
+	return m_List[row];
+}
+
+bool TransactionList::ConfirmToMempool(Transaction* transaction, int256_t target) {
+	bool valid = validation::validate(*transaction, target);
+
+	if (valid) {
+		Add(transaction);
+	}
+
+	return valid;
 }
