@@ -29,6 +29,7 @@ Status::Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser*
 	m_ElapsedTime->setObjectName(QString::fromUtf8("elapsedTime"));
 	m_ElapsedTime->setGeometry(QRect(980, 190, 261, 41));
 
+	m_Heading->setVisible(false);
 	m_HashView->setVisible(false);
 	m_NonceView->setVisible(false);
 	m_ElapsedTime->setVisible(false);
