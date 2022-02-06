@@ -19,7 +19,8 @@ MainWindow::MainWindow(QWidget* parent):
 	setupUi(this);
 	tabWidget->setCurrentIndex(0);
 
-	m_FormErrorAlert = new QMessageBox();
+	m_FormErrorAlert = new QMessageBox(); // Create a message box to display authentication errors
+	m_ConfirmTransaction = new QMessageBox(); // Create a message box to sign and send a transaction
 
 	m_Status = CreateMiningVisuals();
 	m_AccPgs = CreatePages();
@@ -29,7 +30,11 @@ MainWindow::MainWindow(QWidget* parent):
 						Ui::MainWindow::birthday, Ui::MainWindow::btndiag_confirm, Ui::MainWindow::field1,
 						Ui::MainWindow::field2, Ui::MainWindow::field3, Ui::MainWindow::field4
 					);
-	m_TransactionManager = new TransactionManager(Ui::MainWindow::contacts, Ui::MainWindow::transactionLog);
+	m_TransactionManager =  new TransactionManager(
+								Ui::MainWindow::contacts, Ui::MainWindow::transactionLog, Ui::MainWindow::messageField,
+								Ui::MainWindow::amountSelector, Ui::MainWindow::feeSelector, Ui::MainWindow::btndiag_send,
+								m_ConfirmTransaction
+						    );
 	m_TransactionView = new TransactionView(Ui::MainWindow::transactionView, amountSelector->decimals(), feeSelector->decimals());
 
 	// Create some temporary nodes to make transactions between
@@ -108,8 +113,16 @@ AccountPages* MainWindow::CreatePages() {
 
 // Call block mining code and make visual changes to the GUI once it's done
 void MainWindow::StartMining() {
-	Block* latest = m_User->m_BlockchainCopy->GetLatest(); // Get the latest block
-	Block newBlock(latest->m_Index + 1, latest->m_Hash, m_BlockContents, m_User->m_BlockchainCopy->GetDifficulty()); // Create a new block
+	int64_t difficulty = m_User->m_BlockchainCopy->GetDifficulty();
+	Block newBlock;
+
+	if (m_User->m_BlockchainCopy->Size() == 0) {
+		newBlock = Block(0, m_BlockContents, difficulty, true); // Create a new block
+	}
+	else {
+		Block* latest = m_User->m_BlockchainCopy->GetLatest(); // Get the latest block
+		newBlock = Block(latest->m_Index + 1, latest->m_Hash, m_BlockContents, difficulty); // Create a new block
+	}
 
 	bool success = false, valid = false;
 	uint8_t code;
@@ -125,6 +138,11 @@ void MainWindow::StartMining() {
 
 	// Verify and append the block
 	if (success) {
+		// Timestamp the block
+		time_t now = time(0);
+		char* time = ctime(&now);
+		newBlock.m_MineTime = string(time).substr(0, strlen(time) - 1);
+
 		Blockchain* tempChain = new Blockchain(*m_User->m_BlockchainCopy);
 		tempChain->Add(&newBlock);
 		valid = validation::validate(*tempChain);
