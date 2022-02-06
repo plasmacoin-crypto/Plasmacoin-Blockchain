@@ -13,21 +13,41 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QString>
+#include <QDialogButtonBox>
+#include <QDoubleSpinBox>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QMessageBox>
 
 #include "ui_mainwindow.h"
 
 #include "address-book.h"
 #include "contact.h"
+#include "transaction.hpp"
 
 class TransactionManager : public QMainWindow, public Ui_MainWindow {
 public:
-	TransactionManager(QListWidget* contactsList, QListWidget* transactionLog);
+	TransactionManager(
+		QListWidget* contactsList, QListWidget* transactionLog, QLineEdit* lineEdit,
+		QDoubleSpinBox* amountSelector, QDoubleSpinBox* feeSelector, QDialogButtonBox* dialog,
+		QMessageBox* messageBox
+	);
 	~TransactionManager();
 
 	void UpdateContactsList(AddressBook* addressBook);
+	bool CheckFields();
+
+	void AllowSend();
+	void DisallowSend();
+
+	int AskForConf(Transaction* transaction);
 
 private:
 	QListWidget *m_ContactsList, *m_TransactionLog;
+	QLineEdit* m_MessageField;
+	QDoubleSpinBox *m_AmountSelector, *m_FeeSelector;
+	QDialogButtonBox* m_Dialog;
+	QMessageBox* m_ConfirmTransaction;
 
 	std::vector<Contact*> m_Contacts;
 };
