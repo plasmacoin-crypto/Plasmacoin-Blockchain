@@ -21,6 +21,7 @@
 #include <QFileDialog>
 #include <QDateEdit>
 #include <QMessageBox>
+#include <QDialogButtonBox>
 
 #include "ui_mainwindow.h"
 
@@ -29,12 +30,16 @@
 #include "account-pages.h"
 #include "address-book.h"
 #include "transaction-manager.h"
+#include "transaction-view.h"
 //#include "settings-manager.h"
 
 #include "block.hpp"
 #include "blockchain.hpp"
 #include "node.hpp"
 #include "rsa-fs.hpp"
+#include "shared-mem.hpp"
+#include "validation.hpp"
+#include "dssize.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::seconds;
@@ -57,17 +62,18 @@ public:
 	QWidget* parent;
 	Status* m_Status;
 	Auth* m_Authenticator;
-	TransactionList* m_TList;
+	TransactionList* m_TransactionList;
 	AccountPages* m_AccPgs;
 	AddressBook* m_AddressBook;
 	TransactionManager* m_TransactionManager;
+	TransactionView* m_TransactionView;
 	//SettingsManager* m_SettingsManager;
 
 	QLabel* m_NameDisplay = new QLabel();
 	QLabel* m_UsernameDisplay = new QLabel();
 	QLabel* m_AddressDisplay = new QLabel();
 
-	QMessageBox* m_FormErrorAlert;
+	QMessageBox *m_FormErrorAlert, *m_ConfirmTransaction;
 
 	std::vector<Transaction*> m_BlockContents;
 	std::chrono::seconds m_LastMiningDur;
@@ -79,7 +85,7 @@ private:
 	QFileDialog* m_FileBrowser = new QFileDialog();
 
 public:
-	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.6"); // Temporary data
+	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.44"); // Temporary data
 
 signals:
 	void MiningSuccess();
