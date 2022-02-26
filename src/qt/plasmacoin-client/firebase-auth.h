@@ -46,7 +46,6 @@ class Auth : public QMainWindow, public Ui_MainWindow {
 	Q_OBJECT
 
 public:
-	// I'd love Go's `iota` feature right about now...
 	enum class ErrorCodes: uint8_t {
 		EMAIL_EXISTS 	 = 1 << 0,
 		USERNAME_TAKEN 	 = 1 << 1,
