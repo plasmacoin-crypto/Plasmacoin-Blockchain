@@ -41,6 +41,7 @@ const (
 	Block
 	Node
 	NodeList
+	Receipt
 )
 
 // Attempt to send a message to a specified host and port
@@ -75,6 +76,8 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 		jsonData = bccnstrx.MakeNode(goData)
 	case NodeList:
 		jsonData = bccnstrx.MakeNodeList(goData)
+	case Receipt:
+		jsonData = bccnstrx.MakeReceipt(goData)
 	}
 
 	conn, err := net.Dial(goProtocol, net.JoinHostPort(goHost, goPort))
