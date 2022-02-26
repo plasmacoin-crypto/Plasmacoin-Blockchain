@@ -85,7 +85,6 @@ bool validation::validate(const Block& block, size_t chainLength) {
 }
 
 bool validation::validate(const std::string& hash, int256_t target) {
-	std::cout << hash << std::endl;
 	if (hash.empty()) {
 		return false;
 	}
@@ -94,11 +93,7 @@ bool validation::validate(const std::string& hash, int256_t target) {
 	const std::regex SHA_256_REGEX("(?:[a-f0-9]|[A-F0-9]){64}");
 	bool match = std::regex_match(hash, SHA_256_REGEX);
 
-	std::cout << match << std::endl;
-
 	int256_t intHash {std::string("0x") + hash}; // Add "0x" to the hash before converting
-	std::cout << "Hash: " << boost::lexical_cast<std::string>(intHash) << std::endl;
-	std::cout << "Target: " << boost::lexical_cast<std::string>(target) << std::endl;
 
 	bool meetsTarget = intHash < target;
 
