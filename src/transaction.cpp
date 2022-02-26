@@ -13,17 +13,29 @@ Transaction::Transaction(const string& senderAddr, const string& recipientAddr, 
 	m_Amount(amount),
 	m_Fee(fee),
 	m_Content(content)
-{}
+{
+	m_CreationTime = utility::getUTCTime();
+}
 
 Transaction::Transaction(
-	const string& senderAddr, const string& recipientAddr, float amount, float fee, const string& content,
-	Signature* signature, const string& hash
+	const string& senderAddr, const string& recipientAddr, const string& creationTime, const string& signTime, float amount,
+	float fee, const string& content, Signature* signature, const string& hash
 ):
 	m_SenderAddr(senderAddr),
 	m_RecipientAddr(recipientAddr),
+	m_CreationTime(creationTime),
+	m_SignTime(signTime),
 	m_Amount(amount),
 	m_Fee(fee),
 	m_Content(content),
 	m_Signature(*signature),
 	m_Hash(hash)
 {}
+
+// Create a receipt for the transaction
+Receipt* Transaction::GetReceipt() {
+	return new Receipt(
+		m_SenderAddr, m_RecipientAddr, m_CreationTime,
+		m_SignTime, m_Amount, m_Fee, m_Hash
+	);
+}
