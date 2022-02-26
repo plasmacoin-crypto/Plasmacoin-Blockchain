@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "transaction.hpp"
+#include "utility.hpp"
 
 using std::string;
 using std::tuple;

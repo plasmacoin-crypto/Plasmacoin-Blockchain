@@ -15,19 +15,10 @@ Block::Block(
 	m_Index(index),
 	m_Difficulty(difficulty),
 	m_PrevHash(prevHash),
+	m_CreationTime(utility::getUTCTime()),
 	m_IsGenesis(genesis),
 	m_Transactions(transactions)
-{
-	// Get a timestamp for the block
-	time_t now = time(0);
-	char* time = ctime(&now);
-	m_CreationTime = string(time).substr(0, strlen(time) - 1);
-
-	// The genesis block will have a hash of 0x0
-	if (m_IsGenesis) {
-		m_Hash = string(64, '0');
-	}
-}
+{}
 
 Block::Block(
 	int index, int nonce, const string& hash, const string& prevHash, const string& creationTime,
