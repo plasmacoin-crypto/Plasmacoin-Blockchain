@@ -1,5 +1,6 @@
 .vscode
 .DS_Store
+.qmake.stash
 
 # Ignore any binaries
 a.out
