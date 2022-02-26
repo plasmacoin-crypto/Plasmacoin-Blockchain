@@ -40,12 +40,18 @@ func MakeBlock(data []string) *Block {
 	// 9.  Whether or not the block is the genesis block 	(data[8])
 	// 10. A list of transactions on the block				(data[9])
 	//
-	// The transaction data comes in sets of 10. This means that data[9] - data[18] are
+	// The transaction data comes in sets of 12. This means that data[9] - data[20] are
 	// all part of the same transaction.
 	//
 	// For more information on what makes up a transaction, see `MakeTransaction` in
 	// `transaction.go`.
 	//
+
+	const (
+		trxnLen  = 12
+		minIndex = 9
+	)
+	maxIndex := len(data)
 
 	// Convert some stringified numeric values back to numeric values
 	packetType, _ := strconv.ParseInt(data[0], 10, 32)
@@ -54,13 +60,13 @@ func MakeBlock(data []string) *Block {
 	nonce, _ := strconv.ParseInt(data[3], 10, 32)
 	isGenesis, _ := strconv.ParseBool(data[8])
 
-	trxnCount := (len(data) - 8) / 10 // Find the number of transactions in the block
+	trxnCount := (maxIndex - minIndex) / trxnLen // Find the number of transactions in the block
 	transactions := make([]Transaction, 0, trxnCount)
 
-	for i := 9; i < len(data); i += 10 {
+	for i := minIndex; i < maxIndex; i += trxnLen {
 		// Get the current indices of transaction data. Using these in a slice selects
-		// 10 elements in the interval [min, max).
-		min, max := i, i+10
+		// All the elements in the interval [min, max).
+		min, max := i, i + trxnLen
 
 		transactions = append(transactions, *MakeTransaction(data[min:max]))
 	}
