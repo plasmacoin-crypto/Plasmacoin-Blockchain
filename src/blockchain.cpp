@@ -91,36 +91,7 @@ void Blockchain::Compress() {
 // Create a new block with unconfirmed transactions and run Proof-of-Woork
 // on it.
 pair<bool, uint8_t> Blockchain::Mine(Block& newBlock) {
-	// Set up a promise/future to terminate execution of the consensus algorithm if
-	// another node completes the block before the user's node
-	std::promise<void> exitSignal;
-	future<void> exitFuture = exitSignal.get_future();
-
-	auto receiver = []() -> string {
-		const char* out = go::receive("tcp", "192.168.1.44", "8080");
-		std::cout << "Output from C++: " << string(out) << std::endl;
-		return string(out);
-	};
-
-	auto handler = [&](future<string>& receive, std::promise<void> exitSignal) -> string {
-		receive.wait();
-		string results = receive.get();
-
-		exitSignal.set_value();
-		return results;
-	};
-
-	// Set up futures to check for and receive data from other mining nodes on the network
-	//future<string> receive = std::async(std::launch::deferred, receiver);
-	//future<string> handle = std::async(handler, std::ref(receive), std::move(exitSignal)); // This blocks a title change
-
-	// auto c = [=](Block newBlock, future<void> exitFuture) -> bool {
-	// 	return this->Consensus(newBlock, std::move(exitFuture));
-	// };
-
-	// Set up a packged task to run the Proof-of-Woork consensus protocol on the block
-	//std::packaged_task<bool(Block, future<void>)> consensus(c);
-	future<bool> runConsensus = std::async(std::launch::deferred, &Blockchain::Consensus, this, std::ref(newBlock), std::move(exitFuture));
+	future<bool> runConsensus = std::async(std::launch::deferred, &Blockchain::Consensus, this, std::ref(newBlock));
 
 	bool success = false;
 	std::cout << "Mining" << std::endl;
@@ -158,7 +129,7 @@ pair<bool, uint8_t> Blockchain::Mine(Block& newBlock) {
 // Complete the Proof-of-Work consensus protocol on a block. Return true
 // if the correct hash was successfully found. The only way false would be
 // returned is if a node was able to complete the hash before another.
-bool Blockchain::Consensus(Block& block, future<void> exitSignal) {
+bool Blockchain::Consensus(Block& block) {
 	// Get the nonce. If the difficulty is 5, the string representation
 	// of the nonce will be "00000".
 	//string strNonce = string(DIFFICULTY, '0');
@@ -167,19 +138,13 @@ bool Blockchain::Consensus(Block& block, future<void> exitSignal) {
 	//exitSignal.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout
 
 	while (!validation::validate(hash, m_Target)) {
-		constexpr bool immediate = true;
-		string data = shared_mem::readMemory(immediate);
-		QJsonObject object = json::parse(data);
-
-		// If a new block is received, stop trying to solve the current block.
-		if (!object.empty() && !data.empty() && json::getPacketType(object) == static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
-			block = *json::toBlock(json::parse(data));
+		if (json::getPacketType(json::parse(shared_mem::readMemory(true))) == static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
+			std::cout << "Ready" << std::endl;
 			return false;
 		}
 
 		//std::cout << "Nonce: " << block.m_Nonce << std::endl;
 		hash = hashing::hash(block); // Hash the block
-		std::cout << block.m_Nonce << std::endl;
 
 		if (validation::validate(hash, m_Target)) {
 			break;
@@ -193,6 +158,10 @@ bool Blockchain::Consensus(Block& block, future<void> exitSignal) {
 	block.m_Hash = hash;
 
 	return true && validation::validate(block.m_Hash, m_Target);
+}
+
+void Blockchain::StopMining(std::promise<void>&& exitSignal) {
+	exitSignal.set_value();
 }
 
 // Make sure the blockchain isn't corrupted
