@@ -13,6 +13,7 @@
 #include <vector>
 #include <iostream>
 #include <chrono>
+#include <atomic>
 
 #include <QMainWindow>
 #include <QStringList>
@@ -22,6 +23,8 @@
 #include <QDateEdit>
 #include <QMessageBox>
 #include <QDialogButtonBox>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
 
 #include "ui_mainwindow.h"
 
@@ -59,6 +62,8 @@ public:
 	void UpdateStatus(const Block& block, std::chrono::seconds time); // Update the mining status while a block is being mined
 	void ShowContact(Contact* contact);
 
+	void ManageSharedMem(std::atomic<bool>& running);
+
 	QWidget* parent;
 	Status* m_Status;
 	Auth* m_Authenticator;
@@ -77,6 +82,9 @@ public:
 
 	std::vector<Transaction*> m_BlockContents;
 	std::chrono::seconds m_LastMiningDur;
+
+	std::promise<void> m_ExitSignal;
+	std::future<void> m_ExitFuture = m_ExitSignal.get_future();
 
 private:
 	QTabWidget* m_TabBar = Ui::MainWindow::tabWidget;

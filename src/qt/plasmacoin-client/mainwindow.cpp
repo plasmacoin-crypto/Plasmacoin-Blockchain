@@ -15,8 +15,15 @@ MainWindow::MainWindow(QWidget* parent):
 	m_TransactionList(new TransactionList(Ui::MainWindow::transactionList))
 {
 	shared_mem::deleteMemory(shared_mem::FILENAME);
+	shared_mem::deleteMemory(shared_mem::READER_FILENAME);
+	shared_mem::deleteMemory(shared_mem::WRITER_FILENAME);
 
-	setupUi(this);
+	Ui_MainWindow::setupUi(this);
+
+	// std::future<void> manageSharedMem = std::async([this](std::atomic<bool>& running) {
+	// 	this->ManageSharedMem(running);
+	// }, std::ref(runningThread));
+
 	tabWidget->setCurrentIndex(0);
 
 	m_FormErrorAlert = new QMessageBox(); // Create a message box to display authentication errors
@@ -138,10 +145,7 @@ void MainWindow::StartMining() {
 
 	// Verify and append the block
 	if (success) {
-		// Timestamp the block
-		time_t now = time(0);
-		char* time = ctime(&now);
-		newBlock.m_MineTime = string(time).substr(0, strlen(time) - 1);
+		newBlock.m_MineTime = utility::getUTCTime(); // Timestamp the block
 
 		Blockchain* tempChain = new Blockchain(*m_User->m_BlockchainCopy);
 		tempChain->Add(&newBlock);
@@ -189,4 +193,59 @@ void MainWindow::ShowContact(Contact* contact) {
 	addressField->setText(QString::fromStdString(contact->GetAddress()));
 
 	birthday->setDate(contact->GetBirthday()); // Set the birthday
+}
+
+void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
+	while (running) {
+		constexpr bool immediate = true;
+		std::cout << "Running" << std::endl;
+
+		string data = shared_mem::readMemory(immediate);
+		QJsonObject object = json::parse(data);
+
+		go::PacketTypes packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
+
+		switch (packetType) {
+			case go::PacketTypes::BLOCK: {
+				// If a new block is received, stop trying to solve the current block.
+				if (!object.empty() && !data.empty()) {
+					m_User->m_BlockchainCopy->StopMining(std::move(m_ExitSignal));
+					std::cout << "Stopping" << std::endl;
+				}
+
+				Block* block = json::toBlock(object);
+
+				for (auto transaction: block->m_Transactions) {
+					if (m_User->GetAddress() == transaction->m_SenderAddr) {
+						Receipt* receipt = transaction->GetReceipt();
+
+						// Transmit the receipt to the recipient
+						Transmitter* transmitter = new Transmitter();
+						auto data = transmitter->Format(transaction);
+						transmitter->Transmit(data, std::stoi(data[0]));
+					}
+				}
+
+				break;
+			}
+
+			case go::PacketTypes::NODE_LIST: {
+				string result = shared_mem::readMemory(); // Read the shared memory
+				std::cout << "Node Result: " << result << std::endl;
+
+				// Parse the JSON string
+				QJsonObject object = json::parse(result);
+				std::vector<string> m_KnownHosts = json::parseArray(object, "nodes");
+				m_User->SetKnownHosts(m_KnownHosts);
+
+				break;
+			}
+
+			default:
+				break;
+		}
+
+		//shared_mem::deleteMemory(shared_mem::FILENAME);
+		//std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	}
 }
