@@ -16,6 +16,7 @@ namespace go {
 }
 
 #include "shared-mem.hpp"
+#include "connections.hpp"
 
 void networkDaemon() {
 	std::future<const char*> fut = std::async(&go::receive, "tcp", "192.168.1.44", "8080");
