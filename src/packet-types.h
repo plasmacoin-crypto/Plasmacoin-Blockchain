@@ -9,7 +9,14 @@
 #define PACKET_TYPES_H
 
 namespace go {
-	enum class PacketTypes: uint8_t {ID_CODE, TRANSACTION, BLOCK, NODE, NODE_LIST};
+	enum class PacketTypes: uint8_t {
+		ID_CODE,
+		TRANSACTION,
+		BLOCK,
+		NODE,
+		NODE_LIST,
+		RECEIPT
+	};
 }
 
 #endif // PACKET_TYPES_H
