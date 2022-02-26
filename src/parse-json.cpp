@@ -68,29 +68,38 @@ Block* json::toBlock(const QJsonObject& object) {
 }
 
 Transaction* json::toTransaction(const QJsonObject& object) {
+	// PacketType    int       `json:"type"`
 	// SenderAddr    string    `json:"senderAddr"`
 	// RecipientAddr string    `json:"recipientAddr"`
+	// CreationTime  string    `json:"created"`
+	// SigningTime   string    `json:"signed"`
 	// Amount        float32   `json:"amount"`
 	// Fee           float32   `json:"fee"`
 	// Content       string    `json:"content"`
 	// Signature     Signature `json:"sigfield"`
 	// Hash          string    `json:"hash"`
 
-	string senderAddr = object["senderaddr"].toString().toStdString();
-	string recipientAddr = object["recipient"].toString().toStdString();
+	string senderAddr = object["senderAddr"].toString().toStdString();
+	string recipientAddr = object["recipientAddr"].toString().toStdString();
+	string creationTime = object["created"].toString().toStdString();
+	string signingTime = object["signed"].toString().toStdString();
 	float amount = object["amount"].toDouble();
 	float fee = object["fee"].toDouble();
 	string content = object["content"].toString().toStdString();
 	Signature* signature = json::toSignature(object["sigfield"].toObject());
 	string hash = object["hash"].toString().toStdString();
 
-	Transaction* transaction = new Transaction(senderAddr, recipientAddr, amount, fee, content, signature, hash);
+	Transaction* transaction = new Transaction(senderAddr, recipientAddr, creationTime, signingTime, amount, fee, content, signature, hash);
 	return transaction;
 }
 
 Signature* json::toSignature(const QJsonObject& object) {
+	// Signature string `json:"signature"`
+	// PublicKey []byte `json:"publicKey"`
+	// Length    int    `json:"length"`
+
 	string signature = object["signature"].toString().toStdString();
-	string strPublicKey = object["pubkey"].toString().toStdString();
+	string strPublicKey = object["publicKey"].toString().toStdString();
 	size_t length = object["length"].toInt();
 
 	CryptoPP::SecByteBlock sbb(reinterpret_cast<const unsigned char*>(signature.data()), signature.size());
