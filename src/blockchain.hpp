@@ -67,7 +67,7 @@ public:
 
 private:
 	// "0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-	const int256_t MAX_TARGET {"0x00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+	const int256_t MAX_TARGET {"0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
 	int256_t m_Target = MAX_TARGET;
 	int64_t m_Difficulty = boost::lexical_cast<int64_t>(MAX_TARGET / m_Target);
 
@@ -82,7 +82,8 @@ private:
 
 public:
 	pair<bool, uint8_t> Mine(Block& newBlock);
-	bool Consensus(Block& block, future<void> exitSignal); // Evaluate Proof-of-Work
+	bool Consensus(Block& block); // Evaluate Proof-of-Work
+	void StopMining(std::promise<void>&& exitSignal);
 
 private:
 	string Hash(const string& input);
@@ -96,8 +97,7 @@ inline size_t Blockchain::Size() const {
 }
 
 // Check if a future is ready to have its value read
-template<typename T>
-bool Blockchain::IsReady(const future<T>& future) {
+template<typename T> bool Blockchain::IsReady(const future<T>& future) {
 	return future.wait_for(std::chrono::seconds(0)) == std::future_status::ready;
 }
 
