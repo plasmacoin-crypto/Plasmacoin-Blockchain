@@ -13,28 +13,22 @@
 
 using std::string;
 
-#include <cryptopp/rsa.h> 		 // Use Crypto++'s RSA functionality
-#include <cryptopp/secblock.h>	 // Use SecByteBlock
-
-using CryptoPP::byte;
-using CryptoPP::RSA;
-using CryptoPP::SecByteBlock;
-
-struct Signature {
-	SecByteBlock 	m_Signature;
-	RSA::PublicKey 	m_PublicKey;
-	size_t 			m_Length;
-};
+#include "receipt.hpp"
+#include "utility.hpp"
+#include "signature.hpp"
 
 class Transaction {
 public:
 	Transaction(const string& senderAddr, const string& recipientAddr, float amount, float fee, const string& content);
 	Transaction(
-		const string& senderAddr, const string& recipientAddr, float amount, float fee, const string& content,
-		Signature* signature, const string& hash
+		const string& senderAddr, const string& recipientAddr, const string& creationTime, const string& signTime, float amount,
+		float fee, const string& content, Signature* signature, const string& hash
 	);
 
+	Receipt* GetReceipt();
+
 	string m_SenderAddr, m_RecipientAddr;
+	string m_CreationTime, m_SignTime;
 	float m_Amount, m_Fee;
 	string m_Content;
 
