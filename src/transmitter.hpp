@@ -22,6 +22,7 @@
 #include "node.hpp"
 #include "block.hpp"
 #include "packet-types.h"
+#include "receipt.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -43,6 +44,7 @@ public:
 	vector<string> Format(Transaction* transaction);
 	vector<string> Format(Node* node);
 	vector<string> Format(Block* block);
+	vector<string> Format(Receipt* receipt);
 
 private:
 	vector<string> m_KnownHosts = {"192.168.1.44"};

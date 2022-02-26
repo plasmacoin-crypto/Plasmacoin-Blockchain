@@ -53,6 +53,12 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type) {
 			break;
 		}
 
+		case static_cast<uint8_t>(go::PacketTypes::RECEIPT): {
+			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
+			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
+			break;
+		}
+
 		default:
 			break;
 	}
@@ -78,6 +84,8 @@ vector<string> Transmitter::Format(Transaction* transaction) {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::TRANSACTION)),
 		transaction->m_SenderAddr,
 		transaction->m_RecipientAddr,
+		transaction->m_CreationTime,
+		transaction->m_SignTime,
 		std::to_string(transaction->m_Amount),
 		std::to_string(transaction->m_Fee),
 		transaction->m_Content,
@@ -119,4 +127,38 @@ vector<string> Transmitter::Format(Block* block) {
 	}
 
 	return returnVec;
+}
+
+vector<string> Transmitter::Format(Receipt* receipt) {
+	// Convert the signature to a std::string
+	CryptoPP::SecByteBlock sig = receipt->m_Signature.m_Signature;
+	string signature = string(reinterpret_cast<const char*>(&sig[0]), sig.size());
+
+	// Convert the CryptoPP::RSA::PublicKey to a std::string
+	string publicKey;
+	CryptoPP::HexEncoder keyEncoder;
+	keyEncoder.Attach(new CryptoPP::StringSink(publicKey));
+
+	CryptoPP::ByteQueue queue;
+	receipt->m_Signature.m_PublicKey.Save(queue);
+	queue.CopyTo(keyEncoder);
+
+    keyEncoder.MessageEnd();
+
+	return vector<string> {
+		std::to_string(static_cast<uint8_t>(go::PacketTypes::RECEIPT)),
+		receipt->m_SenderAddr,
+		receipt->m_RecipientAddr,
+		receipt->m_TransactionTime,
+		receipt->m_SignTime,
+		std::to_string(receipt->m_Amount),
+		std::to_string(receipt->m_Fee),
+
+		// Signature field
+		signature,
+		publicKey,
+		std::to_string(receipt->m_Signature.m_Length),
+
+		receipt->m_Hash
+	};
 }
