@@ -49,6 +49,7 @@ Block* json::toBlock(const QJsonObject& object) {
 	// Transactions []Transaction `json:"transactions"`
 
 	int index = object["index"].toInt();
+	int difficulty = object["difficulty"].toInt();
 	int nonce = object["nonce"].toInt();
 	string hash = object["hash"].toString().toStdString();
 	string prevHash = object["prevhash"].toString().toStdString();
@@ -59,11 +60,13 @@ Block* json::toBlock(const QJsonObject& object) {
 	vector<Transaction*> transactions;
 	auto array = object["transactions"].toArray();
 
+	qDebug() << array;
+
 	for (auto trxn: array) {
 		transactions.push_back(json::toTransaction(trxn.toObject()));
 	}
 
-	Block* block = new Block(index, nonce, hash, prevHash, creationTime, mineTime, transactions, isGenesis);
+	Block* block = new Block(index, nonce, hash, prevHash, creationTime, mineTime, transactions, difficulty, isGenesis);
 	return block;
 }
 
@@ -104,9 +107,8 @@ Signature* json::toSignature(const QJsonObject& object) {
 
 	CryptoPP::SecByteBlock sbb(reinterpret_cast<const unsigned char*>(signature.data()), signature.size());
 
-	CryptoPP::StringSource ssource(strPublicKey, true);
 	CryptoPP::RSA::PublicKey publicKey;
-	publicKey.Load(ssource);
+	rsafs::loadRSA(strPublicKey, publicKey);
 
 	Signature* sigfield = new Signature {sbb, publicKey, length};
 	return sigfield;
