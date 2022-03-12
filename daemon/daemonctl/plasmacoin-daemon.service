@@ -7,8 +7,9 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
+Environment=LD_LIBRARY_PATH=/usr/src/cryptopp:/usr/lib:/usr/lib/plasmacoin:/usr/lib
 User=rmsmith
-ExecStart=/home/rmsmith/Projects/Plasmacoin/Plasmacoin-Blockchain/daemon
+ExecStart=/home/rmsmith/Projects/Plasmacoin/Plasmacoin-Blockchain/src/qt/build-plasmacoin-ui-Desktop-Debug/pcnetworkd
 StartLimitIntervalSec=0
 
 [Install]
