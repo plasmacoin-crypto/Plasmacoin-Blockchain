@@ -42,7 +42,7 @@ public:
 
 	// Functions to store class data in a format that can be converted into
 	vector<string> Format(Transaction* transaction);
-	vector<string> Format(Node* node);
+	vector<string> Format(Node* node, bool shouldRegister = true);
 	vector<string> Format(Block* block);
 	vector<string> Format(Receipt* receipt);
 

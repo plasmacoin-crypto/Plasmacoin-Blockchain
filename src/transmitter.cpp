@@ -48,8 +48,16 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type) {
 		}
 
 		case static_cast<uint8_t>(go::PacketTypes::NODE): {
+			bool shouldRegister = static_cast<bool>(std::stoi(data[4]));
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
+
+			if (shouldRegister) {
+				future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
+			}
+			else {
+				future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
+			}
+
 			break;
 		}
 
@@ -99,12 +107,13 @@ vector<string> Transmitter::Format(Transaction* transaction) {
 	};
 }
 
-vector<string> Transmitter::Format(Node* node) {
+vector<string> Transmitter::Format(Node* node, bool shouldRegister) {
 	return vector<string> {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::NODE)),
 		node->GetIP(),
 		node->GetAddress(),
-		std::to_string(static_cast<uint8_t>(node->GetType()))
+		std::to_string(static_cast<uint8_t>(node->GetType())),
+		std::to_string(shouldRegister)
 	};
 }
 
