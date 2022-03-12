@@ -31,6 +31,7 @@ using std::pair;
 #include <cryptopp/queue.h>    	// Use ByteQueue
 #include <cryptopp/cryptlib.h> 	// Use BufferedTransformation
 #include <cryptopp/hex.h>		// Use HexEncoder
+#include <cryptopp/filters.h> 	// Use StringSink
 
 using CryptoPP::RSA;
 
@@ -56,6 +57,7 @@ namespace rsafs {
 
 	void saveHex(const string& filename, const CryptoPP::BufferedTransformation& bt);
 	void loadHex(const string& filename, CryptoPP::BufferedTransformation& bt);
+	void loadRSA(std::string& strKey, CryptoPP::RSAFunction& rsaKey);
 
 	void createRSAPath(const string& dirpath = DIR_PATH);
 	bool pathOkay(const string& path);

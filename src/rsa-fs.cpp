@@ -77,6 +77,11 @@ void rsafs::loadHex(const string& filename, CryptoPP::BufferedTransformation& bt
     bt.MessageEnd();
 }
 
+void rsafs::loadRSA(std::string& strKey, CryptoPP::RSAFunction& rsaKey) {
+	CryptoPP::StringSink ssink(strKey);
+	rsaKey.DEREncode(ssink);
+}
+
 // Create a place to store the user's RSA keys if the provided path doesn't exist.
 //
 // If the default path is used, behavior is as follows:
