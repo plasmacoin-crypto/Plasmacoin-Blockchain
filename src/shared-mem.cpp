@@ -40,8 +40,6 @@ std::string shared_mem::readMemory(bool immediate) {
 	sem_close(reader);
 	sem_close(writer);
 
-	std::cout << "Read: " << strmem << std::endl;
-
 	shared_mem::detatch(memory); // Detatch from the memory
 	return strmem;
 }
