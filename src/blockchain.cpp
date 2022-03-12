@@ -138,8 +138,13 @@ bool Blockchain::Consensus(Block& block) {
 	//exitSignal.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout
 
 	while (!validation::validate(hash, m_Target)) {
-		if (json::getPacketType(json::parse(shared_mem::readMemory(true))) == static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
-			std::cout << "Ready" << std::endl;
+		string mem = shared_mem::readMemory(true);
+		shared_mem::deleteMemory(shared_mem::FILENAME);
+
+		if (json::getPacketType(json::parse(mem)) == static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
+			// Read the block from shared memory and convert it to a class
+			Block* blockFromMem = json::toBlock(json::parse(mem));
+			block = Block(*blockFromMem);
 			return false;
 		}
 
