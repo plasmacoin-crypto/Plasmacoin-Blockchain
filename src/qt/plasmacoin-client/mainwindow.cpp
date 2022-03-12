@@ -146,14 +146,17 @@ void MainWindow::StartMining() {
 	// Verify and append the block
 	if (success) {
 		newBlock.m_MineTime = utility::getUTCTime(); // Timestamp the block
-
-		Blockchain* tempChain = new Blockchain(*m_User->m_BlockchainCopy);
-		tempChain->Add(&newBlock);
-		valid = validation::validate(*tempChain);
 	}
 
+	Blockchain* tempChain = new Blockchain(*m_User->m_BlockchainCopy);
+	tempChain->Add(&newBlock);
+	valid = validation::validate(*tempChain);
+
 	if (valid) {
+		std::cout << "Valid" << std::endl;
 		m_User->m_BlockchainCopy->Add(&newBlock);
+
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 
 		Transmitter* transmitter = new Transmitter();
 		auto data = transmitter->Format(&newBlock);
@@ -162,6 +165,8 @@ void MainWindow::StartMining() {
 		emit MiningSuccess();
 	}
 	else {
+		std::cout << "Hash: " << newBlock.m_Hash << std::endl;
+
 		emit MiningFailure();
 	}
 }
