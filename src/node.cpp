@@ -36,13 +36,19 @@ Node::Node(
 	auto data = transmitter->Format(this);
 	std::cout << data[0] << std::endl;
 	transmitter->Transmit(data, std::stoi(data[0]));
+}
 
-	string result = shared_mem::readMemory(); // Read the shared memory
-	std::cout << "Node Result: " << result << std::endl;
+Node::Node(const string& ip, const string& address):
+	m_IPAddr(ip),
+	m_Address(address)
+{
+	if (ip.empty()) {
+		m_IPAddr = "";
+	}
 
-	// Parse the JSON string
-	QJsonObject object = json::parse(result);
-	m_KnownHosts = json::parseArray(object, "nodes");
+	if (address.empty()) {
+		m_Address = "";
+	}
 }
 
 Node::~Node() {
@@ -55,6 +61,14 @@ Transaction* Node::MakeTransaction(const string& recipientAddr, float amount, fl
 	transaction->m_Hash = Hash(*transaction);
 
 	return transaction;
+}
+
+void Node::Distribute(Transaction* transaction) {
+	Node* recipient = new Node("", transaction->m_RecipientAddr);
+
+	Transmitter* transmitter = new Transmitter();
+	auto data = transmitter->Format(recipient, false);
+	transmitter->Transmit(data, std::stoi(data[0]));
 }
 
 // Get the user's name
@@ -78,6 +92,10 @@ string Node::GetAddress() const {
 
 Node::NodeType Node::GetType() const {
 	return m_NodeType;
+}
+
+void Node::SetKnownHosts(std::vector<string>& hosts) {
+	std::copy(m_KnownHosts.begin(), m_KnownHosts.end(), std::back_inserter(hosts));
 }
 
 // Generate public and private RSA keys for signing transactions
@@ -121,6 +139,28 @@ void Node::Sign(Transaction& transaction) noexcept(false) {
 	signature.resize(length);
 
 	transaction.m_Signature = Signature {signature, m_PubKey, length};
+	transaction.m_SignTime = utility::getUTCTime();
+}
+
+void Node::Sign(Receipt& receipt) noexcept(false) {
+	CryptoPP::AutoSeededRandomPool rng;
+	string message = receipt.m_Hash;
+
+	//string signature;
+	m_Signer = CryptoPP::RSASSA_PKCS1v15_SHA_Signer(m_PrivKey);
+
+	size_t length = m_Signer.MaxSignatureLength();
+	CryptoPP::SecByteBlock signature(length);
+
+	// if (signature == nullptr) {
+	// 	throw std::runtime_error("Transaction signing failed. Aborting.");
+	// }
+
+	length = m_Signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
+	signature.resize(length);
+
+	receipt.m_Signature = Signature {signature, m_PubKey, length};
+	receipt.m_SignTime = utility::getUTCTime();
 }
 
 // Verify a transaction using the sender's public key. Returns true if verification succeded,

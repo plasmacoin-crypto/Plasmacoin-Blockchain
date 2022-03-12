@@ -14,6 +14,7 @@
 #include <sstream>
 #include <functional>
 #include <vector>
+#include <iterator>
 
 using std::string;
 using std::pair;
@@ -43,6 +44,7 @@ using CryptoPP::byte;
 #include "transmitter.hpp"
 #include "shared-mem.hpp"
 #include "parse-json.hpp"
+#include "utility.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -56,18 +58,23 @@ public:
 		const string& name, const string& username, const string& password,
 		const string& ip, const string& keyPath = rsafs::DIR_PATH, Node::NodeType type = NodeType::LIGHT
 	);
+	Node(const string& ip, const string& address);
 	~Node();
 
 	Transaction* MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content);
+	void Distribute(Transaction* transaction);
 
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
 	NodeType GetType() const;
+	void SetKnownHosts(std::vector<string>& hosts);
 
 	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
 
 	// Sign and verify transactions with RSA
 	void Sign(Transaction& transaction) noexcept(false);
+	void Sign(Receipt& receipt) noexcept(false);
+
 	bool Verify(const Transaction& transaction, const SecByteBlock& signature, size_t length, const RSA::PublicKey& publicKey);
 
 	Blockchain* m_BlockchainCopy = new Blockchain(); // The node's copy of the blockchain
