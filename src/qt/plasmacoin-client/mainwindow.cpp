@@ -211,20 +211,20 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 
 		switch (packetType) {
 			case go::PacketTypes::TRANSACTION:
-				window.m_TransactionList->ConfirmToMempool(json::toTransaction(object), window.m_User->m_BlockchainCopy->GetTarget());
+				m_TransactionList->ConfirmToMempool(json::toTransaction(object), m_User->m_BlockchainCopy->GetTarget());
 				break;
 
 			case go::PacketTypes::BLOCK: {
 				// If a new block is received, stop trying to solve the current block.
 				if (!object.empty() && !data.empty()) {
-					window.m_User->m_BlockchainCopy->StopMining(std::move(window.m_ExitSignal));
+					m_User->m_BlockchainCopy->StopMining(std::move(m_ExitSignal));
 					std::cout << "Stopping" << std::endl;
 				}
 
 				Block* block = json::toBlock(object);
 
 				for (auto transaction: block->m_Transactions) {
-					if (window.m_User->GetAddress() == transaction->m_SenderAddr) {
+					if (m_User->GetAddress() == transaction->m_SenderAddr) {
 						Receipt* receipt = transaction->GetReceipt();
 
 						// Transmit the receipt to the recipient
