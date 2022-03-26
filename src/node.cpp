@@ -40,6 +40,7 @@ Node::Node(
 	string result = shared_mem::readMemory(true); // Read the shared memory
 	std::cout << "Node Result: " << result << std::endl;
 
+	// Parse the JSON string
 	QJsonObject object = json::parse(result);
 	std::vector<string> m_KnownHosts = json::parseArray(object, "nodes");
 	SetKnownHosts(m_KnownHosts);
