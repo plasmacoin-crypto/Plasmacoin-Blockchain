@@ -16,10 +16,10 @@ CC            = /Applications/Xcode.app/Contents/Developer/usr/bin/gcc
 CXX           = /Applications/Xcode.app/Contents/Developer/usr/bin/g++
 GO 			  = /opt/homebrew/bin/go
 DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
-CFLAGS        = -pipe -g -O2 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=12 -Wall -Wextra -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -g -O2 -std=c++17 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=12 -Wall -Wextra -fPIC $(DEFINES)
+CFLAGS        = -pipe -g -O2 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -mmacosx-version-min=12 -Wall -Wextra -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -g -O2 -std=c++17 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -mmacosx-version-min=12 -Wall -Wextra -fPIC $(DEFINES)
 GOFLAGS		  = -buildmode c-shared
-INCPATH       = -I../plasmacoin-client -I ../../ -I. -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtNetwork.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/AGL.framework/Headers -I/opt/homebrew/share/qt/mkspecs/macx-g++ -I../../../daemon -I/usr/lib -I/usr/local -I/usr/local/lib/plasmacoin -I/opt/homebrew/Cellar/boost/1.78.0_1/include -F/opt/homebrew/lib
+INCPATH       = -I../plasmacoin-client -I ../../ -I. -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtNetwork.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers -I/opt/homebrew/share/qt/mkspecs/macx-g++ -I../../../daemon -I/usr/lib -I/usr/local -I/usr/local/lib/plasmacoin -I/opt/homebrew/Cellar/boost/1.78.0_1/include -F/opt/homebrew/lib
 QMAKE         = /opt/homebrew/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -42,7 +42,7 @@ DISTNAME      = plasmacoin-client0.1.0
 DISTDIR 	  = /Users/rmsmith/Projects/Plasmacoin/Plasmacoin-Blockchain/src/qt/build-plasmacoin-ui-Desktop-Debug/.tmp/plasmacoin-client0.1.0
 HEADER_DIR 	  = /usr/local/plasmacoin
 LINK          = /Applications/Xcode.app/Contents/Developer/usr/bin/g++
-LFLAGS        = -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=12 -Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/opt/homebrew/lib -L/usr/local/cryptopp -L/usr/local/lib/plasmacoin -L/opt/homebrew/Cellar/boost/1.78.0_1/lib
+LFLAGS        = -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -mmacosx-version-min=12 -Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/opt/homebrew/lib -L/usr/local/cryptopp -L/usr/local/lib/plasmacoin -L/opt/homebrew/Cellar/boost/1.78.0_1/lib
 GOLIBS		  = -lpcnetworkd
 FRAMEWORKS	  = -F/opt/homebrew/lib -framework QtWidgets -framework QtGui -framework AppKit -framework ImageIO -framework Metal -framework QtNetwork -framework QtCore -framework QtConcurrent -framework DiskArbitration -framework IOKit -framework AGL -framework OpenGL
 LIBS          = $(SUBLIBS) $(GOLIBS) $(FRAMEWORKS) -lpthread -lcryptopp -lSystem
@@ -1019,7 +1019,7 @@ compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
-	/Applications/Xcode.app/Contents/Developer/usr/bin/g++ -pipe -O2 -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=12 -Wall -Wextra -dM -E -o moc_predefs.h /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
+	/Applications/Xcode.app/Contents/Developer/usr/bin/g++ -pipe -O2 -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -mmacosx-version-min=12 -Wall -Wextra -dM -E -o moc_predefs.h /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
