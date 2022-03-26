@@ -266,11 +266,13 @@ void connections::transactionPage(MainWindow& window) {
 
 			Transmitter* transmitter = new Transmitter();
 			auto data = transmitter->Format(finalTransaction);
-			transmitter->Transmit(data, std::stoi(data[0]));
+			transmitter->Transmit(data, std::stoi(data[0]), window.m_User->GetKnownHosts());
 
 			window.m_TransactionList->Add(finalTransaction);
 
-			string result = shared_mem::readMemory();
+			std::this_thread::sleep_for(std::chrono::milliseconds(300));
+
+			string result = shared_mem::readMemory(true);
 			std::cout << "Result: " << result << std::endl;
 
 			delete transmitter;
@@ -325,15 +327,18 @@ void connections::removeFromBlock(MainWindow& window) {
 
 void connections::manageSharedMem(std::atomic<bool>& running, MainWindow& window) {
 	while (running) {
-		constexpr bool immediate = true;
 		std::cout << "Running" << std::endl;
 
-		string data = shared_mem::readMemory(immediate);
+		string data = shared_mem::readMemory();
 		QJsonObject object = json::parse(data);
 
 		go::PacketTypes packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
 
 		switch (packetType) {
+			case go::PacketTypes::TRANSACTION:
+				window.m_TransactionList->ConfirmToMempool(json::toTransaction(object), window.m_User->m_BlockchainCopy->GetTarget());
+				break;
+
 			case go::PacketTypes::BLOCK: {
 				// If a new block is received, stop trying to solve the current block.
 				if (!object.empty() && !data.empty()) {
@@ -353,18 +358,6 @@ void connections::manageSharedMem(std::atomic<bool>& running, MainWindow& window
 						transmitter->Transmit(data, std::stoi(data[0]));
 					}
 				}
-
-				break;
-			}
-
-			case go::PacketTypes::NODE_LIST: {
-				string result = shared_mem::readMemory(); // Read the shared memory
-				std::cout << "Node Result: " << result << std::endl;
-
-				// Parse the JSON string
-				QJsonObject object = json::parse(result);
-				std::vector<string> m_KnownHosts = json::parseArray(object, "nodes");
-				window.m_User->SetKnownHosts(m_KnownHosts);
 
 				break;
 			}
