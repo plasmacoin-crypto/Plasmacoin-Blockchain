@@ -29,6 +29,7 @@ namespace shared_mem {
 
 	#ifdef __APPLE__
 		const mode_t CREATE = IPC_CREAT;
+		const mode_t BLOCK_CREATE = PERMISSIONS | CREATE;
 	#elif defined(__linux__)
 		const mode_t SEM_CREATE = O_CREAT | O_EXCL;
 		const mode_t BLOCK_CREATE = PERMISSIONS | IPC_CREAT;
