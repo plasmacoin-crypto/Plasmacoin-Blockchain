@@ -42,8 +42,9 @@ Node::Node(
 
 	// Parse the JSON string
 	QJsonObject object = json::parse(result);
-	std::vector<string> m_KnownHosts = json::parseArray(object, "nodes");
-	SetKnownHosts(m_KnownHosts);
+	std::vector<string> hosts = json::parseArray(object, "nodes");
+	SetKnownHosts(hosts);
+	std::cout << m_KnownHosts.size() << std::endl;
 }
 
 Node::Node(const string& ip, const string& address):
@@ -103,7 +104,7 @@ Node::NodeType Node::GetType() const {
 }
 
 void Node::SetKnownHosts(std::vector<string>& hosts) {
-	std::copy(m_KnownHosts.begin(), m_KnownHosts.end(), std::back_inserter(hosts));
+	std::copy(hosts.begin(), hosts.end(), std::back_inserter(m_KnownHosts));
 }
 
 std::vector<string> Node::GetKnownHosts() const {
