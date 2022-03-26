@@ -18,8 +18,6 @@
 		sem_t* writer = sem_open(shared_mem::WRITER_FILENAME, shared_mem::CREATE, shared_mem::PERMISSIONS, 0);
 		sem_t* reader = sem_open(shared_mem::READER_FILENAME, shared_mem::CREATE, shared_mem::PERMISSIONS, 1);
 
-		std::cout << (writer == SEM_FAILED) << std::endl;
-
 		key_t key = ftok(shared_mem::FILENAME, 0);
 		int shmid = shmget(key, shared_mem::BLOCK_SIZE, shared_mem::PERMISSIONS | shared_mem::CREATE);
 
@@ -81,8 +79,6 @@
 		// Access the semaphores
 		sem_t* writer = sem_open(shared_mem::WRITER_FILENAME, 0);
 		sem_t* reader = sem_open(shared_mem::READER_FILENAME, 0);
-
-		std::cout << (writer == SEM_FAILED) << std::endl;
 
 		// Read from the shared memory block. If `immediate` is true, only read if a semaphore
 		// decrement is immediately possible.
