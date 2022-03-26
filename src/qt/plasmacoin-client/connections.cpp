@@ -326,10 +326,10 @@ void connections::removeFromBlock(MainWindow& window) {
 }
 
 void connections::manageSharedMem(std::atomic<bool>& running, MainWindow& window) {
-	while (running) {
-		std::cout << "Running" << std::endl;
+	std::cout << "Running" << std::endl;
 
-		string data = shared_mem::readMemory();
+	while (running) {
+		string data = shared_mem::readMemory(true);
 		QJsonObject object = json::parse(data);
 
 		go::PacketTypes packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
