@@ -38,16 +38,13 @@ public:
 	Transmitter();
 	~Transmitter();
 
-	void Transmit(const vector<string>& data, uint8_t type);
+	void Transmit(const vector<string>& data, uint8_t type, const vector<string>& hosts = {});
 
 	// Functions to store class data in a format that can be converted into
 	vector<string> Format(Transaction* transaction);
 	vector<string> Format(Node* node, bool shouldRegister = true);
 	vector<string> Format(Block* block);
 	vector<string> Format(Receipt* receipt);
-
-private:
-	vector<string> m_KnownHosts = {"192.168.1.44"};
 };
 
 #endif // TRANSMITTER_HPP

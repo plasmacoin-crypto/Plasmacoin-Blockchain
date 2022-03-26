@@ -10,7 +10,7 @@
 Transmitter::Transmitter() {}
 Transmitter::~Transmitter() {}
 
-void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type) {
+void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type, const std::vector<string>& hosts) {
 	const size_t SIZE = data.size();
 	const char* carray[SIZE];
 
@@ -31,10 +31,11 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type) {
 
 	switch (type) {
 		case static_cast<uint8_t>(go::PacketTypes::TRANSACTION): {
-			for (auto ip: m_KnownHosts) {
+			for (const std::string& ip: hosts) {
 				go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
 
 				// Send the data to another node
+				std::cout << "Sending to " << ip << std::endl;
 				future<void> dial = std::async(&go::dial, "tcp", ip.c_str(), "8080", type, slice);
 			}
 
