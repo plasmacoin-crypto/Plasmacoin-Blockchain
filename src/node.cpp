@@ -36,6 +36,13 @@ Node::Node(
 	auto data = transmitter->Format(this);
 	std::cout << data[0] << std::endl;
 	transmitter->Transmit(data, std::stoi(data[0]));
+
+	string result = shared_mem::readMemory(true); // Read the shared memory
+	std::cout << "Node Result: " << result << std::endl;
+
+	QJsonObject object = json::parse(result);
+	std::vector<string> m_KnownHosts = json::parseArray(object, "nodes");
+	SetKnownHosts(m_KnownHosts);
 }
 
 Node::Node(const string& ip, const string& address):
@@ -96,6 +103,10 @@ Node::NodeType Node::GetType() const {
 
 void Node::SetKnownHosts(std::vector<string>& hosts) {
 	std::copy(m_KnownHosts.begin(), m_KnownHosts.end(), std::back_inserter(hosts));
+}
+
+std::vector<string> Node::GetKnownHosts() const {
+	return m_KnownHosts;
 }
 
 // Generate public and private RSA keys for signing transactions

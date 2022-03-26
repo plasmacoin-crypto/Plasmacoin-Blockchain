@@ -67,6 +67,8 @@ public:
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
 	NodeType GetType() const;
+
+	std::vector<string> GetKnownHosts() const;
 	void SetKnownHosts(std::vector<string>& hosts);
 
 	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
