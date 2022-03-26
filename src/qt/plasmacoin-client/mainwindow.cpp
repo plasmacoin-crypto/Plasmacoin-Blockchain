@@ -201,27 +201,30 @@ void MainWindow::ShowContact(Contact* contact) {
 }
 
 void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
-	while (running) {
-		constexpr bool immediate = true;
-		std::cout << "Running" << std::endl;
+	std::cout << "Running" << std::endl;
 
-		string data = shared_mem::readMemory(immediate);
+	while (running) {
+		string data = shared_mem::readMemory(true);
 		QJsonObject object = json::parse(data);
 
 		go::PacketTypes packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
 
 		switch (packetType) {
+			case go::PacketTypes::TRANSACTION:
+				window.m_TransactionList->ConfirmToMempool(json::toTransaction(object), window.m_User->m_BlockchainCopy->GetTarget());
+				break;
+
 			case go::PacketTypes::BLOCK: {
 				// If a new block is received, stop trying to solve the current block.
 				if (!object.empty() && !data.empty()) {
-					m_User->m_BlockchainCopy->StopMining(std::move(m_ExitSignal));
+					window.m_User->m_BlockchainCopy->StopMining(std::move(window.m_ExitSignal));
 					std::cout << "Stopping" << std::endl;
 				}
 
 				Block* block = json::toBlock(object);
 
 				for (auto transaction: block->m_Transactions) {
-					if (m_User->GetAddress() == transaction->m_SenderAddr) {
+					if (window.m_User->GetAddress() == transaction->m_SenderAddr) {
 						Receipt* receipt = transaction->GetReceipt();
 
 						// Transmit the receipt to the recipient
@@ -234,23 +237,10 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 				break;
 			}
 
-			case go::PacketTypes::NODE_LIST: {
-				string result = shared_mem::readMemory(); // Read the shared memory
-				std::cout << "Node Result: " << result << std::endl;
-
-				// Parse the JSON string
-				QJsonObject object = json::parse(result);
-				std::vector<string> m_KnownHosts = json::parseArray(object, "nodes");
-				m_User->SetKnownHosts(m_KnownHosts);
-
-				break;
-			}
-
 			default:
 				break;
 		}
 
-		//shared_mem::deleteMemory(shared_mem::FILENAME);
-		//std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 }
