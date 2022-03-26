@@ -10,12 +10,12 @@
 
 #include <string>
 #include <cstring>
-#include <new>
 #include <iostream>
 #include <unistd.h>
 
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <fcntl.h>
 #include <semaphore.h>
 
 namespace shared_mem {
@@ -25,8 +25,18 @@ namespace shared_mem {
 	const char* const WRITER_FILENAME = "/writer";
 	const char* const NO_DATA = "";
 
+	const mode_t PERMISSIONS = 0666;
+
+	#ifdef __APPLE__
+		const mode_t CREATE = IPC_CREAT;
+	#elif defined(__linux__)
+		const mode_t SEM_CREATE = O_CREAT | O_EXCL;
+		const mode_t BLOCK_CREATE = PERMISSIONS | IPC_CREAT;
+	#endif
+
 	std::string readMemory(bool immediate = false);
 	void writeMemory(std::string data);
+
 	void detatch(void* block);
 	void deleteMemory(const char* const filename);
 	void deleteSemaphore(const char* const sem);
