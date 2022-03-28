@@ -20,16 +20,16 @@ Node::Node(
 	m_NodeType(type)
 {
 	if (!rsafs::pathOkay(m_KeyPath + rsafs::PUB_FILENAME) && !rsafs::pathOkay(m_KeyPath + rsafs::PRIV_FILENAME)) {
-		std::tie(m_PubKey, m_PrivKey) = GenerateKeys(); // Generate a set of RSA keys for the user
+		std::tie(m_PublicKey, m_PrivateKey) = GenerateKeys(); // Generate a set of RSA keys for the user
 		rsafs::writeKeys(m_Keys, m_KeyPath);
 	}
 	else {
-		rsafs::readKeys(m_PubKey, m_PrivKey, m_KeyPath);
+		rsafs::readKeys(m_PublicKey, m_PrivateKey, m_KeyPath);
 	}
 
 	datfs::createDataPath(); // Create a place to store blockchain data
 
-	m_Address = CreateAddress(m_PubKey);
+	m_Address = CreateAddress(m_PublicKey);
 
 	// Register that the node is online
 	Transmitter* transmitter = new Transmitter();
@@ -44,7 +44,6 @@ Node::Node(
 	QJsonObject object = json::parse(result);
 	std::vector<string> hosts = json::parseArray(object, "nodes");
 	SetKnownHosts(hosts);
-	std::cout << m_KnownHosts.size() << std::endl;
 }
 
 Node::Node(const string& ip, const string& address):
@@ -118,19 +117,23 @@ pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
 
 	params.GenerateRandomWithKeySize(rng, 3072);
 
-	// Generate some RSA keys
-	RSA::PrivateKey privKey(params);
-	RSA::PublicKey pubKey(params);
+	// Generate an RSA public-private key pair
+	RSA::PrivateKey privateKey(params);
+	RSA::PublicKey publicKey(params);
 
 	m_Keys = params;
 
-	// Validate the private key that was generated. If this key passes, the
-	// public key does not need to be tested.
-	if (!privKey.Validate(rng, 3)) {
+	// Validate the private key
+	if (!privateKey.Validate(rng, 3)) {
 		throw std::runtime_error("Private key validation failed. Aborting.");
 	}
 
-	return std::make_pair(pubKey, privKey);
+	// Validate the private key
+	if (!publicKey.Validate(rng, 3)) {
+		throw std::runtime_error("Public key validation failed. Aborting.");
+	}
+
+	return std::make_pair(publicKey, privateKey);
 }
 
 // Sign a transaction with the sender's private key.
@@ -139,7 +142,7 @@ void Node::Sign(Transaction& transaction) noexcept(false) {
 	string message = transaction.m_Content;
 
 	//string signature;
-	m_Signer = CryptoPP::RSASSA_PKCS1v15_SHA_Signer(m_PrivKey);
+	m_Signer = CryptoPP::RSASSA_PKCS1v15_SHA_Signer(m_PrivateKey);
 
 	size_t length = m_Signer.MaxSignatureLength();
 	CryptoPP::SecByteBlock signature(length);
@@ -151,7 +154,7 @@ void Node::Sign(Transaction& transaction) noexcept(false) {
 	length = m_Signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
 	signature.resize(length);
 
-	transaction.m_Signature = Signature {signature, m_PubKey, length};
+	transaction.m_Signature = Signature {signature, m_PublicKey, length};
 	transaction.m_SignTime = utility::getUTCTime();
 }
 
@@ -160,7 +163,7 @@ void Node::Sign(Receipt& receipt) noexcept(false) {
 	string message = receipt.m_Hash;
 
 	//string signature;
-	m_Signer = CryptoPP::RSASSA_PKCS1v15_SHA_Signer(m_PrivKey);
+	m_Signer = CryptoPP::RSASSA_PKCS1v15_SHA_Signer(m_PrivateKey);
 
 	size_t length = m_Signer.MaxSignatureLength();
 	CryptoPP::SecByteBlock signature(length);
@@ -172,7 +175,7 @@ void Node::Sign(Receipt& receipt) noexcept(false) {
 	length = m_Signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
 	signature.resize(length);
 
-	receipt.m_Signature = Signature {signature, m_PubKey, length};
+	receipt.m_Signature = Signature {signature, m_PublicKey, length};
 	receipt.m_SignTime = utility::getUTCTime();
 }
 

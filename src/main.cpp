@@ -25,7 +25,7 @@ int main() {
 	size_t length;
 
 	std::tie(signature, length) = node1->Sign(*transaction);
-	bool result = node2->Verify(*transaction, signature, length, node1->m_PubKey);
+	bool result = node2->Verify(*transaction, signature, length, node1->m_PublicKey);
 
 	std::cout << (result? "verified": "not verified") << std::endl;
 

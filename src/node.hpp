@@ -81,7 +81,7 @@ public:
 
 	Blockchain* m_BlockchainCopy = new Blockchain(); // The node's copy of the blockchain
 
-	RSA::PublicKey m_PubKey;
+	RSA::PublicKey m_PublicKey;
 
 private:
 	string Hash(const string& input) const;
@@ -91,7 +91,8 @@ private:
 	string CreateAddress(const RSA::PublicKey& pubKey);
 
 	string m_Name, m_Username, m_Password, m_IPAddr, m_KeyPath, m_Address;
-	RSA::PrivateKey m_PrivKey;
+
+	RSA::PrivateKey m_PrivateKey;
 	NodeType m_NodeType;
 
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer m_Signer;
