@@ -137,15 +137,7 @@ vector<string> Transmitter::Format(Receipt* receipt) {
 	string signature = string(reinterpret_cast<const char*>(&sig[0]), sig.size());
 
 	// Convert the CryptoPP::RSA::PublicKey to a std::string
-	string publicKey;
-	CryptoPP::HexEncoder keyEncoder;
-	keyEncoder.Attach(new CryptoPP::StringSink(publicKey));
-
-	CryptoPP::ByteQueue queue;
-	receipt->m_Signature.m_PublicKey.Save(queue);
-	queue.CopyTo(keyEncoder);
-
-    keyEncoder.MessageEnd();
+	string publicKey = rsafs::toBase64String(receipt->m_Signature.m_PublicKey);
 
 	return vector<string> {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::RECEIPT)),
