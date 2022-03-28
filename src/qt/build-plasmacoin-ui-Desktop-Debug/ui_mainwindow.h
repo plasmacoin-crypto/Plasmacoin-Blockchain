@@ -1,5 +1,5 @@
 /********************************************************************************
-** Form generated from reading UI file 'linux.ui'
+** Form generated from reading UI file 'macos.ui'
 **
 ** Created by: Qt User Interface Compiler version 6.2.3
 **
@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDateEdit>
 #include <QtWidgets/QDialogButtonBox>
