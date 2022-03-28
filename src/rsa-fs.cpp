@@ -53,12 +53,14 @@ void rsafs::readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, const str
     privKey.Load(queue);
 }
 
+// Save data to a file using Crypto++'s FileSink class
 void rsafs::saveToFile(const string& filename, const CryptoPP::BufferedTransformation& bt) {
 	CryptoPP::FileSink fileSink(filename.c_str());
     bt.CopyTo(fileSink);
     fileSink.MessageEnd();
 }
 
+// Hex encode a raw RSA key and save it to the filesystem
 void rsafs::saveHex(const string& filename, const CryptoPP::BufferedTransformation& bt) {
 	CryptoPP::HexEncoder encoder;
 
@@ -68,6 +70,7 @@ void rsafs::saveHex(const string& filename, const CryptoPP::BufferedTransformati
     rsafs::saveToFile(filename, encoder);
 }
 
+// Load a hex-encoded RSA key from the filesystem and decode it
 void rsafs::loadHex(const string& filename, CryptoPP::BufferedTransformation& bt) {
 	std::string encoded, decoded;
 
@@ -83,6 +86,7 @@ void rsafs::loadHex(const string& filename, CryptoPP::BufferedTransformation& bt
 	decoder.MessageEnd();
 }
 
+// Base64 encode a raw RSA key and save it to the filesystem
 void rsafs::saveBase64(const string& filename, const CryptoPP::BufferedTransformation& bt) {
 	CryptoPP::Base64Encoder encoder;
 
@@ -92,8 +96,9 @@ void rsafs::saveBase64(const string& filename, const CryptoPP::BufferedTransform
 	rsafs::saveToFile(filename, encoder);
 }
 
+// Load a Base64-encoded RSA key from the filesystem and decode it
 void rsafs::loadBase64(const string& filename, CryptoPP::BufferedTransformation& bt) {
-	std::string encoded, decoded;
+	std::string encoded;
 
 	CryptoPP::FileSource file(filename.c_str(), true, new CryptoPP::StringSink(encoded));
     file.TransferTo(bt);
@@ -106,9 +111,50 @@ void rsafs::loadBase64(const string& filename, CryptoPP::BufferedTransformation&
 	decoder.MessageEnd();
 }
 
-void rsafs::loadRSA(std::string& strKey, CryptoPP::RSAFunction& rsaKey) {
-	CryptoPP::StringSink ssink(strKey);
-	rsaKey.DEREncode(ssink);
+// Read a Base64-encoded key from the filesystem as a string
+string rsafs::readBase64(const string& filename, CryptoPP::BufferedTransformation& bt) {
+	std::string base64;
+
+	CryptoPP::FileSource file(filename.c_str(), true, new CryptoPP::StringSink(base64));
+    file.TransferTo(bt);
+    bt.MessageEnd();
+
+	return base64;
+}
+
+// Encode a raw RSA key in Base64
+string rsafs::toBase64String(const CryptoPP::RSAFunction& rsaKey) {
+	CryptoPP::ByteQueue queue;
+	CryptoPP::Base64Encoder encoder;
+
+	rsaKey.Save(queue);
+	rsafs::saveBase64(rsafs::TMP_PATH.c_str(), queue);
+
+	return rsafs::readBase64(rsafs::TMP_PATH.c_str(), queue);
+}
+
+// Decode a Base64 RSA key to a raw RSA key
+CryptoPP::RSAFunction rsafs::fromBase64String(const string& base64key) {
+	CryptoPP::Base64Decoder decoder;
+	CryptoPP::ByteQueue queue;
+	decoder.Put((const CryptoPP::byte*)base64key.data(), base64key.size());
+	decoder.MessageEnd();
+
+	rsafs::saveToFile(rsafs::TMP_PATH.c_str(), decoder);
+	CryptoPP::RSAFunction rsaKey;
+
+	try {
+		CryptoPP::FileSource file(rsafs::TMP_PATH.c_str(), true);
+		rsaKey.BERDecode(file); // Clean up the temporary file
+
+		fs::remove(rsafs::TMP_PATH);
+		return rsaKey;
+	}
+	catch (const CryptoPP::Exception& e) {
+		std::cerr << e.what() << std::endl;
+		fs::remove(rsafs::TMP_PATH); // Clean up the temporary file
+   		exit(1);
+	}
 }
 
 // Create a place to store the user's RSA keys if the provided path doesn't exist.

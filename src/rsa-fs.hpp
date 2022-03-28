@@ -26,19 +26,23 @@
 using std::string;
 using std::pair;
 
-#include <cryptopp/rsa.h> 	   	// Use Crypto++'s RSA functionality
-#include <cryptopp/files.h>    	// Use FileSink
-#include <cryptopp/queue.h>    	// Use ByteQueue
-#include <cryptopp/cryptlib.h> 	// Use BufferedTransformation
-#include <cryptopp/hex.h>		// Use HexEncoder/HexDecoder
-#include <cryptopp/base64.h>	// Use Base64Encoder/Base64Decoder
-#include <cryptopp/filters.h> 	// Use StringSink
+#include <cryptopp/rsa.h> 	   	 // Use Crypto++'s RSA functionality
+#include <cryptopp/files.h>    	 // Use FileSink
+#include <cryptopp/queue.h>    	 // Use ByteQueue
+#include <cryptopp/cryptlib.h> 	 // Use BufferedTransformation
+#include <cryptopp/hex.h>		 // Use HexEncoder/HexDecoder
+#include <cryptopp/base64.h>	 // Use Base64Encoder/Base64Decoder
+#include <cryptopp/filters.h> 	 // Use StringSink
+#include <cryptopp/config_int.h> // Use CryptoPP::byte
 
 using CryptoPP::RSA;
 
 namespace rsafs {
 	const string PUB_FILENAME  = "pc_pub.key";
 	const string PRIV_FILENAME = "pc_priv.key";
+	const string TMP_KEY_NAME = "key.txt";
+
+	const string TMP_DIR = fs::temp_directory_path();
 
 	// Separate Unix-style paths from Windows paths
 	#ifdef _WIN32
@@ -51,6 +55,7 @@ namespace rsafs {
 	#endif
 
 	const string DIR_PATH = HOME_DIR + DELIM + ".ssh" + DELIM;
+	const string TMP_PATH = TMP_DIR + TMP_KEY_NAME;
 	//const string RSA_PATH = /*C:\ ?*/ DIR_PATH + FILENAME;
 
 	fs::path writeKeys(const CryptoPP::InvertibleRSAFunction& keys, const string& path = DIR_PATH);
@@ -63,8 +68,10 @@ namespace rsafs {
 
 	void saveBase64(const string& filename, const CryptoPP::BufferedTransformation& bt);
 	void loadBase64(const string& filename, CryptoPP::BufferedTransformation& bt);
+	string readBase64(const string& filename, CryptoPP::BufferedTransformation& bt);
 
-	void loadRSA(std::string& strKey, CryptoPP::RSAFunction& rsaKey);
+	string toBase64String(const CryptoPP::RSAFunction& rsaKey);
+	CryptoPP::RSAFunction fromBase64String(const string& strKey);
 
 	void createRSAPath(const string& dirpath = DIR_PATH);
 	bool pathOkay(const string& path);
