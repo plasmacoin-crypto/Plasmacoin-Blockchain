@@ -30,7 +30,8 @@ using std::pair;
 #include <cryptopp/files.h>    	// Use FileSink
 #include <cryptopp/queue.h>    	// Use ByteQueue
 #include <cryptopp/cryptlib.h> 	// Use BufferedTransformation
-#include <cryptopp/hex.h>		// Use HexEncoder
+#include <cryptopp/hex.h>		// Use HexEncoder/HexDecoder
+#include <cryptopp/base64.h>	// Use Base64Encoder/Base64Decoder
 #include <cryptopp/filters.h> 	// Use StringSink
 
 using CryptoPP::RSA;
@@ -55,8 +56,14 @@ namespace rsafs {
 	fs::path writeKeys(const CryptoPP::InvertibleRSAFunction& keys, const string& path = DIR_PATH);
 	void readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, const string& path = DIR_PATH);
 
+	void saveToFile(const string& filename, const CryptoPP::BufferedTransformation& bt);
+
 	void saveHex(const string& filename, const CryptoPP::BufferedTransformation& bt);
 	void loadHex(const string& filename, CryptoPP::BufferedTransformation& bt);
+
+	void saveBase64(const string& filename, const CryptoPP::BufferedTransformation& bt);
+	void loadBase64(const string& filename, CryptoPP::BufferedTransformation& bt);
+
 	void loadRSA(std::string& strKey, CryptoPP::RSAFunction& rsaKey);
 
 	void createRSAPath(const string& dirpath = DIR_PATH);
