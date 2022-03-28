@@ -109,7 +109,7 @@ Signature* json::toSignature(const QJsonObject& object) {
 
 	CryptoPP::RSA::PublicKey publicKey;
 	rsafs::loadRSA(strPublicKey, publicKey);
-
+	
 	Signature* sigfield = new Signature {sbb, publicKey, length};
 	return sigfield;
 }
