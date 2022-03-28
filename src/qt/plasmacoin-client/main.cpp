@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 	}, std::ref(runningThread));
 
 	//sharedMem.detach();
-	//threadRunning = false;
+	//runningThread = false;
 
 	return app.exec();
 }
