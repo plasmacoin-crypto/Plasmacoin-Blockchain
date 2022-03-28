@@ -7,7 +7,9 @@
 
 package blockchainconstructs
 
-import "strconv"
+import (
+	"strconv"
+)
 
 type Transaction struct {
 	PacketType    int       `json:"type"`
@@ -52,7 +54,7 @@ func MakeTransaction(data []string) *Transaction {
 	// Construct the signature field
 	signature := Signature{
 		Signature: data[8],
-		PublicKey: []byte(data[9]),
+		PublicKey: data[9],
 		Length:    int(siglen),
 	}
 

@@ -9,6 +9,6 @@ package blockchainconstructs
 
 type Signature struct {
 	Signature string `json:"signature"`
-	PublicKey []byte `json:"publicKey"`
+	PublicKey string `json:"publicKey"`
 	Length    int    `json:"length"`
 }
