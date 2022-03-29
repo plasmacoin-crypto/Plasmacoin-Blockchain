@@ -95,3 +95,23 @@ string hashing::hash(const Block& block) {
 
 	return hashing::hash(tree[0] + std::to_string(block.m_Nonce));
 }
+
+string hashing::RIPEMD160(const string& input) {
+	CryptoPP::RIPEMD160 hash;
+	string digest; // The result
+
+	// Hash the transaction data
+	//
+	// No objects have to be freed because of Crypto++'s pipelining
+	// functionality
+	//
+	CryptoPP::StringSource ssource(input, true,
+		new CryptoPP::HashFilter(hash,
+			new CryptoPP::HexEncoder(
+				new CryptoPP::StringSink(digest)
+			)
+		)
+	);
+
+	return digest;
+}

@@ -10,9 +10,10 @@
 
 #include <string>
 
-// This header file groups three Crypto++ headers to save space
-// and also provide them with a descriptive, overall name.
-#include "cryptopp-sha256-libs.h"
+#include <cryptopp/filters.h>
+#include <cryptopp/hex.h>
+#include <cryptopp/sha.h>
+#include <cryptopp/ripemd.h>
 
 #include "transaction.hpp"
 #include "block.hpp"
@@ -24,6 +25,7 @@ namespace hashing {
 	string hash(const string& input);
 	string hash(const Transaction& transaction);
 	string hash(const Block& block);
+	string RIPEMD160(const string& input);
 }
 
 #endif // HASHING_HPP
