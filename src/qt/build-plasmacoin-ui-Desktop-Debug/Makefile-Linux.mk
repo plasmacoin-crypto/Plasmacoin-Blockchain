@@ -76,7 +76,7 @@ OBJECTS_DIR   	 = ./
 SOURCES       = ../../transaction.cpp ../../node.cpp ../../block.cpp \
 				../../blockchain.cpp ../../receipt.cpp ../../merkle-helpers.cpp ../../rsa-fs.cpp \
 				../../dat-fs.cpp ../../transmitter.cpp ../../shared-mem.cpp ../../parse-json.cpp \
-				../../validation.cpp ../../hashing.cpp ../../dssize.cpp ../../utility.cpp \
+				../../validation.cpp ../../hashing.cpp ../../dssize.cpp ../../utility.cpp ../../rsautil.hpp \
 				\
 				../plasmacoin-client/main.cpp ./plasmacoin-client/mainwindow.cpp moc_mainwindow.cpp \
 				../plasmacoin-client/transaction-list.cpp \
@@ -106,6 +106,7 @@ OBJECTS 	  = main.o \
 				hashing.o \
 				dssize.o \
 				utility.o \
+				rsautil.o \
 				mainwindow.o \
 				moc_mainwindow.o \
 				transaction-list.o \
@@ -136,6 +137,7 @@ BASE_OBJ 	  = transaction.o \
 				hashing.o \
 				dssize.o \
 				utility.o \
+				rsautil.o \
 
 MOC = 		moc_mainwindow.cpp \
 			moc_transactionlist.cpp \
@@ -380,9 +382,18 @@ DIST = 		/usr/lib/qt/mkspecs/features/spec_pre.prf \
 			../../node.hpp ../../node.cpp \
 			../../block.hpp ../../block.hpp \
 			../../blockchain.hpp ../../blockchain.cpp \
+			../../receipt.hpp ../../receipt.cpp \
 			../../merkle-helpers.h ../../merkle-helpers.c \
 			../../rsa-fs.hpp ../../rsa-fs.cpp \
 			../../dat-fs.hpp ../../dat-fs.cpp \
+			../../transmitter.hpp ../../transmitter.cpp \
+			../../shared-mem.hpp ../../shared-mem.cpp \
+			../../parse-json.hpp ../../parse-json.cpp \
+			../../validation.hpp ../../validation.cpp \
+			../../hashing.hpp ../../hashing.cpp \
+			../../dssize.hpp ../../dssize.cpp \
+			../../utility.hpp ../../utility.cpp \
+			../../rsautil.hpp ../../rsautil.cpp \
 			../plasmacoin-client/plasmacoin-client.pro ../plasmacoin-client/main.cpp \
 			../plasmacoin-client/mainwindow.h ../plasmacoin-client/mainwindow.cpp \
 			../plasmacoin-client/transaction-list.h ../plasmacoin-client/transaction-list.cpp \
@@ -393,12 +404,13 @@ DIST = 		/usr/lib/qt/mkspecs/features/spec_pre.prf \
 			../plasmacoin-client/address-book.h ../plasmacoin-client/address-book.cpp \
 			../plasmacoin-client/contact.h ../plasmacoin-client/contact.cpp \
 			../plasmacoin-client/transaction-manager.h ../plasmacoin-client/transaction-manager.cpp \
+			../plasmacoin-client/transaction-view.h ../plasmacoin-client/transaction-view.cpp \
+			../plasmacoin-client/connections.hpp ../plasmacoin-client/connections.cpp \
 			\
-			../../../daemon/pcnetworkd.go ../../../daemon/pcnetworkd.h \
+			../../../daemon/goexports.go ../../../daemon/pcnetworkd.h ../../../daemon/daemon.cpp \
 			../../../handler/handler.go \
 			../../../netutils/compression.go ../../../netutils/netutils.go ../../../netutils/parser.go \
-			../../../tcpnet/netdial.go ../../../tcpnet/netlisten.go \
-			#../plasmacoin-client/settings-manager.h ../plasmacoin/settings-manager.cpp
+			../../../tcpnet/netdial.go ../../../tcpnet/netlisten.go
 
 QMAKE_TARGET  = plasmacoin-client
 DESTDIR       =
@@ -1034,6 +1046,9 @@ dssize.o: ../../dssize.cpp ../../dssize.hpp ../../transaction.hpp ../../block.hp
 
 utility.o: ../../utility.cpp ../../utility.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o utility.o ../../utility.cpp
+
+rsautil.o: ../../rsautil.cpp ../../rsautil.hpp ../../transaction.hpp ../../receipt.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rsautil.o ../../rsautil.cpp
 
 # GUI
 

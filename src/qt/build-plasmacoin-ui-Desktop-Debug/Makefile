@@ -61,7 +61,7 @@ OBJECTS_DIR   = ./
 SOURCES       = ../../transaction.cpp ../../node.cpp ../../block.cpp \
 				../../blockchain.cpp ../../receipt.cpp ../../merkle-helpers.cpp ../../rsa-fs.cpp \
 				../../dat-fs.cpp ../../transmitter.cpp ../../shared-mem.cpp ../../parse-json.cpp \
-				../../validation.cpp ../../hashing.cpp ../../dssize.cpp ../../utility.cpp \
+				../../validation.cpp ../../hashing.cpp ../../dssize.cpp ../../utility.cpp ../../rsautil.cpp \
 				\
 				../plasmacoin-client/main.cpp ./plasmacoin-client/mainwindow.cpp moc_mainwindow.cpp \
 				../plasmacoin-client/transaction-list.cpp \
@@ -91,6 +91,7 @@ OBJECTS 	  = main.o \
 				hashing.o \
 				dssize.o \
 				utility.o \
+				rsautil.o \
 				mainwindow.o \
 				moc_mainwindow.o \
 				transaction-list.o \
@@ -121,6 +122,7 @@ BASE_OBJ 	  = transaction.o \
 				hashing.o \
 				dssize.o \
 				utility.o \
+				rsautil.o \
 
 DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 				/opt/homebrew/share/qt/mkspecs/features/device_config.prf \
@@ -392,6 +394,7 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 				../../hashing.hpp ../../hashing.cpp \
 				../../dssize.hpp ../../dssize.cpp \
 				../../utility.hpp ../../utility.cpp \
+				../../rsautil.hpp ../../rsautil.cpp \
 				../plasmacoin-client/plasmacoin-client.pro ../plasmacoin-client/main.cpp \
 				../plasmacoin-client/mainwindow.h ../plasmacoin-client/mainwindow.cpp \
 				../plasmacoin-client/transaction-list.h ../plasmacoin-client/transaction-list.cpp \
@@ -1128,7 +1131,8 @@ transaction.o: ../../transaction.cpp ../../transaction.hpp ../../receipt.hpp ../
 
 node.o: ../../node.cpp ../../node.hpp ../../cryptopp-sha256-libs.h ../../transaction.hpp \
 		../../block.hpp ../../blockchain.hpp ../../rsa-fs.hpp ../../dat-fs.hpp ../../packet-types.h \
-		../../transmitter.hpp ../../shared-mem.hpp ../../parse-json.hpp ../../utility.hpp
+		../../transmitter.hpp ../../shared-mem.hpp ../../parse-json.hpp ../../utility.hpp ../../rsautil.hpp \
+		../../hashing.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o ../../node.cpp
 
 block.o: ../../block.cpp ../../block.hpp ../../transaction.hpp
@@ -1175,6 +1179,9 @@ dssize.o: ../../dssize.cpp ../../dssize.hpp ../../transaction.hpp ../../block.hp
 
 utility.o: ../../utility.cpp ../../utility.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o utility.o ../../utility.cpp
+
+rsautil.o: ../../rsautil.cpp ../../rsautil.hpp ../../transaction.hpp ../../receipt.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rsautil.o ../../rsautil.cpp
 
 # GUI
 
