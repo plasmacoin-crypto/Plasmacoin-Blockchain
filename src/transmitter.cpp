@@ -44,7 +44,7 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type, c
 
 		case static_cast<uint8_t>(go::PacketTypes::BLOCK): {
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-			future<void> dial = std::async(&go::dial, "tcp", go::getGlobalIP(), "8080", type, slice);
+			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
 			break;
 		}
 
@@ -53,10 +53,10 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type, c
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
 
 			if (shouldRegister) {
-				future<void> dial = std::async(&go::dial, "tcp", go::getGlobalIP(), "14400", type, slice);
+				future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
 			}
 			else {
-				future<void> dial = std::async(&go::dial, "tcp", go::getGlobalIP(), "8080", type, slice);
+				future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
 			}
 
 			break;
@@ -64,7 +64,7 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type, c
 
 		case static_cast<uint8_t>(go::PacketTypes::RECEIPT): {
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-			future<void> dial = std::async(&go::dial, "tcp", go::getGlobalIP(), "8080", type, slice);
+			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
 			break;
 		}
 
@@ -75,11 +75,10 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type, c
 
 vector<string> Transmitter::Format(Transaction* transaction) {
 	// Convert the signature to a std::string
-	CryptoPP::SecByteBlock sig = transaction->m_Signature.m_Signature;
-	string signature = string(reinterpret_cast<const char*>(&sig[0]), sig.size());
+	string signature = utility::sbbToString(transaction->m_Signature.m_Signature);
 
 	// Convert the CryptoPP::RSA::PublicKey to a std::string
-	string publicKey = rsafs::toBase64String(transaction->m_Signature.m_PublicKey);
+	string publicKey = utility::pubKeyToBase64(transaction->m_Signature.m_PublicKey);
 
 	return vector<string> {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::TRANSACTION)),
@@ -137,7 +136,7 @@ vector<string> Transmitter::Format(Receipt* receipt) {
 	string signature = string(reinterpret_cast<const char*>(&sig[0]), sig.size());
 
 	// Convert the CryptoPP::RSA::PublicKey to a std::string
-	string publicKey = rsafs::toBase64String(receipt->m_Signature.m_PublicKey);
+	string publicKey = utility::pubKeyToBase64(receipt->m_Signature.m_PublicKey);
 
 	return vector<string> {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::RECEIPT)),

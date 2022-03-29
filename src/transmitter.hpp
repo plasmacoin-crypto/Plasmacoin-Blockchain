@@ -23,6 +23,7 @@
 #include "block.hpp"
 #include "packet-types.h"
 #include "receipt.hpp"
+#include "utility.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"

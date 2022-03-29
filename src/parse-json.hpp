@@ -22,7 +22,7 @@
 
 #include "block.hpp"
 #include "packet-types.h"
-#include "rsa-fs.hpp"
+#include "utility.hpp"
 
 using std::vector;
 using std::string;
