@@ -20,7 +20,7 @@ Node::Node(
 	m_NodeType(type)
 {
 	if (!rsafs::pathOkay(m_KeyPath + rsafs::PUB_FILENAME) && !rsafs::pathOkay(m_KeyPath + rsafs::PRIV_FILENAME)) {
-		std::tie(m_PublicKey, m_PrivateKey) = GenerateKeys(); // Generate a set of RSA keys for the user
+		std::tie(m_Keys, m_PublicKey, m_PrivateKey) = rsautil::generateKeys(); // Generate a set of RSA keys for the user
 		rsafs::writeKeys(m_Keys, m_KeyPath);
 	}
 	else {
@@ -66,7 +66,7 @@ Node::~Node() {
 // Create a new transaction to a recipient on the blockchain network
 Transaction* Node::MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content) {
 	Transaction* transaction = new Transaction(GetAddress(), recipientAddr, amount, fee, content);
-	transaction->m_Hash = Hash(*transaction);
+	transaction->m_Hash = hashing::hash(*transaction);
 
 	return transaction;
 }
@@ -110,142 +110,19 @@ std::vector<string> Node::GetKnownHosts() const {
 	return m_KnownHosts;
 }
 
-// Generate public and private RSA keys for signing transactions
-pair<RSA::PublicKey, RSA::PrivateKey> Node::GenerateKeys() noexcept(false) {
-	CryptoPP::AutoSeededRandomPool rng; // Random number generator
-	CryptoPP::InvertibleRSAFunction params;
-
-	params.GenerateRandomWithKeySize(rng, 3072);
-
-	// Generate an RSA public-private key pair
-	RSA::PrivateKey privateKey(params);
-	RSA::PublicKey publicKey(params);
-
-	m_Keys = params;
-
-	// Validate the private key
-	if (!privateKey.Validate(rng, 3)) {
-		throw std::runtime_error("Private key validation failed. Aborting.");
-	}
-
-	// Validate the private key
-	if (!publicKey.Validate(rng, 3)) {
-		throw std::runtime_error("Public key validation failed. Aborting.");
-	}
-
-	return std::make_pair(publicKey, privateKey);
+// A wrapper around rsautil::sign to sign transactions
+void Node::Sign(Transaction& transaction) {
+	rsautil::sign(transaction, m_PublicKey, m_PrivateKey);
 }
 
-// Sign a transaction with the sender's private key.
-void Node::Sign(Transaction& transaction) noexcept(false) {
-	CryptoPP::AutoSeededRandomPool rng;
-	string message = transaction.m_Content;
-
-	//string signature;
-	m_Signer = CryptoPP::RSASSA_PKCS1v15_SHA_Signer(m_PrivateKey);
-
-	size_t length = m_Signer.MaxSignatureLength();
-	CryptoPP::SecByteBlock signature(length);
-
-	// if (signature == nullptr) {
-	// 	throw std::runtime_error("Transaction signing failed. Aborting.");
-	// }
-
-	length = m_Signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
-	signature.resize(length);
-
-	transaction.m_Signature = Signature {signature, m_PublicKey, length};
-	transaction.m_SignTime = utility::getUTCTime();
-}
-
-void Node::Sign(Receipt& receipt) noexcept(false) {
-	CryptoPP::AutoSeededRandomPool rng;
-	string message = receipt.m_Hash;
-
-	//string signature;
-	m_Signer = CryptoPP::RSASSA_PKCS1v15_SHA_Signer(m_PrivateKey);
-
-	size_t length = m_Signer.MaxSignatureLength();
-	CryptoPP::SecByteBlock signature(length);
-
-	// if (signature == nullptr) {
-	// 	throw std::runtime_error("Transaction signing failed. Aborting.");
-	// }
-
-	length = m_Signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
-	signature.resize(length);
-
-	receipt.m_Signature = Signature {signature, m_PublicKey, length};
-	receipt.m_SignTime = utility::getUTCTime();
-}
-
-// Verify a transaction using the sender's public key. Returns true if verification succeded,
-// false otherwise.
-bool Node::Verify(const Transaction& transaction, const SecByteBlock& signature, size_t length, const RSA::PublicKey& publicKey) {
-	CryptoPP::AutoSeededRandomPool rng;
-	CryptoPP::InvertibleRSAFunction params;
-	string message = transaction.m_Content;
-
-	//string recovered;
-	CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Verifier verifier(publicKey);
-
-	bool result = verifier.VerifyMessage((const byte*)message.c_str(), message.length(), signature, length);
-	return result;
-}
-
-// Use Crypto++ to hash a string
-string Node::Hash(const string& input) const {
-	CryptoPP::SHA256 hash;
-	string digest; // The result
-
-	// Use the library
-	//
-	// No objects have to be freed because of Crypto++'s pipelining
-	// functionality
-	//
-	CryptoPP::StringSource ssource(input, true,
-		new CryptoPP::HashFilter(hash,
-			new CryptoPP::HexEncoder(
-				new CryptoPP::StringSink(digest)
-			)
-		)
-	);
-
-	return digest;
-}
-
-// Use Crypto++ to hash the transaction data
-string Node::Hash(const Transaction& transaction) const {
-	string message = transaction.m_SenderAddr + transaction.m_RecipientAddr + \
-					 std::to_string(transaction.m_Amount + transaction.m_Fee) + \
-					 transaction.m_Content;
-
-	return Hash(message);
-}
-
-string Node::RIPEMD160(const string& input) const {
-	CryptoPP::RIPEMD160 hash;
-	string digest; // The result
-
-	// Hash the transaction data
-	//
-	// No objects have to be freed because of Crypto++'s pipelining
-	// functionality
-	//
-	CryptoPP::StringSource ssource(input, true,
-		new CryptoPP::HashFilter(hash,
-			new CryptoPP::HexEncoder(
-				new CryptoPP::StringSink(digest)
-			)
-		)
-	);
-
-	return digest;
+// A wrapper around rsautil::sign to sign transaction receipts
+void Node::Sign(Receipt& receipt) {
+	rsautil::sign(receipt, m_PublicKey, m_PrivateKey);
 }
 
 string Node::CreateAddress(const RSA::PublicKey& pubKey) {
 	string strPubKey;
 	pubKey.Save(CryptoPP::StringSink(strPubKey).Ref());
 
-	return RIPEMD160(Hash(strPubKey));
+	return hashing::RIPEMD160(hashing::hash(strPubKey));
 }

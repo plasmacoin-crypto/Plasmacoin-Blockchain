@@ -17,21 +17,8 @@
 #include <iterator>
 
 using std::string;
-using std::pair;
 
 #include <QJsonObject>
-
-#include <cryptopp/rsa.h> 		// Use Crypto++'s RSA functionality
-#include <cryptopp/osrng.h> 	// Use AutoSeededRandomPool
-#include <cryptopp/filters.h>	// Use SignerFilter, StringSink, SignatureVerificationFilter
-#include <cryptopp/cryptlib.h> 	// Use GenerateRandomWithKeySize
-#include <cryptopp/pssr.h>		// Use PSSR
-#include <cryptopp/ripemd.h>	// Use the RIPEMD hash function
-#include <cryptopp/secblock.h> 	// Use SecByteBlock
-
-using CryptoPP::RSA;
-using CryptoPP::Integer;
-using CryptoPP::byte;
 
 #include "cryptopp-sha256-libs.h"
 
@@ -45,6 +32,8 @@ using CryptoPP::byte;
 #include "shared-mem.hpp"
 #include "parse-json.hpp"
 #include "utility.hpp"
+#include "rsautil.hpp"
+#include "hashing.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -71,23 +60,14 @@ public:
 	std::vector<string> GetKnownHosts() const;
 	void SetKnownHosts(std::vector<string>& hosts);
 
-	pair<RSA::PublicKey, RSA::PrivateKey> GenerateKeys() noexcept(false);
-
-	// Sign and verify transactions with RSA
-	void Sign(Transaction& transaction) noexcept(false);
-	void Sign(Receipt& receipt) noexcept(false);
-
-	bool Verify(const Transaction& transaction, const SecByteBlock& signature, size_t length, const RSA::PublicKey& publicKey);
+	void Sign(Transaction& transaction);
+	void Sign(Receipt& receipt);
 
 	Blockchain* m_BlockchainCopy = new Blockchain(); // The node's copy of the blockchain
 
 	RSA::PublicKey m_PublicKey;
 
 private:
-	string Hash(const string& input) const;
-	string Hash(const Transaction& transaction) const;
-	string RIPEMD160(const string& input) const;
-
 	string CreateAddress(const RSA::PublicKey& pubKey);
 
 	string m_Name, m_Username, m_Password, m_IPAddr, m_KeyPath, m_Address;
