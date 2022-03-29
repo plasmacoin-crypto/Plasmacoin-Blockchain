@@ -51,6 +51,32 @@ bool validation::validate(const Transaction& transaction) {
 	return hashValid && nonEmpty && signatureValid;
 }
 
+bool validation::validate(const Transaction& transaction, int256_t target) {
+	// Check if the addresses are valid
+
+	// Check if the transaction hash is valid
+	bool hashValid = validation::validate(transaction.m_Hash, target);
+
+	// Validate the signature
+
+	// 1. Make sure the signature isn't empty
+	bool nonEmpty = (
+		transaction.m_Signature.m_Length > 0 &&
+		transaction.m_Signature.m_Length == transaction.m_Signature.m_Signature.size() &&
+		!transaction.m_Signature.m_Signature.empty()
+	);
+
+	// 2. Validate the sender's public key
+	CryptoPP::AutoSeededRandomPool rng;
+	bool pubKeyValid = transaction.m_Signature.m_PublicKey.Validate(rng, 3);
+
+	bool signatureValid = nonEmpty && pubKeyValid;
+
+	// Make sure the transaction is unique
+
+	return hashValid && nonEmpty && signatureValid;
+}
+
 bool validation::validate(const Block& block, size_t chainLength) {
 	bool indexValid = block.m_Index >= 0 && block.m_Index <= static_cast<int>(chainLength);
 	bool nonceValid = block.m_Nonce > -1;

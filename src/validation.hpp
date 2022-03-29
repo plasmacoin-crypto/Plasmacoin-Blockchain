@@ -32,8 +32,12 @@ namespace validation {
 	const int256_t MAX_TARGET {"0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
 
 	bool validate(const Blockchain& blockchain);
+
 	bool validate(const Transaction& transaction);
+	bool validate(const Transaction& transaction, int256_t target);
+
 	bool validate(const Block& block, size_t chainLength);
+
 	bool validate(const std::string& hash);
 	bool validate(const std::string& hash, int256_t target);
 }

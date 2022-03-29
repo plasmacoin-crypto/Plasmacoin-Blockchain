@@ -211,7 +211,8 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 
 		switch (packetType) {
 			case go::PacketTypes::TRANSACTION:
-				m_TransactionList->ConfirmToMempool(json::toTransaction(object), m_User->m_BlockchainCopy->GetTarget());
+				std::cout << "Here" << std::endl;
+				m_TransactionList->ConfirmToMempool(json::toTransaction(object));
 				break;
 
 			case go::PacketTypes::BLOCK: {
