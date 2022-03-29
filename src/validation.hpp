@@ -2,7 +2,7 @@
 // FILENAME: validation.hpp | Plasmacoin Cryptocurrency
 // DESCRIPTION: Validate transactions, blocks, and the blockchain
 // CREATED: 2022-01-21 @ 12:57 PM
-// COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
+// COPYRIGHT: Copyright (c) 2022 by Ryan Smith <rysmith2113@gmail.com>
 //
 
 #ifndef VALIDATION_HPP
