@@ -36,7 +36,7 @@ bool validation::validate(const Transaction& transaction) {
 	// 1. Make sure the signature isn't empty
 	bool nonEmpty = (
 		transaction.m_Signature.m_Length > 0 &&
-		transaction.m_Signature.m_Length == transaction.m_Signature.m_Signature.size() &&
+		rsautil::verify(transaction, transaction.m_Signature.m_Signature, transaction.m_Signature.m_PublicKey) &&
 		!transaction.m_Signature.m_Signature.empty()
 	);
 
