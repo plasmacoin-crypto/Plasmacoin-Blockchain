@@ -33,7 +33,7 @@ public:
 	void Delete(int row);
 	Transaction* At(int row);
 
-	bool ConfirmToMempool(Transaction* transaction, int256_t target);
+	bool ConfirmToMempool(Transaction* transaction);
 
 private:
 	QListWidget*& m_TransactionList;

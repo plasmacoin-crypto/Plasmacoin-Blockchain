@@ -36,8 +36,8 @@ Transaction* TransactionList::At(int row) {
 	return m_List[row];
 }
 
-bool TransactionList::ConfirmToMempool(Transaction* transaction, int256_t target) {
-	bool valid = validation::validate(*transaction, target);
+bool TransactionList::ConfirmToMempool(Transaction* transaction) {
+	bool valid = validation::validate(*transaction);
 
 	if (valid) {
 		Add(transaction);

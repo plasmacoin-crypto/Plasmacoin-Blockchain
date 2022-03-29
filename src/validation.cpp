@@ -25,11 +25,11 @@ bool validation::validate(const Blockchain& blockchain) {
 	return true;
 }
 
-bool validation::validate(const Transaction& transaction, int256_t target) {
+bool validation::validate(const Transaction& transaction) {
 	// Check if the addresses are valid
 
 	// Check if the transaction hash is valid
-	bool hashValid = validation::validate(transaction.m_Hash, target);
+	bool hashValid = validation::validate(transaction.m_Hash);
 
 	// Validate the signature
 
@@ -37,7 +37,7 @@ bool validation::validate(const Transaction& transaction, int256_t target) {
 	bool nonEmpty = (
 		transaction.m_Signature.m_Length > 0 &&
 		transaction.m_Signature.m_Length == transaction.m_Signature.m_Signature.size() &&
-		transaction.m_Signature.m_Signature.empty()
+		!transaction.m_Signature.m_Signature.empty()
 	);
 
 	// 2. Validate the sender's public key
@@ -84,18 +84,22 @@ bool validation::validate(const Block& block, size_t chainLength) {
 	return indexValid && nonceValid && prevHashExists && hashesValid && hashesMatch && trxnsValid;
 }
 
-bool validation::validate(const std::string& hash, int256_t target) {
+bool validation::validate(const std::string& hash) {
 	if (hash.empty()) {
 		return false;
 	}
 
 	// Check if the hash is valid SHA-256
 	const std::regex SHA_256_REGEX("(?:[a-f0-9]|[A-F0-9]){64}");
-	bool match = std::regex_match(hash, SHA_256_REGEX);
+	return std::regex_match(hash, SHA_256_REGEX);
+}
 
+bool validation::validate(const std::string& hash, int256_t target) {
+	bool structValid = validation::validate(hash); // Check if the hash structure is valid
+
+	// Check if the hash is below the target hash for PoW
 	int256_t intHash {std::string("0x") + hash}; // Add "0x" to the hash before converting
-
 	bool meetsTarget = intHash < target;
 
-	return match && meetsTarget;
+	return structValid && meetsTarget;
 }
