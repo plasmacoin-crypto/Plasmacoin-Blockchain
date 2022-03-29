@@ -41,7 +41,7 @@ void rsautil::sign(Transaction& transaction, const RSA::PublicKey& publicKey, co
 	size_t length = signer.MaxSignatureLength();
 	CryptoPP::SecByteBlock signature(length);
 
-	length = signer.SignMessage(rng, reinterpret_cast<const byte*>(message.c_str()), message.size(), signature);
+	length = signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
 	signature.resize(length);
 
 	transaction.m_Signature = Signature {signature, publicKey, length};
@@ -58,7 +58,7 @@ void rsautil::sign(Receipt& receipt, const RSA::PublicKey& publicKey, const RSA:
 	size_t length = signer.MaxSignatureLength();
 	CryptoPP::SecByteBlock signature(length);
 
-	length = signer.SignMessage(rng, reinterpret_cast<const byte*>(message.c_str()), message.size(), signature);
+	length = signer.SignMessage(rng, (const byte*)message.c_str(), message.size(), signature);
 	signature.resize(length);
 
 	receipt.m_Signature = Signature {signature, publicKey, length};
@@ -67,26 +67,26 @@ void rsautil::sign(Receipt& receipt, const RSA::PublicKey& publicKey, const RSA:
 
 // Verify a transaction using the sender's public key. Returns true if verification succeded,
 // false otherwise.
-bool rsautil::verify(const Transaction& transaction, const CryptoPP::SecByteBlock& signature, size_t length, const RSA::PublicKey& publicKey) {
+bool rsautil::verify(const Transaction& transaction, const CryptoPP::SecByteBlock& signature, const RSA::PublicKey& publicKey) {
 	CryptoPP::AutoSeededRandomPool rng;
 	CryptoPP::InvertibleRSAFunction params;
 	string message = transaction.m_Content;
 
-	CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Verifier verifier(publicKey);
+	CryptoPP::RSASSA_PKCS1v15_SHA_Verifier verifier(publicKey);
 
-	bool result = verifier.VerifyMessage(reinterpret_cast<const byte*>(message.c_str()), message.length(), signature, length);
+	bool result = verifier.VerifyMessage((const byte*)message.c_str(), message.size(), signature, signature.size());
 	return result;
 }
 
 // Verify a transaction using the sender's public key. Returns true if verification succeded,
 // false otherwise.
-bool rsautil::verify(const Receipt& receipt, const CryptoPP::SecByteBlock& signature, size_t length, const RSA::PublicKey& publicKey) {
+bool rsautil::verify(const Receipt& receipt, const CryptoPP::SecByteBlock& signature, const RSA::PublicKey& publicKey) {
 	CryptoPP::AutoSeededRandomPool rng;
 	CryptoPP::InvertibleRSAFunction params;
 	string message = receipt.m_Hash;
 
-	CryptoPP::RSASS<CryptoPP::PKCS1v15, CryptoPP::SHA256>::Verifier verifier(publicKey);
+	CryptoPP::RSASSA_PKCS1v15_SHA_Verifier verifier(publicKey);
 
-	bool result = verifier.VerifyMessage(reinterpret_cast<const byte*>(message.c_str()), message.length(), signature, length);
+	bool result = verifier.VerifyMessage((const byte*)message.c_str(), message.length(), signature, signature.size());
 	return result;
 }

@@ -30,8 +30,8 @@ namespace rsautil {
 	void sign(Transaction& transaction, const RSA::PublicKey& publicKey, const RSA::PrivateKey& privateKey) noexcept(false);
 	void sign(Receipt& transaction, const RSA::PublicKey& publicKey, const RSA::PrivateKey& privateKey) noexcept(false);
 
-	bool verify(const Transaction& transaction, const CryptoPP::SecByteBlock& signature, size_t length, const RSA::PublicKey& publicKey);
-	bool verify(const Receipt& receipt, const CryptoPP::SecByteBlock& signature, size_t length, const RSA::PublicKey& publicKey);
+	bool verify(const Transaction& transaction, const CryptoPP::SecByteBlock& signature, const RSA::PublicKey& publicKey);
+	bool verify(const Receipt& receipt, const CryptoPP::SecByteBlock& signature, const RSA::PublicKey& publicKey);
 }
 
 #endif // RSA_UTIL_HPP
