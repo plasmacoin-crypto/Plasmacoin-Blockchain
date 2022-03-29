@@ -98,7 +98,7 @@ Transaction* json::toTransaction(const QJsonObject& object) {
 
 Signature* json::toSignature(const QJsonObject& object) {
 	// Signature string `json:"signature"`
-	// PublicKey []byte `json:"publicKey"`
+	// PublicKey string `json:"publicKey"`
 	// Length    int    `json:"length"`
 
 	string strSignature = object["signature"].toString().toStdString();
