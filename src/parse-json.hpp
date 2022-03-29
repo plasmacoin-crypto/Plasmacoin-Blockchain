@@ -18,6 +18,7 @@
 
 #include <cryptopp/secblock.h>
 #include <cryptopp/rsa.h>
+#include <cryptopp/config_int.h>
 
 #include "block.hpp"
 #include "packet-types.h"
