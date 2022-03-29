@@ -44,7 +44,7 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type, c
 
 		case static_cast<uint8_t>(go::PacketTypes::BLOCK): {
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
+			future<void> dial = std::async(&go::dial, "tcp", go::getGlobalIP(), "8080", type, slice);
 			break;
 		}
 
@@ -53,10 +53,10 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type, c
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
 
 			if (shouldRegister) {
-				future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
+				future<void> dial = std::async(&go::dial, "tcp", go::getGlobalIP(), "14400", type, slice);
 			}
 			else {
-				future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
+				future<void> dial = std::async(&go::dial, "tcp", go::getGlobalIP(), "8080", type, slice);
 			}
 
 			break;
@@ -64,7 +64,7 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type, c
 
 		case static_cast<uint8_t>(go::PacketTypes::RECEIPT): {
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
+			future<void> dial = std::async(&go::dial, "tcp", go::getGlobalIP(), "8080", type, slice);
 			break;
 		}
 

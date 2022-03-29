@@ -44,6 +44,10 @@
 #include "validation.hpp"
 #include "dssize.hpp"
 
+namespace go {
+	#include "pcnetworkd.h"
+}
+
 using std::chrono::high_resolution_clock;
 using std::chrono::seconds;
 
@@ -93,7 +97,7 @@ private:
 	QFileDialog* m_FileBrowser = new QFileDialog();
 
 public:
-	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.44"); // Temporary data
+	Node* m_User = new Node("Ryan", "ryan", "1234", go::getGlobalIP()); // Temporary data
 
 signals:
 	void MiningSuccess();
