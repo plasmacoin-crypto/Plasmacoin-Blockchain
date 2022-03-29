@@ -1035,7 +1035,7 @@ parse-json.o: ../../parse-json.cpp ../../parse-json.hpp ../../block.hpp ../../pa
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parse-json.o ../../parse-json.cpp
 
 validation.o: ../../validation.cpp ../../validation.hpp ../../blockchain.hpp ../../transaction.hpp \
-			  ../../block.hpp ../../hashing.hpp
+			  ../../block.hpp ../../hashing.hpp ../../rsautil.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o validation.o ../../validation.cpp
 
 hashing.o: ../../hashing.cpp ../../hashing.hpp ../../transaction.hpp ../../block.hpp
