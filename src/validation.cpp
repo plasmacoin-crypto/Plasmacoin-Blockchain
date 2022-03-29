@@ -2,7 +2,7 @@
 // FILENAME: validation.cpp | Plasmacoin Cryptocurrency
 // DESCRIPTION: The source file for validation.hpp
 // CREATED: 2022-01-21 @ 12:57 PM
-// COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
+// COPYRIGHT: Copyright (c) 2022 by Ryan Smith <rysmith2113@gmail.com>
 //
 
 #include "validation.hpp"
