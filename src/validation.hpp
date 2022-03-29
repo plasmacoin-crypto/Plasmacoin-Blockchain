@@ -23,6 +23,7 @@
 #include "transaction.hpp"
 #include "block.hpp"
 #include "hashing.hpp"
+#include "rsautil.hpp"
 
 using boost::multiprecision::int256_t;
 
