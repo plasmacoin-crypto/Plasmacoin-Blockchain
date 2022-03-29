@@ -74,10 +74,10 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type, c
 }
 
 vector<string> Transmitter::Format(Transaction* transaction) {
-	// Convert the signature to a std::string
-	string signature = utility::sbbToString(transaction->m_Signature.m_Signature);
+	// Convert the signature to Base64
+	string signature = utility::sigToBase64(transaction->m_Signature.m_Signature);
 
-	// Convert the CryptoPP::RSA::PublicKey to a std::string
+	// Convert the CryptoPP::RSA::PublicKey to Base64
 	string publicKey = utility::pubKeyToBase64(transaction->m_Signature.m_PublicKey);
 
 	return vector<string> {
