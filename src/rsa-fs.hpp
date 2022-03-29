@@ -55,7 +55,7 @@ namespace rsafs {
 	#endif
 
 	const string DIR_PATH = HOME_DIR + DELIM + ".ssh" + DELIM;
-	const string TMP_PATH = TMP_DIR + TMP_KEY_NAME;
+	const string TMP_PATH = (TMP_DIR.back() == DELIM)? TMP_DIR + TMP_KEY_NAME : TMP_DIR + DELIM + TMP_KEY_NAME;
 	//const string RSA_PATH = /*C:\ ?*/ DIR_PATH + FILENAME;
 
 	fs::path writeKeys(const CryptoPP::InvertibleRSAFunction& keys, const string& path = DIR_PATH);
