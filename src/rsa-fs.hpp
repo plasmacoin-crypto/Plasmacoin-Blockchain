@@ -70,9 +70,6 @@ namespace rsafs {
 	void loadBase64(const string& filename, CryptoPP::BufferedTransformation& bt);
 	string readBase64(const string& filename, CryptoPP::BufferedTransformation& bt);
 
-	string toBase64String(const CryptoPP::RSAFunction& rsaKey);
-	CryptoPP::RSAFunction fromBase64String(const string& strKey);
-
 	void createRSAPath(const string& dirpath = DIR_PATH);
 	bool pathOkay(const string& path);
 	string dirName(const string& path);

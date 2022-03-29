@@ -122,41 +122,6 @@ string rsafs::readBase64(const string& filename, CryptoPP::BufferedTransformatio
 	return base64;
 }
 
-// Encode a raw RSA key in Base64
-string rsafs::toBase64String(const CryptoPP::RSAFunction& rsaKey) {
-	CryptoPP::ByteQueue queue;
-	CryptoPP::Base64Encoder encoder;
-
-	rsaKey.Save(queue);
-	rsafs::saveBase64(rsafs::TMP_PATH.c_str(), queue);
-
-	return rsafs::readBase64(rsafs::TMP_PATH.c_str(), queue);
-}
-
-// Decode a Base64 RSA key to a raw RSA key
-CryptoPP::RSAFunction rsafs::fromBase64String(const string& base64key) {
-	CryptoPP::Base64Decoder decoder;
-	CryptoPP::ByteQueue queue;
-	decoder.Put((const CryptoPP::byte*)base64key.data(), base64key.size());
-	decoder.MessageEnd();
-
-	rsafs::saveToFile(rsafs::TMP_PATH.c_str(), decoder);
-	CryptoPP::RSAFunction rsaKey;
-
-	try {
-		CryptoPP::FileSource file(rsafs::TMP_PATH.c_str(), true);
-		rsaKey.BERDecode(file); // Clean up the temporary file
-
-		fs::remove(rsafs::TMP_PATH);
-		return rsaKey;
-	}
-	catch (const CryptoPP::Exception& e) {
-		std::cerr << e.what() << std::endl;
-		fs::remove(rsafs::TMP_PATH); // Clean up the temporary file
-   		exit(1);
-	}
-}
-
 // Create a place to store the user's RSA keys if the provided path doesn't exist.
 //
 // If the default path is used, behavior is as follows:
