@@ -154,13 +154,16 @@ void MainWindow::StartMining() {
 
 	if (valid) {
 		std::cout << "Valid" << std::endl;
+
+		newBlock.m_MinerAddr = m_User->GetAddress(); // Timestamp the block
+
 		m_User->m_BlockchainCopy->Add(&newBlock);
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 
 		Transmitter* transmitter = new Transmitter();
 		auto data = transmitter->Format(&newBlock);
-		transmitter->Transmit(data, std::stoi(data[0]));
+		transmitter->Transmit(data, std::stoi(data[0]), m_User->GetKnownHosts());
 
 		emit MiningSuccess();
 	}
@@ -216,6 +219,8 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 				break;
 
 			case go::PacketTypes::BLOCK: {
+				std::cout << "Received block" << std::endl;
+
 				// If a new block is received, stop trying to solve the current block.
 				if (!object.empty() && !data.empty()) {
 					m_User->m_BlockchainCopy->StopMining(std::move(m_ExitSignal));
