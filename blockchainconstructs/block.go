@@ -16,6 +16,7 @@ type Block struct {
 	Nonce        int           `json:"nonce"`
 	Hash         string        `json:"hash"`
 	PrevHash     string        `json:"prevhash"`
+	MinerAddr    string        `json:"miner"`
 	CreationTime string        `json:"created"`
 	MineTime     string        `json:"mined"`
 	IsGenesis    bool          `json:"genesis"`
@@ -35,12 +36,13 @@ func MakeBlock(data []string) *Block {
 	// 4.  The correct nonce 								(data[3])
 	// 5.  The block's Merkle Root hash 					(data[4])
 	// 6.  The previous block's hash 						(data[5])
-	// 7.  The time the block was created 					(data[6])
+	// 7.  The block miner 									(data[6])
 	// 8.  The time the block was created 					(data[7])
-	// 9.  Whether or not the block is the genesis block 	(data[8])
-	// 10. A list of transactions on the block				(data[9])
+	// 9.  The time the block was created 					(data[8])
+	// 10. Whether or not the block is the genesis block 	(data[9])
+	// 11. A list of transactions on the block				(data[10])
 	//
-	// The transaction data comes in sets of 12. This means that data[9] - data[20] are
+	// The transaction data comes in sets of 12. This means that data[10] - data[21] are
 	// all part of the same transaction.
 	//
 	// For more information on what makes up a transaction, see `MakeTransaction` in
@@ -49,7 +51,7 @@ func MakeBlock(data []string) *Block {
 
 	const (
 		trxnLen  = 12
-		minIndex = 9
+		minIndex = 10
 	)
 	maxIndex := len(data)
 
@@ -66,7 +68,7 @@ func MakeBlock(data []string) *Block {
 	for i := minIndex; i < maxIndex; i += trxnLen {
 		// Get the current indices of transaction data. Using these in a slice selects
 		// All the elements in the interval [min, max).
-		min, max := i, i + trxnLen
+		min, max := i, i+trxnLen
 
 		transactions = append(transactions, *MakeTransaction(data[min:max]))
 	}

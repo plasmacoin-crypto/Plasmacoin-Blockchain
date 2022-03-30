@@ -21,14 +21,16 @@ Block::Block(
 {}
 
 Block::Block(
-	int index, int nonce, const string& hash, const string& prevHash, const string& creationTime,
-	const string& mineTime, const vector<Transaction*>& transactions, int64_t difficulty, bool genesis
+	int index, int nonce, const string& hash, const string& prevHash, const string& minerAddr,
+	const string& creationTime, const string& mineTime, const vector<Transaction*>& transactions,
+	int64_t difficulty, bool genesis
 ):
 	m_Index(index),
 	m_Nonce(nonce),
 	m_Difficulty(difficulty),
 	m_Hash(hash),
 	m_PrevHash(prevHash),
+	m_MinerAddr(minerAddr),
 	m_CreationTime(creationTime),
 	m_MineTime(mineTime),
 	m_IsGenesis(genesis),

@@ -118,6 +118,7 @@ vector<string> Transmitter::Format(Block* block) {
 		std::to_string(block->m_Nonce),
 		block->m_Hash,
 		block->m_PrevHash,
+		block->m_MinerAddr,
 		block->m_CreationTime,
 		block->m_MineTime,
 		std::to_string(block->m_IsGenesis)

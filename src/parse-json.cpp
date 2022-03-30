@@ -43,6 +43,7 @@ Block* json::toBlock(const QJsonObject& object) {
 	// Nonce        int           `json:"nonce"`
 	// Hash         string        `json:"hash"`
 	// PrevHash     string        `json:"prevhash"`
+	// MinerAddr    string        `json:"miner"`
 	// CreationTime string        `json:"created"`
 	// MineTime     string        `json:"mined"`
 	// IsGenesis    bool          `json:"genesis"`
@@ -53,6 +54,7 @@ Block* json::toBlock(const QJsonObject& object) {
 	int nonce = object["nonce"].toInt();
 	string hash = object["hash"].toString().toStdString();
 	string prevHash = object["prevhash"].toString().toStdString();
+	string minerAddr = object["miner"].toString().toStdString();
 	string creationTime = object["created"].toString().toStdString();
 	string mineTime = object["mined"].toString().toStdString();
 	bool isGenesis = object["genesis"].toBool();
@@ -66,7 +68,7 @@ Block* json::toBlock(const QJsonObject& object) {
 		transactions.push_back(json::toTransaction(trxn.toObject()));
 	}
 
-	Block* block = new Block(index, nonce, hash, prevHash, creationTime, mineTime, transactions, difficulty, isGenesis);
+	Block* block = new Block(index, nonce, hash, prevHash, minerAddr, creationTime, mineTime, transactions, difficulty, isGenesis);
 	return block;
 }
 
