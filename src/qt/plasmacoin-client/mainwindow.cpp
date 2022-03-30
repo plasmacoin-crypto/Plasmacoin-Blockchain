@@ -211,8 +211,8 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 
 		switch (packetType) {
 			case go::PacketTypes::TRANSACTION:
-				std::cout << "Here" << std::endl;
 				m_TransactionList->ConfirmToMempool(json::toTransaction(object));
+				shared_mem::writeMemory(" ");
 				break;
 
 			case go::PacketTypes::BLOCK: {
