@@ -38,7 +38,7 @@ func MakeBlock(data []string) *Block {
 	// 6.  The previous block's hash 						(data[5])
 	// 7.  The block miner 									(data[6])
 	// 8.  The time the block was created 					(data[7])
-	// 9.  The time the block was created 					(data[8])
+	// 9.  The time the block was mined 					(data[8])
 	// 10. Whether or not the block is the genesis block 	(data[9])
 	// 11. A list of transactions on the block				(data[10])
 	//
@@ -60,7 +60,7 @@ func MakeBlock(data []string) *Block {
 	index, _ := strconv.ParseInt(data[1], 10, 32)
 	difficulty, _ := strconv.ParseInt(data[2], 10, 64)
 	nonce, _ := strconv.ParseInt(data[3], 10, 32)
-	isGenesis, _ := strconv.ParseBool(data[8])
+	isGenesis, _ := strconv.ParseBool(data[9])
 
 	trxnCount := (maxIndex - minIndex) / trxnLen // Find the number of transactions in the block
 	transactions := make([]Transaction, 0, trxnCount)
@@ -80,8 +80,9 @@ func MakeBlock(data []string) *Block {
 		Nonce:        int(nonce),
 		Hash:         data[4],
 		PrevHash:     data[5],
-		CreationTime: data[6],
-		MineTime:     data[7],
+		MinerAddr:    data[6],
+		CreationTime: data[7],
+		MineTime:     data[8],
 		IsGenesis:    isGenesis,
 		Transactions: transactions,
 	}
