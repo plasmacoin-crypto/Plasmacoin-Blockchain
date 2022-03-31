@@ -1,7 +1,7 @@
 /********************************************************************************
-** Form generated from reading UI file 'macos.ui'
+** Form generated from reading UI file 'linux.ui'
 **
-** Created by: Qt User Interface Compiler version 6.2.3
+** Created by: Qt User Interface Compiler version 5.15.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,7 +11,6 @@
 
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
-#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDateEdit>
 #include <QtWidgets/QDialogButtonBox>
@@ -81,23 +80,26 @@ public:
     QSpacerItem *horizontalSpacer_11;
     QLineEdit *nameField;
     QSpacerItem *horizontalSpacer_10;
+    QSpacerItem *verticalSpacer_16;
     QHBoxLayout *field2;
-    QLabel *addrBookSub1;
     QSpacerItem *horizontalSpacer_7;
+    QLabel *addrBookSub1;
+    QSpacerItem *horizontalSpacer_5;
     QLineEdit *usernameField;
     QSpacerItem *horizontalSpacer_4;
     QHBoxLayout *field3;
-    QLabel *addrBookSub2;
     QSpacerItem *horizontalSpacer_13;
+    QLabel *addrBookSub2;
+    QSpacerItem *horizontalSpacer_8;
     QLineEdit *addressField;
     QSpacerItem *horizontalSpacer_6;
-    QHBoxLayout *field4;
-    QSpacerItem *horizontalSpacer_9;
+    QHBoxLayout *horizontalLayout;
+    QSpacerItem *horizontalSpacer_19;
     QLabel *addrBookSub3;
     QSpacerItem *horizontalSpacer_12;
     QDateEdit *birthday;
-    QSpacerItem *horizontalSpacer_8;
-    QSpacerItem *horizontalSpacer_5;
+    QSpacerItem *horizontalSpacer_31;
+    QSpacerItem *verticalSpacer_15;
     QHBoxLayout *dialogLayout;
     QDialogButtonBox *btndiag_confirm;
     QSpacerItem *verticalSpacer;
@@ -515,7 +517,7 @@ public:
         sizePolicy6.setVerticalStretch(0);
         sizePolicy6.setHeightForWidth(nameField->sizePolicy().hasHeightForWidth());
         nameField->setSizePolicy(sizePolicy6);
-        nameField->setMaximumSize(QSize(425, 30));
+        nameField->setMaximumSize(QSize(500, 30));
 
         field1->addWidget(nameField);
 
@@ -526,29 +528,40 @@ public:
 
         verticalLayout_4->addLayout(field1);
 
+        verticalSpacer_16 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_4->addItem(verticalSpacer_16);
+
         field2 = new QHBoxLayout();
         field2->setObjectName(QString::fromUtf8("field2"));
+        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        field2->addItem(horizontalSpacer_7);
+
         addrBookSub1 = new QLabel(contactInfo);
         addrBookSub1->setObjectName(QString::fromUtf8("addrBookSub1"));
-        sizePolicy2.setHeightForWidth(addrBookSub1->sizePolicy().hasHeightForWidth());
-        addrBookSub1->setSizePolicy(sizePolicy2);
-        addrBookSub1->setMaximumSize(QSize(70, 16777215));
+        QSizePolicy sizePolicy7(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        sizePolicy7.setHorizontalStretch(0);
+        sizePolicy7.setVerticalStretch(0);
+        sizePolicy7.setHeightForWidth(addrBookSub1->sizePolicy().hasHeightForWidth());
+        addrBookSub1->setSizePolicy(sizePolicy7);
+        addrBookSub1->setMaximumSize(QSize(92, 16777215));
         addrBookSub1->setStyleSheet(QString::fromUtf8("text-align: center"));
 
         field2->addWidget(addrBookSub1);
 
-        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Ignored, QSizePolicy::Minimum);
 
-        field2->addItem(horizontalSpacer_7);
+        field2->addItem(horizontalSpacer_5);
 
         usernameField = new QLineEdit(contactInfo);
         usernameField->setObjectName(QString::fromUtf8("usernameField"));
         usernameField->setEnabled(true);
-        QSizePolicy sizePolicy7(QSizePolicy::Fixed, QSizePolicy::Preferred);
-        sizePolicy7.setHorizontalStretch(0);
-        sizePolicy7.setVerticalStretch(0);
-        sizePolicy7.setHeightForWidth(usernameField->sizePolicy().hasHeightForWidth());
-        usernameField->setSizePolicy(sizePolicy7);
+        QSizePolicy sizePolicy8(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy8.setHorizontalStretch(0);
+        sizePolicy8.setVerticalStretch(0);
+        sizePolicy8.setHeightForWidth(usernameField->sizePolicy().hasHeightForWidth());
+        usernameField->setSizePolicy(sizePolicy8);
         usernameField->setMaximumSize(QSize(500, 30));
 
         field2->addWidget(usernameField);
@@ -562,27 +575,28 @@ public:
 
         field3 = new QHBoxLayout();
         field3->setObjectName(QString::fromUtf8("field3"));
+        horizontalSpacer_13 = new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        field3->addItem(horizontalSpacer_13);
+
         addrBookSub2 = new QLabel(contactInfo);
         addrBookSub2->setObjectName(QString::fromUtf8("addrBookSub2"));
-        QSizePolicy sizePolicy8(QSizePolicy::Fixed, QSizePolicy::Minimum);
-        sizePolicy8.setHorizontalStretch(0);
-        sizePolicy8.setVerticalStretch(0);
-        sizePolicy8.setHeightForWidth(addrBookSub2->sizePolicy().hasHeightForWidth());
-        addrBookSub2->setSizePolicy(sizePolicy8);
-        addrBookSub2->setMaximumSize(QSize(70, 16777215));
+        sizePolicy7.setHeightForWidth(addrBookSub2->sizePolicy().hasHeightForWidth());
+        addrBookSub2->setSizePolicy(sizePolicy7);
+        addrBookSub2->setMaximumSize(QSize(92, 16777215));
         addrBookSub2->setStyleSheet(QString::fromUtf8("text-align: center"));
 
         field3->addWidget(addrBookSub2);
 
-        horizontalSpacer_13 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+        horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
 
-        field3->addItem(horizontalSpacer_13);
+        field3->addItem(horizontalSpacer_8);
 
         addressField = new QLineEdit(contactInfo);
         addressField->setObjectName(QString::fromUtf8("addressField"));
         addressField->setEnabled(true);
-        sizePolicy7.setHeightForWidth(addressField->sizePolicy().hasHeightForWidth());
-        addressField->setSizePolicy(sizePolicy7);
+        sizePolicy8.setHeightForWidth(addressField->sizePolicy().hasHeightForWidth());
+        addressField->setSizePolicy(sizePolicy8);
         addressField->setMaximumSize(QSize(500, 30));
 
         field3->addWidget(addressField);
@@ -594,55 +608,55 @@ public:
 
         verticalLayout_4->addLayout(field3);
 
-        field4 = new QHBoxLayout();
-        field4->setObjectName(QString::fromUtf8("field4"));
-        horizontalSpacer_9 = new QSpacerItem(0, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        horizontalSpacer_19 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
 
-        field4->addItem(horizontalSpacer_9);
+        horizontalLayout->addItem(horizontalSpacer_19);
 
         addrBookSub3 = new QLabel(contactInfo);
         addrBookSub3->setObjectName(QString::fromUtf8("addrBookSub3"));
-        sizePolicy2.setHeightForWidth(addrBookSub3->sizePolicy().hasHeightForWidth());
-        addrBookSub3->setSizePolicy(sizePolicy2);
-        addrBookSub3->setMaximumSize(QSize(70, 16777215));
+        sizePolicy7.setHeightForWidth(addrBookSub3->sizePolicy().hasHeightForWidth());
+        addrBookSub3->setSizePolicy(sizePolicy7);
+        addrBookSub3->setMaximumSize(QSize(92, 16777215));
         addrBookSub3->setStyleSheet(QString::fromUtf8("text-align: center"));
 
-        field4->addWidget(addrBookSub3);
+        horizontalLayout->addWidget(addrBookSub3);
 
-        horizontalSpacer_12 = new QSpacerItem(50, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+        horizontalSpacer_12 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
 
-        field4->addItem(horizontalSpacer_12);
+        horizontalLayout->addItem(horizontalSpacer_12);
 
         birthday = new QDateEdit(contactInfo);
         birthday->setObjectName(QString::fromUtf8("birthday"));
         birthday->setEnabled(true);
-        sizePolicy7.setHeightForWidth(birthday->sizePolicy().hasHeightForWidth());
-        birthday->setSizePolicy(sizePolicy7);
-        birthday->setMaximumSize(QSize(127, 32));
+        sizePolicy3.setHeightForWidth(birthday->sizePolicy().hasHeightForWidth());
+        birthday->setSizePolicy(sizePolicy3);
+        birthday->setMaximumSize(QSize(500, 32));
         birthday->setFocusPolicy(Qt::NoFocus);
         birthday->setReadOnly(false);
         birthday->setCalendarPopup(true);
 
-        field4->addWidget(birthday);
+        horizontalLayout->addWidget(birthday);
 
-        horizontalSpacer_8 = new QSpacerItem(373, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
+        horizontalSpacer_31 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
 
-        field4->addItem(horizontalSpacer_8);
-
-        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
-
-        field4->addItem(horizontalSpacer_5);
+        horizontalLayout->addItem(horizontalSpacer_31);
 
 
-        verticalLayout_4->addLayout(field4);
+        verticalLayout_4->addLayout(horizontalLayout);
+
+        verticalSpacer_15 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_4->addItem(verticalSpacer_15);
 
         dialogLayout = new QHBoxLayout();
         dialogLayout->setObjectName(QString::fromUtf8("dialogLayout"));
         dialogLayout->setSizeConstraint(QLayout::SetNoConstraint);
         btndiag_confirm = new QDialogButtonBox(contactInfo);
         btndiag_confirm->setObjectName(QString::fromUtf8("btndiag_confirm"));
-        sizePolicy7.setHeightForWidth(btndiag_confirm->sizePolicy().hasHeightForWidth());
-        btndiag_confirm->setSizePolicy(sizePolicy7);
+        sizePolicy8.setHeightForWidth(btndiag_confirm->sizePolicy().hasHeightForWidth());
+        btndiag_confirm->setSizePolicy(sizePolicy8);
         btndiag_confirm->setOrientation(Qt::Horizontal);
         btndiag_confirm->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
@@ -1494,7 +1508,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(3);
+        tabWidget->setCurrentIndex(2);
         accountView->setCurrentIndex(1);
 
 
