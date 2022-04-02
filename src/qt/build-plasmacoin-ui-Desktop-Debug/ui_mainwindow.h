@@ -93,7 +93,7 @@ public:
     QSpacerItem *horizontalSpacer_8;
     QLineEdit *addressField;
     QSpacerItem *horizontalSpacer_6;
-    QHBoxLayout *horizontalLayout;
+    QHBoxLayout *field4;
     QSpacerItem *horizontalSpacer_19;
     QLabel *addrBookSub3;
     QSpacerItem *horizontalSpacer_12;
@@ -608,11 +608,11 @@ public:
 
         verticalLayout_4->addLayout(field3);
 
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        field4 = new QHBoxLayout();
+        field4->setObjectName(QString::fromUtf8("field4"));
         horizontalSpacer_19 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
 
-        horizontalLayout->addItem(horizontalSpacer_19);
+        field4->addItem(horizontalSpacer_19);
 
         addrBookSub3 = new QLabel(contactInfo);
         addrBookSub3->setObjectName(QString::fromUtf8("addrBookSub3"));
@@ -621,11 +621,11 @@ public:
         addrBookSub3->setMaximumSize(QSize(92, 16777215));
         addrBookSub3->setStyleSheet(QString::fromUtf8("text-align: center"));
 
-        horizontalLayout->addWidget(addrBookSub3);
+        field4->addWidget(addrBookSub3);
 
         horizontalSpacer_12 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
 
-        horizontalLayout->addItem(horizontalSpacer_12);
+        field4->addItem(horizontalSpacer_12);
 
         birthday = new QDateEdit(contactInfo);
         birthday->setObjectName(QString::fromUtf8("birthday"));
@@ -637,14 +637,14 @@ public:
         birthday->setReadOnly(false);
         birthday->setCalendarPopup(true);
 
-        horizontalLayout->addWidget(birthday);
+        field4->addWidget(birthday);
 
         horizontalSpacer_31 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
 
-        horizontalLayout->addItem(horizontalSpacer_31);
+        field4->addItem(horizontalSpacer_31);
 
 
-        verticalLayout_4->addLayout(horizontalLayout);
+        verticalLayout_4->addLayout(field4);
 
         verticalSpacer_15 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
