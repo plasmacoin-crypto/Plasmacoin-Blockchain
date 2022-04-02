@@ -1,7 +1,7 @@
 /********************************************************************************
-** Form generated from reading UI file 'linux.ui'
+** Form generated from reading UI file 'macos.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 6.2.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDateEdit>
 #include <QtWidgets/QDialogButtonBox>
@@ -66,13 +67,15 @@ public:
     QPushButton *btn_mine;
     QWidget *AddressBookTab;
     QHBoxLayout *horizontalLayout_8;
+    QSpacerItem *horizontalSpacer_33;
     QWidget *addressBook;
     QVBoxLayout *verticalLayout_2;
     QTableWidget *contactsList;
     QHBoxLayout *buttonLayout;
-    QToolButton *btn_addContact;
-    QSpacerItem *horizontalSpacer_3;
     QToolButton *btn_filler;
+    QSpacerItem *horizontalSpacer_3;
+    QToolButton *btn_addContact;
+    QSpacerItem *horizontalSpacer_12;
     QWidget *contactInfo;
     QVBoxLayout *verticalLayout_4;
     QHBoxLayout *field1;
@@ -93,16 +96,17 @@ public:
     QSpacerItem *horizontalSpacer_8;
     QLineEdit *addressField;
     QSpacerItem *horizontalSpacer_6;
-    QHBoxLayout *horizontalLayout;
+    QHBoxLayout *field4;
     QSpacerItem *horizontalSpacer_19;
     QLabel *addrBookSub3;
-    QSpacerItem *horizontalSpacer_12;
+    QSpacerItem *horizontalSpacer_9;
     QDateEdit *birthday;
     QSpacerItem *horizontalSpacer_31;
     QSpacerItem *verticalSpacer_15;
     QHBoxLayout *dialogLayout;
     QDialogButtonBox *btndiag_confirm;
     QSpacerItem *verticalSpacer;
+    QSpacerItem *horizontalSpacer_32;
     QWidget *Transactions;
     QHBoxLayout *horizontalLayout_9;
     QWidget *contactsView;
@@ -257,7 +261,7 @@ public:
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(1309, 980);
         QIcon icon;
-        icon.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
         MainWindow->setIconSize(QSize(200, 100));
         MainWindow->setToolButtonStyle(Qt::ToolButtonIconOnly);
@@ -339,7 +343,7 @@ public:
         plusSign->setSizePolicy(sizePolicy2);
         plusSign->setMaximumSize(QSize(16777215, 34));
         QIcon icon1;
-        icon1.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../.designer/assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon1.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
         plusSign->setIcon(icon1);
         plusSign->setIconSize(QSize(24, 24));
 
@@ -351,7 +355,7 @@ public:
         minusSign->setSizePolicy(sizePolicy2);
         minusSign->setMaximumSize(QSize(16777215, 34));
         QIcon icon2;
-        icon2.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../.designer/assets/minus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon2.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/minus.png"), QSize(), QIcon::Normal, QIcon::Off);
         minusSign->setIcon(icon2);
         minusSign->setIconSize(QSize(24, 24));
 
@@ -425,6 +429,10 @@ public:
         AddressBookTab->setObjectName(QString::fromUtf8("AddressBookTab"));
         horizontalLayout_8 = new QHBoxLayout(AddressBookTab);
         horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
+        horizontalSpacer_33 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
+
+        horizontalLayout_8->addItem(horizontalSpacer_33);
+
         addressBook = new QWidget(AddressBookTab);
         addressBook->setObjectName(QString::fromUtf8("addressBook"));
         verticalLayout_2 = new QVBoxLayout(addressBook);
@@ -453,39 +461,47 @@ public:
 
         buttonLayout = new QHBoxLayout();
         buttonLayout->setObjectName(QString::fromUtf8("buttonLayout"));
-        btn_addContact = new QToolButton(addressBook);
-        btn_addContact->setObjectName(QString::fromUtf8("btn_addContact"));
+        btn_filler = new QToolButton(addressBook);
+        btn_filler->setObjectName(QString::fromUtf8("btn_filler"));
         QSizePolicy sizePolicy5(QSizePolicy::Ignored, QSizePolicy::Fixed);
         sizePolicy5.setHorizontalStretch(0);
         sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(btn_addContact->sizePolicy().hasHeightForWidth());
-        btn_addContact->setSizePolicy(sizePolicy5);
+        sizePolicy5.setHeightForWidth(btn_filler->sizePolicy().hasHeightForWidth());
+        btn_filler->setSizePolicy(sizePolicy5);
         QIcon icon3;
-        icon3.addFile(QString::fromUtf8("../../../../../../../../../../../../../../.designer/assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_addContact->setIcon(icon3);
-        btn_addContact->setIconSize(QSize(24, 24));
+        icon3.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_filler->setIcon(icon3);
+        btn_filler->setIconSize(QSize(24, 24));
 
-        buttonLayout->addWidget(btn_addContact);
+        buttonLayout->addWidget(btn_filler);
 
         horizontalSpacer_3 = new QSpacerItem(100, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         buttonLayout->addItem(horizontalSpacer_3);
 
-        btn_filler = new QToolButton(addressBook);
-        btn_filler->setObjectName(QString::fromUtf8("btn_filler"));
-        btn_filler->setEnabled(false);
-        sizePolicy2.setHeightForWidth(btn_filler->sizePolicy().hasHeightForWidth());
-        btn_filler->setSizePolicy(sizePolicy2);
-        btn_filler->setIcon(icon3);
-        btn_filler->setIconSize(QSize(24, 24));
+        btn_addContact = new QToolButton(addressBook);
+        btn_addContact->setObjectName(QString::fromUtf8("btn_addContact"));
+        QSizePolicy sizePolicy6(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(btn_addContact->sizePolicy().hasHeightForWidth());
+        btn_addContact->setSizePolicy(sizePolicy6);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8("../../assets/plus.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_addContact->setIcon(icon4);
+        btn_addContact->setIconSize(QSize(24, 24));
 
-        buttonLayout->addWidget(btn_filler);
+        buttonLayout->addWidget(btn_addContact);
 
 
         verticalLayout_2->addLayout(buttonLayout);
 
 
         horizontalLayout_8->addWidget(addressBook);
+
+        horizontalSpacer_12 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+        horizontalLayout_8->addItem(horizontalSpacer_12);
 
         contactInfo = new QWidget(AddressBookTab);
         contactInfo->setObjectName(QString::fromUtf8("contactInfo"));
@@ -512,11 +528,11 @@ public:
         nameField = new QLineEdit(contactInfo);
         nameField->setObjectName(QString::fromUtf8("nameField"));
         nameField->setEnabled(true);
-        QSizePolicy sizePolicy6(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy6.setHorizontalStretch(0);
-        sizePolicy6.setVerticalStretch(0);
-        sizePolicy6.setHeightForWidth(nameField->sizePolicy().hasHeightForWidth());
-        nameField->setSizePolicy(sizePolicy6);
+        QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy7.setHorizontalStretch(0);
+        sizePolicy7.setVerticalStretch(0);
+        sizePolicy7.setHeightForWidth(nameField->sizePolicy().hasHeightForWidth());
+        nameField->setSizePolicy(sizePolicy7);
         nameField->setMaximumSize(QSize(500, 30));
 
         field1->addWidget(nameField);
@@ -534,39 +550,39 @@ public:
 
         field2 = new QHBoxLayout();
         field2->setObjectName(QString::fromUtf8("field2"));
-        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+        horizontalSpacer_7 = new QSpacerItem(40, 30, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
         field2->addItem(horizontalSpacer_7);
 
         addrBookSub1 = new QLabel(contactInfo);
         addrBookSub1->setObjectName(QString::fromUtf8("addrBookSub1"));
-        QSizePolicy sizePolicy7(QSizePolicy::Maximum, QSizePolicy::Fixed);
-        sizePolicy7.setHorizontalStretch(0);
-        sizePolicy7.setVerticalStretch(0);
-        sizePolicy7.setHeightForWidth(addrBookSub1->sizePolicy().hasHeightForWidth());
-        addrBookSub1->setSizePolicy(sizePolicy7);
-        addrBookSub1->setMaximumSize(QSize(92, 16777215));
+        QSizePolicy sizePolicy8(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        sizePolicy8.setHorizontalStretch(0);
+        sizePolicy8.setVerticalStretch(0);
+        sizePolicy8.setHeightForWidth(addrBookSub1->sizePolicy().hasHeightForWidth());
+        addrBookSub1->setSizePolicy(sizePolicy8);
+        addrBookSub1->setMaximumSize(QSize(92, 30));
         addrBookSub1->setStyleSheet(QString::fromUtf8("text-align: center"));
 
         field2->addWidget(addrBookSub1);
 
-        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Ignored, QSizePolicy::Minimum);
+        horizontalSpacer_5 = new QSpacerItem(40, 30, QSizePolicy::Ignored, QSizePolicy::Minimum);
 
         field2->addItem(horizontalSpacer_5);
 
         usernameField = new QLineEdit(contactInfo);
         usernameField->setObjectName(QString::fromUtf8("usernameField"));
         usernameField->setEnabled(true);
-        QSizePolicy sizePolicy8(QSizePolicy::Fixed, QSizePolicy::Preferred);
-        sizePolicy8.setHorizontalStretch(0);
-        sizePolicy8.setVerticalStretch(0);
-        sizePolicy8.setHeightForWidth(usernameField->sizePolicy().hasHeightForWidth());
-        usernameField->setSizePolicy(sizePolicy8);
+        QSizePolicy sizePolicy9(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy9.setHorizontalStretch(0);
+        sizePolicy9.setVerticalStretch(0);
+        sizePolicy9.setHeightForWidth(usernameField->sizePolicy().hasHeightForWidth());
+        usernameField->setSizePolicy(sizePolicy9);
         usernameField->setMaximumSize(QSize(500, 30));
 
         field2->addWidget(usernameField);
 
-        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+        horizontalSpacer_4 = new QSpacerItem(40, 30, QSizePolicy::Maximum, QSizePolicy::Minimum);
 
         field2->addItem(horizontalSpacer_4);
 
@@ -575,76 +591,76 @@ public:
 
         field3 = new QHBoxLayout();
         field3->setObjectName(QString::fromUtf8("field3"));
-        horizontalSpacer_13 = new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+        horizontalSpacer_13 = new QSpacerItem(40, 30, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
         field3->addItem(horizontalSpacer_13);
 
         addrBookSub2 = new QLabel(contactInfo);
         addrBookSub2->setObjectName(QString::fromUtf8("addrBookSub2"));
-        sizePolicy7.setHeightForWidth(addrBookSub2->sizePolicy().hasHeightForWidth());
-        addrBookSub2->setSizePolicy(sizePolicy7);
-        addrBookSub2->setMaximumSize(QSize(92, 16777215));
+        sizePolicy8.setHeightForWidth(addrBookSub2->sizePolicy().hasHeightForWidth());
+        addrBookSub2->setSizePolicy(sizePolicy8);
+        addrBookSub2->setMaximumSize(QSize(92, 30));
         addrBookSub2->setStyleSheet(QString::fromUtf8("text-align: center"));
 
         field3->addWidget(addrBookSub2);
 
-        horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
+        horizontalSpacer_8 = new QSpacerItem(40, 30, QSizePolicy::Preferred, QSizePolicy::Minimum);
 
         field3->addItem(horizontalSpacer_8);
 
         addressField = new QLineEdit(contactInfo);
         addressField->setObjectName(QString::fromUtf8("addressField"));
         addressField->setEnabled(true);
-        sizePolicy8.setHeightForWidth(addressField->sizePolicy().hasHeightForWidth());
-        addressField->setSizePolicy(sizePolicy8);
+        sizePolicy9.setHeightForWidth(addressField->sizePolicy().hasHeightForWidth());
+        addressField->setSizePolicy(sizePolicy9);
         addressField->setMaximumSize(QSize(500, 30));
 
         field3->addWidget(addressField);
 
-        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+        horizontalSpacer_6 = new QSpacerItem(40, 30, QSizePolicy::Maximum, QSizePolicy::Minimum);
 
         field3->addItem(horizontalSpacer_6);
 
 
         verticalLayout_4->addLayout(field3);
 
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        field4 = new QHBoxLayout();
+        field4->setObjectName(QString::fromUtf8("field4"));
         horizontalSpacer_19 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
 
-        horizontalLayout->addItem(horizontalSpacer_19);
+        field4->addItem(horizontalSpacer_19);
 
         addrBookSub3 = new QLabel(contactInfo);
         addrBookSub3->setObjectName(QString::fromUtf8("addrBookSub3"));
-        sizePolicy7.setHeightForWidth(addrBookSub3->sizePolicy().hasHeightForWidth());
-        addrBookSub3->setSizePolicy(sizePolicy7);
-        addrBookSub3->setMaximumSize(QSize(92, 16777215));
+        sizePolicy8.setHeightForWidth(addrBookSub3->sizePolicy().hasHeightForWidth());
+        addrBookSub3->setSizePolicy(sizePolicy8);
+        addrBookSub3->setMaximumSize(QSize(92, 30));
         addrBookSub3->setStyleSheet(QString::fromUtf8("text-align: center"));
 
-        horizontalLayout->addWidget(addrBookSub3);
+        field4->addWidget(addrBookSub3);
 
-        horizontalSpacer_12 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
+        horizontalSpacer_9 = new QSpacerItem(40, 30, QSizePolicy::Preferred, QSizePolicy::Minimum);
 
-        horizontalLayout->addItem(horizontalSpacer_12);
+        field4->addItem(horizontalSpacer_9);
 
         birthday = new QDateEdit(contactInfo);
         birthday->setObjectName(QString::fromUtf8("birthday"));
         birthday->setEnabled(true);
         sizePolicy3.setHeightForWidth(birthday->sizePolicy().hasHeightForWidth());
         birthday->setSizePolicy(sizePolicy3);
-        birthday->setMaximumSize(QSize(500, 32));
+        birthday->setMaximumSize(QSize(500, 30));
         birthday->setFocusPolicy(Qt::NoFocus);
         birthday->setReadOnly(false);
         birthday->setCalendarPopup(true);
 
-        horizontalLayout->addWidget(birthday);
+        field4->addWidget(birthday);
 
-        horizontalSpacer_31 = new QSpacerItem(40, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+        horizontalSpacer_31 = new QSpacerItem(40, 30, QSizePolicy::Maximum, QSizePolicy::Minimum);
 
-        horizontalLayout->addItem(horizontalSpacer_31);
+        field4->addItem(horizontalSpacer_31);
 
 
-        verticalLayout_4->addLayout(horizontalLayout);
+        verticalLayout_4->addLayout(field4);
 
         verticalSpacer_15 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
@@ -655,8 +671,8 @@ public:
         dialogLayout->setSizeConstraint(QLayout::SetNoConstraint);
         btndiag_confirm = new QDialogButtonBox(contactInfo);
         btndiag_confirm->setObjectName(QString::fromUtf8("btndiag_confirm"));
-        sizePolicy8.setHeightForWidth(btndiag_confirm->sizePolicy().hasHeightForWidth());
-        btndiag_confirm->setSizePolicy(sizePolicy8);
+        sizePolicy9.setHeightForWidth(btndiag_confirm->sizePolicy().hasHeightForWidth());
+        btndiag_confirm->setSizePolicy(sizePolicy9);
         btndiag_confirm->setOrientation(Qt::Horizontal);
         btndiag_confirm->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
@@ -671,6 +687,10 @@ public:
 
 
         horizontalLayout_8->addWidget(contactInfo);
+
+        horizontalSpacer_32 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
+
+        horizontalLayout_8->addItem(horizontalSpacer_32);
 
         tabWidget->addTab(AddressBookTab, QString());
         Transactions = new QWidget();
@@ -702,11 +722,11 @@ public:
 
         makeTransactions = new QWidget(Transactions);
         makeTransactions->setObjectName(QString::fromUtf8("makeTransactions"));
-        QSizePolicy sizePolicy9(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        sizePolicy9.setHorizontalStretch(0);
-        sizePolicy9.setVerticalStretch(0);
-        sizePolicy9.setHeightForWidth(makeTransactions->sizePolicy().hasHeightForWidth());
-        makeTransactions->setSizePolicy(sizePolicy9);
+        QSizePolicy sizePolicy10(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy10.setHorizontalStretch(0);
+        sizePolicy10.setVerticalStretch(0);
+        sizePolicy10.setHeightForWidth(makeTransactions->sizePolicy().hasHeightForWidth());
+        makeTransactions->setSizePolicy(sizePolicy10);
         verticalLayout_10 = new QVBoxLayout(makeTransactions);
         verticalLayout_10->setObjectName(QString::fromUtf8("verticalLayout_10"));
         dialogs = new QWidget(makeTransactions);
@@ -726,8 +746,8 @@ public:
 
         selectedContact = new QLineEdit(dialogs);
         selectedContact->setObjectName(QString::fromUtf8("selectedContact"));
-        sizePolicy9.setHeightForWidth(selectedContact->sizePolicy().hasHeightForWidth());
-        selectedContact->setSizePolicy(sizePolicy9);
+        sizePolicy10.setHeightForWidth(selectedContact->sizePolicy().hasHeightForWidth());
+        selectedContact->setSizePolicy(sizePolicy10);
         selectedContact->setMaximumSize(QSize(16777215, 50));
         selectedContact->setReadOnly(true);
 
@@ -735,8 +755,8 @@ public:
 
         messageField = new QLineEdit(dialogs);
         messageField->setObjectName(QString::fromUtf8("messageField"));
-        sizePolicy9.setHeightForWidth(messageField->sizePolicy().hasHeightForWidth());
-        messageField->setSizePolicy(sizePolicy9);
+        sizePolicy10.setHeightForWidth(messageField->sizePolicy().hasHeightForWidth());
+        messageField->setSizePolicy(sizePolicy10);
         messageField->setMaximumSize(QSize(16777215, 50));
 
         verticalLayout_9->addWidget(messageField);
@@ -764,11 +784,11 @@ public:
         amountView->setObjectName(QString::fromUtf8("amountView"));
         amountLabel = new QLabel(selectors);
         amountLabel->setObjectName(QString::fromUtf8("amountLabel"));
-        QSizePolicy sizePolicy10(QSizePolicy::Maximum, QSizePolicy::Expanding);
-        sizePolicy10.setHorizontalStretch(0);
-        sizePolicy10.setVerticalStretch(0);
-        sizePolicy10.setHeightForWidth(amountLabel->sizePolicy().hasHeightForWidth());
-        amountLabel->setSizePolicy(sizePolicy10);
+        QSizePolicy sizePolicy11(QSizePolicy::Maximum, QSizePolicy::Expanding);
+        sizePolicy11.setHorizontalStretch(0);
+        sizePolicy11.setVerticalStretch(0);
+        sizePolicy11.setHeightForWidth(amountLabel->sizePolicy().hasHeightForWidth());
+        amountLabel->setSizePolicy(sizePolicy11);
 
         amountView->addWidget(amountLabel);
 
@@ -778,11 +798,11 @@ public:
 
         amountSelector = new QDoubleSpinBox(selectors);
         amountSelector->setObjectName(QString::fromUtf8("amountSelector"));
-        QSizePolicy sizePolicy11(QSizePolicy::Fixed, QSizePolicy::Expanding);
-        sizePolicy11.setHorizontalStretch(0);
-        sizePolicy11.setVerticalStretch(0);
-        sizePolicy11.setHeightForWidth(amountSelector->sizePolicy().hasHeightForWidth());
-        amountSelector->setSizePolicy(sizePolicy11);
+        QSizePolicy sizePolicy12(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        sizePolicy12.setHorizontalStretch(0);
+        sizePolicy12.setVerticalStretch(0);
+        sizePolicy12.setHeightForWidth(amountSelector->sizePolicy().hasHeightForWidth());
+        amountSelector->setSizePolicy(sizePolicy12);
         amountSelector->setMaximumSize(QSize(16777215, 30));
         amountSelector->setLayoutDirection(Qt::LeftToRight);
         amountSelector->setButtonSymbols(QAbstractSpinBox::UpDownArrows);
@@ -799,8 +819,8 @@ public:
         feeView->setObjectName(QString::fromUtf8("feeView"));
         feeLabel = new QLabel(selectors);
         feeLabel->setObjectName(QString::fromUtf8("feeLabel"));
-        sizePolicy11.setHeightForWidth(feeLabel->sizePolicy().hasHeightForWidth());
-        feeLabel->setSizePolicy(sizePolicy11);
+        sizePolicy12.setHeightForWidth(feeLabel->sizePolicy().hasHeightForWidth());
+        feeLabel->setSizePolicy(sizePolicy12);
 
         feeView->addWidget(feeLabel);
 
@@ -810,8 +830,8 @@ public:
 
         feeSelector = new QDoubleSpinBox(selectors);
         feeSelector->setObjectName(QString::fromUtf8("feeSelector"));
-        sizePolicy11.setHeightForWidth(feeSelector->sizePolicy().hasHeightForWidth());
-        feeSelector->setSizePolicy(sizePolicy11);
+        sizePolicy12.setHeightForWidth(feeSelector->sizePolicy().hasHeightForWidth());
+        feeSelector->setSizePolicy(sizePolicy12);
         feeSelector->setMaximumSize(QSize(16777215, 30));
         feeSelector->setDecimals(5);
         feeSelector->setMaximum(2.000000000000000);
@@ -826,8 +846,8 @@ public:
         totalView->setObjectName(QString::fromUtf8("totalView"));
         totalLabel = new QLabel(selectors);
         totalLabel->setObjectName(QString::fromUtf8("totalLabel"));
-        sizePolicy11.setHeightForWidth(totalLabel->sizePolicy().hasHeightForWidth());
-        totalLabel->setSizePolicy(sizePolicy11);
+        sizePolicy12.setHeightForWidth(totalLabel->sizePolicy().hasHeightForWidth());
+        totalLabel->setSizePolicy(sizePolicy12);
 
         totalView->addWidget(totalLabel);
 
@@ -837,8 +857,8 @@ public:
 
         total = new QLineEdit(selectors);
         total->setObjectName(QString::fromUtf8("total"));
-        sizePolicy11.setHeightForWidth(total->sizePolicy().hasHeightForWidth());
-        total->setSizePolicy(sizePolicy11);
+        sizePolicy12.setHeightForWidth(total->sizePolicy().hasHeightForWidth());
+        total->setSizePolicy(sizePolicy12);
         total->setMaximumSize(QSize(16777215, 30));
         total->setReadOnly(true);
 
@@ -856,11 +876,11 @@ public:
 
         btndiag_send = new QDialogButtonBox(makeTransactions);
         btndiag_send->setObjectName(QString::fromUtf8("btndiag_send"));
-        QSizePolicy sizePolicy12(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy12.setHorizontalStretch(0);
-        sizePolicy12.setVerticalStretch(0);
-        sizePolicy12.setHeightForWidth(btndiag_send->sizePolicy().hasHeightForWidth());
-        btndiag_send->setSizePolicy(sizePolicy12);
+        QSizePolicy sizePolicy13(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy13.setHorizontalStretch(0);
+        sizePolicy13.setVerticalStretch(0);
+        sizePolicy13.setHeightForWidth(btndiag_send->sizePolicy().hasHeightForWidth());
+        btndiag_send->setSizePolicy(sizePolicy13);
         btndiag_send->setOrientation(Qt::Vertical);
         btndiag_send->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Reset);
 
@@ -946,11 +966,11 @@ public:
         verticalLayout_17->setContentsMargins(-1, 0, -1, 0);
         s_EmailField = new QLineEdit(widget_8);
         s_EmailField->setObjectName(QString::fromUtf8("s_EmailField"));
-        QSizePolicy sizePolicy13(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-        sizePolicy13.setHorizontalStretch(0);
-        sizePolicy13.setVerticalStretch(0);
-        sizePolicy13.setHeightForWidth(s_EmailField->sizePolicy().hasHeightForWidth());
-        s_EmailField->setSizePolicy(sizePolicy13);
+        QSizePolicy sizePolicy14(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+        sizePolicy14.setHorizontalStretch(0);
+        sizePolicy14.setVerticalStretch(0);
+        sizePolicy14.setHeightForWidth(s_EmailField->sizePolicy().hasHeightForWidth());
+        s_EmailField->setSizePolicy(sizePolicy14);
         s_EmailField->setMaximumSize(QSize(16777215, 35));
         s_EmailField->setClearButtonEnabled(true);
 
@@ -958,8 +978,8 @@ public:
 
         s_PasswordField = new QLineEdit(widget_8);
         s_PasswordField->setObjectName(QString::fromUtf8("s_PasswordField"));
-        sizePolicy9.setHeightForWidth(s_PasswordField->sizePolicy().hasHeightForWidth());
-        s_PasswordField->setSizePolicy(sizePolicy9);
+        sizePolicy10.setHeightForWidth(s_PasswordField->sizePolicy().hasHeightForWidth());
+        s_PasswordField->setSizePolicy(sizePolicy10);
         s_PasswordField->setMaximumSize(QSize(16777215, 35));
         s_PasswordField->setEchoMode(QLineEdit::Password);
         s_PasswordField->setClearButtonEnabled(true);
@@ -972,15 +992,15 @@ public:
 
         btn_signIn = new QPushButton(widget_8);
         btn_signIn->setObjectName(QString::fromUtf8("btn_signIn"));
-        sizePolicy12.setHeightForWidth(btn_signIn->sizePolicy().hasHeightForWidth());
-        btn_signIn->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(btn_signIn->sizePolicy().hasHeightForWidth());
+        btn_signIn->setSizePolicy(sizePolicy13);
 
         verticalLayout_17->addWidget(btn_signIn);
 
         btn_create = new QPushButton(widget_8);
         btn_create->setObjectName(QString::fromUtf8("btn_create"));
-        sizePolicy12.setHeightForWidth(btn_create->sizePolicy().hasHeightForWidth());
-        btn_create->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(btn_create->sizePolicy().hasHeightForWidth());
+        btn_create->setSizePolicy(sizePolicy13);
 
         verticalLayout_17->addWidget(btn_create);
 
@@ -1055,8 +1075,8 @@ public:
         verticalLayout_12->setObjectName(QString::fromUtf8("verticalLayout_12"));
         c_EmailField = new QLineEdit(widget_10);
         c_EmailField->setObjectName(QString::fromUtf8("c_EmailField"));
-        sizePolicy9.setHeightForWidth(c_EmailField->sizePolicy().hasHeightForWidth());
-        c_EmailField->setSizePolicy(sizePolicy9);
+        sizePolicy10.setHeightForWidth(c_EmailField->sizePolicy().hasHeightForWidth());
+        c_EmailField->setSizePolicy(sizePolicy10);
         c_EmailField->setMaximumSize(QSize(16777215, 35));
         c_EmailField->setClearButtonEnabled(true);
 
@@ -1064,8 +1084,8 @@ public:
 
         c_UsernameField = new QLineEdit(widget_10);
         c_UsernameField->setObjectName(QString::fromUtf8("c_UsernameField"));
-        sizePolicy9.setHeightForWidth(c_UsernameField->sizePolicy().hasHeightForWidth());
-        c_UsernameField->setSizePolicy(sizePolicy9);
+        sizePolicy10.setHeightForWidth(c_UsernameField->sizePolicy().hasHeightForWidth());
+        c_UsernameField->setSizePolicy(sizePolicy10);
         c_UsernameField->setMaximumSize(QSize(16777215, 35));
         c_UsernameField->setClearButtonEnabled(true);
 
@@ -1073,8 +1093,8 @@ public:
 
         c_PasswordField = new QLineEdit(widget_10);
         c_PasswordField->setObjectName(QString::fromUtf8("c_PasswordField"));
-        sizePolicy9.setHeightForWidth(c_PasswordField->sizePolicy().hasHeightForWidth());
-        c_PasswordField->setSizePolicy(sizePolicy9);
+        sizePolicy10.setHeightForWidth(c_PasswordField->sizePolicy().hasHeightForWidth());
+        c_PasswordField->setSizePolicy(sizePolicy10);
         c_PasswordField->setMaximumSize(QSize(16777215, 35));
         c_PasswordField->setEchoMode(QLineEdit::Password);
         c_PasswordField->setClearButtonEnabled(true);
@@ -1087,15 +1107,15 @@ public:
 
         btn_signUp = new QPushButton(widget_10);
         btn_signUp->setObjectName(QString::fromUtf8("btn_signUp"));
-        sizePolicy12.setHeightForWidth(btn_signUp->sizePolicy().hasHeightForWidth());
-        btn_signUp->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(btn_signUp->sizePolicy().hasHeightForWidth());
+        btn_signUp->setSizePolicy(sizePolicy13);
 
         verticalLayout_12->addWidget(btn_signUp);
 
         btn_back = new QPushButton(widget_10);
         btn_back->setObjectName(QString::fromUtf8("btn_back"));
-        sizePolicy12.setHeightForWidth(btn_back->sizePolicy().hasHeightForWidth());
-        btn_back->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(btn_back->sizePolicy().hasHeightForWidth());
+        btn_back->setSizePolicy(sizePolicy13);
 
         verticalLayout_12->addWidget(btn_back);
 
@@ -1166,11 +1186,11 @@ public:
         scrollAreaContent->setObjectName(QString::fromUtf8("scrollAreaContent"));
         scrollAreaContent->setEnabled(true);
         scrollAreaContent->setGeometry(QRect(0, 0, 550, 550));
-        QSizePolicy sizePolicy14(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        sizePolicy14.setHorizontalStretch(0);
-        sizePolicy14.setVerticalStretch(0);
-        sizePolicy14.setHeightForWidth(scrollAreaContent->sizePolicy().hasHeightForWidth());
-        scrollAreaContent->setSizePolicy(sizePolicy14);
+        QSizePolicy sizePolicy15(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy15.setHorizontalStretch(0);
+        sizePolicy15.setVerticalStretch(0);
+        sizePolicy15.setHeightForWidth(scrollAreaContent->sizePolicy().hasHeightForWidth());
+        scrollAreaContent->setSizePolicy(sizePolicy15);
         scrollAreaContent->setMinimumSize(QSize(550, 550));
         scrollAreaContent->setAutoFillBackground(false);
         horizontalLayout_22 = new QHBoxLayout(scrollAreaContent);
@@ -1181,8 +1201,8 @@ public:
 
         contentContainer = new QWidget(scrollAreaContent);
         contentContainer->setObjectName(QString::fromUtf8("contentContainer"));
-        sizePolicy14.setHeightForWidth(contentContainer->sizePolicy().hasHeightForWidth());
-        contentContainer->setSizePolicy(sizePolicy14);
+        sizePolicy15.setHeightForWidth(contentContainer->sizePolicy().hasHeightForWidth());
+        contentContainer->setSizePolicy(sizePolicy15);
         pageLayout = new QVBoxLayout(contentContainer);
         pageLayout->setObjectName(QString::fromUtf8("pageLayout"));
         pageLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
@@ -1193,15 +1213,15 @@ public:
         verticalLayout_22->setObjectName(QString::fromUtf8("verticalLayout_22"));
         addressTitle = new QLabel(address);
         addressTitle->setObjectName(QString::fromUtf8("addressTitle"));
-        sizePolicy12.setHeightForWidth(addressTitle->sizePolicy().hasHeightForWidth());
-        addressTitle->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(addressTitle->sizePolicy().hasHeightForWidth());
+        addressTitle->setSizePolicy(sizePolicy13);
 
         verticalLayout_22->addWidget(addressTitle);
 
         addressSubtitle = new QLabel(address);
         addressSubtitle->setObjectName(QString::fromUtf8("addressSubtitle"));
-        sizePolicy12.setHeightForWidth(addressSubtitle->sizePolicy().hasHeightForWidth());
-        addressSubtitle->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(addressSubtitle->sizePolicy().hasHeightForWidth());
+        addressSubtitle->setSizePolicy(sizePolicy13);
 
         verticalLayout_22->addWidget(addressSubtitle);
 
@@ -1209,8 +1229,8 @@ public:
         horizontalLayout_19->setObjectName(QString::fromUtf8("horizontalLayout_19"));
         walletAddress = new QLineEdit(address);
         walletAddress->setObjectName(QString::fromUtf8("walletAddress"));
-        sizePolicy12.setHeightForWidth(walletAddress->sizePolicy().hasHeightForWidth());
-        walletAddress->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(walletAddress->sizePolicy().hasHeightForWidth());
+        walletAddress->setSizePolicy(sizePolicy13);
         walletAddress->setMaximumSize(QSize(16777215, 30));
         walletAddress->setReadOnly(true);
 
@@ -1221,9 +1241,9 @@ public:
         sizePolicy2.setHeightForWidth(addressCopy->sizePolicy().hasHeightForWidth());
         addressCopy->setSizePolicy(sizePolicy2);
         addressCopy->setMaximumSize(QSize(34, 34));
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png"), QSize(), QIcon::Normal, QIcon::Off);
-        addressCopy->setIcon(icon4);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png"), QSize(), QIcon::Normal, QIcon::Off);
+        addressCopy->setIcon(icon5);
 
         horizontalLayout_19->addWidget(addressCopy);
 
@@ -1240,8 +1260,8 @@ public:
         verticalLayout_19->setObjectName(QString::fromUtf8("verticalLayout_19"));
         rsaTitle = new QLabel(rsaKeys);
         rsaTitle->setObjectName(QString::fromUtf8("rsaTitle"));
-        sizePolicy12.setHeightForWidth(rsaTitle->sizePolicy().hasHeightForWidth());
-        rsaTitle->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(rsaTitle->sizePolicy().hasHeightForWidth());
+        rsaTitle->setSizePolicy(sizePolicy13);
 
         verticalLayout_19->addWidget(rsaTitle);
 
@@ -1249,8 +1269,8 @@ public:
         horizontalLayout_20->setObjectName(QString::fromUtf8("horizontalLayout_20"));
         publicKey = new QLineEdit(rsaKeys);
         publicKey->setObjectName(QString::fromUtf8("publicKey"));
-        sizePolicy12.setHeightForWidth(publicKey->sizePolicy().hasHeightForWidth());
-        publicKey->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(publicKey->sizePolicy().hasHeightForWidth());
+        publicKey->setSizePolicy(sizePolicy13);
         publicKey->setMaximumSize(QSize(16777215, 30));
         publicKey->setReadOnly(true);
 
@@ -1261,9 +1281,9 @@ public:
         sizePolicy2.setHeightForWidth(pubKeyShow->sizePolicy().hasHeightForWidth());
         pubKeyShow->setSizePolicy(sizePolicy2);
         pubKeyShow->setMaximumSize(QSize(34, 34));
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pubKeyShow->setIcon(icon5);
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pubKeyShow->setIcon(icon6);
 
         horizontalLayout_20->addWidget(pubKeyShow);
 
@@ -1272,7 +1292,7 @@ public:
         sizePolicy2.setHeightForWidth(pubKeyCopy->sizePolicy().hasHeightForWidth());
         pubKeyCopy->setSizePolicy(sizePolicy2);
         pubKeyCopy->setMaximumSize(QSize(34, 34));
-        pubKeyCopy->setIcon(icon4);
+        pubKeyCopy->setIcon(icon5);
 
         horizontalLayout_20->addWidget(pubKeyCopy);
 
@@ -1283,8 +1303,8 @@ public:
         horizontalLayout_21->setObjectName(QString::fromUtf8("horizontalLayout_21"));
         privateKey = new QLineEdit(rsaKeys);
         privateKey->setObjectName(QString::fromUtf8("privateKey"));
-        sizePolicy12.setHeightForWidth(privateKey->sizePolicy().hasHeightForWidth());
-        privateKey->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(privateKey->sizePolicy().hasHeightForWidth());
+        privateKey->setSizePolicy(sizePolicy13);
         privateKey->setMaximumSize(QSize(16777215, 30));
         privateKey->setReadOnly(true);
 
@@ -1295,7 +1315,7 @@ public:
         sizePolicy2.setHeightForWidth(privKeyShow->sizePolicy().hasHeightForWidth());
         privKeyShow->setSizePolicy(sizePolicy2);
         privKeyShow->setMaximumSize(QSize(34, 34));
-        privKeyShow->setIcon(icon5);
+        privKeyShow->setIcon(icon6);
 
         horizontalLayout_21->addWidget(privKeyShow);
 
@@ -1304,7 +1324,7 @@ public:
         sizePolicy2.setHeightForWidth(privKeyCopy->sizePolicy().hasHeightForWidth());
         privKeyCopy->setSizePolicy(sizePolicy2);
         privKeyCopy->setMaximumSize(QSize(34, 34));
-        privKeyCopy->setIcon(icon4);
+        privKeyCopy->setIcon(icon5);
 
         horizontalLayout_21->addWidget(privKeyCopy);
 
@@ -1320,25 +1340,25 @@ public:
         verticalLayout_24->setObjectName(QString::fromUtf8("verticalLayout_24"));
         pubIPAddrTitle = new QLabel(pubIPAddr);
         pubIPAddrTitle->setObjectName(QString::fromUtf8("pubIPAddrTitle"));
-        sizePolicy12.setHeightForWidth(pubIPAddrTitle->sizePolicy().hasHeightForWidth());
-        pubIPAddrTitle->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(pubIPAddrTitle->sizePolicy().hasHeightForWidth());
+        pubIPAddrTitle->setSizePolicy(sizePolicy13);
 
         verticalLayout_24->addWidget(pubIPAddrTitle);
 
         pubIPAddrSubtitle = new QLabel(pubIPAddr);
         pubIPAddrSubtitle->setObjectName(QString::fromUtf8("pubIPAddrSubtitle"));
-        sizePolicy12.setHeightForWidth(pubIPAddrSubtitle->sizePolicy().hasHeightForWidth());
-        pubIPAddrSubtitle->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(pubIPAddrSubtitle->sizePolicy().hasHeightForWidth());
+        pubIPAddrSubtitle->setSizePolicy(sizePolicy13);
 
         verticalLayout_24->addWidget(pubIPAddrSubtitle);
 
         publicIPAddress = new QTextBrowser(pubIPAddr);
         publicIPAddress->setObjectName(QString::fromUtf8("publicIPAddress"));
-        QSizePolicy sizePolicy15(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        sizePolicy15.setHorizontalStretch(0);
-        sizePolicy15.setVerticalStretch(0);
-        sizePolicy15.setHeightForWidth(publicIPAddress->sizePolicy().hasHeightForWidth());
-        publicIPAddress->setSizePolicy(sizePolicy15);
+        QSizePolicy sizePolicy16(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy16.setHorizontalStretch(0);
+        sizePolicy16.setVerticalStretch(0);
+        sizePolicy16.setHeightForWidth(publicIPAddress->sizePolicy().hasHeightForWidth());
+        publicIPAddress->setSizePolicy(sizePolicy16);
         publicIPAddress->setMaximumSize(QSize(16777215, 30));
 
         verticalLayout_24->addWidget(publicIPAddress);
@@ -1394,28 +1414,28 @@ public:
         horizontalLayout_23->setObjectName(QString::fromUtf8("horizontalLayout_23"));
         rsaKeyView = new QTextBrowser(rsaKeyPath);
         rsaKeyView->setObjectName(QString::fromUtf8("rsaKeyView"));
-        sizePolicy12.setHeightForWidth(rsaKeyView->sizePolicy().hasHeightForWidth());
-        rsaKeyView->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(rsaKeyView->sizePolicy().hasHeightForWidth());
+        rsaKeyView->setSizePolicy(sizePolicy13);
         rsaKeyView->setMaximumSize(QSize(16777215, 30));
 
         horizontalLayout_23->addWidget(rsaKeyView);
 
         btn_choosePath = new QPushButton(rsaKeyPath);
         btn_choosePath->setObjectName(QString::fromUtf8("btn_choosePath"));
-        sizePolicy12.setHeightForWidth(btn_choosePath->sizePolicy().hasHeightForWidth());
-        btn_choosePath->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(btn_choosePath->sizePolicy().hasHeightForWidth());
+        btn_choosePath->setSizePolicy(sizePolicy13);
         btn_choosePath->setMaximumSize(QSize(16777215, 32));
 
         horizontalLayout_23->addWidget(btn_choosePath);
 
         btn_reset = new QToolButton(rsaKeyPath);
         btn_reset->setObjectName(QString::fromUtf8("btn_reset"));
-        sizePolicy11.setHeightForWidth(btn_reset->sizePolicy().hasHeightForWidth());
-        btn_reset->setSizePolicy(sizePolicy11);
+        sizePolicy12.setHeightForWidth(btn_reset->sizePolicy().hasHeightForWidth());
+        btn_reset->setSizePolicy(sizePolicy12);
         btn_reset->setMaximumSize(QSize(34, 34));
-        QIcon icon6;
-        icon6.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../.designer/assets/reset.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_reset->setIcon(icon6);
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8("../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/reset.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_reset->setIcon(icon7);
 
         horizontalLayout_23->addWidget(btn_reset);
 
@@ -1435,15 +1455,15 @@ public:
         verticalLayout_27->setObjectName(QString::fromUtf8("verticalLayout_27"));
         chgPsswdTitle = new QLabel(changePassword);
         chgPsswdTitle->setObjectName(QString::fromUtf8("chgPsswdTitle"));
-        sizePolicy12.setHeightForWidth(chgPsswdTitle->sizePolicy().hasHeightForWidth());
-        chgPsswdTitle->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(chgPsswdTitle->sizePolicy().hasHeightForWidth());
+        chgPsswdTitle->setSizePolicy(sizePolicy13);
 
         verticalLayout_27->addWidget(chgPsswdTitle);
 
         chgPsswdSubtitle = new QLabel(changePassword);
         chgPsswdSubtitle->setObjectName(QString::fromUtf8("chgPsswdSubtitle"));
-        sizePolicy12.setHeightForWidth(chgPsswdSubtitle->sizePolicy().hasHeightForWidth());
-        chgPsswdSubtitle->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(chgPsswdSubtitle->sizePolicy().hasHeightForWidth());
+        chgPsswdSubtitle->setSizePolicy(sizePolicy13);
 
         verticalLayout_27->addWidget(chgPsswdSubtitle);
 
@@ -1451,8 +1471,8 @@ public:
         verticalLayout_26->setObjectName(QString::fromUtf8("verticalLayout_26"));
         currPassField = new QLineEdit(changePassword);
         currPassField->setObjectName(QString::fromUtf8("currPassField"));
-        sizePolicy12.setHeightForWidth(currPassField->sizePolicy().hasHeightForWidth());
-        currPassField->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(currPassField->sizePolicy().hasHeightForWidth());
+        currPassField->setSizePolicy(sizePolicy13);
         currPassField->setMaximumSize(QSize(16777215, 30));
         currPassField->setEchoMode(QLineEdit::Password);
         currPassField->setClearButtonEnabled(true);
@@ -1461,8 +1481,8 @@ public:
 
         newPassField = new QLineEdit(changePassword);
         newPassField->setObjectName(QString::fromUtf8("newPassField"));
-        sizePolicy12.setHeightForWidth(newPassField->sizePolicy().hasHeightForWidth());
-        newPassField->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(newPassField->sizePolicy().hasHeightForWidth());
+        newPassField->setSizePolicy(sizePolicy13);
         newPassField->setMaximumSize(QSize(16777215, 30));
         newPassField->setEchoMode(QLineEdit::Password);
         newPassField->setClearButtonEnabled(true);
@@ -1471,8 +1491,8 @@ public:
 
         btn_confirm = new QPushButton(changePassword);
         btn_confirm->setObjectName(QString::fromUtf8("btn_confirm"));
-        sizePolicy12.setHeightForWidth(btn_confirm->sizePolicy().hasHeightForWidth());
-        btn_confirm->setSizePolicy(sizePolicy12);
+        sizePolicy13.setHeightForWidth(btn_confirm->sizePolicy().hasHeightForWidth());
+        btn_confirm->setSizePolicy(sizePolicy13);
 
         verticalLayout_26->addWidget(btn_confirm);
 
@@ -1531,8 +1551,8 @@ public:
         ___qtablewidgetitem2->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
         QTableWidgetItem *___qtablewidgetitem3 = contactsList->horizontalHeaderItem(1);
         ___qtablewidgetitem3->setText(QCoreApplication::translate("MainWindow", "Address", nullptr));
-        btn_addContact->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         btn_filler->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        btn_addContact->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         contactImage->setText(QString());
         addrBookSub1->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt;\">Username</span></p></body></html>", nullptr));
         addrBookSub2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt;\">Address</span></p></body></html>", nullptr));
