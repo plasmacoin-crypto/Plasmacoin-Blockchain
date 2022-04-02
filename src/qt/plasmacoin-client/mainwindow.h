@@ -24,6 +24,7 @@
 #include <QMessageBox>
 #include <QDialogButtonBox>
 #include <QFuture>
+#include <QWindow>
 #include <QtConcurrent/QtConcurrent>
 
 #include "ui_mainwindow.h"
@@ -81,6 +82,7 @@ public:
 	QLabel* m_NameDisplay = new QLabel();
 	QLabel* m_UsernameDisplay = new QLabel();
 	QLabel* m_AddressDisplay = new QLabel();
+	QLabel* m_BirthdayDisplay = new QLabel();
 
 	QMessageBox *m_FormErrorAlert, *m_ConfirmTransaction;
 
@@ -97,7 +99,7 @@ private:
 	QFileDialog* m_FileBrowser = new QFileDialog();
 
 public:
-	Node* m_User = new Node("Ryan", "ryan", "1234", go::getGlobalIP()); // Temporary data
+	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.44"); // Temporary data
 
 signals:
 	void MiningSuccess();

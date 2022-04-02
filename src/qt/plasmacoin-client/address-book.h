@@ -31,9 +31,9 @@ public:
 	AddressBook(
 		QTableWidget*& tableWidget, QLabel* nameDisplay, QLineEdit* nameField,
 		QLabel* usernameDisplay, QLineEdit* usernameField, QLabel* addressDisplay,
-		QLineEdit* addressField, QDateEdit* birthday, QDialogButtonBox* buttonBox,
-		QLayout* nameLayout, QLayout* usernameLayout, QLayout* addressLayout,
-		QLayout* birthdayLayout
+		QLineEdit* addressField, QLabel* birthdayDisplay, QDateEdit* birthday,
+		QDialogButtonBox* buttonBox, QLayout* nameLayout, QLayout* usernameLayout,
+		QLayout* addressLayout, QLayout* birthdayLayout
 	);
 	~AddressBook();
 
@@ -58,7 +58,7 @@ private:
 	void Regenerate();
 
 	QTableWidget*& m_ContactsList;
-	QLabel *m_NameDisplay, *m_UsernameDisplay, *m_AddressDisplay;
+	QLabel *m_NameDisplay, *m_UsernameDisplay, *m_AddressDisplay, *m_BirthdayDisplay;
 	QLineEdit *m_NameField, *m_UsernameField, *m_AddressField;
 	QDateEdit* m_Birthday;
 	QDialogButtonBox* m_ButtonBox;

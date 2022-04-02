@@ -32,10 +32,11 @@ MainWindow::MainWindow(QWidget* parent):
 	m_Status = CreateMiningVisuals();
 	m_AccPgs = CreatePages();
 	m_AddressBook = new AddressBook(
-						Ui::MainWindow::contactsList, m_NameDisplay, Ui::MainWindow::nameField, m_UsernameDisplay,
-						Ui::MainWindow::usernameField, m_AddressDisplay, Ui::MainWindow::addressField,
-						Ui::MainWindow::birthday, Ui::MainWindow::btndiag_confirm, Ui::MainWindow::field1,
-						Ui::MainWindow::field2, Ui::MainWindow::field3, Ui::MainWindow::field4
+						Ui::MainWindow::contactsList, m_NameDisplay, Ui::MainWindow::nameField,
+						m_UsernameDisplay, Ui::MainWindow::usernameField, m_AddressDisplay,
+						Ui::MainWindow::addressField, m_BirthdayDisplay, Ui::MainWindow::birthday,
+						Ui::MainWindow::btndiag_confirm, Ui::MainWindow::field1, Ui::MainWindow::field2,
+						Ui::MainWindow::field3, Ui::MainWindow::field4
 					);
 	m_TransactionManager =  new TransactionManager(
 								Ui::MainWindow::contacts, Ui::MainWindow::transactionLog, Ui::MainWindow::messageField,
@@ -194,6 +195,7 @@ void MainWindow::ShowContact(Contact* contact) {
 	m_NameDisplay->setText(QString::fromStdString(contact->GetName()));
 	m_UsernameDisplay->setText(QString::fromStdString(contact->GetUsername()));
 	m_AddressDisplay->setText(QString::fromStdString(contact->GetAddress()));
+	m_BirthdayDisplay->setText(contact->GetBirthday().toString());
 
 	// Set the writable fields
 	nameField->setText(QString::fromStdString(contact->GetName()));
@@ -221,13 +223,17 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 			case go::PacketTypes::BLOCK: {
 				std::cout << "Received block" << std::endl;
 
-				// If a new block is received, stop trying to solve the current block.
-				if (!object.empty() && !data.empty()) {
-					m_User->m_BlockchainCopy->StopMining(std::move(m_ExitSignal));
-					std::cout << "Stopping" << std::endl;
+				if (object.empty() || data.empty()) {
+					break;
 				}
 
 				Block* block = json::toBlock(object);
+
+				// If a new block is received, stop trying to solve the current block.
+				if (block->m_MinerAddr != m_User->GetAddress()) {
+					m_User->m_BlockchainCopy->StopMining(std::move(m_ExitSignal));
+					std::cout << "Stopping" << std::endl;
+				}
 
 				for (auto transaction: block->m_Transactions) {
 					if (m_User->GetAddress() == transaction->m_SenderAddr) {

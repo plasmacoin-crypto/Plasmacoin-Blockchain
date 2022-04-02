@@ -10,14 +10,15 @@
 AddressBook::AddressBook(
 	QTableWidget*& tableWidget, QLabel* nameDisplay, QLineEdit* nameField,
 	QLabel* usernameDisplay, QLineEdit* usernameField, QLabel* addressDisplay,
-	QLineEdit* addressField, QDateEdit* birthday, QDialogButtonBox* buttonBox,
-	QLayout* nameLayout, QLayout* usernameLayout, QLayout* addressLayout,
-	QLayout* birthdayLayout
+	QLineEdit* addressField, QLabel* birthdayDisplay, QDateEdit* birthday,
+	QDialogButtonBox* buttonBox, QLayout* nameLayout, QLayout* usernameLayout,
+	QLayout* addressLayout, QLayout* birthdayLayout
 ):
 	m_ContactsList(tableWidget),
 	m_NameDisplay(nameDisplay),
 	m_UsernameDisplay(usernameDisplay),
 	m_AddressDisplay(addressDisplay),
+	m_BirthdayDisplay(birthdayDisplay),
 	m_NameField(nameField),
 	m_UsernameField(usernameField),
 	m_AddressField(addressField),
@@ -30,6 +31,11 @@ AddressBook::AddressBook(
 {
 	m_ContactsList->setRowCount(0);
 	SetEditing(false);
+
+	m_NameDisplay->setGeometry(m_NameField->x(), m_NameField->y(), m_NameField->width(), m_NameField->height());
+	m_UsernameDisplay->setGeometry(m_UsernameField->x(), m_UsernameField->y(), m_UsernameField->width(), m_UsernameField->height());
+	m_AddressDisplay->setGeometry(m_AddressField->x(), m_AddressField->y(), m_AddressField->width(), m_AddressField->height());
+	m_BirthdayDisplay->setGeometry(m_Birthday->x(), m_Birthday->y(), m_Birthday->width(), m_Birthday->height());
 }
 
 AddressBook::~AddressBook() {
@@ -40,6 +46,7 @@ AddressBook::~AddressBook() {
 	delete m_NameDisplay;
 	delete m_UsernameDisplay;
 	delete m_AddressDisplay;
+	delete m_BirthdayDisplay;
 	delete m_NameField;
 	delete m_UsernameField;
 	delete m_AddressField;
@@ -127,24 +134,27 @@ void AddressBook::Lock() {
 	m_ButtonBox->addButton(editButton, QDialogButtonBox::ActionRole);
 	m_ButtonBox->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
 
+	// Make the birthday field read only
+	// m_Birthday->setReadOnly(true);
+	// m_Birthday->setCalendarPopup(false);
+
 	// Show the read only fields
 	m_NameDisplay->setVisible(true);
 	m_UsernameDisplay->setVisible(true);
 	m_AddressDisplay->setVisible(true);
+	m_BirthdayDisplay->setVisible(true);
 
 	// Hide the writable fields
 	m_NameField->setVisible(false);
 	m_UsernameField->setVisible(false);
 	m_AddressField->setVisible(false);
+	m_Birthday->setVisible(false);
 
 	// Replace the writable widgets with the read only widgets in the layouts
 	m_NameLayout->replaceWidget(m_NameField, m_NameDisplay);
 	m_UsernameLayout->replaceWidget(m_UsernameField, m_UsernameDisplay);
 	m_AddressLayout->replaceWidget(m_AddressField, m_AddressDisplay);
-
-	// Make the birthday field read only
-	m_Birthday->setReadOnly(true);
-	m_Birthday->setCalendarPopup(false);
+	m_BirthdayLayout->replaceWidget(m_Birthday, m_BirthdayDisplay);
 
 	m_ContactsList->setSelectionMode(QAbstractItemView::SingleSelection); // Allow selecting contacts
 }
@@ -166,20 +176,23 @@ void AddressBook::Unlock() {
 	m_NameDisplay->setVisible(false);
 	m_UsernameDisplay->setVisible(false);
 	m_AddressDisplay->setVisible(false);
+	m_BirthdayDisplay->setVisible(false);
 
 	// Show the writable fields
 	m_NameField->setVisible(true);
 	m_UsernameField->setVisible(true);
 	m_AddressField->setVisible(true);
+	m_Birthday->setVisible(true);
 
 	// Replace the read only widgets with the writable widgets in the layouts
 	m_NameLayout->replaceWidget(m_NameDisplay, m_NameField);
 	m_UsernameLayout->replaceWidget(m_UsernameDisplay, m_UsernameField);
 	m_AddressLayout->replaceWidget(m_AddressDisplay, m_AddressField);
+	m_BirthdayLayout->replaceWidget(m_BirthdayDisplay, m_Birthday);
 
 	// Allow write access to the birthday field
-	m_Birthday->setReadOnly(false);
-	m_Birthday->setCalendarPopup(true);
+	// m_Birthday->setReadOnly(false);
+	// m_Birthday->setCalendarPopup(true);
 
 	m_ContactsList->setSelectionMode(QAbstractItemView::NoSelection); // Disallow selecting contacts
 }
