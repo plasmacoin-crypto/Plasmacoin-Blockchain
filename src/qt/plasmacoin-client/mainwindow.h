@@ -104,8 +104,7 @@ public:
 	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.44"); // Temporary data
 
 signals:
-	void MiningSuccess();
-	void MiningFailure();
+	void BlockCompleted();
 };
 
 #endif // MAINWINDOW_H

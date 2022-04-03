@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget* parent):
 										);
 	});
 
-	connect(this, &MainWindow::MiningSuccess, this, [=]() {
+	connect(this, &MainWindow::BlockCompleted, this, [=]() {
 		Block* latest = this->m_User->m_BlockchainCopy->GetLatest();
 		this->m_MiningDialog->Display(latest);
 	});
@@ -172,12 +172,7 @@ void MainWindow::StartMining() {
 		auto data = transmitter->Format(&newBlock);
 		transmitter->Transmit(data, std::stoi(data[0]), m_User->GetKnownHosts());
 
-		emit MiningSuccess();
-	}
-	else {
-		std::cout << "Hash: " << newBlock.m_Hash << std::endl;
-
-		emit MiningFailure();
+		emit BlockCompleted();
 	}
 }
 
