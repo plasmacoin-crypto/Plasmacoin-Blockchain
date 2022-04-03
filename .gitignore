@@ -17,6 +17,7 @@ lib
 # Ignore build files
 *.o
 moc_*
+src/qt/build-plasmacoin-ui-Desktop-Debug/ui_*
 
 # Ignore extra makefiles
 QMakefile.mk
