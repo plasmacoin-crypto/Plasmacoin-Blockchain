@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget* parent):
 								m_ConfirmTransaction
 						    );
 	m_TransactionView = new TransactionView(Ui::MainWindow::transactionView, amountSelector->decimals(), feeSelector->decimals());
+	m_MiningDialog = new MiningDialog(this);
 
 	// Create some temporary nodes to make transactions between
 	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
@@ -67,6 +68,11 @@ MainWindow::MainWindow(QWidget* parent):
 											QString::fromStdString(rsafs::HOME_DIR), QFileDialog::tr("Text Files (*.txt);;All Files (*.*, *)"),
 											nullptr, QFileDialog::DontUseNativeDialog
 										);
+	});
+
+	connect(this, &MainWindow::MiningSuccess, this, [=]() {
+		Block* latest = this->m_User->m_BlockchainCopy->GetLatest();
+		this->m_MiningDialog->Display(latest);
 	});
 
 	// Add a contact to the list

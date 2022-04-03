@@ -35,6 +35,7 @@
 #include "address-book.h"
 #include "transaction-manager.h"
 #include "transaction-view.h"
+#include "mining-dialog.h"
 //#include "settings-manager.h"
 
 #include "block.hpp"
@@ -77,6 +78,7 @@ public:
 	AddressBook* m_AddressBook;
 	TransactionManager* m_TransactionManager;
 	TransactionView* m_TransactionView;
+	MiningDialog* m_MiningDialog;
 	//SettingsManager* m_SettingsManager;
 
 	QLabel* m_NameDisplay = new QLabel();
