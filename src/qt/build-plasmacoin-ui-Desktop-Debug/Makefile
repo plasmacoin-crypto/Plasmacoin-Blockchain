@@ -63,12 +63,12 @@ SOURCES       = ../../transaction.cpp ../../node.cpp ../../block.cpp \
 				../../dat-fs.cpp ../../transmitter.cpp ../../shared-mem.cpp ../../parse-json.cpp \
 				../../validation.cpp ../../hashing.cpp ../../dssize.cpp ../../utility.cpp ../../rsautil.cpp \
 				\
-				../plasmacoin-client/main.cpp ./plasmacoin-client/mainwindow.cpp moc_mainwindow.cpp \
-				../plasmacoin-client/transaction-list.cpp \
-				../plasmacoin-client/mining-status.cpp ../plasmacoin-client/moc_mining_status.cpp \
-				../plasmacoin-client/recipient-list.cpp ../plasmacoin-client/firebase-auth.cpp \
-				moc_firebase_auth.cpp ../plasmacoin-client/account-pages.cpp \
-				../plasmacoin-client/transaction-manager.cpp ../plasmacoin-client/connections.cpp \
+				../plasmacoin-client/main.cpp ./plasmacoin-client/mainwindow.cpp \
+				../plasmacoin-client/transaction-list.cpp  ../plasmacoin-client/mining-status.cpp \
+				../plasmacoin-client/moc_mining_status.cpp ../plasmacoin-client/recipient-list.cpp \
+				../plasmacoin-client/firebase-auth.cpp ../plasmacoin-client/account-pages.cpp \
+				../plasmacoin-client/mining-dialog.cpp ../plasmacoin-client/transaction-manager.cpp \
+				../plasmacoin-client/connections.cpp \
 				\
 				../../../netdial/netdial.go ../../../netlisten/netlisten.go \
 				../../../netutils/compression.go ../../../netutils/netutils.go ../../../netutils/parser.go \
@@ -102,6 +102,7 @@ OBJECTS 	  = main.o \
 				account-pages.o \
 				address-book.o \
 				contact.o \
+				mining-dialog.o \
 				transaction-manager.o \
 				transaction-view.o \
 				connections.o \
@@ -405,6 +406,7 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 				../plasmacoin-client/address-book.h ../plasmacoin-client/address-book.cpp \
 				../plasmacoin-client/contact.h ../plasmacoin-client/contact.cpp \
 				../plasmacoin-client/transaction-manager.h ../plasmacoin-client/transaction-manager.cpp \
+				../plasmacoin-client/mining-dialog.h ../plasmacoin-client/mining-dialog.cpp \
 				../plasmacoin-client/transaction-view.h ../plasmacoin-client/transaction-view.cpp \
 				../plasmacoin-client/connections.hpp ../plasmacoin-client/connections.cpp \
 				\
@@ -1027,6 +1029,7 @@ moc_predefs.h: /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
+
 moc_mainwindow.cpp: ../plasmacoin-client/mainwindow.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/QStringList \
 		/opt/homebrew/lib/QtCore.framework/Headers/qstringlist.h \
@@ -1100,16 +1103,24 @@ moc_firebase_auth.cpp: ../plasmacoin-client/ \
 		/opt/homebrew/share/qt/libexec/moc
 	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-client -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-client/firebase-auth.h -o moc_firebase_auth.cpp
 
+moc_mining_dialog.cpp: ../plasmacoin-client/ \
+		ui_miningdialog.h \
+		/opt/homebrew/share/qt/libexec/moc
+	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-client -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-client/mining-dialog.h -o moc_mining_dialog.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h
+compiler_uic_make_all: ui_mainwindow.h ui_miningdialog.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h
-ui_mainwindow.h: ../plasmacoin-client/ui/macos.ui \
-		/opt/homebrew/share/qt/libexec/uic
+	-$(DEL_FILE) ui_mainwindow.h ui_miningdialog.h
+
+ui_mainwindow.h: ../plasmacoin-client/ui/macos.ui /opt/homebrew/share/qt/libexec/uic
 	/opt/homebrew/share/qt/libexec/uic ../plasmacoin-client/ui/macos.ui -o ui_mainwindow.h
+
+ui_miningdialog.h: ../plasmacoin-client/ui/miningdialog.ui /opt/homebrew/share/qt/libexec/uic
+	/opt/homebrew/share/qt/libexec/uic ../plasmacoin-client/ui/miningdialog.ui -o ui_miningdialog.h
 
 compiler_rez_source_make_all:
 compiler_rez_source_clean:
@@ -1186,7 +1197,7 @@ rsautil.o: ../../rsautil.cpp ../../rsautil.hpp ../../transaction.hpp ../../recei
 # GUI
 
 main.o: ../plasmacoin-client/main.cpp ../plasmacoin-client/mainwindow.h \
-		ui_mainwindow.h ../plasmacoin-client/connections.hpp
+		ui_mainwindow.h ui_miningdialog.h ../plasmacoin-client/connections.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../plasmacoin-client/main.cpp
 
 mainwindow.o: ../plasmacoin-client/mainwindow.cpp ../plasmacoin-client/mainwindow.h \
@@ -1198,7 +1209,7 @@ mainwindow.o: ../plasmacoin-client/mainwindow.cpp ../plasmacoin-client/mainwindo
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QDateEdit \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qdatetimeedit.h \
-		ui_mainwindow.h \
+		ui_mainwindow.h ui_miningdialog.h \
 		../plasmacoin-client/transaction-list.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/QList \
 		/opt/homebrew/lib/QtCore.framework/Headers/qlist.h \
@@ -1263,6 +1274,9 @@ moc_firebase_auth.o: moc_firebase_auth.cpp
 moc_account_pages.o: moc_account_pages.cpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_account_pages.o moc_account_pages.cpp
 
+moc_mining_dialog.o: moc_mining_dialog.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mining_dialog.o moc_mining_dialog.cpp
+
 transaction-list.o: ../plasmacoin-client/transaction-list.cpp ../plasmacoin-client/transaction-list.h \
 					ui_mainwindow.h ../../transaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction-list.o ../plasmacoin-client/transaction-list.cpp
@@ -1283,8 +1297,12 @@ address-book.o: ../plasmacoin-client/address-book.cpp ../plasmacoin-client/addre
 				ui_mainwindow.h ../plasmacoin-client/contact.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o address-book.o ../plasmacoin-client/address-book.cpp
 
-contact.o: ../plasmacoin-client/contact.cpp ../plasmacoin-client/contact.h
+contact.o: ../plasmacoin-client/contact.cpp ../plasmacoin-client/contact.h ui_miningdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o contact.o ../plasmacoin-client/contact.cpp
+
+mining-dialog.o: ../plasmacoin-client/mining-dialog.cpp ../plasmacoin-client/mining-dialog.h \
+				 ../../block.hpp ../../dssize.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mining-dialog.o ../plasmacoin-client/mining-dialog.cpp
 
 transaction-manager.o: ../plasmacoin-client/transaction-manager.cpp ../plasmacoin-client/transaction-manager.h \
 					   ui_mainwindow.h ../plasmacoin-client/address-book.h ../plasmacoin-client/contact.h \
