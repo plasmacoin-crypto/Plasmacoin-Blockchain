@@ -96,8 +96,6 @@ pair<bool, uint8_t> Blockchain::Mine(Block& newBlock) {
 	bool success = false;
 	std::cout << "Mining" << std::endl;
 	if (!newBlock.m_Transactions.empty()) {
-		Block* latest = GetLatest();
-
 		runConsensus.wait();
 		success = runConsensus.get();
 	}
@@ -106,21 +104,10 @@ pair<bool, uint8_t> Blockchain::Mine(Block& newBlock) {
 	// completed, broadcast to the network that this node has completed it first.
 	if (success) {
 		std::cout << "Success" << std::endl;
-
-		// const char* code[] = {"0"};
-		// go::GoSlice slice = {code, 1, 1};
-
-		// future<void> dial = std::async(&go::dial, "tcp", go::getGlobalIP(), "8080", static_cast<uint8_t>(go::PacketTypes::ID_CODE), slice);
 	}
 	else {
 		std::cout << "Failure" << std::endl;
-
 		std::cout << newBlock.m_Hash << std::endl;
-
-		// const char* code[] = {"4"};
-		// go::GoSlice slice = {code, 1, 1};
-
-		// future<void> dial = std::async(&go::dial, "tcp", go::getGlobalIP(), "8080", static_cast<uint8_t>(go::PacketTypes::ID_CODE), slice);
 	}
 
 	return std::make_pair(success, 0);
