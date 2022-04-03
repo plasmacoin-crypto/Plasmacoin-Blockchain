@@ -19,18 +19,6 @@ void connections::minePage(MainWindow& window) {
 		mineThread.detach();
 	});
 
-	// Update the mining status on success
-	window.connect(&window, &MainWindow::MiningSuccess, &window, [&window]() {
-		window.ResetBlock();
-		window.UpdateStatus(*window.m_User->m_BlockchainCopy->GetLatest(), window.m_LastMiningDur);
-
-		Transmitter* transmitter = new Transmitter();
-		auto data = transmitter->Format(window.m_User->m_BlockchainCopy->GetLatest());
-		transmitter->Transmit(data, std::stoi(data[0]));
-
-		delete transmitter;
-	});
-
 	// Display information about a transaction when a user selects it
 	window.connect(window.transactionList, &QListWidget::itemSelectionChanged, &window, [&window]() {
 		int row = window.transactionList->currentRow();
@@ -347,6 +335,8 @@ void connections::manageSharedMem(std::atomic<bool>& running, MainWindow& window
 				}
 
 				Block* block = json::toBlock(object);
+
+				emit window.BlockCompleted();
 
 				for (auto transaction: block->m_Transactions) {
 					if (window.m_User->GetAddress() == transaction->m_SenderAddr) {
