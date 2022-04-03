@@ -44,17 +44,13 @@ void TransactionView::Display(Transaction* transaction) {
 		},
 	};
 
-	auto row = table.begin(); // Iterate over the map
-
-	for (int i = 0; i < rowNum; i++) {
+	for (auto row = table.begin(); row != table.end(); std::advance(row, 1)) {
 		// Center-align all elements
 		row->first.setData(Qt::TextAlignmentRole, Qt::AlignCenter);
 		row->second.setData(Qt::TextAlignmentRole, Qt::AlignCenter);
 
-		m_TransactionView->setItem(i, 0, new QTableWidgetItem(row->first));
-		m_TransactionView->setItem(i, 1, new QTableWidgetItem(row->second));
-
-		std::advance(row, 1); // Move to the next set of QTableWidgetItems
+		m_TransactionView->setItem(std::distance(table.begin(), row), 0, new QTableWidgetItem(row->first));
+		m_TransactionView->setItem(std::distance(table.begin(), row), 1, new QTableWidgetItem(row->second));
 	}
 }
 
