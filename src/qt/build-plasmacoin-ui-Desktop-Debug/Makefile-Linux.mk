@@ -982,9 +982,9 @@ compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h
+compiler_uic_make_all: ui_mainwindow.h ui_miningdialog.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h
+	-$(DEL_FILE) ui_mainwindow.h ui_miningdialog.h
 ui_mainwindow.h: ../plasmacoin-client/ui/linux.ui \
 				 /usr/bin/uic
 	/usr/bin/uic ../plasmacoin-client/ui/linux.ui -o ui_mainwindow.h
@@ -1063,7 +1063,7 @@ rsautil.o: ../../rsautil.cpp ../../rsautil.hpp ../../transaction.hpp ../../recei
 # GUI
 
 main.o: ../plasmacoin-client/main.cpp ../plasmacoin-client/mainwindow.h \
-		ui_mainwindow.h ../plasmacoin-client/connections.hpp
+		ui_mainwindow.h ui_miningdialog.h ../plasmacoin-client/connections.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../plasmacoin-client/main.cpp
 
 mainwindow.o: ../plasmacoin-client/mainwindow.cpp ../plasmacoin-client/mainwindow.h \
@@ -1071,7 +1071,7 @@ mainwindow.o: ../plasmacoin-client/mainwindow.cpp ../plasmacoin-client/mainwindo
 			  ../plasmacoin-client/firebase-auth.h ../plasmacoin-client/address-book.h \
 			  ../plasmacoin-client/contact.h ../../shared-mem.hpp ../plasmacoin-client/transaction-view.h \
 			  ../plasmacoin-client/transaction-manager.h ../../rsa-fs.hpp ../plasmacoin-client/firebase-auth.h \
-			  ../../validation.hpp ../../dssize.hpp
+			  ../../validation.hpp ../../dssize.hpp ui_mainwindow.h ui_miningdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../plasmacoin-client/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp
@@ -1106,7 +1106,7 @@ address-book.o: ../plasmacoin-client/address-book.cpp ../plasmacoin-client/addre
 				ui_mainwindow.h ../plasmacoin-client/contact.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o address-book.o ../plasmacoin-client/address-book.cpp
 
-contact.o: ../plasmacoin-client/contact.cpp ../plasmacoin-client/contact.h
+contact.o: ../plasmacoin-client/contact.cpp ../plasmacoin-client/contact.h ui_miningdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o contact.o ../plasmacoin-client/contact.cpp
 
 mining-dialog.o: ../plasmacoin-client/mining-dialog.cpp ../plasmacoin-client/mining-dialog.h \
