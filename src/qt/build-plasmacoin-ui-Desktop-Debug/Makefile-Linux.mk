@@ -117,6 +117,7 @@ OBJECTS 	  = main.o \
 				account-pages.o \
 				address-book.o \
 				contact.o \
+				mining-dialog.o \
 				transaction-manager.o \
 				transaction-view.o \
 				connections.o \
@@ -403,6 +404,7 @@ DIST = 		/usr/lib/qt/mkspecs/features/spec_pre.prf \
 			../plasmacoin-client/account-pages.h ../plasmacoin-client/account-pages.cpp \
 			../plasmacoin-client/address-book.h ../plasmacoin-client/address-book.cpp \
 			../plasmacoin-client/contact.h ../plasmacoin-client/contact.cpp \
+			../plasmacoin-client/mining-dialog.h ../plasmacoin-client/mining-dialog.cpp \
 			../plasmacoin-client/transaction-manager.h ../plasmacoin-client/transaction-manager.cpp \
 			../plasmacoin-client/transaction-view.h ../plasmacoin-client/transaction-view.cpp \
 			../plasmacoin-client/connections.hpp ../plasmacoin-client/connections.cpp \
@@ -971,6 +973,11 @@ moc_firebase_auth.cpp: ../plasmacoin-client/ \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-client -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I$(CRYPTOPP) ../plasmacoin-client/firebase-auth.h -o moc_firebase_auth.cpp
 
+moc_mining_dialog.cpp: ../plasmacoin-client/ \
+		ui_miningdialog.h \
+		/opt/homebrew/share/qt/libexec/moc
+	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-clang -I../plasmacoin-client -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/aarch64-unknown-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/local/include -I/usr/lib/clang/11.1.0/include -I/usr/include -I/usr/src/cryptopp ../plasmacoin-client/mining-dialog.h -o moc_mining_dialog.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -981,6 +988,9 @@ compiler_uic_clean:
 ui_mainwindow.h: ../plasmacoin-client/ui/linux.ui \
 				 /usr/bin/uic
 	/usr/bin/uic ../plasmacoin-client/ui/linux.ui -o ui_mainwindow.h
+
+ui_miningdialog.h: ../plasmacoin-client/ui/miningdialog.ui /opt/homebrew/share/qt/libexec/uic
+	/opt/homebrew/share/qt/libexec/uic ../plasmacoin-client/ui/miningdialog.ui -o ui_miningdialog.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -1098,6 +1108,10 @@ address-book.o: ../plasmacoin-client/address-book.cpp ../plasmacoin-client/addre
 
 contact.o: ../plasmacoin-client/contact.cpp ../plasmacoin-client/contact.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o contact.o ../plasmacoin-client/contact.cpp
+
+mining-dialog.o: ../plasmacoin-client/mining-dialog.cpp ../plasmacoin-client/mining-dialog.h \
+				 ../../block.hpp ../../dssize.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mining-dialog.o ../plasmacoin-client/mining-dialog.cpp
 
 transaction-manager.o: ../plasmacoin-client/transaction-manager.cpp ../plasmacoin-client/transaction-manager.h \
 					   ui_mainwindow.h ../plasmacoin-client/address-book.h ../plasmacoin-client/contact.h \
