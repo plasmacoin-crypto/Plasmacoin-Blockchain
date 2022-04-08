@@ -901,7 +901,7 @@ qmake: FORCE
 
 qmake_all: FORCE
 
-all: Makefile libpcnetworkd.so libplasmacoin.so pcnetworkd plasmacoin-client
+all: Makefile libpcnetworkd.so libplasmacoin.so pcnetworkd compiler_uic_make_all plasmacoin-client
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
@@ -985,12 +985,12 @@ compiler_moc_source_clean:
 compiler_uic_make_all: ui_mainwindow.h ui_miningdialog.h
 compiler_uic_clean:
 	-$(DEL_FILE) ui_mainwindow.h ui_miningdialog.h
-ui_mainwindow.h: ../plasmacoin-client/ui/linux.ui \
-				 /usr/bin/uic
+
+ui_mainwindow.h: ../plasmacoin-client/ui/linux.ui /usr/bin/uic
 	/usr/bin/uic ../plasmacoin-client/ui/linux.ui -o ui_mainwindow.h
 
-ui_miningdialog.h: ../plasmacoin-client/ui/miningdialog.ui /opt/homebrew/share/qt/libexec/uic
-	/opt/homebrew/share/qt/libexec/uic ../plasmacoin-client/ui/miningdialog.ui -o ui_miningdialog.h
+ui_miningdialog.h: ../plasmacoin-client/ui/miningdialog.ui /usr/bin/uic
+	/usr/bin/uic ../plasmacoin-client/ui/miningdialog.ui -o ui_miningdialog.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
