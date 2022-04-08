@@ -16,7 +16,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
+    <normaloff>../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -173,7 +173,7 @@
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -202,7 +202,7 @@
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/minus.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/minus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/minus.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/minus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -228,6 +228,9 @@
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
             <widget class="QTableWidget" name="transactionView">
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
              <attribute name="horizontalHeaderStretchLastSection">
               <bool>true</bool>
              </attribute>
@@ -306,13 +309,26 @@
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
+         <spacer name="horizontalSpacer_33">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QWidget" name="addressBook" native="true">
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QTableWidget" name="contactsList">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
              <property name="horizontalScrollBarPolicy">
               <enum>Qt::ScrollBarAsNeeded</enum>
              </property>
@@ -340,6 +356,9 @@
              <attribute name="horizontalHeaderStretchLastSection">
               <bool>true</bool>
              </attribute>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
              <attribute name="verticalHeaderStretchLastSection">
               <bool>false</bool>
              </attribute>
@@ -358,7 +377,7 @@
            <item>
             <layout class="QHBoxLayout" name="buttonLayout">
              <item>
-              <widget class="QToolButton" name="btn_addContact">
+              <widget class="QToolButton" name="btn_filler">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -370,7 +389,7 @@
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -394,12 +413,9 @@
               </spacer>
              </item>
              <item>
-              <widget class="QToolButton" name="btn_filler">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
+              <widget class="QToolButton" name="btn_addContact">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -409,7 +425,7 @@
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
+                 <normaloff>../../assets/plus.png</normaloff>../../assets/plus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -423,6 +439,22 @@
            </item>
           </layout>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_12">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="QWidget" name="contactInfo" native="true">
@@ -539,7 +571,7 @@
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
-                 <height>20</height>
+                 <height>30</height>
                 </size>
                </property>
               </spacer>
@@ -555,7 +587,7 @@
                <property name="maximumSize">
                 <size>
                  <width>92</width>
-                 <height>16777215</height>
+                 <height>30</height>
                 </size>
                </property>
                <property name="styleSheet">
@@ -572,12 +604,12 @@
                 <enum>Qt::Horizontal</enum>
                </property>
                <property name="sizeType">
-                <enum>QSizePolicy::Preferred</enum>
+                <enum>QSizePolicy::Ignored</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
-                 <height>20</height>
+                 <height>30</height>
                 </size>
                </property>
               </spacer>
@@ -612,7 +644,7 @@
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
-                 <height>20</height>
+                 <height>30</height>
                 </size>
                </property>
               </spacer>
@@ -632,7 +664,7 @@
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
-                 <height>20</height>
+                 <height>30</height>
                 </size>
                </property>
               </spacer>
@@ -648,7 +680,7 @@
                <property name="maximumSize">
                 <size>
                  <width>92</width>
-                 <height>16777215</height>
+                 <height>30</height>
                 </size>
                </property>
                <property name="styleSheet">
@@ -670,7 +702,7 @@
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
-                 <height>20</height>
+                 <height>30</height>
                 </size>
                </property>
               </spacer>
@@ -705,7 +737,7 @@
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
-                 <height>20</height>
+                 <height>30</height>
                 </size>
                </property>
               </spacer>
@@ -720,7 +752,7 @@
                 <enum>Qt::Horizontal</enum>
                </property>
                <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
+                <enum>QSizePolicy::Maximum</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -741,7 +773,7 @@
                <property name="maximumSize">
                 <size>
                  <width>92</width>
-                 <height>16777215</height>
+                 <height>30</height>
                 </size>
                </property>
                <property name="styleSheet">
@@ -763,7 +795,7 @@
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
-                 <height>20</height>
+                 <height>30</height>
                 </size>
                </property>
               </spacer>
@@ -782,7 +814,7 @@
                <property name="maximumSize">
                 <size>
                  <width>500</width>
-                 <height>32</height>
+                 <height>30</height>
                 </size>
                </property>
                <property name="focusPolicy">
@@ -810,7 +842,7 @@
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
-                 <height>20</height>
+                 <height>30</height>
                 </size>
                </property>
               </spacer>
@@ -874,6 +906,22 @@
            </item>
           </layout>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_32">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -1962,7 +2010,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2033,7 +2081,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2056,7 +2104,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2102,7 +2150,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2125,7 +2173,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2297,7 +2345,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/reset.png</normaloff>../../../../../../../../../../../../../../../../../../.designer/assets/reset.png</iconset>
+                   <normaloff>../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/reset.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/reset.png</iconset>
                  </property>
                 </widget>
                </item>
