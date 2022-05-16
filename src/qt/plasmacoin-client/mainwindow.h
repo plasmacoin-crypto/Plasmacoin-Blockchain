@@ -45,6 +45,7 @@
 #include "shared-mem.hpp"
 #include "validation.hpp"
 #include "dssize.hpp"
+#include "transmitter.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"

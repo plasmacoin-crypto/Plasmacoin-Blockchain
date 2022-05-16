@@ -173,6 +173,24 @@ void MainWindow::StartMining() {
 		transmitter->Transmit(data, std::stoi(data[0]), m_User->GetKnownHosts());
 
 		emit BlockCompleted();
+
+		std::this_thread::sleep_for(std::chrono::seconds(2));
+		shared_mem::writeMemory(" ");
+
+		BlockchainData<Block*> bc = {2, {&newBlock}};
+		data = transmitter->Format(bc);
+
+		for (auto d: data) {
+			std::cout << d << std::endl;
+		}
+
+		transmitter->Transmit(data, std::stoi(data[0]));
+
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+
+		std::this_thread::sleep_for(std::chrono::seconds(2));
+		std::string result = shared_mem::readMemory(true); // Read the shared memory
+		std::cout << "Node Result: " << result << std::endl;
 	}
 }
 
@@ -246,6 +264,18 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 						transmitter->Transmit(data, std::stoi(data[0]));
 					}
 				}
+
+				break;
+			}
+
+			case go::PacketTypes::SYNC_REQUEST {
+				std::cout << "Received sync request" << std::endl;
+
+				if (object.empty() || data.empty()) {
+					break;
+				}
+
+				SyncRequest* syncRequest = json::toSyncRequest(object);
 
 				break;
 			}
