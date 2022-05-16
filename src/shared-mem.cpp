@@ -10,6 +10,8 @@
 #ifdef __APPLE__
 	// Read from a block of shared memory
 	std::string shared_mem::readMemory(bool immediate) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(300));
+
 		// Unlink any semaphores that may be left over
 		sem_unlink(shared_mem::READER_FILENAME);
 		sem_unlink(shared_mem::WRITER_FILENAME);
