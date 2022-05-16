@@ -24,6 +24,10 @@ const (
 	Block
 	Node
 	NodeList
+	Receipt
+	UserQuery
+	SyncRequest
+	BlockchainData
 )
 
 // Check for errors
@@ -91,6 +95,27 @@ func getStruct(data []byte, packetType uint8) interface{} {
 
 		fmt.Println(nodeList)
 		return nodeList
+	case UserQuery:
+		var userQuery bccnstrx.UserQuery
+
+		err := json.Unmarshal(data, &userQuery)
+		check(err, 89)
+
+		return userQuery
+	case SyncRequest:
+		var syncRequest bccnstrx.SyncRequest
+
+		err := json.Unmarshal(data, &syncRequest)
+		check(err, 89)
+
+		return syncRequest
+	case BlockchainData:
+		var bcdata bccnstrx.UserQuery
+
+		err := json.Unmarshal(data, &bcdata)
+		check(err, 89)
+
+		return bcdata
 	default:
 		break
 	}
