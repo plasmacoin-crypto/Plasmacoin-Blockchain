@@ -113,3 +113,10 @@ Signature* json::toSignature(const QJsonObject& object) {
 	Signature* sigfield = new Signature {signature, publicKey, length};
 	return sigfield;
 }
+
+SyncRequest* toSyncRequest(const QJsonObject& object) {
+	int syncType = object["syncType"].toInt();
+
+	SyncRequest* syncRequest = new SyncRequest {syncType};
+	return syncRequest;
+}

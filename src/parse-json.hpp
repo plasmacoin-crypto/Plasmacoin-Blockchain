@@ -36,6 +36,7 @@ namespace json {
 	Block* toBlock(const QJsonObject& object);
 	Transaction* toTransaction(const QJsonObject& object);
 	Signature* toSignature(const QJsonObject& object);
+	SyncRequest* toSyncRequest(const QJsonObject& object);
 }
 
 #endif // PARSE_JSON_HPP
