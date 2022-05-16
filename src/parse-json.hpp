@@ -23,6 +23,7 @@
 #include "block.hpp"
 #include "packet-types.h"
 #include "utility.hpp"
+#include "sync-request.hpp"
 
 using std::vector;
 using std::string;

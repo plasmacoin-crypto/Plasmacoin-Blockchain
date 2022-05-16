@@ -268,7 +268,7 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 				break;
 			}
 
-			case go::PacketTypes::SYNC_REQUEST {
+			case go::PacketTypes::SYNC_REQUEST: {
 				std::cout << "Received sync request" << std::endl;
 
 				if (object.empty() || data.empty()) {
