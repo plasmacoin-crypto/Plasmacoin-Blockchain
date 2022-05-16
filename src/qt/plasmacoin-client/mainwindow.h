@@ -46,6 +46,7 @@
 #include "validation.hpp"
 #include "dssize.hpp"
 #include "transmitter.hpp"
+#include "parse-json.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"
