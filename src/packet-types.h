@@ -15,7 +15,10 @@ namespace go {
 		BLOCK,
 		NODE,
 		NODE_LIST,
-		RECEIPT
+		RECEIPT,
+		USER_QUERY,
+		SYNC_REQUEST,
+		BLOCKCHAIN_DATA
 	};
 }
 
