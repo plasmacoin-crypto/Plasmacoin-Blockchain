@@ -60,15 +60,15 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../../transaction.cpp ../../node.cpp ../../block.cpp \
 				../../blockchain.cpp ../../receipt.cpp ../../merkle-helpers.cpp ../../rsa-fs.cpp \
-				../../dat-fs.cpp ../../transmitter.cpp ../../shared-mem.cpp ../../parse-json.cpp \
-				../../validation.cpp ../../hashing.cpp ../../dssize.cpp ../../utility.cpp ../../rsautil.cpp \
+				../../dat-fs.cpp ../../transmitter.cpp ../../transmitter.tpp ../../shared-mem.cpp \
+				../../parse-json.cpp ../../validation.cpp ../../hashing.cpp ../../dssize.cpp \
+				../../utility.cpp ../../rsautil.cpp \
 				\
-				../plasmacoin-client/main.cpp ./plasmacoin-client/mainwindow.cpp \
+				../plasmacoin-client/main.cpp ../plasmacoin-client/mainwindow.cpp \
 				../plasmacoin-client/transaction-list.cpp  ../plasmacoin-client/mining-status.cpp \
-				../plasmacoin-client/moc_mining_status.cpp ../plasmacoin-client/recipient-list.cpp \
-				../plasmacoin-client/firebase-auth.cpp ../plasmacoin-client/account-pages.cpp \
-				../plasmacoin-client/mining-dialog.cpp ../plasmacoin-client/transaction-manager.cpp \
-				../plasmacoin-client/connections.cpp \
+				../plasmacoin-client/recipient-list.cpp ../plasmacoin-client/firebase-auth.cpp \
+				../plasmacoin-client/account-pages.cpp ../plasmacoin-client/mining-dialog.cpp \
+				../plasmacoin-client/transaction-manager.cpp ../plasmacoin-client/connections.cpp \
 				\
 				../../../netdial/netdial.go ../../../netlisten/netlisten.go \
 				../../../netutils/compression.go ../../../netutils/netutils.go ../../../netutils/parser.go \
@@ -388,7 +388,7 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 				../../merkle-helpers.h ../../merkle-helpers.c \
 				../../rsa-fs.hpp ../../rsa-fs.cpp \
 				../../dat-fs.hpp ../../dat-fs.cpp \
-				../../transmitter.hpp ../../transmitter.cpp \
+				../../transmitter.hpp ../../transmitter.cpp ../../transmitter.tpp \
 				../../shared-mem.hpp ../../shared-mem.cpp \
 				../../parse-json.hpp ../../parse-json.cpp \
 				../../validation.hpp ../../validation.cpp \
@@ -1166,7 +1166,7 @@ rsa-fs.o: ../../rsa-fs.cpp ../../rsa-fs.hpp
 dat-fs.o: ../../dat-fs.cpp ../../dat-fs.hpp ../../block.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dat-fs.o ../../dat-fs.cpp
 
-transmitter.o: ../../transmitter.cpp ../../transmitter.hpp ../../../daemon/pcnetworkd.h \
+transmitter.o: ../../transmitter.cpp ../../transmitter.tpp ../../transmitter.hpp ../../../daemon/pcnetworkd.h \
 			   ../../transaction.hpp ../../node.hpp ../../block.hpp ../../packet-types.h \
 			   ../../receipt.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transmitter.o ../../transmitter.cpp
@@ -1175,7 +1175,7 @@ shared-mem.o: ../../shared-mem.cpp ../../shared-mem.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o shared-mem.o ../../shared-mem.cpp
 
 parse-json.o: ../../parse-json.cpp ../../parse-json.hpp ../../block.hpp ../../packet-types.h \
-			  ../../rsa-fs.hpp
+			  ../../rsa-fs.hpp ../../sync-request.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parse-json.o ../../parse-json.cpp
 
 validation.o: ../../validation.cpp ../../validation.hpp ../../blockchain.hpp ../../transaction.hpp \
@@ -1259,7 +1259,7 @@ mainwindow.o: ../plasmacoin-client/mainwindow.cpp ../plasmacoin-client/mainwindo
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qlistwidget.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QListWidgetItem \
 		../../validation.hpp ../plasmacoin-client/transaction-view.h \
-		../../dssize.hpp
+		../../dssize.hpp ../../parse-json.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../plasmacoin-client/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp
