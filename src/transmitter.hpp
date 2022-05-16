@@ -18,11 +18,14 @@
 #include <cryptopp/hex.h>		 	// Use HexEncoder
 #include <cryptopp/secblock.h>	 	// Use CryptoPP::SecByteBlock
 
+#include "packet-types.h"
 #include "transaction.hpp"
 #include "node.hpp"
 #include "block.hpp"
-#include "packet-types.h"
 #include "receipt.hpp"
+#include "user-query.hpp"
+#include "sync-request.hpp"
+#include "bcdata.hpp"
 #include "utility.hpp"
 
 namespace go {
@@ -46,6 +49,11 @@ public:
 	vector<string> Format(Node* node, bool shouldRegister = true);
 	vector<string> Format(Block* block);
 	vector<string> Format(Receipt* receipt);
+	vector<string> Format(UserQuery* query);
+	vector<string> Format(SyncRequest* request);
+	template<typename T> vector<string> Format(const BlockchainData<T*>& bcdata);
 };
+
+#include "transmitter.tpp" // Include template definitions
 
 #endif // TRANSMITTER_HPP

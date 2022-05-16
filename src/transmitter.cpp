@@ -69,6 +69,24 @@ void Transmitter::Transmit(const std::vector<std::string>& data, uint8_t type, c
 			break;
 		}
 
+		case static_cast<uint8_t>(go::PacketTypes::USER_QUERY): {
+			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
+			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
+			break;
+		}
+
+		case static_cast<uint8_t>(go::PacketTypes::SYNC_REQUEST): {
+			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
+			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
+			break;
+		}
+
+		case static_cast<uint8_t>(go::PacketTypes::BLOCKCHAIN_DATA): {
+			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
+			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
+			break;
+		}
+
 		default:
 			break;
 	}
@@ -155,5 +173,20 @@ vector<string> Transmitter::Format(Receipt* receipt) {
 		std::to_string(receipt->m_Signature.m_Length),
 
 		receipt->m_Hash
+	};
+}
+
+vector<string> Transmitter::Format(UserQuery* query) {
+	return vector<string> {
+		std::to_string(static_cast<uint8_t>(go::PacketTypes::USER_QUERY)),
+		query->m_IPAddr,
+		query->m_NodeType
+	};
+}
+
+vector<string> Transmitter::Format(SyncRequest* request) {
+	return vector<string> {
+		std::to_string(static_cast<uint8_t>(go::PacketTypes::SYNC_REQUEST)),
+		std::to_string(request->m_SyncType)
 	};
 }
