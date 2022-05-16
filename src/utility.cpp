@@ -98,3 +98,39 @@ string utility::sbbToString(const CryptoPP::SecByteBlock& sbb) {
 CryptoPP::SecByteBlock utility::sbbFromString(const string& strSbb) {
 	return CryptoPP::SecByteBlock(reinterpret_cast<const CryptoPP::byte*>(&strSbb[0]), strSbb.size());
 }
+
+string utility::IPv4(uint8_t o1, uint8_t o2, uint8_t o3, uint8_t o4) {
+	//
+	// C++20 adds support for std::format, which works similarly to sprintf defined in stdio.h/cstdio.
+	// Currently, no compliers support the format header that includes the function definition. In order
+	// to use this functionality, the user must have a C++20-compatible compiler, have the header file,
+	// and the feature must be implemented. Otherwise, sprintf will be used.
+	//
+	#if __cplusplus >= 202002L && __has_include(<format>) && defined(__cpp_lib_format)
+		#include <format>
+		return std::format("{}.{}.{}.{}", o1, o2, o3, o4);
+	#else
+		char address[IPv4_MAX_LENGTH + 1]; // Make space for \0
+		sprintf(address, "%d.%d.%d.%d", o1, o2, o3, o4);
+
+		return string(address);
+	#endif
+}
+
+string utility::IPv4(uint8_t o1, uint8_t o2, uint8_t o3, uint8_t o4, uint16_t port) {
+	//
+	// C++20 adds support for std::format, which works similarly to sprintf defined in stdio.h/cstdio.
+	// Currently, no compliers support the format header that includes the function definition. In order
+	// to use this functionality, the user must have a C++20-compatible compiler, have the header file,
+	// and the feature must be implemented. Otherwise, sprintf will be used.
+	//
+	#if __cplusplus >= 202002L && __has_include(<format>) && defined(__cpp_lib_format)
+		#include <format>
+		return std::format("{}.{}.{}.{}:{}", o1, o2, o3, o4, port);
+	#else
+		char address[IPv4_MAX_LENGTH + IPv4_PORT_MAX_LENGTH + 1]; // Make space for \0
+		sprintf(address, "%s:%d", IPv4(o1, o2, o3, o4).c_str(), port);
+
+		return string(address);
+	#endif
+}

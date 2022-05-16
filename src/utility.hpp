@@ -21,6 +21,7 @@
 #include <string>
 #include <ctime>
 #include <chrono>
+#include <cstdio>
 
 using std::string;
 
@@ -37,6 +38,9 @@ using CryptoPP::RSA;
 #include "rsa-fs.hpp"
 
 namespace utility {
+	const static int IPv4_MAX_LENGTH = 15;
+	const static int IPv4_PORT_MAX_LENGTH = 5;
+
 	string getUTCTime();
 
 	string pubKeyToBase64(const CryptoPP::RSAFunction& rsaKey);
@@ -47,6 +51,9 @@ namespace utility {
 
 	string sbbToString(const CryptoPP::SecByteBlock& sbb);
 	CryptoPP::SecByteBlock sbbFromString(const string& strSbb);
+
+	string IPv4(uint8_t o1, uint8_t o2, uint8_t o3, uint8_t o4);
+	string IPv4(uint8_t o1, uint8_t o2, uint8_t o3, uint8_t o4, uint16_t port);
 }
 
 #endif // UTILITY_HPP
