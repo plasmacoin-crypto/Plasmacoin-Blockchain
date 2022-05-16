@@ -79,6 +79,11 @@ extern void dial(cchar_t protocol, cchar_t host, cchar_t port, GoUint8 dataType,
 
 // Listen for and accept TCP/UDP connections
 extern cchar_t receive(cchar_t protocol, cchar_t host, cchar_t port);
+extern void joinGroup(cchar_t iface, cchar_t host, GoUint16 port);
+extern void sendMulticast(cchar_t host, GoUint16 port, GoUint8 dataType, GoSlice data);
+
+// Attempt to join a multicast group
+extern void listenMulticast(cchar_t iface, cchar_t host, GoUint16 port);
 
 // Compress a file using gzip
 extern cchar_t gzipCompress(cchar_t filename);
