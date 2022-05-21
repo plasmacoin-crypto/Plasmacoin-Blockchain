@@ -35,7 +35,7 @@
 #include <cryptopp/hex.h>
 #include <cryptopp/osrng.h>
 
-#include "ui_mainwindow.h"
+#include "ui.h"
 
 using CryptoPP::byte;
 using CryptoPP::SHA256;
@@ -114,7 +114,7 @@ public:
 
 private:
 	void ParseResponse(const QByteArray& response);
-	std::string EncryptPassword(const std::string& _password) const;
+	std::string EncryptPassword(const std::string& password) const;
 };
 
 inline void Auth::AddError(const ErrorCodes& error) {

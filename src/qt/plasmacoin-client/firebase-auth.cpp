@@ -299,7 +299,7 @@ void Auth::ParseResponse(const QByteArray& response) {
 // Encrypt a user's password. This is done by combining a cryptographic salt with the
 // password, then using SHA-256 to hash the resulting string. Here, all the work is done
 // using PBKDF2 rather than each step being perfomred separately.
-std::string Auth::EncryptPassword(const std::string& _password) const {
+std::string Auth::EncryptPassword(const std::string& password) const {
 	// ----------------------------------
 
 	// Use Crypto++ to generate a random number. On Linux-based systems, /dev/random or /dev/urandom
@@ -317,12 +317,12 @@ std::string Auth::EncryptPassword(const std::string& _password) const {
 	// ----------------------------------
 
 	// Copy the user's password into a CryptoPP::byte array, then get its length
-	size_t size = _password.size();
-	byte password[size + 1];
-	std::copy(std::begin(_password), std::end(_password), password);
-	password[size + 1] = '\0'; // Add the terminating character when copying from std::string to char[]
+	size_t size = password.size();
+	byte passwordBytes[size + 1];
+	std::copy(std::begin(password), std::end(password), passwordBytes);
+	passwordBytes[size + 1] = '\0'; // Add the terminating character when copying from std::string to char[]
 
-	size_t plen = std::strlen(reinterpret_cast<const char*>(password));
+	size_t plen = std::strlen(reinterpret_cast<const char*>(passwordBytes));
 
 	// Copy the salt into a CryptoPP::byte array, then get it's length
 	byte salt[randomNum.size()];
@@ -335,7 +335,7 @@ std::string Auth::EncryptPassword(const std::string& _password) const {
 	byte unused = 0;
 
 	// Encrypt the password with the salt and SHA-256
-	pbkdf.DeriveKey(derived, sizeof(derived), unused, password, plen, salt, slen, 1024, 0.0f);
+	pbkdf.DeriveKey(derived, sizeof(derived), unused, passwordBytes, plen, salt, slen, 1024, 0.0f);
 
 	std::string result;
 	HexEncoder encoder(new StringSink(result));
