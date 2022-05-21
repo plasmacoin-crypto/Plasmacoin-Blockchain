@@ -13,7 +13,7 @@
 #include <string>
 #include <chrono>
 
-#include "ui_mainwindow.h"
+#include "ui.h"
 
 using std::string;
 

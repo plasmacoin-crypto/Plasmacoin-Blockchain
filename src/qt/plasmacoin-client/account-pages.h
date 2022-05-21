@@ -17,7 +17,7 @@
 #include <QString>
 
 #include "firebase-auth.h"
-#include "ui_mainwindow.h"
+#include "ui.h"
 
 class AccountPages : public QMainWindow, public Ui_MainWindow {
 public:

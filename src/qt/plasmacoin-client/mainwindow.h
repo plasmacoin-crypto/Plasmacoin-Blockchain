@@ -27,7 +27,7 @@
 #include <QWindow>
 #include <QtConcurrent/QtConcurrent>
 
-#include "ui_mainwindow.h"
+#include "ui.h"
 
 #include "transaction-list.h"
 #include "mining-status.h"

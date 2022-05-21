@@ -16,7 +16,7 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 
-#include "ui_mainwindow.h"
+#include "ui.h"
 #include "transaction.hpp"
 #include "validation.hpp"
 

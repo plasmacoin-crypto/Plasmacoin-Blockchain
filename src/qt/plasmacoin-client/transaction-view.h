@@ -16,7 +16,7 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 
-#include "ui_mainwindow.h"
+#include "ui.h"
 #include "transaction.hpp"
 
 class TransactionView : public QMainWindow, public Ui_MainWindow {

@@ -27,7 +27,7 @@ using std::string;
 #include <QMessageBox>
 
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "ui.h"
 #include "firebase-auth.h"
 #include "transmitter.hpp"
 #include "shared-mem.hpp"

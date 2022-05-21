@@ -8,7 +8,7 @@
 #include <QIcon>
 
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "ui.h"
 #include "connections.hpp"
 
 // Run the application

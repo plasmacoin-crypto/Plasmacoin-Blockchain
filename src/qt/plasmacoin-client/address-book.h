@@ -22,7 +22,7 @@
 #include <QLayout>
 #include <QLayoutItem>
 
-#include "ui_mainwindow.h"
+#include "ui.h"
 
 #include "contact.h"
 

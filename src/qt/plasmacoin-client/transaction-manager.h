@@ -19,7 +19,7 @@
 #include <QLineEdit>
 #include <QMessageBox>
 
-#include "ui_mainwindow.h"
+#include "ui.h"
 
 #include "address-book.h"
 #include "contact.h"
