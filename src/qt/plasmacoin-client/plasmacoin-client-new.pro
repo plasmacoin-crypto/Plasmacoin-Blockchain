@@ -66,8 +66,10 @@ BASE_OBJ = \
   utility.o \
   rsautil.o
 
-INCLUDEPATH = ../../../daemon /usr/lib /usr/local /usr/local/lib/plasmacoin /opt/homebrew/Cellar/boost/1.78.0_1/include
-LIBS += $${GOLIBS} -L/usr/lib/pthread -lpthread -L/usr/local/cryptopp -lcryptopp
+INCLUDEPATH = ../../ ../../../daemon ../plasmacoin-client /usr/lib /usr/local /usr/src /usr/local/lib/plasmacoin /opt/homebrew/Cellar/boost/1.78.0_1/include
+
+macx:LIBS += $${GOLIBS} -L/usr/lib/pthread -lpthread -L/usr/local/cryptopp -lcryptopp
+unix:!macx:LIBS += $${GOLIBS} -L/usr/lib/pthread -lpthread -L/usr/src/cryptopp -lcryptopp
 
 # Build the network daemon
 daemon.target = daemon.o
@@ -102,14 +104,29 @@ macx {
 }
 
 unix:!macx {
+  HEADER_DIR = /usr/include/plasmacoin
+
   libpcnetworkd.target = libpcnetworkd.so
   libpcnetworkd.commands = \
     $(MKDIR) ../../../lib /usr/lib/plasmacoin $${NEWLINE} \
-    $(GO) build $(GOFLAGS) -o ../../../daemon/libpcnetworkd.so ../../../daemon/pcnetworkd.go $${NEWLINE} \
+    $(GO) build ${{GOFLAGS}} -o ../../../daemon/libpcnetworkd.so ../../../daemon/pcnetworkd.go $${NEWLINE} \
     $(MOVE) ../../../daemon/libpcnetworkd.h ../../../daemon/pcnetworkd.h $${NEWLINE} \
     $(MOVE) ../../../daemon/libpcnetworkd.so ../../../lib $${NEWLINE} \
     $(INSTALL_FILE) ../../../lib/libpcnetworkd.so /usr/lib/plasmacoin
   libpcnetworkd.depends = ../../../daemon/pcnetworkd.go
+
+  libplasmacoin.target = libplasmacoin.so
+  libplasmacoin.commands = \
+	  $(MKDIR) ${{HEADER_DIR}} \
+	  $(CXX) -shared ${{BASE_OBJ}} -L/usr/src/cryptopp -L/usr/lib/ -L/usr/lib/qt -L/usr/lib/plasmacoin -o ../../../lib/libplasmacoin.so /usr/src/cryptopp/libcryptopp.a /usr/lib/plasmacoin/libpcnetworkd.so /usr/lib/libboost_system.so $(QTLIBS) \
+	  $(INSTALL_FILE) ../../../lib/libplasmacoin.so /usr/lib/plasmacoin
+
+	$(eval STANDALONE_HEADERS = ../../merkle-helpers.h ../../cryptopp-sha256-libs.h ../../../daemon/pcnetworkd.h)
+	$(eval HEADERS := $(filter-out merkle-helpers.o, $(BASE_OBJ)))
+	$(eval HEADERS := $(HEADERS:%o=../../%hpp))
+	$(eval HEADERS += $(STANDALONE_HEADERS))
+
+	$(COPY_FILE) $(HEADERS) $(HEADER_DIR)
 }
 
 QMAKE_EXTRA_TARGETS += daemon libpcnetworkd libplasmacoin
