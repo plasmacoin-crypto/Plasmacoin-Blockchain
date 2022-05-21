@@ -240,7 +240,7 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 				break;
 
 			case go::PacketTypes::BLOCK: {
-				std::cout << "Received block" << std::endl;
+				std::cout << "Received a block" << std::endl;
 
 				if (object.empty() || data.empty()) {
 					break;
@@ -276,6 +276,20 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 				}
 
 				SyncRequest* syncRequest = json::toSyncRequest(object);
+
+				switch (syncRequest->m_SyncType) {
+					case static_cast<uint8_t>(go::PacketTypes::BLOCK): {
+						string interface = go::getStrIface();
+						go::joinGroup(interface.c_str(), utility::IPv4(224, 0, 0, 251).c_str(), 5001);
+
+						std::cout << "Joined group" << std::endl;
+
+						break;
+					}
+
+					default:
+						break;
+				}
 
 				break;
 			}
