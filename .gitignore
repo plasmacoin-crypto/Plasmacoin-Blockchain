@@ -5,9 +5,6 @@
 # Ignore any binaries
 a.out
 pcblkchn
-src/qt/build-plasmacoin-ui-Desktop-Debug/plasmacoin-client
-src/qt/build-plasmacoin-ui-Desktop-Debug/plasmacoin-client.app
-src/qt/build-plasmacoin-ui-Desktop-Debug/pcnetworkd
 
 # Ignore shared libraries
 lib
@@ -17,7 +14,8 @@ lib
 # Ignore build files
 *.o
 moc_*
-src/qt/build-plasmacoin-ui-Desktop-Debug/ui_*
+src/qt/build-plasmacoin-ui-Desktop-Debug/
 
-# Ignore extra makefiles
-QMakefile.mk
+# Ignore makefiles
+Makefile
+*.mk
