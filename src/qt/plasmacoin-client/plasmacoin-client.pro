@@ -34,7 +34,7 @@ HEADERS += \
     \
     mainwindow.h transaction-list.h  mining-status.h recipient-list.h \
     firebase-auth.h account-pages.h mining-dialog.h transaction-manager.h \
-    connections.hpp address-book.h contact.h transaction-view.h \
+    connections.hpp address-book.h contact.h transaction-view.h ui.h \
 
 FORMS += \
     ui/linux.ui \
