@@ -2,21 +2,148 @@ QT += core gui network concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++14
+CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp \
-    mainwindow.cpp
+    ../../transaction.cpp ../../node.cpp ../../block.cpp ../../blockchain.cpp \
+    ../../receipt.cpp ../../rsa-fs.cpp ../../dat-fs.cpp ../../transmitter.cpp \
+    ../../transmitter.tpp ../../shared-mem.cpp ../../parse-json.cpp \
+    ../../validation.cpp ../../hashing.cpp ../../dssize.cpp ../../utility.cpp \
+    ../../rsautil.cpp ../../merkle-helpers.cpp \
+    \
+    main.cpp mainwindow.cpp transaction-list.cpp  mining-status.cpp recipient-list.cpp \
+    firebase-auth.cpp account-pages.cpp mining-dialog.cpp transaction-manager.cpp \
+    connections.cpp address-book.cpp contact.cpp transaction-view.cpp \
+    #\
+    #../../../netdial/netdial.go ../../../netlisten/netlisten.go \
+    #../../../netutils/compression.go ../../../netutils/netutils.go ../../../netutils/parser.go \
+    #../../../handler/handler.go ../../../daemon/pcnetworkd.go ../../../daemon/pcnetworkd.h \
+    #../../../daemon/daemon.cpp
 
 HEADERS += \
-    mainwindow.h
+    ../../transaction.hpp ../../node.hpp ../../block.hpp \
+    ../../blockchain.hpp ../../receipt.hpp ../../merkle-helpers.h ../../rsa-fs.hpp \
+    ../../dat-fs.hpp ../../transmitter.hpp ../../transmitter.tpp ../../shared-mem.hpp \
+    ../../parse-json.hpp ../../validation.hpp ../../hashing.hpp ../../dssize.hpp \
+    ../../utility.hpp ../../rsautil.hpp ../../sync-request.hpp ../../user-query.hpp \
+    ../../signature.hpp ../../merkle-helpers.h \
+    \
+    mainwindow.h transaction-list.h  mining-status.h recipient-list.h \
+    firebase-auth.h account-pages.h mining-dialog.h transaction-manager.h \
+    connections.hpp address-book.h contact.h transaction-view.h \
 
 FORMS += \
-    mainwindow.ui
+    ui/linux.ui \
+    ui/macos.ui \
+    ui/miningdialog.ui
+
+BASE_OBJ = \
+  transaction.o \
+  node.o \
+  block.o \
+  blockchain.o \
+  receipt.o \
+  merkle-helpers.o \
+  rsa-fs.o \
+  dat-fs.o \
+  transmitter.o \
+  shared-mem.o \
+  parse-json.o \
+  validation.o \
+  hashing.o \
+  dssize.o \
+  utility.o \
+  rsautil.o \
+  shared-mem.o
+
+INCLUDEPATH = ../../ ../../../daemon ../plasmacoin-client /usr/lib /usr/local /usr/src /usr/local/lib/plasmacoin /opt/homebrew/Cellar/boost/1.78.0_1/include
+
+macx:LIBPLASMACOIN = -L/usr/local/lib/plasmacoin
+unix:!macx:LIBPLASMACOIN = -L/usr/lib/plasmacoin
+
+GOLIBS = -L/usr/local/lib/plasmacoin -lpcnetworkd
+GOFLAGS = -buildmode c-shared
+DAEMON_LIBS = $${GOLIBS} -lplasmacoin -lpthread -L/opt/homebrew/Cellar/boost/1.78.0_1/lib/ -lboost_system
+
+macx:LIBS += $${GOLIBS} -L/usr/lib/ -lpthread -L/usr/local/cryptopp -lcryptopp
+unix:!macx:LIBS += $${GOLIBS} -L/usr/lib/ -lpthread -L/usr/src/cryptopp -lcryptopp
+
+# Build the network daemon object
+daemon.target = daemon.o
+daemon.commands = $(CXX) -c $(CXXFLAGS) $(INCPATH) -o daemon.o ../../../daemon/daemon.cpp
+daemon.depends = ../../../daemon/daemon.cpp
+
+# Build the network daemon executable
+pcnetworkd.target = pcnetworkd
+pcnetworkd.commands = $(LINK) $(LFLAGS) -o pcnetworkd daemon.o $(OBJCOMP) $${DAEMON_LIBS} #$(QTLIBS)
+pcnetworkd.depends = daemon.o
+
+NEWLINE = $$escape_expand(\n\t)
+
+macx {
+  GO = /opt/homebrew/bin/go
+  HEADER_DIR = /usr/local/plasmacoin
+
+  libpcnetworkd.target = libpcnetworkd.dylib
+  libpcnetworkd.commands = \
+    $(MKDIR) ../../../lib /usr/local/lib/plasmacoin $${NEWLINE} \
+    $${GO} build $${GOFLAGS} -o ../../../daemon/libpcnetworkd.dylib ../../../daemon/pcnetworkd.go $${NEWLINE} \
+    $(MOVE) ../../../daemon/libpcnetworkd.h ../../../daemon/pcnetworkd.h $${NEWLINE} \
+    $(MOVE) ../../../daemon/libpcnetworkd.dylib ../../../lib $${NEWLINE} \
+    $(INSTALL_FILE) ../../../lib/libpcnetworkd.dylib /usr/local/lib/plasmacoin
+  libpcnetworkd.depends = ../../../daemon/pcnetworkd.go
+
+  libplasmacoin.target = libplasmacoin.dylib
+  libplasmacoin.commands = \
+    $(MKDIR) $${HEADER_DIR} $${NEWLINE} \
+    $(CXX) -shared $(BASE_OBJ) -F/opt/homebrew/lib -L/usr/local/cryptopp -L/usr/local/lib/plasmacoin -o ../../../lib/libplasmacoin.dylib -lcryptopp -lpcnetworkd -framework QtCore $${NEWLINE} \
+    $(INSTALL_FILE) ../../../lib/libplasmacoin.dylib /usr/local/lib/plasmacoin $${NEWLINE} \
+    $${NEWLINE} \
+    $(eval STANDALONE_HEADERS = ../../merkle-helpers.h ../../cryptopp-sha256-libs.h ../../../daemon/pcnetworkd.h) $${NEWLINE} \
+    $(eval HEADERS := $(filter-out merkle-helpers.o, $${BASE_OBJ})) \
+    $(eval HEADERS := $(HEADERS:%o=../../%hpp)) $${NEWLINE} \
+    $(eval HEADERS += $(STANDALONE_HEADERS)) $${NEWLINE} \
+    $${NEWLINE} \
+    $(COPY_FILE) $(HEADERS) $${HEADER_DIR}
+  libplasmacoin.depends = $${BASE_OBJ}
+}
+
+unix:!macx {
+  GO = /usr/bin/go
+  HEADER_DIR = /usr/include/plasmacoin
+
+  libpcnetworkd.target = libpcnetworkd.so
+  libpcnetworkd.commands = \
+    $(MKDIR) ../../../lib /usr/lib/plasmacoin $${NEWLINE} \
+    ${{GO}} build ${{GOFLAGS}} -o ../../../daemon/libpcnetworkd.so ../../../daemon/pcnetworkd.go $${NEWLINE} \
+    -$(MOVE) ../../../daemon/libpcnetworkd.h ../../../daemon/pcnetworkd.h $${NEWLINE} \
+    -$(MOVE) ../../../daemon/libpcnetworkd.so ../../../lib $${NEWLINE} \
+    $(INSTALL_FILE) ../../../lib/libpcnetworkd.so /usr/lib/plasmacoin
+  libpcnetworkd.depends = ../../../daemon/pcnetworkd.go
+
+  libplasmacoin.target = libplasmacoin.so
+  libplasmacoin.commands = \
+	  $(MKDIR) ${{HEADER_DIR}} \
+	  $(CXX) -shared ${{BASE_OBJ}} -L/usr/src/cryptopp -L/usr/lib/ -L/usr/lib/qt -L/usr/lib/plasmacoin -o ../../../lib/libplasmacoin.so /usr/src/cryptopp/libcryptopp.a /usr/lib/plasmacoin/libpcnetworkd.so /usr/lib/libboost_system.so $(QTLIBS) \
+	  $(INSTALL_FILE) ../../../lib/libplasmacoin.so /usr/lib/plasmacoin
+
+	$(eval STANDALONE_HEADERS = ../../merkle-helpers.h ../../cryptopp-sha256-libs.h ../../../daemon/pcnetworkd.h)
+	$(eval HEADERS := $(filter-out merkle-helpers.o, $(BASE_OBJ)))
+	$(eval HEADERS := $(HEADERS:%o=../../%hpp))
+	$(eval HEADERS += $(STANDALONE_HEADERS))
+
+	$(COPY_FILE) $(HEADERS) $(HEADER_DIR)
+}
+
+UI_HEADERS = ui_macos.h ui_linux.h ui_miningdialog.h
+QMAKE_EXTRA_TARGETS += daemon pcnetworkd libpcnetworkd libplasmacoin
+
+macx:POST_TARGETDEPS += pcnetworkd libpcnetworkd.dylib libplasmacoin.dylib
+unix:!macx:POST_TARGETDEPS += pcnetworkd libpcnetworkd.so libplasmacoin.so
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
