@@ -10,8 +10,9 @@ package blockchainconstructs
 import "strconv"
 
 type SyncRequest struct {
-	PacketType int `json:"type"`
-	SyncType   int `json:"synctype"`
+	PacketType int    `json:"type"`
+	SyncType   int    `json:"synctype"`
+	Host       string `json:"host"`
 }
 
 func MakeSyncRequest(data []string) *SyncRequest {
@@ -23,6 +24,7 @@ func MakeSyncRequest(data []string) *SyncRequest {
 	//
 	// 1.  The packet type (as an integer)		(data[0])
 	// 2.  The type of data to sync 			(data[1])
+	// 3.  The sender's IP address 				(data[2])
 	//
 
 	packetType, _ := strconv.ParseInt(data[0], 10, 32)
@@ -31,5 +33,6 @@ func MakeSyncRequest(data []string) *SyncRequest {
 	return &SyncRequest{
 		PacketType: int(packetType),
 		SyncType:   int(syncType),
+		Host:       data[2],
 	}
 }
