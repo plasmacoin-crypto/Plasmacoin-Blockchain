@@ -258,6 +258,11 @@ func getInterface() *net.Interface {
 	return ifaceFromName
 }
 
+//export getStrIface
+func getStrIface() C.cchar_t {
+	return C.CString(getInterface().Name)
+}
+
 // Convert a data slice into a struct that can be marshalled into JSON
 func makeStruct(dataType uint8, data []string) interface{} {
 	var jsonData interface{}
