@@ -10,6 +10,7 @@
 
 struct SyncRequest {
 	int m_SyncType;
+	string m_Host;
 };
 
 #endif // SYNC_REQUEST_HPP

@@ -116,7 +116,8 @@ Signature* json::toSignature(const QJsonObject& object) {
 
 SyncRequest* json::toSyncRequest(const QJsonObject& object) {
 	int syncType = object["syncType"].toInt();
+	string host = object["host"].toString().toStdString();
 
-	SyncRequest* syncRequest = new SyncRequest {syncType};
+	SyncRequest* syncRequest = new SyncRequest {syncType, host};
 	return syncRequest;
 }
