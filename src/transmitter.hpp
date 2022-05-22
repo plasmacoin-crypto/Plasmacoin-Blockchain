@@ -43,6 +43,7 @@ public:
 	~Transmitter();
 
 	void Transmit(const vector<string>& data, uint8_t type, const vector<string>& hosts = {});
+	void Multicast(const vector<string>& data, uint8_t type, const string& host, uint16_t port);
 
 	// Functions to store class data in a format that can be converted into
 	vector<string> Format(Transaction* transaction);
