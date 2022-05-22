@@ -135,9 +135,9 @@ unix:!macx {
 	  $(INSTALL_FILE) ../../../lib/libplasmacoin.so /usr/lib/plasmacoin $${NEWLINE} \
     $${NEWLINE} \
 	  $(eval STANDALONE_HEADERS = ../../merkle-helpers.h ../../cryptopp-sha256-libs.h ../../../daemon/pcnetworkd.h) $${NEWLINE} \
-	  $(eval HEADERS := $(filter-out merkle-helpers.o, $(BASE_OBJ))) $${NEWLINE} \
-	  $(eval HEADERS := $(HEADERS:%o=../../%hpp)) $${NEWLINE} $${NEWLINE} \
-	  $(eval HEADERS += $(STANDALONE_HEADERS)) $${NEWLINE} $${NEWLINE} \
+	  $(eval HEADERS := $(filter-out merkle-helpers.o, $${BASE_OBJ})) $${NEWLINE} \
+	  $(eval HEADERS := $(HEADERS:%o=../../%hpp)) $${NEWLINE} \
+	  $(eval HEADERS += $(STANDALONE_HEADERS)) $${NEWLINE} \
     $${NEWLINE} \
 	  $(COPY_FILE) $(HEADERS) $${HEADER_DIR}
   libplasmacoin.depends = $${BASE_OBJ}
