@@ -277,18 +277,28 @@ void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
 
 				SyncRequest* syncRequest = json::toSyncRequest(object);
 
-				switch (syncRequest->m_SyncType) {
-					case static_cast<uint8_t>(go::PacketTypes::BLOCK): {
-						string interface = go::getStrIface();
-						go::joinGroup(interface.c_str(), utility::IPv4(224, 0, 0, 251).c_str(), 5001);
+				if (syncRequest->m_SyncType == static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
+					string interface = go::getStrIface();
+					go::joinGroup(interface.c_str(), utility::IPv4(224, 0, 0, 251).c_str(), 5001);
 
-						std::cout << "Joined group" << std::endl;
+					std::cout << "Joined group" << std::endl;
 
-						break;
+					for (auto block: m_User->m_BlockchainCopy->GetBlockchain()) {
+						data.clear();
+
+						do {
+							data = shared_mem::readMemory(true);
+							object = json::parse(data);
+							packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
+						} while (packetType != go::PacketTypes::SYNC_REQUEST);
+
+						Transmitter* transmitter = new Transmitter();
+
+						SyncRequest* request = json::toSyncRequest(object);
+						auto packet = transmitter->Format(block);
+
+						transmitter->Multicast(packet, std::stoi(packet[0]), request->m_Host, 5001);
 					}
-
-					default:
-						break;
 				}
 
 				break;
