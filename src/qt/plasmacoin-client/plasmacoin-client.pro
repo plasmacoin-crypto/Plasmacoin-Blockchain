@@ -57,10 +57,9 @@ BASE_OBJ = \
   hashing.o \
   dssize.o \
   utility.o \
-  rsautil.o \
-  shared-mem.o
+  rsautil.o
 
-INCLUDEPATH = ../../ ../../../daemon ../plasmacoin-client /usr/lib /usr/local /usr/src /usr/local/lib/plasmacoin /opt/homebrew/Cellar/boost/1.78.0_1/include
+INCLUDEPATH = ../../ ../../../daemon ../plasmacoin-client /usr/lib /usr/local /usr/local/plasmacoin /usr/src /usr/local/lib/plasmacoin /opt/homebrew/Cellar/boost/1.78.0_1/include
 
 macx:LIBPLASMACOIN = -L/usr/local/lib/plasmacoin
 unix:!macx:LIBPLASMACOIN = -L/usr/lib/plasmacoin
@@ -69,8 +68,8 @@ GOLIBS = -L/usr/local/lib/plasmacoin -lpcnetworkd
 GOFLAGS = -buildmode c-shared
 DAEMON_LIBS = $${GOLIBS} -lplasmacoin -lpthread -L/opt/homebrew/Cellar/boost/1.78.0_1/lib/ -lboost_system
 
-macx:LIBS += $${GOLIBS} -L/usr/lib/ -lpthread -L/usr/local/cryptopp -lcryptopp
-unix:!macx:LIBS += $${GOLIBS} -L/usr/lib/ -lpthread -L/usr/src/cryptopp -lcryptopp
+macx:LIBS += $${GOLIBS} -L/usr/lib -lpthread -L/usr/local/cryptopp -lcryptopp
+unix:!macx:LIBS += $${GOLIBS} -L/usr/lib -lpthread -L/usr/src/cryptopp -lcryptopp
 
 # Build the network daemon object
 daemon.target = daemon.o
@@ -79,7 +78,7 @@ daemon.depends = ../../../daemon/daemon.cpp
 
 # Build the network daemon executable
 pcnetworkd.target = pcnetworkd
-pcnetworkd.commands = $(LINK) $(LFLAGS) -o pcnetworkd daemon.o $(OBJCOMP) $${DAEMON_LIBS} #$(QTLIBS)
+pcnetworkd.commands = $(LINK) $(LFLAGS) -o pcnetworkd daemon.o -L/usr/local/lib/plasmacoin -lplasmacoin -lpcnetworkd -lpthread -L/opt/homebrew/Cellar/boost/1.78.0_1/lib/ -lboost_system #$(QTLIBS)
 pcnetworkd.depends = daemon.o
 
 NEWLINE = $$escape_expand(\n\t)
@@ -100,11 +99,11 @@ macx {
   libplasmacoin.target = libplasmacoin.dylib
   libplasmacoin.commands = \
     $(MKDIR) $${HEADER_DIR} $${NEWLINE} \
-    $(CXX) -shared $(BASE_OBJ) -F/opt/homebrew/lib -L/usr/local/cryptopp -L/usr/local/lib/plasmacoin -o ../../../lib/libplasmacoin.dylib -lcryptopp -lpcnetworkd -framework QtCore $${NEWLINE} \
+    $(CXX) -shared $${BASE_OBJ} -F/opt/homebrew/lib -L/usr/local/cryptopp -L/usr/local/lib/plasmacoin -o ../../../lib/libplasmacoin.dylib -lcryptopp -lpcnetworkd -framework QtCore $${NEWLINE} \
     $(INSTALL_FILE) ../../../lib/libplasmacoin.dylib /usr/local/lib/plasmacoin $${NEWLINE} \
     $${NEWLINE} \
     $(eval STANDALONE_HEADERS = ../../merkle-helpers.h ../../cryptopp-sha256-libs.h ../../../daemon/pcnetworkd.h) $${NEWLINE} \
-    $(eval HEADERS := $(filter-out merkle-helpers.o, $${BASE_OBJ})) \
+    $(eval HEADERS := $(filter-out merkle-helpers.o, $${BASE_OBJ})) $${NEWLINE} \
     $(eval HEADERS := $(HEADERS:%o=../../%hpp)) $${NEWLINE} \
     $(eval HEADERS += $(STANDALONE_HEADERS)) $${NEWLINE} \
     $${NEWLINE} \
@@ -142,8 +141,11 @@ unix:!macx {
 UI_HEADERS = ui_macos.h ui_linux.h ui_miningdialog.h
 QMAKE_EXTRA_TARGETS += daemon pcnetworkd libpcnetworkd libplasmacoin
 
-macx:POST_TARGETDEPS += pcnetworkd libpcnetworkd.dylib libplasmacoin.dylib
-unix:!macx:POST_TARGETDEPS += pcnetworkd libpcnetworkd.so libplasmacoin.so
+macx:PRE_TARGETDEPS += libpcnetworkd.dylib libplasmacoin.dylib
+macx:POST_TARGETDEPS += pcnetworkd
+
+unix:!macx:PRE_TARGETDEPS += libpcnetworkd.so libplasmacoin.so
+unix:!macx:POST_TARGETDEPS += pcnetworkd
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
