@@ -59,9 +59,9 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
-      <widget class="QWidget" name="Wallet">
+      <widget class="QWidget" name="WalletTab">
        <attribute name="title">
         <string>Wallet</string>
        </attribute>
@@ -103,9 +103,9 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="Mine">
+      <widget class="QWidget" name="MiningTab">
        <attribute name="title">
-        <string>Mine Coins</string>
+        <string>Mining</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_25">
         <item>
@@ -925,7 +925,12 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="Transactions">
+      <widget class="QWidget" name="BlockchainTab">
+       <attribute name="title">
+        <string>Blockchain</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="TransactionTab">
        <attribute name="title">
         <string>Transactions</string>
        </attribute>
@@ -1358,7 +1363,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="Account">
+      <widget class="QWidget" name="AccountTab">
        <attribute name="title">
         <string>Account</string>
        </attribute>
@@ -2258,7 +2263,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="Settings">
+      <widget class="QWidget" name="SettingsTab">
        <attribute name="title">
         <string>Settings</string>
        </attribute>
