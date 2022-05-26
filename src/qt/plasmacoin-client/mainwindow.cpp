@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget* parent):
 
 	connect(Ui::MainWindow::btn_choosePath, &QPushButton::released, this, [=]() {
 		qDebug() << this->m_FileBrowser->getSaveFileName(
-											Ui::MainWindow::Settings, QFileDialog::tr("Choose an RSA output location"),
+											Ui::MainWindow::SettingsTab, QFileDialog::tr("Choose an RSA output location"),
 											QString::fromStdString(rsafs::HOME_DIR), QFileDialog::tr("Text Files (*.txt);;All Files (*.*, *)"),
 											nullptr, QFileDialog::DontUseNativeDialog
 										);
@@ -106,10 +106,10 @@ MainWindow::~MainWindow() {
 // Create QTextBrowsers to display on the mining tab
 Status* MainWindow::CreateMiningVisuals() {
 	// The four widgets to display on the screen once a block has been mined.
-	QTextBrowser *browser1 = new QTextBrowser(Ui::MainWindow::Mine),
-				 *browser2 = new QTextBrowser(Ui::MainWindow::Mine),
-				 *browser3 = new QTextBrowser(Ui::MainWindow::Mine),
-				 *browser4 = new QTextBrowser(Ui::MainWindow::Mine);
+	QTextBrowser *browser1 = new QTextBrowser(Ui::MainWindow::MiningTab),
+				 *browser2 = new QTextBrowser(Ui::MainWindow::MiningTab),
+				 *browser3 = new QTextBrowser(Ui::MainWindow::MiningTab),
+				 *browser4 = new QTextBrowser(Ui::MainWindow::MiningTab);
 
  	return new Status(browser1, browser2, browser3, browser4);
 }
@@ -224,90 +224,86 @@ void MainWindow::ShowContact(Contact* contact) {
 	birthday->setDate(contact->GetBirthday()); // Set the birthday
 }
 
-void MainWindow::ManageSharedMem(std::atomic<bool>& running) {
-	std::cout << "Running" << std::endl;
+void MainWindow::ManageSharedMem() {
+	string data = shared_mem::readMemory(true);
+	QJsonObject object = json::parse(data);
 
-	while (running) {
-		string data = shared_mem::readMemory(true);
-		QJsonObject object = json::parse(data);
+	go::PacketTypes packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
 
-		go::PacketTypes packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
+	switch (packetType) {
+		case go::PacketTypes::TRANSACTION:
+			m_TransactionList->ConfirmToMempool(json::toTransaction(object));
+			shared_mem::writeMemory(" ");
+			break;
 
-		switch (packetType) {
-			case go::PacketTypes::TRANSACTION:
-				m_TransactionList->ConfirmToMempool(json::toTransaction(object));
-				shared_mem::writeMemory(" ");
-				break;
+		case go::PacketTypes::BLOCK: {
+			std::cout << "Received a block" << std::endl;
 
-			case go::PacketTypes::BLOCK: {
-				std::cout << "Received a block" << std::endl;
-
-				if (object.empty() || data.empty()) {
-					break;
-				}
-
-				Block* block = json::toBlock(object);
-
-				// If a new block is received, stop trying to solve the current block.
-				if (block->m_MinerAddr != m_User->GetAddress()) {
-					m_User->m_BlockchainCopy->StopMining(std::move(m_ExitSignal));
-					std::cout << "Stopping" << std::endl;
-				}
-
-				for (auto transaction: block->m_Transactions) {
-					if (m_User->GetAddress() == transaction->m_SenderAddr) {
-						Receipt* receipt = transaction->GetReceipt();
-
-						// Transmit the receipt to the recipient
-						Transmitter* transmitter = new Transmitter();
-						auto data = transmitter->Format(transaction);
-						transmitter->Transmit(data, std::stoi(data[0]));
-					}
-				}
-
+			if (object.empty() || data.empty()) {
 				break;
 			}
 
-			case go::PacketTypes::SYNC_REQUEST: {
-				std::cout << "Received sync request" << std::endl;
+			Block* block = json::toBlock(object);
 
-				if (object.empty() || data.empty()) {
-					break;
-				}
-
-				SyncRequest* syncRequest = json::toSyncRequest(object);
-
-				if (syncRequest->m_SyncType == static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
-					string interface = go::getStrIface();
-					go::joinGroup(interface.c_str(), utility::IPv4(224, 0, 0, 251).c_str(), 5001);
-
-					std::cout << "Joined group" << std::endl;
-
-					for (auto block: m_User->m_BlockchainCopy->GetBlockchain()) {
-						data.clear();
-
-						do {
-							data = shared_mem::readMemory(true);
-							object = json::parse(data);
-							packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
-						} while (packetType != go::PacketTypes::SYNC_REQUEST);
-
-						Transmitter* transmitter = new Transmitter();
-
-						SyncRequest* request = json::toSyncRequest(object);
-						auto packet = transmitter->Format(block);
-
-						transmitter->Multicast(packet, std::stoi(packet[0]), request->m_Host, 5001);
-					}
-				}
-
-				break;
+			// If a new block is received, stop trying to solve the current block.
+			if (block->m_MinerAddr != m_User->GetAddress()) {
+				m_User->m_BlockchainCopy->StopMining(std::move(m_ExitSignal));
+				std::cout << "Stopping" << std::endl;
 			}
 
-			default:
-				break;
+			for (auto transaction: block->m_Transactions) {
+				if (m_User->GetAddress() == transaction->m_SenderAddr) {
+					Receipt* receipt = transaction->GetReceipt();
+
+					// Transmit the receipt to the recipient
+					Transmitter* transmitter = new Transmitter();
+					auto data = transmitter->Format(transaction);
+					transmitter->Transmit(data, std::stoi(data[0]));
+				}
+			}
+
+			break;
 		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		case go::PacketTypes::SYNC_REQUEST: {
+			std::cout << "Received sync request" << std::endl;
+
+			if (object.empty() || data.empty()) {
+				break;
+			}
+
+			SyncRequest* syncRequest = json::toSyncRequest(object);
+
+			if (syncRequest->m_SyncType == static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
+				string interface = go::getStrIface();
+				go::joinGroup(interface.c_str(), utility::IPv4(224, 0, 0, 251).c_str(), 5001);
+
+				std::cout << "Joined group" << std::endl;
+
+				for (auto block: m_User->m_BlockchainCopy->GetBlockchain()) {
+					data.clear();
+
+					do {
+						data = shared_mem::readMemory(true);
+						object = json::parse(data);
+						packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
+					} while (packetType != go::PacketTypes::SYNC_REQUEST);
+
+					Transmitter* transmitter = new Transmitter();
+
+					SyncRequest* request = json::toSyncRequest(object);
+					auto packet = transmitter->Format(block);
+
+					transmitter->Multicast(packet, std::stoi(packet[0]), request->m_Host, 5001);
+				}
+			}
+
+			break;
+		}
+
+		default:
+			break;
 	}
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }

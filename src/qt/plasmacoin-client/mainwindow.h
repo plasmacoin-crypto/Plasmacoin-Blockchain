@@ -14,6 +14,7 @@
 #include <iostream>
 #include <chrono>
 #include <atomic>
+#include <future>
 
 #include <QMainWindow>
 #include <QStringList>
@@ -47,6 +48,7 @@
 #include "dssize.hpp"
 #include "transmitter.hpp"
 #include "parse-json.hpp"
+#include "utility.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -70,7 +72,7 @@ public:
 	void UpdateStatus(const Block& block, std::chrono::seconds time); // Update the mining status while a block is being mined
 	void ShowContact(Contact* contact);
 
-	void ManageSharedMem(std::atomic<bool>& running);
+	void ManageSharedMem();
 
 	QWidget* parent;
 	Status* m_Status;

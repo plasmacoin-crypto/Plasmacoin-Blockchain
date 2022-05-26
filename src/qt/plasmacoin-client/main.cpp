@@ -53,12 +53,14 @@ int main(int argc, char* argv[]) {
 	connections::removeFromBlock(window);
 
 	std::atomic<bool> runningThread = true;
+
 	QFuture<void> manageSharedMem = QtConcurrent::run([&window](std::atomic<bool>& running) {
-		window.ManageSharedMem(running);
+		while (running) {
+			window.ManageSharedMem();
+		}
 	}, std::ref(runningThread));
 
-	//sharedMem.detach();
-	//runningThread = false;
+	runningThread = false;
 
 	return app.exec();
 }
