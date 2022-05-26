@@ -5,7 +5,7 @@
 // COPYRIGHT: Copyright (c) 2022 by Ryan Smith <rysmith2113@gmail.com>
 //
 
-#ifdef __LINUX__
+#ifdef __linux__
 	#include "ui_linux.h"
 #elif defined(__APPLE__)
 	#include "ui_macos.h"
