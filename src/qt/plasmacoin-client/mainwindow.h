@@ -37,6 +37,8 @@
 #include "transaction-manager.h"
 #include "transaction-view.h"
 #include "mining-dialog.h"
+#include "block-view.h"
+#include "blockchain-viewer.h"
 //#include "settings-manager.h"
 
 #include "block.hpp"
@@ -83,6 +85,8 @@ public:
 	TransactionManager* m_TransactionManager;
 	TransactionView* m_TransactionView;
 	MiningDialog* m_MiningDialog;
+	BlockView* m_BlockView;
+	BlockchainViewer* m_BlockchainViewer;
 	//SettingsManager* m_SettingsManager;
 
 	QLabel* m_NameDisplay = new QLabel();

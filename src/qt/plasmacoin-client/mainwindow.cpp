@@ -45,6 +45,8 @@ MainWindow::MainWindow(QWidget* parent):
 						    );
 	m_TransactionView = new TransactionView(Ui::MainWindow::transactionView, amountSelector->decimals(), feeSelector->decimals());
 	m_MiningDialog = new MiningDialog(this);
+	m_BlockView = new BlockView(Ui::MainWindow::blockView);
+	m_BlockchainViewer = new BlockchainViewer(m_User->m_BlockchainCopy, Ui::MainWindow::blockView, Ui::MainWindow::blockTrxnView);
 
 	// Create some temporary nodes to make transactions between
 	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
@@ -165,6 +167,7 @@ void MainWindow::StartMining() {
 		newBlock.m_MinerAddr = m_User->GetAddress(); // Timestamp the block
 
 		m_User->m_BlockchainCopy->Add(&newBlock);
+		m_BlockchainViewer->Latest();
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -180,10 +183,6 @@ void MainWindow::StartMining() {
 		BlockchainData<Block*> bc = {2, {&newBlock}};
 		data = transmitter->Format(bc);
 
-		for (auto d: data) {
-			std::cout << d << std::endl;
-		}
-
 		transmitter->Transmit(data, std::stoi(data[0]));
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -196,7 +195,7 @@ void MainWindow::StartMining() {
 
 void MainWindow::ResetBlock() {
 	m_BlockContents.clear();
-	blockTransactionList->clear();
+	blockContents->clear();
 }
 
 void MainWindow::UpdateStatus(const Block& block, seconds time) {
