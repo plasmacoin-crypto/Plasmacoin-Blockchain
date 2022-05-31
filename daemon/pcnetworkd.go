@@ -67,10 +67,11 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 	// Determine what is being sent over TCP
 	jsonData := makeStruct(dataType, goData)
 
-	conn, err := net.Dial(goProtocol, net.JoinHostPort(goHost, goPort))
+	conn, err := net.DialTimeout(goProtocol, net.JoinHostPort(goHost, goPort), time.Second * 5)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
+		return
 	}
 
 	jsonBytes, _ := json.Marshal(jsonData)
