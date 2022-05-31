@@ -69,6 +69,7 @@ public:
 
 private:
 	string CreateAddress(const RSA::PublicKey& pubKey);
+	void SyncFromNetwork(const string& ip);
 
 	string m_Name, m_Username, m_Password, m_IPAddr, m_KeyPath, m_Address;
 

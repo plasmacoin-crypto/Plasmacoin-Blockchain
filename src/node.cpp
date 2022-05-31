@@ -44,6 +44,12 @@ Node::Node(
 	QJsonObject object = json::parse(result);
 	std::vector<string> hosts = json::parseArray(object, "nodes");
 	SetKnownHosts(hosts);
+
+	for (auto ip: hosts) {
+		std::cout << ip << std::endl;
+	}
+
+	delete transmitter;
 }
 
 Node::Node(const string& ip, const string& address):
@@ -125,4 +131,19 @@ string Node::CreateAddress(const RSA::PublicKey& pubKey) {
 	pubKey.Save(CryptoPP::StringSink(strPubKey).Ref());
 
 	return hashing::RIPEMD160(hashing::hash(strPubKey));
+}
+
+void Node::SyncFromNetwork(const string& ip) {
+	// Get a list of high-committment nodes' IP addresses
+	Transmitter* transmitter = new Transmitter();
+	UserQuery* query = new UserQuery{"192.168.1.44", "full"};
+
+	auto data = transmitter->Format(query);
+	transmitter->Transmit(data, std::stoi(data[0]));
+
+	std::string result = shared_mem::readMemory(true); // Read the shared memory
+	std::cout << "Node Result: " << result << std::endl;
+
+	delete transmitter;
+	delete query;
 }
