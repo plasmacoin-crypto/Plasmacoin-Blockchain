@@ -17,7 +17,8 @@ SOURCES += \
     \
     main.cpp mainwindow.cpp transaction-list.cpp  mining-status.cpp recipient-list.cpp \
     firebase-auth.cpp account-pages.cpp mining-dialog.cpp transaction-manager.cpp \
-    connections.cpp address-book.cpp contact.cpp transaction-view.cpp \
+    connections.cpp address-book.cpp contact.cpp transaction-view.cpp block-view.cpp \
+    blockchain-viewer.cpp \
     #\
     #../../../netdial/netdial.go ../../../netlisten/netlisten.go \
     #../../../netutils/compression.go ../../../netutils/netutils.go ../../../netutils/parser.go \
@@ -34,7 +35,8 @@ HEADERS += \
     \
     mainwindow.h transaction-list.h  mining-status.h recipient-list.h \
     firebase-auth.h account-pages.h mining-dialog.h transaction-manager.h \
-    connections.hpp address-book.h contact.h transaction-view.h ui.h \
+    connections.hpp address-book.h contact.h transaction-view.h block-view.h \
+    blockchain-viewer.h ui.h \
 
 FORMS += \
     ui/linux.ui \
