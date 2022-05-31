@@ -48,10 +48,10 @@ int main(int argc, char* argv[]) {
 	window.contactImage->setPixmap(QPixmap("../assets/contact-default.png"));
 	window.btn_addContact->setIcon(QIcon("../assets/plus.png"));
 
-	window.btn_first->setIcon(QIcon("../assets/double-arrow-left.png"));
+	window.btn_first->setIcon(QIcon("../assets/double-left-arrow.png"));
 	window.btn_previous->setIcon(QIcon("../assets/arrow-left.png"));
 	window.btn_next->setIcon(QIcon("../assets/arrow-right.png"));
-	window.btn_last->setIcon(QIcon("../assets/double-arrow-right.png"));
+	window.btn_last->setIcon(QIcon("../assets/double-right-arrow.png"));
 	window.btn_sync->setIcon(QIcon("../assets/sync.png"));
 
 	splashScreen.finish(&window);
