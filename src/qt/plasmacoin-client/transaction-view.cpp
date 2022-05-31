@@ -19,7 +19,6 @@ TransactionView::~TransactionView() {
 
 void TransactionView::Display(Transaction* transaction) {
 	m_TransactionView->setRowCount(5);
-	int rowNum = m_TransactionView->rowCount();
 
 	std::vector<std::pair<QTableWidgetItem, QTableWidgetItem>> table = {
 		{
@@ -55,5 +54,5 @@ void TransactionView::Display(Transaction* transaction) {
 }
 
 void TransactionView::Clear() {
-
+	m_TransactionView->setRowCount(0);
 }
