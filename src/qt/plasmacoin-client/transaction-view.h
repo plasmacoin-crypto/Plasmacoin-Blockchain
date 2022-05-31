@@ -1,6 +1,6 @@
 //
 // FILENAME: transaction-view.h | Plasmacoin Cryptocurrency
-// DESCRIPTION: Manage the transaction view in the mining menu
+// DESCRIPTION: Manage a table of transaction data
 // CREATED: 2022-01-26 @ 10:52 PM
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
@@ -21,7 +21,7 @@
 
 class TransactionView : public QMainWindow, public Ui_MainWindow {
 public:
-	TransactionView(QTableWidget* transactionView, int amountPrecision, int feePrecision);
+	TransactionView(QTableWidget* transactionView, int amountPrecision = 10, int feePrecision = 5);
 	~TransactionView();
 
 	void Display(Transaction* transaction);
