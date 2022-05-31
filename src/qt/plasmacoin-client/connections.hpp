@@ -40,11 +40,13 @@ namespace connections {
 	void accountPages(MainWindow& window);
 	void addressBook(MainWindow& window);
 	void transactionPage(MainWindow& window);
+	void blockchainPage(MainWindow& window);
 	void addToBlock(MainWindow& window);
 	void removeFromBlock(MainWindow& window);
 
 	void manageSharedMem(std::atomic<bool>& running, MainWindow& window);
 	double calculateFee(MainWindow& window);
+	void updateButtons(MainWindow& window);
 }
 
 #endif // CONNECTIONS_HPP

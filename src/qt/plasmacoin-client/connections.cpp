@@ -278,6 +278,48 @@ void connections::transactionPage(MainWindow& window) {
 	});
 }
 
+void connections::blockchainPage(MainWindow& window) {
+	updateButtons(window);
+
+	window.connect(window.btn_first, &QToolButton::released, &window, [&window]() {
+		window.m_BlockchainViewer->Genesis();
+		updateButtons(window);
+	});
+
+	window.connect(window.btn_previous, &QToolButton::released, &window, [&window]() {
+		window.m_BlockchainViewer->Previous();
+		updateButtons(window);
+	});
+
+	window.connect(window.btn_next, &QToolButton::released, &window, [&window]() {
+		window.m_BlockchainViewer->Next();
+		updateButtons(window);
+	});
+
+	window.connect(window.btn_last, &QToolButton::released, &window, [&window]() {
+		window.m_BlockchainViewer->Latest();
+		updateButtons(window);
+	});
+
+	window.connect(window.blockView, &QTableWidget::itemSelectionChanged, &window, [&window]() {
+		int row = window.blockView->currentRow(), rows = window.blockView->rowCount();
+		QTableWidgetItem* field = window.blockView->item(row, 0); // Get the field name of the selected row
+
+		// Get the block currently being displayed
+		int index = window.m_BlockchainViewer->GetIndex();
+		Block* block = window.m_User->m_BlockchainCopy->Get(index);
+
+		// Display transaction data for the displayed block if the user clicks on a transaction
+		if (field->text() == "Transaction") {
+			Transaction* transaction = block->m_Transactions[rows - row - 1];
+			window.m_BlockchainViewer->ShowTransaction(transaction);
+		}
+		else {
+			window.blockTrxnView->setRowCount(0);
+		}
+	});
+}
+
 // Allow the user to add transactions to their block
 void connections::addToBlock(MainWindow& window) {
 	window.connect(window.plusSign, &QToolButton::released, &window, [&window]() {
@@ -289,11 +331,11 @@ void connections::addToBlock(MainWindow& window) {
 		// 1) They have selected a transaction from the list on the right (no blank selections)
 		// 2) They have not added that transaction previously (no adding duplicate elements)
 		//
-		if ((selected.size() != 0) && (window.blockTransactionList->findItems(selected.front()->text(), Qt::MatchFixedString).size() == 0)) {
+		if ((selected.size() != 0) && (window.blockContents->findItems(selected.front()->text(), Qt::MatchFixedString).size() == 0)) {
 			QListWidgetItem* item = window.transactionList->item(row); // Get the item at the currently selected row
 
 			window.m_BlockContents.push_back(window.m_TransactionList->At(row)); // Record the selected item
-			window.blockTransactionList->addItem(item->text());
+			window.blockContents->addItem(item->text());
 		}
 	});
 }
@@ -303,12 +345,12 @@ void connections::removeFromBlock(MainWindow& window) {
 	window.connect(window.minusSign, &QToolButton::released, &window, [&window]() {
 		// To remove a transaction, the only requirement is that it's been selected on
 		// the list of transactions in user's block
-		if (window.blockTransactionList->selectedItems().size() != 0) {
-			int row = window.blockTransactionList->currentRow();
-			QListWidgetItem* item = window.blockTransactionList->item(row); // get the item at the currently selected row
+		if (window.blockContents->selectedItems().size() != 0) {
+			int row = window.blockContents->currentRow();
+			QListWidgetItem* item = window.blockContents->item(row); // get the item at the currently selected row
 
 			window.m_BlockContents.erase(window.m_BlockContents.begin() + row); // Remove the selected item
-			window.blockTransactionList->takeItem(row);
+			window.blockContents->takeItem(row);
 		}
 	});
 }
@@ -381,4 +423,14 @@ double connections::calculateFee(MainWindow& window) {
 
 	delete transaction;
 	return predictedFee;
+}
+
+void connections::updateButtons(MainWindow& window) {
+	bool genesis, previous, next, latest;
+	std::tie(genesis, previous, next, latest) = window.m_BlockchainViewer->GetBtnStates();
+
+	window.btn_first->setEnabled(genesis);
+	window.btn_previous->setEnabled(previous);
+	window.btn_next->setEnabled(next);
+	window.btn_last->setEnabled(latest);
 }
