@@ -45,7 +45,7 @@ public:
 	void Sort();
 	void SetEditing(bool editing);
 	int GetRowOf(Contact* contact);
-	inline size_t Size();
+	inline size_t Size() const;
 
 	void SetInsertion(bool insertion);
 	bool IsInserting() const;
@@ -71,7 +71,7 @@ private:
 	bool m_IsInserting = false;
 };
 
-inline size_t AddressBook::Size() {
+inline size_t AddressBook::Size() const {
 	return m_ContactsList->rowCount();
 }
 
