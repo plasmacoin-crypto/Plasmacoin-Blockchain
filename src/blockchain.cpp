@@ -51,6 +51,11 @@ Block* Blockchain::GetLatest() const {
 	return m_Chain.back();
 }
 
+// Get any block on the blockchain using its index
+Block* Blockchain::Get(int index) const {
+	return m_Chain[index];
+}
+
 int64_t Blockchain::GetDifficulty() const {
 	return m_Difficulty;
 }
@@ -155,35 +160,6 @@ bool Blockchain::Consensus(Block& block) {
 void Blockchain::StopMining(std::promise<void>&& exitSignal) {
 	exitSignal.set_value();
 }
-
-// Make sure the blockchain isn't corrupted
-// bool Blockchain::Validate() {
-// 	string hash;
-
-// 	std::cout << "Validating Blockchain" << std::endl;
-
-// 	for (auto block: m_Chain) {
-// 		hash = hashing::hash(*block); // Regenerate the block hash
-
-// 		// Make sure the block is valid. One invalid block invalidates the whole
-// 		// chain, because the previous hashes of all the following blocks will
-// 		// be invalid.
-// 		if (!block->Validate(block->m_Hash, block->m_PrevHash, DIFFICULTY)) {
-// 			return false;
-// 		}
-// 	}
-
-// 	return true;
-// }
-
-// bool Blockchain::ValidateHash(const string& hash) {
-// 	if (hash.empty()) {
-// 		return false;
-// 	}
-
-// 	string substring = hash.substr(0, DIFFICULTY); // The first characters of the hash that represent the difficulty
-// 	return substring.find(string(DIFFICULTY, '0')) != string::npos;
-// }
 
 // Use Crypto++ to hash a string
 string Blockchain::Hash(const string& input) {

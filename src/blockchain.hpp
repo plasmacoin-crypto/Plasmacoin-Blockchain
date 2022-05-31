@@ -59,7 +59,11 @@ public:
 
 	vector<Block*> GetBlockchain() const;
 	Block* GetLatest() const;
+	Block* Get(int index) const;
+
 	size_t Size() const;
+	bool Empty() const;
+
 	int64_t GetDifficulty() const;
 	int256_t GetTarget() const;
 
@@ -94,6 +98,11 @@ private:
 // Get the number of blocks in the blockchain
 inline size_t Blockchain::Size() const {
 	return m_Chain.size();
+}
+
+// Check if the blockchain is empty
+inline bool Blockchain::Empty() const {
+	return m_Chain.empty();
 }
 
 // Check if a future is ready to have its value read
