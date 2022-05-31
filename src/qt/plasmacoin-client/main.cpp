@@ -15,6 +15,15 @@
 int main(int argc, char* argv[]) {
 	QApplication app(argc, argv);
 
+	// const char* block[] = {
+	// 	"2", "0", "1", "52", "0", "", "", "", "true", "1", "",
+	// 	"", "", "", "1", "1", "", "IIIIII4ggg", "MzA4MjAxQTAzMDBEMDYwOTJBODY0ODg2RjcwRDAxMDEwMTA1MDAwMzgyMDE4RDAwMzA4MjAxODgwMjgyMDE4MTAwQTBGRDI5QzU0N0M0MERBRDI2MjAxNDBDQjg1RTJDRjVBQUNBRDI1OUVDQ0IyRDdCREEzQkE5NjBBQkUyRTkxRUI4N0EwN0M0NEZDMkM1RTgwNUI0NzM1RTlFMTdGN0UxQjFCOEFGRjQxM0E2QTdBRjRERUFDMEY3OENGMDY0QzNCQ0I4QzkzQUVCQURCRkFCQTlEMjcxOEFCNDkxNDBCRUVGNEZDQTI0ODc5MDQxMjZDNTNFRUNFNERDNzcwQUZDMDU1NkMxRkVFN0U0RTI4MzBDODUxQTU2MTI4NEU5MUNBMEJCOTFGNTlCNUUwREIzQkEzNTY1QUUzNTQ4RDExQkQ1REVBQjgxMDlBNzI0MDlDQkRGNkU2NDEyQzBCRjI4NDhEMjI5MzIyN0NDRUYwRURFQjdDQjY5RTE4NkE0MTY1MkNBM0JDNDA4MDQ3RTc1NDE1NzAxNTQzQTY3MkYxQThEM0YxRThGRTIzMDY4Q0VFRjEwRkNDQTdFMTgxQkM0RDVBRTExQTE5Q0ZGMzZFNEZBREQ0NkQ2NEY3MjYzNjM1NDJCNDkzNTVGNTU0RkU3NkIyMzlGOUJCQTdGRDE1RDAzRjYxM0FEQURCQ0JFNTI2QkQ3MkRGNzQ5QThDMzQ2MDhGMjVDOUE2QUI2RjZDMDFGQzYxQzEwMzUwMTc4MzI0QTJDN0VBRTI5RTQ5QjE3M0VFRDlENUJBREVBNDVEQzQ2MTA0RDZBREFCNzU1NEFFMERBMzNENDdGMzlEODUwMDlCOERBMDRBQ0YyMDBEQjZBREI3MjMzQTg3MTdGMzAxOEM2Q0E3NzY3MTc1Qjc3RTYyOEY4NjFBRDRBQkU1NzRDN0U4NjBEMUE1NjBCOEVBNEM3QkU1ODc3NjMxMDI2NjIzNkQ4NkJGRDlFNDRGMTk2ODlDQ0Y5MEM4QkNEN0U1NDkwMzBCNzk4M0NEMDU4REM4MDEzN0YwMDEzMUEwNDRDQ0U5Njc3Q0Y4NkJBOUI0MjNEMkE1QkI0QjJCNTRCMDIwMTEx", "384", "", ""
+	// };
+	// go::GoSlice slice = {block, 22, 22};
+
+	// go::joinGroup("en0", utility::IPv4(224, 0, 0, 251).c_str(), 5001);
+	// go::sendMulticast(utility::IPv4(224, 0, 0, 251).c_str(), 5001, 2, slice);
+
 	QPixmap pixmap("../assets/plasmacoin-banner.png");
     QSplashScreen splashScreen(pixmap);
     splashScreen.show();
@@ -39,6 +48,12 @@ int main(int argc, char* argv[]) {
 	window.contactImage->setPixmap(QPixmap("../assets/contact-default.png"));
 	window.btn_addContact->setIcon(QIcon("../assets/plus.png"));
 
+	window.btn_first->setIcon(QIcon("../assets/double-arrow-left.png"));
+	window.btn_previous->setIcon(QIcon("../assets/arrow-left.png"));
+	window.btn_next->setIcon(QIcon("../assets/arrow-right.png"));
+	window.btn_last->setIcon(QIcon("../assets/double-arrow-right.png"));
+	window.btn_sync->setIcon(QIcon("../assets/sync.png"));
+
 	splashScreen.finish(&window);
 
 	// std::atomic<bool> threadRunning = true;
@@ -49,6 +64,7 @@ int main(int argc, char* argv[]) {
 	connections::accountPages(window);
 	connections::addressBook(window);
 	connections::transactionPage(window);
+	connections::blockchainPage(window);
 	connections::addToBlock(window);
 	connections::removeFromBlock(window);
 
