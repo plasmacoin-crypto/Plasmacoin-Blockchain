@@ -11,6 +11,7 @@
 #include <string>
 #include <atomic>
 #include <thread>
+#include <vector>
 
 using std::string;
 

@@ -318,6 +318,34 @@ void connections::blockchainPage(MainWindow& window) {
 			window.blockTrxnView->setRowCount(0);
 		}
 	});
+
+	window.connect(window.btn_sync, &QToolButton::released, &window, [&window]() {
+		Transmitter* transmitter = new Transmitter();
+		std::vector<string> data;
+
+		// Request a list of viable nodes to sync from
+		UserQuery* userQuery = new UserQuery {"192.168.1.44", "light"};
+		data = transmitter->Format(userQuery);
+		transmitter->Transmit(data, std::stoi(data[0]));
+
+		// Get the resulting list of nodes
+		string result = shared_mem::readMemory(true); // Read the shared memory
+
+		// Parse the JSON string
+		QJsonObject object = json::parse(result);
+		std::vector<string> hosts = json::parseArray(object, "nodes");
+
+		for (auto host: hosts) {
+			std::cout << host << std::endl;
+		}
+
+		// Request to sync
+		SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), hosts[0]};
+		data = transmitter->Format(syncRequest);
+		transmitter->Transmit(data, std::stoi(data[0]), hosts);
+
+		const char* iface = getStrIface();
+		go::listenMulticast(iface, hosts[0], 5001);
 }
 
 // Allow the user to add transactions to their block
