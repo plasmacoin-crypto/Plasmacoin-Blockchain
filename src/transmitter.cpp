@@ -76,8 +76,10 @@ void Transmitter::Transmit(const vector<string>& data, uint8_t type, const vecto
 		}
 
 		case static_cast<uint8_t>(go::PacketTypes::SYNC_REQUEST): {
+			string ip = hosts[0];
+			
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
+			future<void> dial = std::async(&go::dial, "tcp", ip.c_str(), "8080", type, slice);
 			break;
 		}
 
