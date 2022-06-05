@@ -76,7 +76,9 @@ int main(int argc, char* argv[]) {
 		}
 	}, std::ref(runningThread));
 
-	runningThread = false;
+	app.connect(&app, &QApplication::aboutToQuit, &window, [&runningThread]() mutable {
+		runningThread = false;
+	});
 
 	return app.exec();
 }
