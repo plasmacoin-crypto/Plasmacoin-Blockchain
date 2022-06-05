@@ -344,8 +344,9 @@ void connections::blockchainPage(MainWindow& window) {
 		data = transmitter->Format(syncRequest);
 		transmitter->Transmit(data, std::stoi(data[0]), hosts);
 
-		const char* iface = getStrIface();
-		go::listenMulticast(iface, hosts[0], 5001);
+		const char* iface = go::getStrIface();
+		go::listenMulticast(iface, hosts[0].c_str(), 5001);
+	});
 }
 
 // Allow the user to add transactions to their block
