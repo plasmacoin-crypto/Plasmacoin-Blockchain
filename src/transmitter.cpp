@@ -77,7 +77,7 @@ void Transmitter::Transmit(const vector<string>& data, uint8_t type, const vecto
 
 		case static_cast<uint8_t>(go::PacketTypes::SYNC_REQUEST): {
 			string ip = hosts[0];
-			
+
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
 			future<void> dial = std::async(&go::dial, "tcp", ip.c_str(), "8080", type, slice);
 			break;
@@ -91,6 +91,22 @@ void Transmitter::Transmit(const vector<string>& data, uint8_t type, const vecto
 
 		default:
 			break;
+	}
+}
+
+void TransmitUDP(const vector<string>& data, uint8_t type, const vector<string>& hosts) {
+	const size_t SIZE = data.size();
+	const char* carray[SIZE];
+
+	// Copy the vector of strings to an array of const char*
+	for (unsigned int i = 0; i < SIZE; i++) {
+		carray[i] = data[i].c_str();
+	}
+
+	go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
+
+	for (auto host: hosts) {
+		future<void> dial = std::async(&go::dial, "udp", host, "8080", type, slice);
 	}
 }
 

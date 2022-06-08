@@ -343,9 +343,6 @@ void connections::blockchainPage(MainWindow& window) {
 		SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), hosts[0]};
 		data = transmitter->Format(syncRequest);
 		transmitter->Transmit(data, std::stoi(data[0]), hosts);
-
-		const char* iface = go::getStrIface();
-		go::listenMulticast(iface, hosts[0].c_str(), 5001);
 	});
 }
 

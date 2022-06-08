@@ -20,6 +20,19 @@ MainWindow::MainWindow(QWidget* parent):
 
 	Ui_MainWindow::setupUi(this);
 
+	// QPushButton* button = new QPushButton("Button", this);
+	// button->setGeometry(QRect(0, 0, 100, 30));
+	// button->show();
+
+	// QPropertyAnimation* animation = new QPropertyAnimation(button, "geometry");
+	// animation->setDuration(10000);
+	// animation->setStartValue(QRect(0, 0, 100, 30));
+	// animation->setEndValue(QRect(250, 250, 100, 30));
+
+	// animation->start();
+	// connect(animation, &QPropertyAnimation::finished, button, &QPushButton::deleteLater);
+
+
 	// std::future<void> manageSharedMem = std::async([this](std::atomic<bool>& running) {
 	// 	this->ManageSharedMem(running);
 	// }, std::ref(runningThread));
@@ -180,16 +193,16 @@ void MainWindow::StartMining() {
 		std::this_thread::sleep_for(std::chrono::seconds(2));
 		shared_mem::writeMemory(" ");
 
-		BlockchainData<Block*> bc = {2, {&newBlock}};
-		data = transmitter->Format(bc);
+		// BlockchainData<Block*> bc = {2, {&newBlock}};
+		// data = transmitter->Format(bc);
 
-		transmitter->Transmit(data, std::stoi(data[0]));
+		// transmitter->Transmit(data, std::stoi(data[0]));
 
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+		// std::this_thread::sleep_for(std::chrono::seconds(1));
 
-		std::this_thread::sleep_for(std::chrono::seconds(2));
-		std::string result = shared_mem::readMemory(true); // Read the shared memory
-		std::cout << "Node Result: " << result << std::endl;
+		// std::this_thread::sleep_for(std::chrono::seconds(2));
+		// std::string result = shared_mem::readMemory(true); // Read the shared memory
+		// std::cout << "Node Result: " << result << std::endl;
 	}
 }
 
@@ -266,6 +279,7 @@ void MainWindow::ManageSharedMem() {
 
 		case go::PacketTypes::SYNC_REQUEST: {
 			std::cout << "Received sync request" << std::endl;
+			shared_mem::writeMemory(" ");
 
 			if (object.empty() || data.empty()) {
 				break;
@@ -293,7 +307,8 @@ void MainWindow::ManageSharedMem() {
 					SyncRequest* request = json::toSyncRequest(object);
 					auto packet = transmitter->Format(block);
 
-					transmitter->Multicast(packet, std::stoi(packet[0]), request->m_Host, 5001);
+					transmitter->TransmitUDP(packet, std::stoi(packet[0]), {request->m_Host})
+					//transmitter->Multicast(packet, std::stoi(packet[0]), request->m_Host, 5001);
 				}
 			}
 
