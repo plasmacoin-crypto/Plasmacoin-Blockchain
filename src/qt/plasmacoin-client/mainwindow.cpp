@@ -307,7 +307,7 @@ void MainWindow::ManageSharedMem() {
 					SyncRequest* request = json::toSyncRequest(object);
 					auto packet = transmitter->Format(block);
 
-					transmitter->TransmitUDP(packet, std::stoi(packet[0]), {request->m_Host})
+					transmitter->TransmitUDP(packet, std::stoi(packet[0]), {request->m_Host});
 					//transmitter->Multicast(packet, std::stoi(packet[0]), request->m_Host, 5001);
 				}
 			}
