@@ -335,6 +335,8 @@ void connections::blockchainPage(MainWindow& window) {
 		do {
 			result = shared_mem::readMemory(true); // Read the shared memory
 			object = json::parse(result);
+
+			std::this_thread::sleep_for(std::chrono::seconds(1));
 		} while (json::getPacketType(object) != static_cast<uint8_t>(go::PacketTypes::NODE_LIST));
 
 		std::vector<string> hosts = json::parseArray(object, "nodes");
