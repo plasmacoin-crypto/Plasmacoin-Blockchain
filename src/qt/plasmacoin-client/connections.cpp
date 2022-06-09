@@ -324,23 +324,23 @@ void connections::blockchainPage(MainWindow& window) {
 		std::vector<string> data;
 
 		// Request a list of viable nodes to sync from
-		UserQuery* userQuery = new UserQuery {"192.168.1.44", "light"};
+		UserQuery* userQuery = new UserQuery {"192.168.1.58", "light"};
 		data = transmitter->Format(userQuery);
 		transmitter->Transmit(data, std::stoi(data[0]));
 
-		// Get the resulting list of nodes
-		string result = shared_mem::readMemory(true); // Read the shared memory
+		string result;
+		QJsonObject object;
 
-		// Parse the JSON string
-		QJsonObject object = json::parse(result);
+		// Get the resulting list of nodes
+		do {
+			result = shared_mem::readMemory(true); // Read the shared memory
+			object = json::parse(result);
+		} while (json::getPacketType(object) != static_cast<uint8_t>(go::PacketTypes::NODE_LIST));
+
 		std::vector<string> hosts = json::parseArray(object, "nodes");
 
-		for (auto host: hosts) {
-			std::cout << host << std::endl;
-		}
-
 		// Request to sync
-		SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), hosts[0]};
+		SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.58"};
 		data = transmitter->Format(syncRequest);
 		transmitter->Transmit(data, std::stoi(data[0]), hosts);
 	});
