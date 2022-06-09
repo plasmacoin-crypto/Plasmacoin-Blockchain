@@ -263,14 +263,20 @@ void MainWindow::ManageSharedMem() {
 				std::cout << "Stopping" << std::endl;
 			}
 
+			m_User->m_BlockchainCopy->Add(block);
+			m_BlockchainViewer->Latest();
+
 			for (auto transaction: block->m_Transactions) {
 				if (m_User->GetAddress() == transaction->m_SenderAddr) {
 					Receipt* receipt = transaction->GetReceipt();
 
 					// Transmit the receipt to the recipient
 					Transmitter* transmitter = new Transmitter();
+
 					auto data = transmitter->Format(transaction);
 					transmitter->Transmit(data, std::stoi(data[0]));
+
+					delete transmitter;
 				}
 			}
 
@@ -288,14 +294,15 @@ void MainWindow::ManageSharedMem() {
 			SyncRequest* syncRequest = json::toSyncRequest(object);
 
 			if (syncRequest->m_SyncType == static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
+				std::vector<string> packet;
+				Transmitter* transmitter = new Transmitter();
+
 				for (auto block: m_User->m_BlockchainCopy->GetBlockchain()) {
-					data.clear();
-
-					Transmitter* transmitter = new Transmitter();
-					data = transmitter->Format(block);
-
-					transmitter->Transmit(data, std::stoi(packet[0]), {syncRequest->m_Host});
+					packet = transmitter->Format(block);
+					transmitter->Transmit(packet, std::stoi(packet[0]), {syncRequest->m_Host});
 				}
+
+				delete transmitter;
 			}
 
 			break;
