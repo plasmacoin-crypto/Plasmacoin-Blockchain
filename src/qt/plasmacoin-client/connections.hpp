@@ -12,6 +12,7 @@
 #include <atomic>
 #include <thread>
 #include <vector>
+#include <future>
 
 using std::string;
 
