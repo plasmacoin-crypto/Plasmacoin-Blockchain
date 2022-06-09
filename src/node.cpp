@@ -45,8 +45,8 @@ Node::Node(
 	std::vector<string> hosts = json::parseArray(object, "nodes");
 	SetKnownHosts(hosts);
 
-	for (auto ip: hosts) {
-		std::cout << ip << std::endl;
+	for (auto host: hosts) {
+		std::cout << "Host: " << host << std::endl;
 	}
 
 	delete transmitter;
