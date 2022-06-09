@@ -94,22 +94,6 @@ void Transmitter::Transmit(const vector<string>& data, uint8_t type, const vecto
 	}
 }
 
-void Transmitter::TransmitUDP(const vector<string>& data, uint8_t type, const vector<string>& hosts) {
-	const size_t SIZE = data.size();
-	const char* carray[SIZE];
-
-	// Copy the vector of strings to an array of const char*
-	for (unsigned int i = 0; i < SIZE; i++) {
-		carray[i] = data[i].c_str();
-	}
-
-	go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-
-	for (auto host: hosts) {
-		future<void> dial = std::async(&go::dial, "udp", host.c_str(), "8080", type, slice);
-	}
-}
-
 void Transmitter::Multicast(const vector<string>& data, uint8_t type, const string& host, uint16_t port) {
 	const size_t SIZE = data.size();
 	const char* carray[SIZE];
