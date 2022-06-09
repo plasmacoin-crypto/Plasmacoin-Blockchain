@@ -151,8 +151,8 @@ QMAKE_EXTRA_TARGETS += daemon pcnetworkd libpcnetworkd libplasmacoin
 macx:PRE_TARGETDEPS += libpcnetworkd.dylib libplasmacoin.dylib
 macx:POST_TARGETDEPS += pcnetworkd
 
-unix:!macx:PRE_TARGETDEPS += libpcnetworkd.so libplasmacoin.so
-unix:!macx:POST_TARGETDEPS += pcnetworkd
+#unix:!macx:PRE_TARGETDEPS += libpcnetworkd.so libplasmacoin.so
+unix:!macx:POST_TARGETDEPS += libpcnetworkd.so libplasmacoin.so pcnetworkd
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
