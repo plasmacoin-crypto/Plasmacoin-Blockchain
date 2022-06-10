@@ -10,6 +10,6 @@
 
 struct IDCode {
 	uint8_t m_Code;
-}
+};
 
 #endif // ID_CODE_HPP
