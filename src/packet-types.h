@@ -20,6 +20,11 @@ namespace go {
 		SYNC_REQUEST,
 		BLOCKCHAIN_DATA
 	};
+
+	enum class IDCodes: uint8_t {
+		START_SYNC,
+		END_SYNC
+	};
 }
 
 #endif // PACKET_TYPES_H
