@@ -31,7 +31,7 @@ HEADERS += \
     ../../dat-fs.hpp ../../transmitter.hpp ../../transmitter.tpp ../../shared-mem.hpp \
     ../../parse-json.hpp ../../validation.hpp ../../hashing.hpp ../../dssize.hpp \
     ../../utility.hpp ../../rsautil.hpp ../../sync-request.hpp ../../user-query.hpp \
-    ../../signature.hpp ../../merkle-helpers.h \
+    ../../signature.hpp ../../merkle-helpers.h ../../idcode.hpp \
     \
     mainwindow.h transaction-list.h  mining-status.h recipient-list.h \
     firebase-auth.h account-pages.h mining-dialog.h transaction-manager.h \
