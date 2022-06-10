@@ -107,6 +107,13 @@ void Transmitter::Multicast(const vector<string>& data, uint8_t type, const stri
 	go::sendMulticast(host.c_str(), port, type, slice);
 }
 
+vector<string> Transmitter::Format(IDCode* idCode) {
+	return vector<string> {
+		std::to_string(static_cast<uint8_t>(go::PacketTypes::ID_CODE)),
+		std::to_string(idCode->m_Code)
+	};
+}
+
 vector<string> Transmitter::Format(Transaction* transaction) {
 	// Convert the signature to Base64
 	string signature = utility::sigToBase64(transaction->m_Signature.m_Signature);

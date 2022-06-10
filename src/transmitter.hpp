@@ -27,6 +27,7 @@
 #include "sync-request.hpp"
 #include "bcdata.hpp"
 #include "utility.hpp"
+#include "idcode.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -46,6 +47,7 @@ public:
 	void Multicast(const vector<string>& data, uint8_t type, const string& host, uint16_t port);
 
 	// Functions to store class data in a format that can be converted into
+	vector<string> Format(IDCode* idCode);
 	vector<string> Format(Transaction* transaction);
 	vector<string> Format(Node* node, bool shouldRegister = true);
 	vector<string> Format(Block* block);
