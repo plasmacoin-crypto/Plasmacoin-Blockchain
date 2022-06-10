@@ -32,6 +32,40 @@ uint8_t json::getPacketType(const QJsonObject& object) {
 	return object["type"].toInt();
 }
 
+IDCode* json::toIDCode(const QJsonObject& object) {
+	// Code int `json:"code"`
+	uint8_t code = object["code"].toInt();
+
+	IDCode* idCode = new IDCode {code};
+	return idCode;
+}
+
+Transaction* json::toTransaction(const QJsonObject& object) {
+	// PacketType    int       `json:"type"`
+	// SenderAddr    string    `json:"senderAddr"`
+	// RecipientAddr string    `json:"recipientAddr"`
+	// CreationTime  string    `json:"created"`
+	// SigningTime   string    `json:"signed"`
+	// Amount        float32   `json:"amount"`
+	// Fee           float32   `json:"fee"`
+	// Content       string    `json:"content"`
+	// Signature     Signature `json:"sigfield"`
+	// Hash          string    `json:"hash"`
+
+	string senderAddr = object["senderAddr"].toString().toStdString();
+	string recipientAddr = object["recipientAddr"].toString().toStdString();
+	string creationTime = object["created"].toString().toStdString();
+	string signingTime = object["signed"].toString().toStdString();
+	float amount = object["amount"].toDouble();
+	float fee = object["fee"].toDouble();
+	string content = object["content"].toString().toStdString();
+	Signature* signature = json::toSignature(object["sigfield"].toObject());
+	string hash = object["hash"].toString().toStdString();
+
+	Transaction* transaction = new Transaction(senderAddr, recipientAddr, creationTime, signingTime, amount, fee, content, signature, hash);
+	return transaction;
+}
+
 Block* json::toBlock(const QJsonObject& object) {
 	if (json::getPacketType(object) != static_cast<uint8_t>(go::PacketTypes::BLOCK)) {
 		return nullptr;
@@ -72,31 +106,6 @@ Block* json::toBlock(const QJsonObject& object) {
 	return block;
 }
 
-Transaction* json::toTransaction(const QJsonObject& object) {
-	// PacketType    int       `json:"type"`
-	// SenderAddr    string    `json:"senderAddr"`
-	// RecipientAddr string    `json:"recipientAddr"`
-	// CreationTime  string    `json:"created"`
-	// SigningTime   string    `json:"signed"`
-	// Amount        float32   `json:"amount"`
-	// Fee           float32   `json:"fee"`
-	// Content       string    `json:"content"`
-	// Signature     Signature `json:"sigfield"`
-	// Hash          string    `json:"hash"`
-
-	string senderAddr = object["senderAddr"].toString().toStdString();
-	string recipientAddr = object["recipientAddr"].toString().toStdString();
-	string creationTime = object["created"].toString().toStdString();
-	string signingTime = object["signed"].toString().toStdString();
-	float amount = object["amount"].toDouble();
-	float fee = object["fee"].toDouble();
-	string content = object["content"].toString().toStdString();
-	Signature* signature = json::toSignature(object["sigfield"].toObject());
-	string hash = object["hash"].toString().toStdString();
-
-	Transaction* transaction = new Transaction(senderAddr, recipientAddr, creationTime, signingTime, amount, fee, content, signature, hash);
-	return transaction;
-}
 
 Signature* json::toSignature(const QJsonObject& object) {
 	// Signature string `json:"signature"`

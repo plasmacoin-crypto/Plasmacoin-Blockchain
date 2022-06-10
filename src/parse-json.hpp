@@ -20,10 +20,12 @@
 #include <cryptopp/rsa.h>
 #include <cryptopp/config_int.h>
 
-#include "block.hpp"
 #include "packet-types.h"
-#include "utility.hpp"
+#include "idcode.hpp"
+#include "transaction.hpp"
+#include "block.hpp"
 #include "sync-request.hpp"
+#include "utility.hpp"
 
 using std::vector;
 using std::string;
@@ -34,8 +36,9 @@ namespace json {
 
 	uint8_t getPacketType(const QJsonObject& object);
 
-	Block* toBlock(const QJsonObject& object);
+	IDCode* toIDCode(const QJsonObject& object);
 	Transaction* toTransaction(const QJsonObject& object);
+	Block* toBlock(const QJsonObject& object);
 	Signature* toSignature(const QJsonObject& object);
 	SyncRequest* toSyncRequest(const QJsonObject& object);
 }
