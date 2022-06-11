@@ -184,9 +184,10 @@ void MainWindow::StartMining() {
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 
-		Transmitter* transmitter = new Transmitter();
-		auto data = transmitter->Format(&newBlock);
-		transmitter->Transmit(data, std::stoi(data[0]), m_User->GetKnownHosts());
+		// Transmitter* transmitter = new Transmitter();
+		// auto data = transmitter->Format(&newBlock);
+		// transmitter->Transmit(data, std::stoi(data[0]), m_User->GetKnownHosts());
+		// delete transmitter;
 
 		emit BlockCompleted();
 
@@ -240,9 +241,33 @@ void MainWindow::ManageSharedMem() {
 	string data = shared_mem::readMemory(true);
 	QJsonObject object = json::parse(data);
 
+	//std::cout << data << ", Packet type: " << (uint)json::getPacketType(object) << std::endl;
+
 	go::PacketTypes packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
 
+	if (data.empty()) {
+		return;
+	}
+
 	switch (packetType) {
+		case go::PacketTypes::ID_CODE: {
+			IDCode* idCode = json::toIDCode(object);
+			shared_mem::writeMemory("");
+			go::IDCodes code = static_cast<go::IDCodes>(idCode->m_Code);
+
+			if (code == go::IDCodes::START_SYNC) {
+				std::cout << "Starting sync" << std::endl;
+				m_IsSyncing = true;
+			}
+			else if (code == go::IDCodes::END_SYNC) {
+				std::cout << "Ending sync" << std::endl;
+				m_IsSyncing = false;
+				ManageSyncedData();
+			}
+
+			break;
+		}
+
 		case go::PacketTypes::TRANSACTION:
 			m_TransactionList->ConfirmToMempool(json::toTransaction(object));
 			shared_mem::writeMemory(" ");
@@ -250,12 +275,19 @@ void MainWindow::ManageSharedMem() {
 
 		case go::PacketTypes::BLOCK: {
 			std::cout << "Received a block" << std::endl;
+			shared_mem::writeMemory(" ");
 
 			if (object.empty() || data.empty()) {
 				break;
 			}
 
 			Block* block = json::toBlock(object);
+
+			// If the block is received though a blockchain sync, just store it and continue listening
+			if (m_IsSyncing) {
+				m_SyncedData.push(block);
+				break;
+			}
 
 			// If a new block is received, stop trying to solve the current block.
 			if (block->m_MinerAddr != m_User->GetAddress()) {
@@ -265,6 +297,7 @@ void MainWindow::ManageSharedMem() {
 
 			m_User->m_BlockchainCopy->Add(block);
 			m_BlockchainViewer->Latest();
+			UpdateButtons();
 
 			for (auto transaction: block->m_Transactions) {
 				if (m_User->GetAddress() == transaction->m_SenderAddr) {
@@ -313,4 +346,24 @@ void MainWindow::ManageSharedMem() {
 	}
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+}
+
+void MainWindow::ManageSyncedData() {
+	while (!m_SyncedData.empty()) {
+		m_User->m_BlockchainCopy->Add(m_SyncedData.front());
+		m_SyncedData.pop();
+	}
+
+	m_BlockchainViewer->Latest();
+	UpdateButtons();
+}
+
+void MainWindow::UpdateButtons() {
+	bool genesis, previous, next, latest;
+	std::tie(genesis, previous, next, latest) = m_BlockchainViewer->GetBtnStates();
+
+	btn_first->setEnabled(genesis);
+	btn_previous->setEnabled(previous);
+	btn_next->setEnabled(next);
+	btn_last->setEnabled(latest);
 }

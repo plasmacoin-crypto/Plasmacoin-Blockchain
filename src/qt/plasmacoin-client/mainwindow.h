@@ -15,6 +15,7 @@
 #include <chrono>
 #include <atomic>
 #include <future>
+#include <queue>
 
 #include <QMainWindow>
 #include <QStringList>
@@ -75,6 +76,9 @@ public:
 	void ShowContact(Contact* contact);
 
 	void ManageSharedMem();
+	void ManageSyncedData();
+
+	void UpdateButtons();
 
 	QWidget* parent;
 	Status* m_Status;
@@ -107,6 +111,9 @@ private:
 
 	Transaction* m_CurrTrans = nullptr;
 	QFileDialog* m_FileBrowser = new QFileDialog();
+
+	bool m_IsSyncing = false;
+	std::queue<Block*> m_SyncedData;
 
 public:
 	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.44"); // Temporary data
