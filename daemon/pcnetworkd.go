@@ -270,7 +270,7 @@ func makeStruct(dataType uint8, data []string) interface{} {
 
 	switch dataType {
 	case IDCode:
-		id, _ := strconv.ParseInt(data[0], 10, 32)
+		id, _ := strconv.ParseInt(data[1], 10, 32)
 		jsonData = &struct {
 			Code int `json:"code"`
 		}{Code: int(id)}
