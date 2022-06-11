@@ -52,6 +52,7 @@
 #include "transmitter.hpp"
 #include "parse-json.hpp"
 #include "utility.hpp"
+#include "idcode.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"
