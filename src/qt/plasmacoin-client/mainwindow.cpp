@@ -330,10 +330,30 @@ void MainWindow::ManageSharedMem() {
 				std::vector<string> packet;
 				Transmitter* transmitter = new Transmitter();
 
+				// Signal the start of the sync period
+				IDCode syncSignal {static_cast<uint8_t>(go::IDCodes::START_SYNC)};
+				packet = transmitter->Format(&syncSignal);
+				transmitter->Transmit(packet, std::stoi(packet[0]), {syncRequest->m_Host});
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(300));
+
+				// Sync the blockchain with the recipient node
 				for (auto block: m_User->m_BlockchainCopy->GetBlockchain()) {
 					packet = transmitter->Format(block);
 					transmitter->Transmit(packet, std::stoi(packet[0]), {syncRequest->m_Host});
+
+					std::this_thread::sleep_for(std::chrono::seconds(1));
 				}
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+				// Signal the end of the sync period
+				syncSignal.m_Code = static_cast<uint8_t>(go::IDCodes::END_SYNC);
+				std::cout << (uint)syncSignal.m_Code << std::endl;
+				packet = transmitter->Format(&syncSignal);
+				transmitter->Transmit(packet, std::stoi(packet[0]), {syncRequest->m_Host});
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
 				delete transmitter;
 			}
