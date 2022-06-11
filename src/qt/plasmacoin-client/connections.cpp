@@ -279,26 +279,26 @@ void connections::transactionPage(MainWindow& window) {
 }
 
 void connections::blockchainPage(MainWindow& window) {
-	updateButtons(window);
+	window.UpdateButtons();
 
 	window.connect(window.btn_first, &QToolButton::released, &window, [&window]() {
 		window.m_BlockchainViewer->Genesis();
-		updateButtons(window);
+		window.UpdateButtons();
 	});
 
 	window.connect(window.btn_previous, &QToolButton::released, &window, [&window]() {
 		window.m_BlockchainViewer->Previous();
-		updateButtons(window);
+		window.UpdateButtons();
 	});
 
 	window.connect(window.btn_next, &QToolButton::released, &window, [&window]() {
 		window.m_BlockchainViewer->Next();
-		updateButtons(window);
+		window.UpdateButtons();
 	});
 
 	window.connect(window.btn_last, &QToolButton::released, &window, [&window]() {
 		window.m_BlockchainViewer->Latest();
-		updateButtons(window);
+		window.UpdateButtons();
 	});
 
 	window.connect(window.blockView, &QTableWidget::itemSelectionChanged, &window, [&window]() {
@@ -459,14 +459,4 @@ double connections::calculateFee(MainWindow& window) {
 
 	delete transaction;
 	return predictedFee;
-}
-
-void connections::updateButtons(MainWindow& window) {
-	bool genesis, previous, next, latest;
-	std::tie(genesis, previous, next, latest) = window.m_BlockchainViewer->GetBtnStates();
-
-	window.btn_first->setEnabled(genesis);
-	window.btn_previous->setEnabled(previous);
-	window.btn_next->setEnabled(next);
-	window.btn_last->setEnabled(latest);
 }

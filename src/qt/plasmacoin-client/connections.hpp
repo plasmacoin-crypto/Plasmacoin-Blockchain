@@ -48,7 +48,6 @@ namespace connections {
 
 	void manageSharedMem(std::atomic<bool>& running, MainWindow& window);
 	double calculateFee(MainWindow& window);
-	void updateButtons(MainWindow& window);
 }
 
 #endif // CONNECTIONS_HPP
