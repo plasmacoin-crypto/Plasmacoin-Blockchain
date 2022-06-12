@@ -20,6 +20,10 @@ public:
 		const string& senderAddr, const string& recipientAddr, const string& trxnTime, const string& signTime,
 		float amount, float fee, const string& hash
 	);
+	Receipt(
+		const string& senderAddr, const string& recipientAddr, const string& trxnTime, const string& signTime,
+		float amount, float fee, const Signature& signature, const string& hash
+	);
 	~Receipt();
 
 	string m_SenderAddr, m_RecipientAddr;
