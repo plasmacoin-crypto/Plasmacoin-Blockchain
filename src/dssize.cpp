@@ -14,6 +14,7 @@ size_t dssize::size(const Block& block) {
 		sizeof(block.m_Difficulty) +
 		block.m_Hash.size() +
 		block.m_PrevHash.size() +
+		block.m_MinerAddr.size() +
 		block.m_CreationTime.size() +
 		block.m_MineTime.size() +
 		sizeof(block.m_IsGenesis)
