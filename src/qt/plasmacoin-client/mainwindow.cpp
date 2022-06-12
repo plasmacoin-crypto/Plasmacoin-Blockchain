@@ -302,6 +302,7 @@ void MainWindow::ManageSharedMem() {
 			for (auto transaction: block->m_Transactions) {
 				if (m_User->GetAddress() == transaction->m_SenderAddr) {
 					Receipt* receipt = transaction->GetReceipt();
+					m_User->Sign(*receipt);
 
 					// Transmit the receipt to the recipient
 					Transmitter* transmitter = new Transmitter();
@@ -313,6 +314,12 @@ void MainWindow::ManageSharedMem() {
 				}
 			}
 
+			break;
+		}
+
+		case go::PacketTypes::RECEIPT: {
+			Receipt* receipt = json::toReceipt(object);
+			datfs::saveReceipt(receipt);
 			break;
 		}
 
