@@ -15,7 +15,6 @@
 #include <vector>
 
 #include "transaction.hpp"
-#include "utility.hpp"
 
 using std::string;
 using std::tuple;
@@ -34,11 +33,6 @@ public:
 		const string& creationTime, const string& mineTime, const vector<Transaction*>& transactions,
 		int64_t difficulty, bool genesis = false
 	);
-
-	bool Validate(const string& hash, const string& prevHash, const int& DIFFICULTY);
-	bool ValidateHash(const string& orig, const string& val, const int& DIFFICULTY);
-
-	string Stringify();
 
 	// The block contents
 	int m_Index, m_Nonce = 0;
