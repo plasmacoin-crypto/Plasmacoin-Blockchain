@@ -18,11 +18,25 @@ void datfs::createDataPath() {
 }
 
 void datfs::saveBlock(Block* block) {
-	string blockString = block->Stringify();
+	QJsonObject object = json::fromBlock(block);
+	QJsonDocument document = QJsonDocument(object);
+	string jsonData = document.toJson(QJsonDocument::Indented).toStdString();
 
 	// Make a new block data file
 	string path = datfs::BLOCKS_LOC + DELIM + "block" + std::to_string(block->m_Index) + ".dat";
 	std::ofstream dataFile(path);
 
-	dataFile.write(blockString.c_str(), blockString.size()); // Write the block contents to the file
+	dataFile.write(jsonData.c_str(), jsonData.size()); // Write the JSON to the file
+}
+
+void datfs::saveReceipt(Receipt* receipt) {
+	QJsonObject object = json::fromReceipt(receipt);
+	QJsonDocument document = QJsonDocument(object);
+	string jsonData = document.toJson(QJsonDocument::Indented).toStdString();
+
+	// Make a new block data file
+	string path = datfs::WALLET_LOC + DELIM + receipt->m_Hash.substr(9) + ".dat";
+	std::ofstream dataFile(path);
+
+	dataFile.write(jsonData.c_str(), jsonData.size()); // Write the JSON to the file
 }

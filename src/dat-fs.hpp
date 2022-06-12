@@ -20,7 +20,12 @@
 
 #include <fstream>
 
+#include <QJsonObject>
+#include <QJsonDocument>
+
 #include "block.hpp"
+#include "receipt.hpp"
+#include "parse-json.hpp"
 
 namespace datfs {
 	#ifdef _WIN32
@@ -40,6 +45,7 @@ namespace datfs {
 
 	void createDataPath();
 	void saveBlock(Block* block);
+	void saveReceipt(Receipt* receipt);
 }
 
 #endif // DAT_FS_HPP
