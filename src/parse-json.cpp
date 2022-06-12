@@ -123,10 +123,94 @@ Signature* json::toSignature(const QJsonObject& object) {
 	return sigfield;
 }
 
+Receipt* json::toReceipt(const QJsonObject& object) {
+	string senderAddr = object["senderAddr"].toString().toStdString();
+	string recipientAddr = object["receipientAddr"].toString().toStdString();
+	string trxnCreated = object["trxnCreated"].toString().toStdString();
+	string signTime = object["signed"].toString().toStdString();
+	float amount = object["amount"].toDouble();
+	float fee = object["fee"].toDouble();
+	Signature* signature = json::toSignature(object["signature"].toObject());
+	string hash = object["hash"].toString().toStdString();
+
+	Receipt* receipt = new Receipt(senderAddr, recipientAddr, trxnCreated, signTime, amount, fee, *signature, hash);
+}
+
 SyncRequest* json::toSyncRequest(const QJsonObject& object) {
 	int syncType = object["synctype"].toInt();
 	string host = object["host"].toString().toStdString();
 
 	SyncRequest* syncRequest = new SyncRequest {syncType, host};
 	return syncRequest;
+}
+
+QJsonObject json::fromTransaction(Transaction* transaction) {
+	QJsonObject object;
+
+	object["senderAddr"] = QString::fromStdString(transaction->m_SenderAddr);
+	object["recipientAddr"] = QString::fromStdString(transaction->m_RecipientAddr);
+	object["created"] = QString::fromStdString(transaction->m_CreationTime);
+	object["signed"] = QString::fromStdString(transaction->m_SignTime);
+	object["amount"] = QString::number(transaction->m_Amount, 'f', 5).toDouble();
+	object["fee"] = transaction->m_Fee;
+	object["content"] = QString::fromStdString(transaction->m_Content);
+	object["signature"] = json::fromSignature(&transaction->m_Signature);
+	object["hash"] = QString::fromStdString(transaction->m_Hash);
+
+	qDebug() << "Transaction JSON:" << object;
+
+	return object;
+}
+
+QJsonObject json::fromBlock(Block* block) {
+	QJsonObject object;
+
+	object["index"] = block->m_Index;
+	object["difficulty"] = block->m_Difficulty;
+	object["nonce"] = block->m_Nonce;
+	object["hash"] = QString::fromStdString(block->m_Hash);
+	object["prevhash"] = QString::fromStdString(block->m_PrevHash);
+	object["miner"] = QString::fromStdString(block->m_MinerAddr);
+	object["created"] = QString::fromStdString(block->m_CreationTime);
+	object["mined"] = QString::fromStdString(block->m_MineTime);
+	object["genesis"] = block->m_IsGenesis;
+
+	QJsonArray transactions;
+
+	for (auto trxn: block->m_Transactions) {
+		QJsonObject trxnObject = json::fromTransaction(trxn);
+		transactions.append(QJsonValue(trxnObject));
+	}
+
+	object["transactions"] = transactions;
+
+	return object;
+}
+
+QJsonObject json::fromSignature(Signature* signature) {
+	QJsonObject object;
+
+	string strSignature = utility::sigToBase64(signature->m_Signature);
+	string strPublicKey = utility::pubKeyToBase64(signature->m_PublicKey);
+
+	object["signature"] = QString::fromStdString(strSignature);
+	object["publicKey"] = QString::fromStdString(strPublicKey);
+	object["length"] = static_cast<int64_t>(signature->m_Length);
+
+	return object;
+}
+
+QJsonObject json::fromReceipt(Receipt* receipt) {
+	QJsonObject object;
+
+	object["sender"] = QString::fromStdString(receipt->m_SenderAddr);
+	object["receipient"] = QString::fromStdString(receipt->m_RecipientAddr);
+	object["created"] = QString::fromStdString(receipt->m_TransactionTime);
+	object["signed"] = QString::fromStdString(receipt->m_SignTime);
+	object["amount"] = receipt->m_Amount;
+	object["fee"] = receipt->m_Fee;
+	object["signature"] = json::fromSignature(&receipt->m_Signature);
+	object["hash"] = QString::fromStdString(receipt->m_Hash);
+
+	return object;
 }

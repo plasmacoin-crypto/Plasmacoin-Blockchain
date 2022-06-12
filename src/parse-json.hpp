@@ -32,6 +32,8 @@ using std::string;
 
 namespace json {
 	QJsonObject parse(const string& jsonstr);
+	//string stringify(const QJsonObject& objectT)
+
 	vector<string> parseArray(const QJsonObject& object, const string& key);
 
 	uint8_t getPacketType(const QJsonObject& object);
@@ -40,7 +42,13 @@ namespace json {
 	Transaction* toTransaction(const QJsonObject& object);
 	Block* toBlock(const QJsonObject& object);
 	Signature* toSignature(const QJsonObject& object);
+	Receipt* toReceipt(const QJsonObject& object);
 	SyncRequest* toSyncRequest(const QJsonObject& object);
+
+	QJsonObject fromTransaction(Transaction* transaction);
+	QJsonObject fromBlock(Block* block);
+	QJsonObject fromSignature(Signature* signature);
+	QJsonObject fromReceipt(Receipt* reciept);
 }
 
 #endif // PARSE_JSON_HPP
