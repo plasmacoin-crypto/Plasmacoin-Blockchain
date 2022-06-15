@@ -40,6 +40,7 @@
 #include "mining-dialog.h"
 #include "block-view.h"
 #include "blockchain-viewer.h"
+#include "wallet-page.hpp"
 //#include "settings-manager.h"
 
 #include "block.hpp"
@@ -92,6 +93,7 @@ public:
 	MiningDialog* m_MiningDialog;
 	BlockView* m_BlockView;
 	BlockchainViewer* m_BlockchainViewer;
+	WalletPage* m_WalletPage;
 	//SettingsManager* m_SettingsManager;
 
 	QLabel* m_NameDisplay = new QLabel();
