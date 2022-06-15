@@ -60,6 +60,7 @@ MainWindow::MainWindow(QWidget* parent):
 	m_MiningDialog = new MiningDialog(this);
 	m_BlockView = new BlockView(Ui::MainWindow::blockView);
 	m_BlockchainViewer = new BlockchainViewer(m_User->m_BlockchainCopy, Ui::MainWindow::blockView, Ui::MainWindow::blockTrxnView);
+	m_WalletPage = new WalletPage(Ui::MainWindow::receiptList);
 
 	// Create some temporary nodes to make transactions between
 	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
@@ -167,7 +168,7 @@ void MainWindow::StartMining() {
 
 	// Verify and append the block
 	if (success) {
-		newBlock.m_MineTime = utility::getUTCTime(); // Timestamp the block
+		newBlock.m_MineTime = utility::getUnixEpoch(); // Timestamp the block
 	}
 
 	Blockchain* tempChain = new Blockchain(*m_User->m_BlockchainCopy);
@@ -177,33 +178,24 @@ void MainWindow::StartMining() {
 	if (valid) {
 		std::cout << "Valid" << std::endl;
 
-		newBlock.m_MinerAddr = m_User->GetAddress(); // Timestamp the block
+		newBlock.m_MinerAddr = m_User->GetAddress();
 
 		m_User->m_BlockchainCopy->Add(&newBlock);
 		m_BlockchainViewer->Latest();
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 
-		// Transmitter* transmitter = new Transmitter();
-		// auto data = transmitter->Format(&newBlock);
-		// transmitter->Transmit(data, std::stoi(data[0]), m_User->GetKnownHosts());
-		// delete transmitter;
+		Transmitter* transmitter = new Transmitter();
+		auto data = transmitter->Format(&newBlock);
+		transmitter->Transmit(data, std::stoi(data[0]), m_User->GetKnownHosts());
+		delete transmitter;
 
 		emit BlockCompleted();
 
 		std::this_thread::sleep_for(std::chrono::seconds(2));
-		shared_mem::writeMemory(" ");
+		shared_mem::writeMemory("");
 
-		// BlockchainData<Block*> bc = {2, {&newBlock}};
-		// data = transmitter->Format(bc);
-
-		// transmitter->Transmit(data, std::stoi(data[0]));
-
-		// std::this_thread::sleep_for(std::chrono::seconds(1));
-
-		// std::this_thread::sleep_for(std::chrono::seconds(2));
-		// std::string result = shared_mem::readMemory(true); // Read the shared memory
-		// std::cout << "Node Result: " << result << std::endl;
+		m_WalletPage->AddReceipt(newBlock.m_Transactions[0]->GetReceipt());
 	}
 }
 
@@ -241,8 +233,6 @@ void MainWindow::ManageSharedMem() {
 	string data = shared_mem::readMemory(true);
 	QJsonObject object = json::parse(data);
 
-	//std::cout << data << ", Packet type: " << (uint)json::getPacketType(object) << std::endl;
-
 	go::PacketTypes packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
 
 	if (data.empty()) {
@@ -270,12 +260,12 @@ void MainWindow::ManageSharedMem() {
 
 		case go::PacketTypes::TRANSACTION:
 			m_TransactionList->ConfirmToMempool(json::toTransaction(object));
-			shared_mem::writeMemory(" ");
+			shared_mem::writeMemory("");
 			break;
 
 		case go::PacketTypes::BLOCK: {
 			std::cout << "Received a block" << std::endl;
-			shared_mem::writeMemory(" ");
+			shared_mem::writeMemory("");
 
 			if (object.empty() || data.empty()) {
 				break;
@@ -319,13 +309,13 @@ void MainWindow::ManageSharedMem() {
 
 		case go::PacketTypes::RECEIPT: {
 			Receipt* receipt = json::toReceipt(object);
-			datfs::saveReceipt(receipt);
+			m_WalletPage->AddReceipt(receipt);
 			break;
 		}
 
 		case go::PacketTypes::SYNC_REQUEST: {
 			std::cout << "Received sync request" << std::endl;
-			shared_mem::writeMemory(" ");
+			shared_mem::writeMemory("");
 
 			if (object.empty() || data.empty()) {
 				break;
@@ -356,7 +346,6 @@ void MainWindow::ManageSharedMem() {
 
 				// Signal the end of the sync period
 				syncSignal.m_Code = static_cast<uint8_t>(go::IDCodes::END_SYNC);
-				std::cout << (uint)syncSignal.m_Code << std::endl;
 				packet = transmitter->Format(&syncSignal);
 				transmitter->Transmit(packet, std::stoi(packet[0]), {syncRequest->m_Host});
 
@@ -373,6 +362,7 @@ void MainWindow::ManageSharedMem() {
 	}
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	shared_mem::writeMemory("");
 }
 
 void MainWindow::ManageSyncedData() {
