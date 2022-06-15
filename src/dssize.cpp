@@ -15,8 +15,8 @@ size_t dssize::size(const Block& block) {
 		block.m_Hash.size() +
 		block.m_PrevHash.size() +
 		block.m_MinerAddr.size() +
-		block.m_CreationTime.size() +
-		block.m_MineTime.size() +
+		sizeof(block.m_CreationTime) +
+		sizeof(block.m_MineTime) +
 		sizeof(block.m_IsGenesis)
 	);
 
@@ -31,12 +31,15 @@ size_t dssize::size(const Block& block) {
 
 size_t dssize::size(const Transaction& transaction) {
 	return (
-		sizeof(transaction.m_Amount) +
-		sizeof(transaction.m_Fee) +
 		transaction.m_SenderAddr.size() +
 		transaction.m_RecipientAddr.size() +
+		sizeof(transaction.m_CreationTime) +
+		sizeof(transaction.m_SignTime) +
+		sizeof(transaction.m_Amount) +
+		sizeof(transaction.m_Fee) +
 		transaction.m_Content.size() +
-		dssize::size(transaction.m_Signature)
+		dssize::size(transaction.m_Signature) +
+		transaction.m_Hash.size();
 	);
 }
 
