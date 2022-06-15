@@ -39,7 +39,7 @@ size_t dssize::size(const Transaction& transaction) {
 		sizeof(transaction.m_Fee) +
 		transaction.m_Content.size() +
 		dssize::size(transaction.m_Signature) +
-		transaction.m_Hash.size();
+		transaction.m_Hash.size()
 	);
 }
 
