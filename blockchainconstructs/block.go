@@ -17,8 +17,8 @@ type Block struct {
 	Hash         string        `json:"hash"`
 	PrevHash     string        `json:"prevhash"`
 	MinerAddr    string        `json:"miner"`
-	CreationTime string        `json:"created"`
-	MineTime     string        `json:"mined"`
+	CreationTime int64         `json:"created"`
+	MineTime     int64         `json:"mined"`
 	IsGenesis    bool          `json:"genesis"`
 	Transactions []Transaction `json:"transactions"`
 }
@@ -60,6 +60,8 @@ func MakeBlock(data []string) *Block {
 	index, _ := strconv.ParseInt(data[1], 10, 32)
 	difficulty, _ := strconv.ParseInt(data[2], 10, 64)
 	nonce, _ := strconv.ParseInt(data[3], 10, 32)
+	creationTime, _ := strconv.ParseInt(data[7], 10, 64)
+	mineTime, _ := strconv.ParseInt(data[8], 10, 64)
 	isGenesis, _ := strconv.ParseBool(data[9])
 
 	trxnCount := (maxIndex - minIndex) / trxnLen // Find the number of transactions in the block
@@ -81,8 +83,8 @@ func MakeBlock(data []string) *Block {
 		Hash:         data[4],
 		PrevHash:     data[5],
 		MinerAddr:    data[6],
-		CreationTime: data[7],
-		MineTime:     data[8],
+		CreationTime: creationTime,
+		MineTime:     mineTime,
 		IsGenesis:    isGenesis,
 		Transactions: transactions,
 	}

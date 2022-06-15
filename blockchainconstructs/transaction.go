@@ -15,8 +15,8 @@ type Transaction struct {
 	PacketType    int       `json:"type"`
 	SenderAddr    string    `json:"senderAddr"`
 	RecipientAddr string    `json:"recipientAddr"`
-	CreationTime  string    `json:"created"`
-	SigningTime   string    `json:"signed"`
+	CreationTime  int64    `json:"created"`
+	SigningTime   int64    `json:"signed"`
 	Amount        float32   `json:"amount"`
 	Fee           float32   `json:"fee"`
 	Content       string    `json:"content"`
@@ -47,6 +47,8 @@ func MakeTransaction(data []string) *Transaction {
 
 	// Convert some stringified numeric values back to numeric values
 	packetType, _ := strconv.ParseInt(data[0], 10, 32)
+	creationTime, _ := strconv.ParseInt(data[3], 10, 64)
+	signingTime, _ := strconv.ParseInt(data[4], 10, 64)
 	amount, _ := strconv.ParseFloat(data[5], 32)
 	fee, _ := strconv.ParseFloat(data[6], 32)
 	siglen, _ := strconv.ParseInt(data[10], 10, 32)
@@ -63,8 +65,8 @@ func MakeTransaction(data []string) *Transaction {
 		PacketType:    int(packetType),
 		SenderAddr:    data[1],
 		RecipientAddr: data[2],
-		CreationTime:  data[3],
-		SigningTime:   data[4],
+		CreationTime:  creationTime,
+		SigningTime:   signingTime,
 		Amount:        float32(amount),
 		Fee:           float32(fee),
 		Content:       data[7],

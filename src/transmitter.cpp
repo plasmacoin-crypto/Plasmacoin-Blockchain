@@ -125,8 +125,8 @@ vector<string> Transmitter::Format(Transaction* transaction) {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::TRANSACTION)),
 		transaction->m_SenderAddr,
 		transaction->m_RecipientAddr,
-		transaction->m_CreationTime,
-		transaction->m_SignTime,
+		std::to_string(transaction->m_CreationTime),
+		std::to_string(transaction->m_SignTime),
 		std::to_string(transaction->m_Amount),
 		std::to_string(transaction->m_Fee),
 		transaction->m_Content,
@@ -159,8 +159,8 @@ vector<string> Transmitter::Format(Block* block) {
 		block->m_Hash,
 		block->m_PrevHash,
 		block->m_MinerAddr,
-		block->m_CreationTime,
-		block->m_MineTime,
+		std::to_string(block->m_CreationTime),
+		std::to_string(block->m_MineTime),
 		std::to_string(block->m_IsGenesis)
 	};
 
@@ -184,8 +184,8 @@ vector<string> Transmitter::Format(Receipt* receipt) {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::RECEIPT)),
 		receipt->m_SenderAddr,
 		receipt->m_RecipientAddr,
-		receipt->m_TransactionTime,
-		receipt->m_SignTime,
+		std::to_string(receipt->m_TransactionTime),
+		std::to_string(receipt->m_SignTime),
 		std::to_string(receipt->m_Amount),
 		std::to_string(receipt->m_Fee),
 

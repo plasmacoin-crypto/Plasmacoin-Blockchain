@@ -52,11 +52,11 @@ void BlockView::Display(Block* block) {
 		},
 		{
 			QTableWidgetItem(QString("Created")),
-			QTableWidgetItem(QString::fromStdString(block->m_CreationTime))
+			QTableWidgetItem(QString::fromStdString(utility::formatEpoch(block->m_CreationTime)))
 		},
 		{
 			QTableWidgetItem(QString("Mined")),
-			QTableWidgetItem(QString::fromStdString(block->m_MineTime))
+			QTableWidgetItem(QString::fromStdString(utility::formatEpoch(block->m_MineTime)))
 		},
 	};
 

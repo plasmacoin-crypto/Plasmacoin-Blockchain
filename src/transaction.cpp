@@ -14,11 +14,11 @@ Transaction::Transaction(const string& senderAddr, const string& recipientAddr, 
 	m_Fee(fee),
 	m_Content(content)
 {
-	m_CreationTime = utility::getUTCTime();
+	m_CreationTime = utility::getUnixEpoch();
 }
 
 Transaction::Transaction(
-	const string& senderAddr, const string& recipientAddr, const string& creationTime, const string& signTime, float amount,
+	const string& senderAddr, const string& recipientAddr, time_t creationTime, time_t signTime, float amount,
 	float fee, const string& content, Signature* signature, const string& hash
 ):
 	m_SenderAddr(senderAddr),

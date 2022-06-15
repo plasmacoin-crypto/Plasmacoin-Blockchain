@@ -13,8 +13,8 @@ type Receipt struct {
 	PacketType      int       `json:"type"`
 	SenderAddr      string    `json:"senderAddr"`
 	RecipientAddr   string    `json:"recipientAddr"`
-	TransactionTime string    `json:"trxnCreated"`
-	SigningTime     string    `json:"signed"`
+	TransactionTime int64    `json:"trxnCreated"`
+	SigningTime     int64    `json:"signed"`
 	Amount          float32   `json:"amount"`
 	Fee             float32   `json:"fee"`
 	Signature       Signature `json:"sigfield"`
@@ -42,6 +42,8 @@ func MakeReceipt(data []string) *Receipt {
 	//
 
 	packetType, _ := strconv.ParseInt(data[0], 10, 32)
+	transactionTime, _ := strconv.ParseInt(data[3], 10, 64)
+	signingTime, _ := strconv.ParseInt(data[4], 10, 64)
 	amount, _ := strconv.ParseFloat(data[5], 32)
 	fee, _ := strconv.ParseFloat(data[6], 32)
 	siglen, _ := strconv.ParseInt(data[9], 10, 32)
@@ -57,8 +59,8 @@ func MakeReceipt(data []string) *Receipt {
 		PacketType:      int(packetType),
 		SenderAddr:      data[1],
 		RecipientAddr:   data[2],
-		TransactionTime: data[3],
-		SigningTime:     data[4],
+		TransactionTime: transactionTime,
+		SigningTime:     signingTime,
 		Amount:          float32(amount),
 		Fee:             float32(fee),
 		Signature:       signature,

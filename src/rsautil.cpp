@@ -45,7 +45,7 @@ void rsautil::sign(Transaction& transaction, const RSA::PublicKey& publicKey, co
 	signature.resize(length);
 
 	transaction.m_Signature = Signature {signature, publicKey, length};
-	transaction.m_SignTime = utility::getUTCTime();
+	transaction.m_SignTime = utility::getUnixEpoch();
 }
 
 // Sign a transaction receipt with the sender's private key.
@@ -62,7 +62,7 @@ void rsautil::sign(Receipt& receipt, const RSA::PublicKey& publicKey, const RSA:
 	signature.resize(length);
 
 	receipt.m_Signature = Signature {signature, publicKey, length};
-	receipt.m_SignTime = utility::getUTCTime();
+	receipt.m_SignTime = utility::getUnixEpoch();
 }
 
 // Verify a transaction using the sender's public key. Returns true if verification succeded,

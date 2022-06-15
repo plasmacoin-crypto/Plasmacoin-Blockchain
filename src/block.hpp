@@ -30,7 +30,7 @@ public:
 	);
 	Block(
 		int index, int nonce, const string& hash, const string& prevHash, const string& minerAddr,
-		const string& creationTime, const string& mineTime, const vector<Transaction*>& transactions,
+		time_t creationTime, time_t mineTime, const vector<Transaction*>& transactions,
 		int64_t difficulty, bool genesis = false
 	);
 
@@ -39,7 +39,7 @@ public:
 	int64_t m_Difficulty;
 	string m_Hash, m_PrevHash;
 	string m_MinerAddr;
-	string m_CreationTime, m_MineTime;
+	time_t m_CreationTime, m_MineTime;
 	bool m_IsGenesis;
 
 	vector<Transaction*> m_Transactions;

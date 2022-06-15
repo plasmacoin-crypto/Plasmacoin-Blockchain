@@ -30,6 +30,22 @@ string utility::getUTCTime() {
 	#endif
 }
 
+// Get the nummber of seconds since the Unix Epoch (January 1, 1970)
+time_t utility::getUnixEpoch() {
+	std::chrono::seconds sinceEpoch = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch());
+	return sinceEpoch.count();
+}
+
+// Return a formatted, human-readable string of a Unix Epoch time
+string utility::formatEpoch(time_t sinceEpoch) {
+	char buf[50]; // This should be long enough for the current date and future ones as well
+	std::strftime(buf, sizeof(buf), "%Y-%m-%d %X", std::gmtime(&sinceEpoch));
+
+	string strbuf = buf;
+	strbuf.shrink_to_fit();
+	return strbuf;
+}
+
 // Encode a raw RSA key in Base64
 string utility::pubKeyToBase64(const CryptoPP::RSAFunction& rsaKey) {
 	CryptoPP::ByteQueue queue;

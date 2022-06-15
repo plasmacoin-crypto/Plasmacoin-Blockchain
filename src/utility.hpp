@@ -43,6 +43,8 @@ namespace utility {
 	const static int IPv4_PORT_MAX_LENGTH = 5;
 
 	string getUTCTime();
+	time_t getUnixEpoch();
+	string formatEpoch(time_t sinceEpoch);
 
 	string pubKeyToBase64(const CryptoPP::RSAFunction& rsaKey);
 	CryptoPP::RSAFunction pubKeyFromBase64(const string& base64key);

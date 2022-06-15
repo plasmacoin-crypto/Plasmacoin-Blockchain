@@ -21,14 +21,14 @@ class Transaction {
 public:
 	Transaction(const string& senderAddr, const string& recipientAddr, float amount, float fee, const string& content);
 	Transaction(
-		const string& senderAddr, const string& recipientAddr, const string& creationTime, const string& signTime, float amount,
+		const string& senderAddr, const string& recipientAddr, time_t creationTime, time_t signTime, float amount,
 		float fee, const string& content, Signature* signature, const string& hash
 	);
 
 	Receipt* GetReceipt();
 
 	string m_SenderAddr, m_RecipientAddr;
-	string m_CreationTime, m_SignTime;
+	time_t m_CreationTime, m_SignTime;
 	float m_Amount, m_Fee;
 	string m_Content;
 

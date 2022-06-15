@@ -15,14 +15,14 @@ Block::Block(
 	m_Index(index),
 	m_Difficulty(difficulty),
 	m_PrevHash(prevHash),
-	m_CreationTime(utility::getUTCTime()),
+	m_CreationTime(utility::getUnixEpoch()),
 	m_IsGenesis(genesis),
 	m_Transactions(transactions)
 {}
 
 Block::Block(
 	int index, int nonce, const string& hash, const string& prevHash, const string& minerAddr,
-	const string& creationTime, const string& mineTime, const vector<Transaction*>& transactions,
+	time_t creationTime, time_t mineTime, const vector<Transaction*>& transactions,
 	int64_t difficulty, bool genesis
 ):
 	m_Index(index),
