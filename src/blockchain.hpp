@@ -71,7 +71,7 @@ public:
 
 private:
 	// "0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-	const int256_t MAX_TARGET {"0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+	const int256_t MAX_TARGET {"0x00000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
 	int256_t m_Target = MAX_TARGET;
 	int64_t m_Difficulty = boost::lexical_cast<int64_t>(MAX_TARGET / m_Target);
 
@@ -82,17 +82,12 @@ private:
 	void Compress();
 	template<typename T> bool IsReady(const future<T>& future);
 
-	//float CalcDifficulty();
+	float CalcDifficulty();
 
 public:
 	pair<bool, uint8_t> Mine(Block& newBlock);
 	bool Consensus(Block& block); // Evaluate Proof-of-Work
 	void StopMining(std::promise<void>&& exitSignal);
-
-private:
-	string Hash(const string& input);
-	string Hash(const Transaction& transaction);
-	string Hash(const Block& block);
 };
 
 // Get the number of blocks in the blockchain
