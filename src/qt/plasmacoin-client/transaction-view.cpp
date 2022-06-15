@@ -18,7 +18,7 @@ TransactionView::~TransactionView() {
 }
 
 void TransactionView::Display(Transaction* transaction) {
-	m_TransactionView->setRowCount(5);
+	m_TransactionView->setRowCount(7);
 
 	std::vector<std::pair<QTableWidgetItem, QTableWidgetItem>> table = {
 		{
@@ -28,6 +28,14 @@ void TransactionView::Display(Transaction* transaction) {
 		{
 			QTableWidgetItem(QString("Recipient")),
 			QTableWidgetItem(QString::fromStdString(transaction->m_RecipientAddr))
+		},
+		{
+			QTableWidgetItem(QString("Created")),
+			QTableWidgetItem(QString::fromStdString(utility::formatEpoch(transaction->m_CreationTime)))
+		},
+		{
+			QTableWidgetItem(QString("Signed")),
+			QTableWidgetItem(QString::fromStdString(utility::formatEpoch(transaction->m_SignTime)))
 		},
 		{
 			QTableWidgetItem(QString("Amount")),
