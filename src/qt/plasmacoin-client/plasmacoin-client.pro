@@ -11,9 +11,9 @@ CONFIG += c++17
 SOURCES += \
     ../../transaction.cpp ../../node.cpp ../../block.cpp ../../blockchain.cpp \
     ../../receipt.cpp ../../rsa-fs.cpp ../../dat-fs.cpp ../../transmitter.cpp \
-    ../../transmitter.tpp ../../shared-mem.cpp ../../parse-json.cpp \
-    ../../validation.cpp ../../hashing.cpp ../../dssize.cpp ../../utility.cpp \
-    ../../rsautil.cpp ../../merkle-helpers.cpp \
+    ../../shared-mem.cpp ../../parse-json.cpp ../../validation.cpp ../../hashing.cpp \
+    ../../dssize.cpp ../../utility.cpp ../../utility.tpp ../../rsautil.cpp \
+    ../../merkle-helpers.cpp \
     \
     main.cpp mainwindow.cpp transaction-list.cpp  mining-status.cpp recipient-list.cpp \
     firebase-auth.cpp account-pages.cpp mining-dialog.cpp transaction-manager.cpp \
@@ -26,12 +26,12 @@ SOURCES += \
     #../../../daemon/daemon.cpp
 
 HEADERS += \
-    ../../transaction.hpp ../../node.hpp ../../block.hpp \
-    ../../blockchain.hpp ../../receipt.hpp ../../merkle-helpers.h ../../rsa-fs.hpp \
-    ../../dat-fs.hpp ../../transmitter.hpp ../../transmitter.tpp ../../shared-mem.hpp \
-    ../../parse-json.hpp ../../validation.hpp ../../hashing.hpp ../../dssize.hpp \
-    ../../utility.hpp ../../rsautil.hpp ../../sync-request.hpp ../../user-query.hpp \
-    ../../signature.hpp ../../merkle-helpers.h ../../idcode.hpp \
+    ../../transaction.hpp ../../node.hpp ../../block.hpp ../../blockchain.hpp \
+    ../../receipt.hpp ../../merkle-helpers.h ../../rsa-fs.hpp ../../dat-fs.hpp \
+    ../../transmitter.hpp ../../shared-mem.hpp ../../parse-json.hpp \
+    ../../validation.hpp ../../hashing.hpp ../../dssize.hpp ../../utility.hpp \
+    ../../rsautil.hpp ../../sync-request.hpp ../../user-query.hpp ../../signature.hpp \
+    ../../merkle-helpers.h ../../idcode.hpp ../../pending-trxn.hpp \
     \
     mainwindow.h transaction-list.h  mining-status.h recipient-list.h \
     firebase-auth.h account-pages.h mining-dialog.h transaction-manager.h \
