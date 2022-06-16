@@ -70,7 +70,7 @@ Node::~Node() {
 }
 
 // Create a new transaction to a recipient on the blockchain network
-Transaction* Node::MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content) {
+Transaction* Node::MakeTransaction(const string& recipientAddr, double amount, double fee, const string& content) {
 	Transaction* transaction = new Transaction(GetAddress(), recipientAddr, amount, fee, content);
 	transaction->m_Hash = hashing::hash(*transaction);
 

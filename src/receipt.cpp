@@ -9,7 +9,7 @@
 
 Receipt::Receipt(
 	const string& senderAddr, const string& recipientAddr, time_t trxnTime, time_t signTime,
-	float amount, float fee, const string& hash
+	double amount, double fee, const string& hash
 ):
 	m_SenderAddr(senderAddr),
 	m_RecipientAddr(recipientAddr),
@@ -22,7 +22,7 @@ Receipt::Receipt(
 
 Receipt::Receipt(
 	const string& senderAddr, const string& recipientAddr, time_t trxnTime, time_t signTime,
-	float amount, float fee, const Signature& signature, const string& hash
+	double amount, double fee, const Signature& signature, const string& hash
 ):
 	Receipt(senderAddr, recipientAddr, trxnTime, signTime, amount, fee, hash)
 {

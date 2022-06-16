@@ -18,17 +18,17 @@ class Receipt {
 public:
 	Receipt(
 		const string& senderAddr, const string& recipientAddr, time_t trxnTime, time_t signTime,
-		float amount, float fee, const string& hash
+		double amount, double fee, const string& hash
 	);
 	Receipt(
 		const string& senderAddr, const string& recipientAddr, time_t trxnTime, time_t signTime,
-		float amount, float fee, const Signature& signature, const string& hash
+		double amount, double fee, const Signature& signature, const string& hash
 	);
 	~Receipt();
 
 	string m_SenderAddr, m_RecipientAddr;
 	time_t m_TransactionTime, m_SignTime;
-	float m_Amount, m_Fee;
+	double m_Amount, m_Fee;
 
 	Signature m_Signature;
 

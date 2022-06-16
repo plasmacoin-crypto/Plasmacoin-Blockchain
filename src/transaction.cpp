@@ -7,7 +7,7 @@
 
 #include "transaction.hpp"
 
-Transaction::Transaction(const string& senderAddr, const string& recipientAddr, float amount, float fee, const string& content):
+Transaction::Transaction(const string& senderAddr, const string& recipientAddr, double amount, double fee, const string& content):
 	m_SenderAddr(senderAddr),
 	m_RecipientAddr(recipientAddr),
 	m_Amount(amount),
@@ -18,8 +18,8 @@ Transaction::Transaction(const string& senderAddr, const string& recipientAddr, 
 }
 
 Transaction::Transaction(
-	const string& senderAddr, const string& recipientAddr, time_t creationTime, time_t signTime, float amount,
-	float fee, const string& content, Signature* signature, const string& hash
+	const string& senderAddr, const string& recipientAddr, time_t creationTime, time_t signTime, double amount,
+	double fee, const string& content, Signature* signature, const string& hash
 ):
 	m_SenderAddr(senderAddr),
 	m_RecipientAddr(recipientAddr),

@@ -46,8 +46,8 @@ Transaction* json::toTransaction(const QJsonObject& object) {
 	// RecipientAddr string    `json:"recipientAddr"`
 	// CreationTime  int64     `json:"created"`
 	// SigningTime   int64     `json:"signed"`
-	// Amount        float32   `json:"amount"`
-	// Fee           float32   `json:"fee"`
+	// Amount        float64   `json:"amount"`
+	// Fee           float64   `json:"fee"`
 	// Content       string    `json:"content"`
 	// Signature     Signature `json:"sigfield"`
 	// Hash          string    `json:"hash"`
@@ -56,8 +56,8 @@ Transaction* json::toTransaction(const QJsonObject& object) {
 	string recipientAddr = object["recipientAddr"].toString().toStdString();
 	time_t creationTime = object["created"].toInt();
 	time_t signingTime = object["signed"].toInt();
-	float amount = object["amount"].toDouble();
-	float fee = object["fee"].toDouble();
+	double amount = object["amount"].toDouble();
+	double fee = object["fee"].toDouble();
 	string content = object["content"].toString().toStdString();
 	Signature* signature = json::toSignature(object["sigfield"].toObject());
 	string hash = object["hash"].toString().toStdString();
@@ -128,8 +128,8 @@ Receipt* json::toReceipt(const QJsonObject& object) {
 	string recipientAddr = object["receipientAddr"].toString().toStdString();
 	time_t trxnCreated = object["trxnCreated"].toInt();
 	time_t signTime = object["signed"].toInt();
-	float amount = object["amount"].toDouble();
-	float fee = object["fee"].toDouble();
+	double amount = object["amount"].toDouble();
+	double fee = object["fee"].toDouble();
 	Signature* signature = json::toSignature(object["signature"].toObject());
 	string hash = object["hash"].toString().toStdString();
 
@@ -205,8 +205,8 @@ QJsonObject json::fromReceipt(Receipt* receipt) {
 	object["receipient"] = QString::fromStdString(receipt->m_RecipientAddr);
 	object["created"] = static_cast<qint64>(receipt->m_TransactionTime);
 	object["signed"] = static_cast<qint64>(receipt->m_SignTime);
-	object["amount"] = QString::number(transaction->m_Amount, 'f', 10).toDouble();
-	object["fee"] = QString::number(transaction->m_Fee, 'f', 5).toDouble();
+	object["amount"] = QString::number(receipt->m_Amount, 'f', 10).toDouble();
+	object["fee"] = QString::number(receipt->m_Fee, 'f', 5).toDouble();
 	object["signature"] = json::fromSignature(&receipt->m_Signature);
 	object["hash"] = QString::fromStdString(receipt->m_Hash);
 

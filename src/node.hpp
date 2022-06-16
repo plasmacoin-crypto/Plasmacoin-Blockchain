@@ -50,7 +50,7 @@ public:
 	Node(const string& ip, const string& address);
 	~Node();
 
-	Transaction* MakeTransaction(const string& recipientAddr, float amount, float fee, const string& content);
+	Transaction* MakeTransaction(const string& recipientAddr, double amount, double fee, const string& content);
 	void Distribute(Transaction* transaction);
 
 	// Some getters

@@ -15,10 +15,10 @@ type Transaction struct {
 	PacketType    int       `json:"type"`
 	SenderAddr    string    `json:"senderAddr"`
 	RecipientAddr string    `json:"recipientAddr"`
-	CreationTime  int64    `json:"created"`
-	SigningTime   int64    `json:"signed"`
-	Amount        float32   `json:"amount"`
-	Fee           float32   `json:"fee"`
+	CreationTime  int64     `json:"created"`
+	SigningTime   int64     `json:"signed"`
+	Amount        float64   `json:"amount"`
+	Fee           float64   `json:"fee"`
 	Content       string    `json:"content"`
 	Signature     Signature `json:"sigfield"`
 	Hash          string    `json:"hash"`
@@ -67,8 +67,8 @@ func MakeTransaction(data []string) *Transaction {
 		RecipientAddr: data[2],
 		CreationTime:  creationTime,
 		SigningTime:   signingTime,
-		Amount:        float32(amount),
-		Fee:           float32(fee),
+		Amount:        float64(amount),
+		Fee:           float64(fee),
 		Content:       data[7],
 		Signature:     signature,
 		Hash:          data[11],
