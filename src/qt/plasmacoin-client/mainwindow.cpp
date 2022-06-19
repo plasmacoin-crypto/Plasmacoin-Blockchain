@@ -12,11 +12,14 @@ MainWindow::MainWindow(QWidget* parent):
 	parent(parent),
 	m_Authenticator(new Auth()),
 	//m_SettingsManager(new SettingsManager()),
-	m_TransactionList(new TransactionList(Ui::MainWindow::transactionList))
+	m_TransactionList(new TransactionList(Ui::MainWindow::transactionList)),
+	m_Wallet(new Wallet())
 {
 	shared_mem::deleteMemory(shared_mem::FILENAME);
 	shared_mem::deleteMemory(shared_mem::READER_FILENAME);
 	shared_mem::deleteMemory(shared_mem::WRITER_FILENAME);
+
+	RegisterNode();
 
 	Ui_MainWindow::setupUi(this);
 
@@ -40,7 +43,7 @@ MainWindow::MainWindow(QWidget* parent):
 	tabWidget->setCurrentIndex(0);
 
 	m_FormErrorAlert = new QMessageBox(); // Create a message box to display authentication errors
-	m_ConfirmTransaction = new QMessageBox(); // Create a message box to sign and send a transaction
+	m_TransactionAlert = new QMessageBox(); // Create a message box to sign and send a transaction
 
 	m_Status = CreateMiningVisuals();
 	m_AccPgs = CreatePages();
@@ -54,13 +57,13 @@ MainWindow::MainWindow(QWidget* parent):
 	m_TransactionManager =  new TransactionManager(
 								Ui::MainWindow::contacts, Ui::MainWindow::transactionLog, Ui::MainWindow::messageField,
 								Ui::MainWindow::amountSelector, Ui::MainWindow::feeSelector, Ui::MainWindow::btndiag_send,
-								m_ConfirmTransaction
+								m_TransactionAlert
 						    );
 	m_TransactionView = new TransactionView(Ui::MainWindow::transactionView, amountSelector->decimals(), feeSelector->decimals());
 	m_MiningDialog = new MiningDialog(this);
 	m_BlockView = new BlockView(Ui::MainWindow::blockView);
 	m_BlockchainViewer = new BlockchainViewer(m_User->m_BlockchainCopy, Ui::MainWindow::blockView, Ui::MainWindow::blockTrxnView);
-	m_WalletPage = new WalletPage(Ui::MainWindow::receiptList);
+	m_WalletPage = new WalletPage(Ui::MainWindow::receiptList, Ui::MainWindow::pendingList);
 
 	// Create some temporary nodes to make transactions between
 	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
@@ -92,7 +95,7 @@ MainWindow::MainWindow(QWidget* parent):
 	});
 
 	// Add a contact to the list
-	Contact* contact1 = new Contact("Ryan", "rmsmith", "pca12345", QDate(2005, 2, 16));
+	Contact* contact1 = new Contact("Ryan", "rmsmith", "74E53206EC86B36DB2616EFD81C48419E3F85D4A", QDate(2005, 2, 16));
 	Contact* contact2 = new Contact("John", "jdoe", "pca67890", QDate(1999, 9, 9));
 	Contact* contact3 = new Contact("Alexander", "alex", "pca31415", QDate(2000, 1, 1));
 
@@ -144,59 +147,85 @@ AccountPages* MainWindow::CreatePages() {
 // Call block mining code and make visual changes to the GUI once it's done
 void MainWindow::StartMining() {
 	int64_t difficulty = m_User->m_BlockchainCopy->GetDifficulty();
-	Block newBlock;
-
-	if (m_User->m_BlockchainCopy->Size() == 0) {
-		newBlock = Block(0, m_BlockContents, difficulty, true); // Create a new block
-	}
-	else {
-		Block* latest = m_User->m_BlockchainCopy->GetLatest(); // Get the latest block
-		newBlock = Block(latest->m_Index + 1, latest->m_Hash, m_BlockContents, difficulty); // Create a new block
-	}
+	Block newBlock = mining::makeBlock(m_User->m_BlockchainCopy, m_BlockContents, difficulty);
 
 	bool success = false, valid = false;
 	uint8_t code;
 
-	auto start = high_resolution_clock::now(); // Begin timing the function
-	std::tie(success, code) = m_User->m_BlockchainCopy->Mine(newBlock); // Mine the block
-	auto stop = high_resolution_clock::now(); // End timing
+	std::tie(success, code) = mining::mine(m_User->m_BlockchainCopy, newBlock);
 
-	std::cout << "Success: " << success << std::endl;
-	std::cout << "Code: " << (uint)code << std::endl;
-
-	m_LastMiningDur = std::chrono::duration_cast<seconds>(stop - start); // Find the duration
-
-	// Verify and append the block
-	if (success) {
-		newBlock.m_MineTime = utility::getUnixEpoch(); // Timestamp the block
+	if (!success) {
+		return;
 	}
 
-	Blockchain* tempChain = new Blockchain(*m_User->m_BlockchainCopy);
-	tempChain->Add(&newBlock);
-	valid = validation::validate(*tempChain);
+	valid = mining::validate(m_User->m_BlockchainCopy, &newBlock);
 
-	if (valid) {
-		std::cout << "Valid" << std::endl;
+	if (!valid) {
+		return;
+	}
 
-		newBlock.m_MinerAddr = m_User->GetAddress();
+	std::cout << "Valid" << std::endl;
 
-		m_User->m_BlockchainCopy->Add(&newBlock);
-		m_BlockchainViewer->Latest();
+	// Update and display the block
+	newBlock.m_MinerAddr = m_User->GetAddress();
+	m_User->m_BlockchainCopy->Add(&newBlock);
+	m_BlockchainViewer->Latest();
 
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 
-		Transmitter* transmitter = new Transmitter();
-		auto data = transmitter->Format(&newBlock);
-		transmitter->Transmit(data, std::stoi(data[0]), m_User->GetKnownHosts());
-		delete transmitter;
+	mining::transmitBlock(&newBlock, m_User->GetKnownHosts());
+	emit BlockCompleted();
 
-		emit BlockCompleted();
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	shared_mem::writeMemory("");
 
-		std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::vector<string> data;
+	Transmitter* transmitter = new Transmitter();
+
+	//
+	// Experimental code
+	//
+	// Get a list of Address Lookup nodes' IP addresses
+	// NOTE: only works if Address Lookup nodes self-register or sync first
+	//
+	// UserQuery* query = new UserQuery{"192.168.1.44", "addrlookup"};
+	// data = transmitter->Format(query);
+	// transmitter->Transmit(data, std::stoi(data[0]));
+	// delete query;
+	//
+	// Parse the IPs
+	// std::string result = shared_mem::readMemory(true); // Read the shared memory
+	// std::cout << "Node Result: " << result << std::endl;
+	// std::vector<string> hosts = json::parseArray(json::parse(result), "nodes");
+	//
+
+	Node* node = nullptr;
+
+	// Transmit transaction receipts
+	for (auto trxn: newBlock.m_Transactions) {
+		// Request the IP address associated with the transaction's recipient address
+		node = new Node("", trxn->m_RecipientAddr);
+		data = transmitter->Format(node, m_User->GetIP(), false);
+		transmitter->Transmit(data, std::stoi(data[0]));
+
+		// Parse the result
+		std::string result = shared_mem::readMemory(true); // Read the shared memory
+		std::cout << "Result: " << result << std::endl;
+		std::string ip = json::parse(result)["ip"].toString().toStdString();
+
 		shared_mem::writeMemory("");
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-		m_WalletPage->AddReceipt(newBlock.m_Transactions[0]->GetReceipt());
+		// Send the transaction receipt to the IP address
+		Receipt* receipt = trxn->GetReceipt();
+		data = transmitter->Format(receipt);
+		transmitter->Transmit(data, std::stoi(data[0]), {ip});
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
+
+	delete transmitter;
+	delete node;
 }
 
 void MainWindow::ResetBlock() {
@@ -229,6 +258,29 @@ void MainWindow::ShowContact(Contact* contact) {
 	birthday->setDate(contact->GetBirthday()); // Set the birthday
 }
 
+void MainWindow::RegisterNode() {
+	// Register that the node is online
+	Transmitter* transmitter = new Transmitter();
+	auto data = transmitter->Format(m_User, m_User->GetIP());
+	std::cout << data[0] << std::endl;
+	transmitter->Transmit(data, std::stoi(data[0]));
+
+	string result = shared_mem::readMemory(true); // Read the shared memory
+	std::cout << "Node Result: " << result << std::endl;
+
+	// Parse the JSON string
+	QJsonObject object = json::parse(result);
+	std::vector<string> hosts = json::parseArray(object, "nodes");
+	m_User->SetKnownHosts(hosts);
+
+	for (auto host: hosts) {
+		std::cout << "Host: " << host << std::endl;
+	}
+
+	shared_mem::writeMemory("");
+	delete transmitter;
+}
+
 void MainWindow::ManageSharedMem() {
 	string data = shared_mem::readMemory(true);
 	QJsonObject object = json::parse(data);
@@ -238,6 +290,8 @@ void MainWindow::ManageSharedMem() {
 	if (data.empty()) {
 		return;
 	}
+
+	std::cout << data << std::endl;
 
 	switch (packetType) {
 		case go::PacketTypes::ID_CODE: {
@@ -289,25 +343,13 @@ void MainWindow::ManageSharedMem() {
 			m_BlockchainViewer->Latest();
 			UpdateButtons();
 
-			for (auto transaction: block->m_Transactions) {
-				if (m_User->GetAddress() == transaction->m_SenderAddr) {
-					Receipt* receipt = transaction->GetReceipt();
-					m_User->Sign(*receipt);
-
-					// Transmit the receipt to the recipient
-					Transmitter* transmitter = new Transmitter();
-
-					auto data = transmitter->Format(transaction);
-					transmitter->Transmit(data, std::stoi(data[0]));
-
-					delete transmitter;
-				}
-			}
-
 			break;
 		}
 
 		case go::PacketTypes::RECEIPT: {
+			shared_mem::writeMemory("");
+			std::cout << "Here" << std::endl;
+
 			Receipt* receipt = json::toReceipt(object);
 			m_WalletPage->AddReceipt(receipt);
 			break;
@@ -357,12 +399,20 @@ void MainWindow::ManageSharedMem() {
 			break;
 		}
 
+		case go::PacketTypes::PENDING_TRXN:
+			shared_mem::writeMemory("");
+
+			m_WalletPage->AddPending(json::toPendingTrxn(object));
+			break;
+
+		// case go::PacketTypes::NODE:
+		// 	std::cout << "Node" << std::endl;
+
 		default:
 			break;
 	}
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
-	shared_mem::writeMemory("");
 }
 
 void MainWindow::ManageSyncedData() {

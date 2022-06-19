@@ -40,7 +40,8 @@
 #include "mining-dialog.h"
 #include "block-view.h"
 #include "blockchain-viewer.h"
-#include "wallet-page.hpp"
+#include "wallet-page.h"
+#include "wallet.h"
 //#include "settings-manager.h"
 
 #include "block.hpp"
@@ -54,6 +55,7 @@
 #include "parse-json.hpp"
 #include "utility.hpp"
 #include "idcode.hpp"
+#include "mining.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -76,6 +78,7 @@ public:
 	void ResetBlock();	// Reset the user's block
 	void UpdateStatus(const Block& block, std::chrono::seconds time); // Update the mining status while a block is being mined
 	void ShowContact(Contact* contact);
+	void RegisterNode();
 
 	void ManageSharedMem();
 	void ManageSyncedData();
@@ -94,6 +97,7 @@ public:
 	BlockView* m_BlockView;
 	BlockchainViewer* m_BlockchainViewer;
 	WalletPage* m_WalletPage;
+	Wallet* m_Wallet;
 	//SettingsManager* m_SettingsManager;
 
 	QLabel* m_NameDisplay = new QLabel();
@@ -101,7 +105,7 @@ public:
 	QLabel* m_AddressDisplay = new QLabel();
 	QLabel* m_BirthdayDisplay = new QLabel();
 
-	QMessageBox *m_FormErrorAlert, *m_ConfirmTransaction;
+	QMessageBox *m_FormErrorAlert, *m_TransactionAlert;
 
 	std::vector<Transaction*> m_BlockContents;
 	std::chrono::seconds m_LastMiningDur;
