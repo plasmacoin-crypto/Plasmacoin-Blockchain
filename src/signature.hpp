@@ -15,9 +15,9 @@ using CryptoPP::RSA;
 using CryptoPP::SecByteBlock;
 
 struct Signature {
-	SecByteBlock 	m_Signature;
-	RSA::PublicKey 	m_PublicKey;
-	size_t 			m_Length;
+	SecByteBlock   m_Signature;
+	RSA::PublicKey m_PublicKey;
+	size_t 		   m_Length;
 };
 
 #endif // SIGNATURE_HPP
