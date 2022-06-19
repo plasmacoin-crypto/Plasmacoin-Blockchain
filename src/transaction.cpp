@@ -36,6 +36,6 @@ Transaction::Transaction(
 Receipt* Transaction::GetReceipt() {
 	return new Receipt(
 		m_SenderAddr, m_RecipientAddr, m_CreationTime,
-		m_SignTime, m_Amount, m_Fee, m_Hash
+		m_SignTime, m_Amount, m_Fee, m_Signature, m_Hash
 	);
 }
