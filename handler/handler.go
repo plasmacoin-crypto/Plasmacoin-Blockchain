@@ -27,7 +27,7 @@ const (
 	Receipt
 	UserQuery
 	SyncRequest
-	BlockchainData
+	PendingTrxn
 )
 
 // Check for errors
@@ -95,6 +95,13 @@ func getStruct(data []byte, packetType uint8) interface{} {
 
 		fmt.Println(nodeList)
 		return nodeList
+	case Receipt:
+		var receipt bccnstrx.Receipt
+
+		err := json.Unmarshal(data, &receipt)
+		check(err, 86)
+
+		return receipt
 	case UserQuery:
 		var userQuery bccnstrx.UserQuery
 
@@ -109,13 +116,13 @@ func getStruct(data []byte, packetType uint8) interface{} {
 		check(err, 89)
 
 		return syncRequest
-	case BlockchainData:
-		var bcdata bccnstrx.UserQuery
+	case PendingTrxn:
+		var pendingTrxn bccnstrx.PendingTrxn
 
-		err := json.Unmarshal(data, &bcdata)
+		err := json.Unmarshal(data, &pendingTrxn)
 		check(err, 89)
 
-		return bcdata
+		return pendingTrxn
 	default:
 		break
 	}
