@@ -18,12 +18,13 @@ namespace go {
 		RECEIPT,
 		USER_QUERY,
 		SYNC_REQUEST,
-		BLOCKCHAIN_DATA
+		PENDING_TRXN
 	};
 
 	enum class IDCodes: uint8_t {
 		START_SYNC,
-		END_SYNC
+		END_SYNC,
+		ERROR
 	};
 }
 
