@@ -38,16 +38,17 @@ public:
 	bool CheckFields();
 
 	void AllowSend();
-	void DisallowSend();
+	void ProhibitSend();
 
 	int AskForConf(Transaction* transaction);
+	int ShowWarning(double balance, Transaction* transaction);
 
 private:
 	QListWidget *m_ContactsList, *m_TransactionLog;
 	QLineEdit* m_MessageField;
 	QDoubleSpinBox *m_AmountSelector, *m_FeeSelector;
 	QDialogButtonBox* m_Dialog;
-	QMessageBox* m_ConfirmTransaction;
+	QMessageBox* m_TransactionAlert;
 
 	std::vector<Contact*> m_Contacts;
 };

@@ -18,13 +18,13 @@ TransactionManager::TransactionManager(
 	m_AmountSelector(amountSelector),
 	m_FeeSelector(feeSelector),
 	m_Dialog(dialog),
-	m_ConfirmTransaction(messageBox)
+	m_TransactionAlert(messageBox)
 {
 	// Add a button to calculate the transaction fees
 	QPushButton* calcButton = new QPushButton("Calculate Fee");
 	m_Dialog->addButton(calcButton, QDialogButtonBox::ActionRole);
 
-	DisallowSend();
+	ProhibitSend();
 }
 
 TransactionManager::~TransactionManager() {
@@ -34,7 +34,7 @@ TransactionManager::~TransactionManager() {
 	delete m_AmountSelector;
 	delete m_FeeSelector;
 	delete m_Dialog;
-	delete m_ConfirmTransaction;
+	delete m_TransactionAlert;
 }
 
 void TransactionManager::UpdateContactsList(AddressBook* addressBook) {
@@ -69,34 +69,51 @@ void TransactionManager::AllowSend() {
 	m_Dialog->button(QDialogButtonBox::Ok)->setAutoDefault(true);
 }
 
-void TransactionManager::DisallowSend() {
+void TransactionManager::ProhibitSend() {
 	m_Dialog->button(QDialogButtonBox::Ok)->setEnabled(false); // Disable the OK button
 	m_Dialog->button(QDialogButtonBox::Ok)->setAutoDefault(true);
 }
 
 // Ask the user to confirm the data of the transaction they're currently working on
 int TransactionManager::AskForConf(Transaction* transaction) {
-	m_ConfirmTransaction = new QMessageBox(
+	m_TransactionAlert = new QMessageBox(
 		QMessageBox::Information, "Plasmacoin Client",
 		QString::fromStdString("Transaction created. Please review the details, then click \"OK\"."),
 		QMessageBox::StandardButton::Ok | QMessageBox::StandardButton::Cancel
 	);
-	m_ConfirmTransaction->setStyleSheet("QLabel{max-width: 1000px;}");
+	m_TransactionAlert->setStyleSheet("QLabel{max-width: 1000px;}");
 
 	std::string detailedText = (
-		"Sender: " 	  			+ transaction->m_SenderAddr 	 		+ "\n" +
-		"Recipient: " 			+ transaction->m_RecipientAddr 		  	+ "\n" +
-		"Amount: "	  			+ std::to_string(transaction->m_Amount) + "\n" +
-		"Fee (after signing): " + std::to_string(transaction->m_Fee)	+ "\n" +
-		"Content: "				+ transaction->m_Content 				+ "\n" +
+		"Sender: " 	  			+ transaction->m_SenderAddr 	 								+ "\n" +
+		"Recipient: " 			+ transaction->m_RecipientAddr 		  							+ "\n" +
+		"Amount: "	  			+ QString::number(transaction->m_Amount, 'f', 10).toStdString() + "\n" +
+		"Fee (after signing): " + QString::number(transaction->m_Fee, 'f', 6).toStdString()		+ "\n" +
+		"Content: "				+ transaction->m_Content 										+ "\n" +
 		"Hash: "				+ transaction->m_Hash
 	);
-	m_ConfirmTransaction->setDetailedText(QString::fromStdString(detailedText));
+	m_TransactionAlert->setDetailedText(QString::fromStdString(detailedText));
 
-	return m_ConfirmTransaction->exec();
-	// std::cout << result << std::endl;
+	return m_TransactionAlert->exec();
+}
 
-	// if (result == QMessageBox::Cancel) {
-	// 	m_ConfirmTransaction->close();
-	// }
+// Warn the user about an issue with their transaction
+int TransactionManager::ShowWarning(double balance, Transaction* transaction) {
+	m_TransactionAlert = new QMessageBox(
+		QMessageBox::Warning, "Plasmacoin Client",
+		QString::fromStdString("Insufficient funds. Please review the details, then click \"OK\"."),
+		QMessageBox::StandardButton::Ok
+	);
+	m_TransactionAlert->setStyleSheet("QLabel{max-width: 1000px;}");
+
+	const double TOTAL  = transaction->m_Amount + transaction->m_Fee;
+	const double RESULT = balance - TOTAL;
+
+	std::string detailedText = (
+		"Account balance: "	   + QString::number(balance, 'f', 10).toStdString() + "\n" +
+		"Transaction amount: " + QString::number(TOTAL, 'f', 10).toStdString() 	 + "\n" +
+		"Resulting balance: "  + QString::number(RESULT, 'f', 10).toStdString()  + "\n"
+	);
+	m_TransactionAlert->setDetailedText(QString::fromStdString(detailedText));
+
+	return m_TransactionAlert->exec();
 }
