@@ -78,7 +78,7 @@ bool rsautil::verify(const Transaction& transaction, const CryptoPP::SecByteBloc
 	return result;
 }
 
-// Verify a transaction using the sender's public key. Returns true if verification succeded,
+// Verify a receipt using the sender's public key. Returns true if verification succeded,
 // false otherwise.
 bool rsautil::verify(const Receipt& receipt, const CryptoPP::SecByteBlock& signature, const RSA::PublicKey& publicKey) {
 	CryptoPP::AutoSeededRandomPool rng;
