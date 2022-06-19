@@ -189,7 +189,7 @@ void connections::transactionPage(MainWindow& window) {
 			window.m_TransactionManager->AllowSend();
 		}
 		else {
-			window.m_TransactionManager->DisallowSend();
+			window.m_TransactionManager->ProhibitSend();
 		}
 	});
 
@@ -204,7 +204,7 @@ void connections::transactionPage(MainWindow& window) {
 			window.m_TransactionManager->AllowSend();
 		}
 		else {
-			window.m_TransactionManager->DisallowSend();
+			window.m_TransactionManager->ProhibitSend();
 		}
 	});
 
@@ -219,7 +219,7 @@ void connections::transactionPage(MainWindow& window) {
 			window.m_TransactionManager->AllowSend();
 		}
 		else {
-			window.m_TransactionManager->DisallowSend();
+			window.m_TransactionManager->ProhibitSend();
 		}
 	});
 
@@ -246,6 +246,11 @@ void connections::transactionPage(MainWindow& window) {
 		// Create a new transaction
 		finalTransaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
 
+		if (!window.m_Wallet->IsPossible(finalTransaction)) {
+			window.m_TransactionManager->ShowWarning(window.m_Wallet->GetBalance(), finalTransaction);
+			return;
+		}
+
 		int result = window.m_TransactionManager->AskForConf(finalTransaction);
 
 		// If the OK button is pressed, sign and broadcast the transaction
@@ -262,6 +267,17 @@ void connections::transactionPage(MainWindow& window) {
 
 			string result = shared_mem::readMemory(true);
 			std::cout << "Result: " << result << std::endl;
+
+			window.m_Wallet->UpdateWorkingBal(Wallet::WalletActions::WITHDRAW, finalTransaction->m_Amount + finalTransaction->m_Fee);
+
+			// Send a pending transaction notification to the recipient
+			PendingTransaction pendingTrxn {
+				finalTransaction->m_CreationTime,
+				finalTransaction->m_Hash,
+				QString::number(finalTransaction->m_Amount, 'f', 10).toDouble()
+			};
+			data = transmitter->Format(&pendingTrxn);
+			transmitter->Transmit(data, std::stoi(data[0]), {"192.168.1.44"});
 
 			delete transmitter;
 		}
