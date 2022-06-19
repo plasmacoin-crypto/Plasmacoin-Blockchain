@@ -34,8 +34,8 @@ void datfs::saveReceipt(Receipt* receipt) {
 	QJsonDocument document = QJsonDocument(object);
 	string jsonData = document.toJson(QJsonDocument::Indented).toStdString();
 
-	// Make a new block data file
-	string path = datfs::WALLET_LOC + DELIM + receipt->m_Hash.substr(9) + ".dat";
+	// Make a new receipt data file
+	string path = datfs::WALLET_LOC + DELIM + receipt->m_Hash.substr(0, 8) + ".dat";
 	std::ofstream dataFile(path);
 
 	dataFile.write(jsonData.c_str(), jsonData.size()); // Write the JSON to the file
