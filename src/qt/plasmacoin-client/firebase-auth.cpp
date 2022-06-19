@@ -112,7 +112,8 @@ void Auth::AddUser(const QString& email, const QString& username, const QString&
 	// Add the new user's information
 	newUser["username"] = username;
 	newUser["email"] = email;
-	newUser["password"] = QString(this->EncryptPassword(password.toStdString().c_str()).c_str());
+	newUser["password"] = QString::fromStdString(this->EncryptPassword(password.toStdString().c_str()));
+	newUser["balance"] = 0.0;
 
 	QJsonDocument body = QJsonDocument::fromVariant(newUser); // Load the QVariant as JSON
 	QString jsonStr = "{\"" + uid + "\":" + QString(body.toJson(QJsonDocument::Compact)) + "}"; // Build a JSON object as a QString
@@ -132,6 +133,25 @@ void Auth::ModUsername(const QString& username) {
 		QVariantMap modUser;
 		modUser["idToken"] = this->m_IDToken;
 		modUser["displayName"] = username;
+		modUser["photoUrl"] = ""; // Changing account pictures won't be allowed, at least for now
+		modUser["deleteAttribute"] = "PHOTO_URL";
+		modUser["returnSecureToken"] = false; // This call is not meant to refresh tokens, despite the functionality being available
+
+		QJsonDocument jsonPayload = QJsonDocument::fromVariant(modUser); // Load the QVariant as JSON
+		Post(endpoint, jsonPayload); // Make a post request
+	});
+}
+
+void Auth::AdjustBalance(double balance) {
+	connect(this, &Auth::UserSignedIn, this, &Auth::RequestToken);
+
+	connect(this, &Auth::RequestedToken, this, [&, this, balance]() {
+		QString endpoint = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=" + this->m_APIKey;
+
+		// Add the user's new information
+		QVariantMap modUser;
+		modUser["idToken"] = this->m_IDToken;
+		modUser["balance"] = balance;
 		modUser["photoUrl"] = ""; // Changing account pictures won't be allowed, at least for now
 		modUser["deleteAttribute"] = "PHOTO_URL";
 		modUser["returnSecureToken"] = false; // This call is not meant to refresh tokens, despite the functionality being available
