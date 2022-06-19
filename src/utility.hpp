@@ -23,6 +23,7 @@
 #include <chrono>
 #include <cstdio>
 #include <future>
+#include <type_traits>
 
 using std::string;
 
@@ -59,11 +60,11 @@ namespace utility {
 	string IPv4(uint8_t o1, uint8_t o2, uint8_t o3, uint8_t o4, uint16_t port);
 
 	template<typename T> bool isReady(const std::future<T>& future);
+	template<typename T, typename... Args> typename std::enable_if<std::is_arithmetic<T>::value, float>::type mean(T first, Args... nums);
+	template<typename T> typename std::enable_if<std::is_arithmetic<T>::value, float>::type median(std::vector<T>& data);
+
 }
 
-// Check if a future is ready to have its value read
-template<typename T> bool utility::isReady(const std::future<T>& future) {
-	return future.wait_for(std::chrono::seconds(0)) == std::future_status::ready;
-}
+#include "utility.tpp"
 
 #endif // UTILITY_HPP
