@@ -9,7 +9,7 @@
 
 Node::Node(
 	const string& name, const string& username, const string& password,
-	const string& ip, const string& keyPath, Node::NodeType type
+	const string& ip, const string& keyPath, const Node::NodeType& type
 ):
 	// User data
 	m_Name(name),
@@ -30,26 +30,6 @@ Node::Node(
 	datfs::createDataPath(); // Create a place to store blockchain data
 
 	m_Address = CreateAddress(m_PublicKey);
-
-	// Register that the node is online
-	Transmitter* transmitter = new Transmitter();
-	auto data = transmitter->Format(this);
-	std::cout << data[0] << std::endl;
-	transmitter->Transmit(data, std::stoi(data[0]));
-
-	string result = shared_mem::readMemory(true); // Read the shared memory
-	std::cout << "Node Result: " << result << std::endl;
-
-	// Parse the JSON string
-	QJsonObject object = json::parse(result);
-	std::vector<string> hosts = json::parseArray(object, "nodes");
-	SetKnownHosts(hosts);
-
-	for (auto host: hosts) {
-		std::cout << "Host: " << host << std::endl;
-	}
-
-	delete transmitter;
 }
 
 Node::Node(const string& ip, const string& address):
@@ -78,11 +58,11 @@ Transaction* Node::MakeTransaction(const string& recipientAddr, double amount, d
 }
 
 void Node::Distribute(Transaction* transaction) {
-	Node* recipient = new Node("", transaction->m_RecipientAddr);
+	// Node* recipient = new Node("", transaction->m_RecipientAddr);
 
-	Transmitter* transmitter = new Transmitter();
-	auto data = transmitter->Format(recipient, false);
-	transmitter->Transmit(data, std::stoi(data[0]));
+	// Transmitter* transmitter = new Transmitter();
+	// auto data = transmitter->Format(recipient, false);
+	// transmitter->Transmit(data, std::stoi(data[0]));
 }
 
 // Get the user's name
@@ -106,6 +86,10 @@ string Node::GetAddress() const {
 
 Node::NodeType Node::GetType() const {
 	return m_NodeType;
+}
+
+void Node::SetType(const Node::NodeType& type) {
+	m_NodeType = type;
 }
 
 void Node::SetKnownHosts(std::vector<string>& hosts) {

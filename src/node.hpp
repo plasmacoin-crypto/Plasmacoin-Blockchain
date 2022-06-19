@@ -30,7 +30,6 @@ using std::string;
 #include "packet-types.h"
 #include "transmitter.hpp"
 #include "shared-mem.hpp"
-#include "parse-json.hpp"
 #include "utility.hpp"
 #include "rsautil.hpp"
 #include "hashing.hpp"
@@ -45,7 +44,7 @@ public:
 
 	Node(
 		const string& name, const string& username, const string& password,
-		const string& ip, const string& keyPath = rsafs::DIR_PATH, Node::NodeType type = NodeType::LIGHT
+		const string& ip, const string& keyPath = rsafs::DIR_PATH, const Node::NodeType& type = NodeType::LIGHT
 	);
 	Node(const string& ip, const string& address);
 	~Node();
@@ -56,6 +55,8 @@ public:
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
 	NodeType GetType() const;
+
+	void SetType(const Node::NodeType& type);
 
 	std::vector<string> GetKnownHosts() const;
 	void SetKnownHosts(std::vector<string>& hosts);
