@@ -49,8 +49,8 @@ func MakeTransaction(data []string) *Transaction {
 	packetType, _ := strconv.ParseInt(data[0], 10, 32)
 	creationTime, _ := strconv.ParseInt(data[3], 10, 64)
 	signingTime, _ := strconv.ParseInt(data[4], 10, 64)
-	amount, _ := strconv.ParseFloat(data[5], 32)
-	fee, _ := strconv.ParseFloat(data[6], 32)
+	amount, _ := strconv.ParseFloat(data[5], 64)
+	fee, _ := strconv.ParseFloat(data[6], 64)
 	siglen, _ := strconv.ParseInt(data[10], 10, 32)
 
 	// Construct the signature field
