@@ -27,6 +27,7 @@
 #include "block.hpp"
 #include "sync-request.hpp"
 #include "utility.hpp"
+#include "pending-trxn.hpp"
 
 using std::vector;
 using std::string;
@@ -45,6 +46,7 @@ namespace json {
 	Signature* toSignature(const QJsonObject& object);
 	Receipt* toReceipt(const QJsonObject& object);
 	SyncRequest* toSyncRequest(const QJsonObject& object);
+	PendingTransaction* toPendingTrxn(const QJsonObject& object);
 
 	QJsonObject fromTransaction(Transaction* transaction);
 	QJsonObject fromBlock(Block* block);

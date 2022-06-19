@@ -34,7 +34,14 @@ uint8_t json::getPacketType(const QJsonObject& object) {
 
 IDCode* json::toIDCode(const QJsonObject& object) {
 	// Code int `json:"code"`
-	uint8_t code = object["code"].toInt();
+	auto value = object.value("code");
+
+	if (value == QJsonValue::Undefined) {
+		IDCode* idCode = new IDCode {static_cast<uint8_t>(go::IDCodes::ERROR)};
+		return idCode;
+	}
+
+	uint8_t code = object.value("code").toInt();
 
 	IDCode* idCode = new IDCode {code};
 	return idCode;
@@ -112,6 +119,8 @@ Signature* json::toSignature(const QJsonObject& object) {
 	// PublicKey string `json:"publicKey"`
 	// Length    int    `json:"length"`
 
+	qDebug() << "Debug to:" << object;
+
 	string strSignature = object["signature"].toString().toStdString();
 	string strPublicKey = object["publicKey"].toString().toStdString();
 	size_t length = object["length"].toInt();
@@ -130,10 +139,11 @@ Receipt* json::toReceipt(const QJsonObject& object) {
 	time_t signTime = object["signed"].toInt();
 	double amount = object["amount"].toDouble();
 	double fee = object["fee"].toDouble();
-	Signature* signature = json::toSignature(object["signature"].toObject());
+	Signature* signature = json::toSignature(object["sigfield"].toObject());
 	string hash = object["hash"].toString().toStdString();
 
 	Receipt* receipt = new Receipt(senderAddr, recipientAddr, trxnCreated, signTime, amount, fee, *signature, hash);
+	return receipt;
 }
 
 SyncRequest* json::toSyncRequest(const QJsonObject& object) {
@@ -142,6 +152,15 @@ SyncRequest* json::toSyncRequest(const QJsonObject& object) {
 
 	SyncRequest* syncRequest = new SyncRequest {syncType, host};
 	return syncRequest;
+}
+
+PendingTransaction* json::toPendingTrxn(const QJsonObject& object) {
+	time_t timestamp = object["timestamp"].toInt();
+	string hash = object["hash"].toString().toStdString();
+	double amount = QString::number(object["amount"].toDouble(), 'f', 10).toDouble();
+
+	PendingTransaction* pendingTrxn = new PendingTransaction {timestamp, hash, amount};
+	return pendingTrxn;
 }
 
 QJsonObject json::fromTransaction(Transaction* transaction) {
@@ -154,7 +173,7 @@ QJsonObject json::fromTransaction(Transaction* transaction) {
 	object["amount"] = QString::number(transaction->m_Amount, 'f', 10).toDouble();
 	object["fee"] = QString::number(transaction->m_Fee, 'f', 5).toDouble();
 	object["content"] = QString::fromStdString(transaction->m_Content);
-	object["signature"] = json::fromSignature(&transaction->m_Signature);
+	object["sigfield"] = json::fromSignature(&transaction->m_Signature);
 	object["hash"] = QString::fromStdString(transaction->m_Hash);
 
 	return object;
@@ -207,7 +226,7 @@ QJsonObject json::fromReceipt(Receipt* receipt) {
 	object["signed"] = static_cast<qint64>(receipt->m_SignTime);
 	object["amount"] = QString::number(receipt->m_Amount, 'f', 10).toDouble();
 	object["fee"] = QString::number(receipt->m_Fee, 'f', 5).toDouble();
-	object["signature"] = json::fromSignature(&receipt->m_Signature);
+	object["sigfield"] = json::fromSignature(&receipt->m_Signature);
 	object["hash"] = QString::fromStdString(receipt->m_Hash);
 
 	return object;
