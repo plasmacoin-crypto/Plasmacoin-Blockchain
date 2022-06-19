@@ -11,6 +11,7 @@ import "strconv"
 
 type NodeData struct {
 	PacketType int    `json:"type"`
+	SenderIP   string `json:"senderIP"`
 	IP         string `json:"ip"`
 	Address    string `json:"address"`
 	NodeType   int    `json:"nodetype"`
@@ -25,22 +26,24 @@ func MakeNode(data []string) *NodeData {
 	// are guaranteed be in the following order:
 	//
 	// 1. The packet type (as an integer)					 (data[0])
-	// 2. The node's IP Address 							 (data[1])
-	// 3. The node's Plasmacoin address 					 (data[2])
-	// 3. The type of node 									 (data[3])
-	// 4. If the node should be added to the lookup database (data[4])
+	// 2. The sender's IP address 							 (data[1])
+	// 2. The node's IP Address 							 (data[2])
+	// 3. The node's Plasmacoin address 					 (data[3])
+	// 3. The type of node 									 (data[4])
+	// 4. If the node should be added to the lookup database (data[5])
 	//
 
 	// Convert some stringified numeric values back to numeric values
 	packetType, _ := strconv.ParseInt(data[0], 10, 32)
-	nodeType, _ := strconv.ParseInt(data[3], 10, 32)
-	register, _ := strconv.ParseBool(data[4])
+	nodeType, _ := strconv.ParseInt(data[4], 10, 32)
+	register, _ := strconv.ParseBool(data[5])
 
 	// Construct the node data
 	return &NodeData{
 		PacketType: int(packetType),
-		IP:         data[1],
-		Address:    data[2],
+		SenderIP:   data[1],
+		IP:         data[2],
+		Address:    data[3],
 		NodeType:   int(nodeType),
 		Register:   register,
 	}
