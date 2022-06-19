@@ -46,7 +46,7 @@ const (
 	Receipt
 	UserQuery
 	SyncRequest
-	BlockchainData
+	PendingTrxn
 )
 
 // Attempt to send a message to a specified host and port
@@ -75,10 +75,10 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 	}
 
 	jsonBytes, _ := json.Marshal(jsonData)
-	fmt.Println(string(jsonBytes))
+	fmt.Printf("Packet: %s\n", string(jsonBytes))
 
 	_, err = conn.Write(jsonBytes)
-	netutils.Check(err, 87)
+	netutils.Check(err, 81)
 
 	conn.Close()
 }
@@ -288,8 +288,8 @@ func makeStruct(dataType uint8, data []string) interface{} {
 		jsonData = bccnstrx.MakeUserQuery(data)
 	case SyncRequest:
 		jsonData = bccnstrx.MakeSyncRequest(data)
-	case BlockchainData:
-		jsonData = bccnstrx.MakeBlockchainData(data)
+	case PendingTrxn:
+		jsonData = bccnstrx.MakePendingTrxn(data)
 	}
 
 	return jsonData
