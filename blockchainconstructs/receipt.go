@@ -44,14 +44,14 @@ func MakeReceipt(data []string) *Receipt {
 	packetType, _ := strconv.ParseInt(data[0], 10, 32)
 	transactionTime, _ := strconv.ParseInt(data[3], 10, 64)
 	signingTime, _ := strconv.ParseInt(data[4], 10, 64)
-	amount, _ := strconv.ParseFloat(data[5], 32)
-	fee, _ := strconv.ParseFloat(data[6], 32)
+	amount, _ := strconv.ParseFloat(data[5], 64)
+	fee, _ := strconv.ParseFloat(data[6], 64)
 	siglen, _ := strconv.ParseInt(data[9], 10, 32)
 
 	// Construct the signature field
 	signature := Signature{
-		Signature: data[8],
-		PublicKey: data[9],
+		Signature: data[7],
+		PublicKey: data[8],
 		Length:    int(siglen),
 	}
 
@@ -64,6 +64,6 @@ func MakeReceipt(data []string) *Receipt {
 		Amount:          float64(amount),
 		Fee:             float64(fee),
 		Signature:       signature,
-		Hash:            data[11],
+		Hash:            data[10],
 	}
 }
