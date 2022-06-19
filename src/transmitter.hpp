@@ -49,14 +49,12 @@ public:
 	// Functions to store class data in a format that can be converted into
 	vector<string> Format(IDCode* idCode);
 	vector<string> Format(Transaction* transaction);
-	vector<string> Format(Node* node, bool shouldRegister = true);
+	vector<string> Format(Node* node, string senderIP, bool shouldRegister = true);
 	vector<string> Format(Block* block);
 	vector<string> Format(Receipt* receipt);
 	vector<string> Format(UserQuery* query);
 	vector<string> Format(SyncRequest* request);
-	template<typename T> vector<string> Format(const BlockchainData<T*>& bcdata);
+	vector<string> Format(PendingTransaction* pendingTrxn);
 };
-
-#include "transmitter.tpp" // Include template definitions
 
 #endif // TRANSMITTER_HPP

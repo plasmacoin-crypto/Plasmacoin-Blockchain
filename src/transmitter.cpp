@@ -50,18 +50,10 @@ void Transmitter::Transmit(const vector<string>& data, uint8_t type, const vecto
 		// }
 
 		case static_cast<uint8_t>(go::PacketTypes::NODE): {
-			bool shouldRegister = static_cast<bool>(std::stoi(data[4]));
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-
-			if (shouldRegister) {
-				future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
-			}
-			else {
-				future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "8080", type, slice);
-			}
-
+			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
 			break;
-		}
+	}
 
 		case static_cast<uint8_t>(go::PacketTypes::RECEIPT): {
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
@@ -75,17 +67,12 @@ void Transmitter::Transmit(const vector<string>& data, uint8_t type, const vecto
 			break;
 		}
 
-		case static_cast<uint8_t>(go::PacketTypes::SYNC_REQUEST): {
+		case static_cast<uint8_t>(go::PacketTypes::SYNC_REQUEST):
+		case static_cast<uint8_t>(go::PacketTypes::PENDING_TRXN): {
 			string ip = hosts[0];
 
 			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
 			future<void> dial = std::async(&go::dial, "tcp", ip.c_str(), "8080", type, slice);
-			break;
-		}
-
-		case static_cast<uint8_t>(go::PacketTypes::BLOCKCHAIN_DATA): {
-			go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-			future<void> dial = std::async(&go::dial, "tcp", "192.168.1.44", "14400", type, slice);
 			break;
 		}
 
@@ -140,9 +127,10 @@ vector<string> Transmitter::Format(Transaction* transaction) {
 	};
 }
 
-vector<string> Transmitter::Format(Node* node, bool shouldRegister) {
+vector<string> Transmitter::Format(Node* node, string senderIP, bool shouldRegister) {
 	return vector<string> {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::NODE)),
+		senderIP,
 		node->GetIP(),
 		node->GetAddress(),
 		std::to_string(static_cast<uint8_t>(node->GetType())),
@@ -173,11 +161,10 @@ vector<string> Transmitter::Format(Block* block) {
 }
 
 vector<string> Transmitter::Format(Receipt* receipt) {
-	// Convert the signature to a std::string
-	CryptoPP::SecByteBlock sig = receipt->m_Signature.m_Signature;
-	string signature = string(reinterpret_cast<const char*>(&sig[0]), sig.size());
+	// Convert the signature to Base64
+	string signature = utility::sigToBase64(receipt->m_Signature.m_Signature);
 
-	// Convert the CryptoPP::RSA::PublicKey to a std::string
+	// Convert the CryptoPP::RSA::PublicKey to Base64
 	string publicKey = utility::pubKeyToBase64(receipt->m_Signature.m_PublicKey);
 
 	return vector<string> {
@@ -211,5 +198,14 @@ vector<string> Transmitter::Format(SyncRequest* request) {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::SYNC_REQUEST)),
 		std::to_string(request->m_SyncType),
 		request->m_Host
+	};
+}
+
+vector<string> Transmitter::Format(PendingTransaction* pendingTrxn) {
+	return vector<string> {
+		std::to_string(static_cast<uint8_t>(go::PacketTypes::PENDING_TRXN)),
+		std::to_string(pendingTrxn->m_Timestamp),
+		pendingTrxn->m_Hash,
+		std::to_string(pendingTrxn->m_Amount)
 	};
 }
