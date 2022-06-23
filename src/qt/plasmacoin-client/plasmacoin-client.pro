@@ -32,6 +32,7 @@ HEADERS += \
     ../../validation.hpp ../../hashing.hpp ../../dssize.hpp ../../utility.hpp \
     ../../rsautil.hpp ../../sync-request.hpp ../../user-query.hpp ../../signature.hpp \
     ../../merkle-helpers.h ../../idcode.hpp ../../pending-trxn.hpp ../../mining.hpp \
+    ../../removal-request.hpp \
     \
     mainwindow.h transaction-list.h  mining-status.h recipient-list.h \
     firebase-auth.h account-pages.h mining-dialog.h transaction-manager.h \
