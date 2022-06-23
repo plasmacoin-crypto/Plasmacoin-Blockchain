@@ -6,6 +6,7 @@
 #include <QSplashScreen>
 #include <QPixmap>
 #include <QIcon>
+#include <QColor>
 
 #include "mainwindow.h"
 #include "ui.h"
@@ -15,21 +16,13 @@
 int main(int argc, char* argv[]) {
 	QApplication app(argc, argv);
 
-	// const char* block[] = {
-	// 	"2", "0", "1", "52", "0", "", "", "", "true", "1", "",
-	// 	"", "", "", "1", "1", "", "IIIIII4ggg", "MzA4MjAxQTAzMDBEMDYwOTJBODY0ODg2RjcwRDAxMDEwMTA1MDAwMzgyMDE4RDAwMzA4MjAxODgwMjgyMDE4MTAwQTBGRDI5QzU0N0M0MERBRDI2MjAxNDBDQjg1RTJDRjVBQUNBRDI1OUVDQ0IyRDdCREEzQkE5NjBBQkUyRTkxRUI4N0EwN0M0NEZDMkM1RTgwNUI0NzM1RTlFMTdGN0UxQjFCOEFGRjQxM0E2QTdBRjRERUFDMEY3OENGMDY0QzNCQ0I4QzkzQUVCQURCRkFCQTlEMjcxOEFCNDkxNDBCRUVGNEZDQTI0ODc5MDQxMjZDNTNFRUNFNERDNzcwQUZDMDU1NkMxRkVFN0U0RTI4MzBDODUxQTU2MTI4NEU5MUNBMEJCOTFGNTlCNUUwREIzQkEzNTY1QUUzNTQ4RDExQkQ1REVBQjgxMDlBNzI0MDlDQkRGNkU2NDEyQzBCRjI4NDhEMjI5MzIyN0NDRUYwRURFQjdDQjY5RTE4NkE0MTY1MkNBM0JDNDA4MDQ3RTc1NDE1NzAxNTQzQTY3MkYxQThEM0YxRThGRTIzMDY4Q0VFRjEwRkNDQTdFMTgxQkM0RDVBRTExQTE5Q0ZGMzZFNEZBREQ0NkQ2NEY3MjYzNjM1NDJCNDkzNTVGNTU0RkU3NkIyMzlGOUJCQTdGRDE1RDAzRjYxM0FEQURCQ0JFNTI2QkQ3MkRGNzQ5QThDMzQ2MDhGMjVDOUE2QUI2RjZDMDFGQzYxQzEwMzUwMTc4MzI0QTJDN0VBRTI5RTQ5QjE3M0VFRDlENUJBREVBNDVEQzQ2MTA0RDZBREFCNzU1NEFFMERBMzNENDdGMzlEODUwMDlCOERBMDRBQ0YyMDBEQjZBREI3MjMzQTg3MTdGMzAxOEM2Q0E3NzY3MTc1Qjc3RTYyOEY4NjFBRDRBQkU1NzRDN0U4NjBEMUE1NjBCOEVBNEM3QkU1ODc3NjMxMDI2NjIzNkQ4NkJGRDlFNDRGMTk2ODlDQ0Y5MEM4QkNEN0U1NDkwMzBCNzk4M0NEMDU4REM4MDEzN0YwMDEzMUEwNDRDQ0U5Njc3Q0Y4NkJBOUI0MjNEMkE1QkI0QjJCNTRCMDIwMTEx", "384", "", ""
-	// };
-	// go::GoSlice slice = {block, 22, 22};
-
-	// go::joinGroup("en0", utility::IPv4(224, 0, 0, 251).c_str(), 5001);
-	// go::sendMulticast(utility::IPv4(224, 0, 0, 251).c_str(), 5001, 2, slice);
-
 	QPixmap pixmap("../assets/plasmacoin-banner.png");
     QSplashScreen splashScreen(pixmap);
-    splashScreen.show();
+
+	splashScreen.show();
+	splashScreen.showMessage("Preparing application", Qt::AlignBottom, QColorConstants::White);
 
 	MainWindow window;
-	window.show();
 
 	window.plusSign->setIcon(QIcon("../assets/plus.png"));
 	window.minusSign->setIcon(QIcon("../assets/minus.png"));
@@ -44,6 +37,7 @@ int main(int argc, char* argv[]) {
 	window.privKeyShow->setIcon(QIcon("../assets/view.png"));
 
 	window.bannerText1->setText("<html><head/><body><p align=\"center\"><span style=\"font-size:24pt; color:#000000;\">Welcome Back!</span></p><p align=\"center\"><span style=\"font-size:24pt; color:#000000;\">Please sign in to continue.</span><span style=\"color:#000000;\"><br/></span></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/></p><p align=\"center\"><br/><br/></p><p align=\"center\"><img src=\"../assets/plasmacoin-banner.png\" width=\"550\" height=\"150\"/></p></body></html>");
+	window.bannerText2->setText("<html><head/><body><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">What is my account for?</span></p><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">Your Plasmacoin account registers you for the desktop app.<br/>This registers your computer as a Plasmacoin node and also<br/>gives you access to the offical Plasmacoin software wallet.</span></p><p align=\"center\"><span style=\" color:#000000;\"><br/></span></p><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">Credentials</span></p><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">Once you're signed in, you'll have access to your public and<br/>private keys, as well as your Plasmacoin address, which is what<br/>you'll use to send and recieve transactions.</span></p><p align=\"center\"><span style=\" color:#000000;\"><br/></span></p><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">Address Book</span></p><p align=\"center\"><span style=\" font-size:14pt; color:#000000;\">With your account, you can access the built-in address book,<br/>which allows you to save the addresses of other Plasmacoin<br/>users.</span></p><p align=\"center\"><br/></p><p align=\"center\"><img src=\"../assets/plasmacoin-banner.png\" width=\"550\" height=\"150\"/></p></body></html>");
 
 	window.contactImage->setPixmap(QPixmap("../assets/contact-default.png"));
 	window.btn_addContact->setIcon(QIcon("../assets/plus.png"));
@@ -54,12 +48,8 @@ int main(int argc, char* argv[]) {
 	window.btn_last->setIcon(QIcon("../assets/double-right-arrow.png"));
 	window.btn_sync->setIcon(QIcon("../assets/sync.png"));
 
-	splashScreen.finish(&window);
-
-	// std::atomic<bool> threadRunning = true;
-	// std::thread sharedMem(connections::manageSharedMem, std::ref(threadRunning), std::ref(window));
-
 	// Connect everything
+	splashScreen.showMessage("Making connections", Qt::AlignBottom, QColorConstants::White);
 	connections::minePage(window);
 	connections::accountPages(window);
 	connections::addressBook(window);
@@ -70,14 +60,24 @@ int main(int argc, char* argv[]) {
 
 	std::atomic<bool> runningThread = true;
 
+	splashScreen.showMessage("Starting shared memory management", Qt::AlignBottom, QColorConstants::White);
 	QFuture<void> manageSharedMem = QtConcurrent::run([&window](std::atomic<bool>& running) {
 		while (running) {
 			window.ManageSharedMem();
 		}
 	}, std::ref(runningThread));
 
-	app.connect(&app, &QApplication::aboutToQuit, &window, [&runningThread]() mutable {
+	splashScreen.showMessage("Checking for new blocks", Qt::AlignBottom, QColorConstants::White);
+	window.SyncBlockchain();
+	window.ManageSyncedData(splashScreen);
+
+	splashScreen.showMessage("Launching", Qt::AlignBottom, QColorConstants::White);
+	window.show();
+	splashScreen.finish(&window);
+
+	app.connect(&app, &QApplication::aboutToQuit, &window, [&runningThread, &window]() mutable {
 		runningThread = false;
+		window.RemoveNode();
 	});
 
 	return app.exec();
