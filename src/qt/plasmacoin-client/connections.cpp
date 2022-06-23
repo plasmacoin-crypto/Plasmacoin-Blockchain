@@ -268,7 +268,8 @@ void connections::transactionPage(MainWindow& window) {
 			string result = shared_mem::readMemory(true);
 			std::cout << "Result: " << result << std::endl;
 
-			window.m_Wallet->UpdateWorkingBal(Wallet::WalletActions::WITHDRAW, finalTransaction->m_Amount + finalTransaction->m_Fee);
+			window.m_Wallet->UpdatePendingBal(Wallet::WalletActions::WITHDRAW, finalTransaction->m_Amount + finalTransaction->m_Fee);
+			window.UpdateAmounts();
 
 			// Send a pending transaction notification to the recipient
 			PendingTransaction pendingTrxn {
@@ -336,39 +337,8 @@ void connections::blockchainPage(MainWindow& window) {
 	});
 
 	window.connect(window.btn_sync, &QToolButton::released, &window, [&window]() {
-		Transmitter* transmitter = new Transmitter();
-		std::vector<string> data;
-
-		// Request a list of viable nodes to sync from
-		UserQuery* userQuery = new UserQuery {"192.168.1.44", "light"};
-		data = transmitter->Format(userQuery);
-		transmitter->Transmit(data, std::stoi(data[0]));
-
-		string result;
-		QJsonObject object;
-		shared_mem::writeMemory("");
-		std::this_thread::sleep_for(std::chrono::milliseconds(300));
-
-		// Get the resulting list of nodes
-		while (json::getPacketType(object) != static_cast<uint8_t>(go::PacketTypes::NODE_LIST)) {
-			result = shared_mem::readMemory(true); // Read the shared memory
-			std::cout << "Result: " << result << std::endl;
-			object = json::parse(result);
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		}
-
-		std::vector<string> hosts = json::parseArray(object, "nodes");
-
-		shared_mem::writeMemory("");
-		std::cout << hosts[0] << std::endl;
-
-		// Request to sync
-		SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.44"};
-		data = transmitter->Format(syncRequest);
-		transmitter->Transmit(data, std::stoi(data[0]), hosts);
-
-		delete transmitter;
+		window.SyncBlockchain();
+		window.ManageSyncedData();
 	});
 }
 
