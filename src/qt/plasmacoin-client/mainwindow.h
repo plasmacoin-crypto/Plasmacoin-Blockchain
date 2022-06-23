@@ -27,6 +27,8 @@
 #include <QDialogButtonBox>
 #include <QFuture>
 #include <QWindow>
+#include <QJsonObject>
+#include <QSplashScreen>
 #include <QtConcurrent/QtConcurrent>
 
 #include "ui.h"
@@ -56,6 +58,8 @@
 #include "utility.hpp"
 #include "idcode.hpp"
 #include "mining.hpp"
+#include "user-query.hpp"
+#include "sync-request.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -78,12 +82,19 @@ public:
 	void ResetBlock();	// Reset the user's block
 	void UpdateStatus(const Block& block, std::chrono::seconds time); // Update the mining status while a block is being mined
 	void ShowContact(Contact* contact);
+
 	void RegisterNode();
+	void RemoveNode();
 
 	void ManageSharedMem();
+
+	void SyncBlockchain();
+
 	void ManageSyncedData();
+	void ManageSyncedData(QSplashScreen& splashScreen);
 
 	void UpdateButtons();
+	void UpdateAmounts();
 
 	QWidget* parent;
 	Status* m_Status;

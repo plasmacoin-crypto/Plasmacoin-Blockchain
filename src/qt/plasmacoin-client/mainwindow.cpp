@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget* parent):
 	RegisterNode();
 
 	Ui_MainWindow::setupUi(this);
+	UpdateAmounts();
 
 	// QPushButton* button = new QPushButton("Button", this);
 	// button->setGeometry(QRect(0, 0, 100, 30));
@@ -63,7 +64,10 @@ MainWindow::MainWindow(QWidget* parent):
 	m_MiningDialog = new MiningDialog(this);
 	m_BlockView = new BlockView(Ui::MainWindow::blockView);
 	m_BlockchainViewer = new BlockchainViewer(m_User->m_BlockchainCopy, Ui::MainWindow::blockView, Ui::MainWindow::blockTrxnView);
-	m_WalletPage = new WalletPage(Ui::MainWindow::receiptList, Ui::MainWindow::pendingList);
+	m_WalletPage =  new WalletPage(
+						Ui::MainWindow::receiptList, Ui::MainWindow::pendingList, Ui::MainWindow::balance,
+						Ui::MainWindow::pendingBalance, Ui::MainWindow::totalBalance
+					);
 
 	// Create some temporary nodes to make transactions between
 	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
@@ -281,6 +285,15 @@ void MainWindow::RegisterNode() {
 	delete transmitter;
 }
 
+void MainWindow::RemoveNode() {
+	Transmitter* transmitter = new Transmitter();
+	RemovalRequest* remRequest = new RemovalRequest {"192.168.1.44"};
+	auto data = transmitter->Format(remRequest);
+	transmitter->Transmit(data, std::stoi(data[0]));
+
+	delete remRequest;
+}
+
 void MainWindow::ManageSharedMem() {
 	string data = shared_mem::readMemory(true);
 	QJsonObject object = json::parse(data);
@@ -312,10 +325,39 @@ void MainWindow::ManageSharedMem() {
 			break;
 		}
 
-		case go::PacketTypes::TRANSACTION:
-			m_TransactionList->ConfirmToMempool(json::toTransaction(object));
-			shared_mem::writeMemory("");
+		case go::PacketTypes::TRANSACTION: {
+			Transaction* transaction = json::toTransaction(object);
+			double balance = 0;
+
+			//
+			// Calculate the sender's balance using the blockchain. If a user's address
+			// received a transaction, add money to the balance. If their address
+			// sent a transaction, remove money from their balance. Users sending transactions
+			// also spend fees, so subtract the fees too.
+			//
+			// Assuming blockchain verification has worked up until this point, double-spending
+			// can be detected just by subtracting the incoming transaction total from the calculated
+			// balance. Balances less than zero signify a double-spend or an attempt to spend more than
+			// the user has in their wallet.
+			//
+			for (auto block: m_User->m_BlockchainCopy->GetBlockchain()) {
+				for (auto trxn: block->m_Transactions) {
+					if (trxn->m_RecipientAddr == transaction->m_SenderAddr) {
+						balance += trxn->m_Amount;
+					}
+					else if (trxn->m_SenderAddr == transaction->m_SenderAddr) {
+						balance -= trxn->m_Amount + trxn->m_Fee;
+					}
+				}
+			}
+
+			if (balance >= transaction->m_Amount + transaction->m_Fee) {
+				m_TransactionList->ConfirmToMempool(transaction);
+				shared_mem::writeMemory("");
+			}
+
 			break;
+		}
 
 		case go::PacketTypes::BLOCK: {
 			std::cout << "Received a block" << std::endl;
@@ -401,12 +443,8 @@ void MainWindow::ManageSharedMem() {
 
 		case go::PacketTypes::PENDING_TRXN:
 			shared_mem::writeMemory("");
-
 			m_WalletPage->AddPending(json::toPendingTrxn(object));
 			break;
-
-		// case go::PacketTypes::NODE:
-		// 	std::cout << "Node" << std::endl;
 
 		default:
 			break;
@@ -415,11 +453,86 @@ void MainWindow::ManageSharedMem() {
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
+void MainWindow::SyncBlockchain() {
+	Transmitter* transmitter = new Transmitter();
+	std::vector<string> data;
+
+	// Request a list of viable nodes to sync from
+	UserQuery* userQuery = new UserQuery {"192.168.1.44", "light"};
+	data = transmitter->Format(userQuery);
+	transmitter->Transmit(data, std::stoi(data[0]));
+
+	string result;
+	QJsonObject object;
+	shared_mem::writeMemory("");
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+
+	// Get the resulting list of nodes
+	while (json::getPacketType(object) != static_cast<uint8_t>(go::PacketTypes::NODE_LIST)) {
+		result = shared_mem::readMemory(true); // Read the shared memory
+		std::cout << "Result: " << result << std::endl;
+		object = json::parse(result);
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	}
+
+	std::vector<string> hosts = json::parseArray(object, "nodes");
+
+	shared_mem::writeMemory("");
+
+	if (!hosts.empty()) {
+		// Request to sync
+		SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.44"};
+		data = transmitter->Format(syncRequest);
+		transmitter->Transmit(data, std::stoi(data[0]), hosts);
+	}
+
+	delete transmitter;
+}
+
 void MainWindow::ManageSyncedData() {
+	if (m_SyncedData.size() < 0) {
+		return;
+	}
+
 	while (!m_SyncedData.empty()) {
 		m_User->m_BlockchainCopy->Add(m_SyncedData.front());
 		m_SyncedData.pop();
 	}
+
+	m_BlockchainViewer->Latest();
+	UpdateButtons();
+}
+
+void MainWindow::ManageSyncedData(QSplashScreen& splashScreen) {
+	if (m_SyncedData.empty()) {
+		splashScreen.showMessage("Already up to date", Qt::AlignBottom, QColorConstants::White);
+		return;
+	}
+
+	//
+	// When calculating percentages to display during a blockchain sync, the
+	// percentage will increase by a certain number each time a block is processed.
+	// Larger amounts of synced data require a smaller increment on the display.
+	// With a number of blocks evenly divisible by 100, eveything works out nicely.
+	// For non-multiples, we take the ceiling of the quotient an then max the display
+	// out at 100%. By taking the ceiling, we sill increment the correct number of times.
+	//
+	const int PCT_JUMP = std::ceil(100.0 / m_SyncedData.size());
+	int percent = 0;
+
+	splashScreen.showMessage(QString("Syncing blockchain (%1\% complete)").arg(QString::number(percent, 10)), Qt::AlignBottom, QColorConstants::White);
+
+	while (!m_SyncedData.empty()) {
+		m_User->m_BlockchainCopy->Add(m_SyncedData.front());
+
+		percent = (percent + PCT_JUMP <= 100)? percent + PCT_JUMP : 100; // 100% is the max
+		splashScreen.showMessage(QString("Syncing blockchain (%1\% complete)").arg(QString::number(percent, 10)), Qt::AlignBottom, QColorConstants::White);
+
+		m_SyncedData.pop();
+	}
+
+	splashScreen.showMessage("Done", Qt::AlignBottom, QColorConstants::White);
 
 	m_BlockchainViewer->Latest();
 	UpdateButtons();
@@ -433,4 +546,13 @@ void MainWindow::UpdateButtons() {
 	btn_previous->setEnabled(previous);
 	btn_next->setEnabled(next);
 	btn_last->setEnabled(latest);
+}
+
+void MainWindow::UpdateAmounts() {
+	double balance = m_Wallet->GetBalance();
+	double pending = m_Wallet->GetPendingBal();
+
+	Ui::MainWindow::balance->setText(QString::number(balance, 'f', 10));
+	pendingBalance->setText(QString::number(pending, 'f', 10));
+	totalBalance->setText(QString::number(balance + pending, 'f', 10));
 }
