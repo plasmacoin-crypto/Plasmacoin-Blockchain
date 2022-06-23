@@ -28,6 +28,7 @@
 #include "bcdata.hpp"
 #include "utility.hpp"
 #include "idcode.hpp"
+#include "removal-request.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -55,6 +56,7 @@ public:
 	vector<string> Format(UserQuery* query);
 	vector<string> Format(SyncRequest* request);
 	vector<string> Format(PendingTransaction* pendingTrxn);
+	vector<string> Format(RemovalRequest* remRequest);
 };
 
 #endif // TRANSMITTER_HPP
