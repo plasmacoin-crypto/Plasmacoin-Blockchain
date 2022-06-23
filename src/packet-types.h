@@ -18,7 +18,8 @@ namespace go {
 		RECEIPT,
 		USER_QUERY,
 		SYNC_REQUEST,
-		PENDING_TRXN
+		PENDING_TRXN,
+		REMOVAL_REQUEST
 	};
 
 	enum class IDCodes: uint8_t {
