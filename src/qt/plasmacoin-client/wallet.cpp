@@ -7,15 +7,6 @@
 
 #include "wallet.h"
 
-void Wallet::UpdateWorkingBal(const WalletActions& action, double amount) {
-	if (action == WalletActions::WITHDRAW) {
-		m_WorkingBalance -= amount;
-	}
-	else if (action == WalletActions::DEPOSIT) {
-		m_WorkingBalance += amount;
-	}
-}
-
 void Wallet::UpdateBalance(const WalletActions& action, double amount) {
 	if (action == WalletActions::WITHDRAW) {
 		m_Balance -= amount;
@@ -25,10 +16,22 @@ void Wallet::UpdateBalance(const WalletActions& action, double amount) {
 	}
 }
 
+void Wallet::UpdatePendingBal(const WalletActions& action, double amount) {
+	if (action == WalletActions::WITHDRAW) {
+		m_PendingBalance -= amount;
+	}
+	else if (action == WalletActions::DEPOSIT) {
+		m_PendingBalance += amount;
+	}
+}
+
 bool Wallet::IsPossible(Transaction* transaction) const {
 	return m_Balance - transaction->m_Amount - transaction->m_Fee >= 0;
 }
 
 double Wallet::GetBalance() const {
 	return m_Balance;
+}
+double Wallet::GetPendingBal() const {
+	return m_PendingBalance;
 }

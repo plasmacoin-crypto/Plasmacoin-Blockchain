@@ -14,16 +14,17 @@ class Wallet {
 public:
 	enum class WalletActions: uint8_t {WITHDRAW, DEPOSIT};
 
-	void UpdateWorkingBal(const WalletActions& action, double amount);
 	void UpdateBalance(const WalletActions& action, double amount);
+	void UpdatePendingBal(const WalletActions& action, double amount);
 
 	bool IsPossible(Transaction* transaction) const;
 
 	double GetBalance() const;
+	double GetPendingBal() const;
 
 private:
 	double m_Balance = 2;
-	double m_WorkingBalance = 0;
+	double m_PendingBalance = 0;
 };
 
 #endif // WALLET_H
