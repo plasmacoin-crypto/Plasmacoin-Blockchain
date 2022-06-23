@@ -28,6 +28,7 @@
 #include "sync-request.hpp"
 #include "utility.hpp"
 #include "pending-trxn.hpp"
+#include "removal-request.hpp"
 
 using std::vector;
 using std::string;
@@ -47,6 +48,7 @@ namespace json {
 	Receipt* toReceipt(const QJsonObject& object);
 	SyncRequest* toSyncRequest(const QJsonObject& object);
 	PendingTransaction* toPendingTrxn(const QJsonObject& object);
+	RemovalRequest* toRemovalRequest(const QJsonObject& object);
 
 	QJsonObject fromTransaction(Transaction* transaction);
 	QJsonObject fromBlock(Block* block);

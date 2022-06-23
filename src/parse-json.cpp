@@ -163,6 +163,13 @@ PendingTransaction* json::toPendingTrxn(const QJsonObject& object) {
 	return pendingTrxn;
 }
 
+RemovalRequest* json::toRemovalRequest(const QJsonObject& object) {
+	std::string senderIP = object["senderIP"].toString().toStdString();
+
+	RemovalRequest* remRequest = new RemovalRequest {senderIP};
+	return remRequest;
+}
+
 QJsonObject json::fromTransaction(Transaction* transaction) {
 	QJsonObject object;
 
