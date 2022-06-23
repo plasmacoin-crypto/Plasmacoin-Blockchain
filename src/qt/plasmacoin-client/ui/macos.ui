@@ -16,7 +16,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
+    <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -59,7 +59,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="WalletTab">
        <attribute name="title">
@@ -89,7 +89,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QTextBrowser" name="plasmacoins">
+           <widget class="QTextBrowser" name="balance">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -112,7 +112,7 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item>
-           <widget class="QTextBrowser" name="conversion">
+           <widget class="QTextBrowser" name="pendingBalance">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -131,6 +131,22 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;right&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextBrowser" name="totalBalance">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -352,7 +368,7 @@ p, li { white-space: pre-wrap; }
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -381,7 +397,7 @@ p, li { white-space: pre-wrap; }
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/minus.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/minus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/minus.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/minus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -571,7 +587,7 @@ p, li { white-space: pre-wrap; }
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -607,7 +623,7 @@ p, li { white-space: pre-wrap; }
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../assets/plus.png</normaloff>../../../../../../../assets/plus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../../../../assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../assets/plus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -667,7 +683,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap>../../../../../../../assets/contact-default.png</pixmap>
+                <pixmap>../../../../../../../../../../../../../../../../../assets/contact-default.png</pixmap>
                </property>
               </widget>
              </item>
@@ -1452,6 +1468,9 @@ p, li { white-space: pre-wrap; }
                   <height>50</height>
                  </size>
                 </property>
+                <property name="maxLength">
+                 <number>200</number>
+                </property>
                </widget>
               </item>
               <item>
@@ -1776,7 +1795,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QStackedWidget" name="accountView">
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="signIn">
            <layout class="QHBoxLayout" name="horizontalLayout_17">
@@ -2226,7 +2245,7 @@ border-radius: 4px</string>
                      <string notr="true"/>
                     </property>
                     <property name="text">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;What is my account for?&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Your Plasmacoin account registers you for the desktop app.&lt;br/&gt;This registers your computer as a Plasmacoin node and also&lt;br/&gt;gives you access to the offical Plasmacoin software wallet.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Credentials&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Once you 're signed in, you'll have access to your public and&lt;br/&gt;private keys, as well as your Plasmacoin address, which is what&lt;br/&gt;you'll use to send and recieve transactions.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Address Book&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;With your account, you can access the built-in address book,&lt;br/&gt;which allows you to save the addresses of other Plasmacoin&lt;br/&gt;users.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/newPrefix/plasmacoin-banner.png&quot; width=&quot;550&quot; height=&quot;150&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;What is my account for?&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Your Plasmacoin account registers you for the desktop app.&lt;br/&gt;This registers your computer as a Plasmacoin node and also&lt;br/&gt;gives you access to the offical Plasmacoin software wallet.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Credentials&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Once you're signed in, you'll have access to your public and&lt;br/&gt;private keys, as well as your Plasmacoin address, which is what&lt;br/&gt;you'll use to send and recieve transactions.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;Address Book&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;With your account, you can access the built-in address book,&lt;br/&gt;which allows you to save the addresses of other Plasmacoin&lt;br/&gt;users.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/assets/plasmacoin-banner.png&quot; width=&quot;550&quot; height=&quot;150&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
@@ -2303,8 +2322,8 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>550</width>
-                   <height>550</height>
+                   <width>1253</width>
+                   <height>856</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -2420,7 +2439,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2491,7 +2510,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2514,7 +2533,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2560,7 +2579,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/no-view.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2583,7 +2602,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                             </property>
                             <property name="icon">
                              <iconset>
-                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
+                              <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/clipboard.png</iconset>
                             </property>
                            </widget>
                           </item>
@@ -2682,139 +2701,41 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
         </item>
         <item>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="2">
-           <widget class="QWidget" name="rsaKeyPath" native="true">
-            <layout class="QVBoxLayout" name="verticalLayout_25">
-             <item>
-              <widget class="QLabel" name="rsaKeyTitle">
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;RSA Key Path&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="rsaKeySubtitle">
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the path where your RSA public-private key pair will be stored.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_23">
-               <item>
-                <widget class="QTextBrowser" name="rsaKeyView">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="btn_choosePath">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>32</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Choose Path...</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QToolButton" name="btn_reset">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>34</width>
-                   <height>34</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>...</string>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/reset.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/reset.png</iconset>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_13">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Maximum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>700</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-          </item>
           <item row="0" column="1">
            <widget class="QWidget" name="changePassword" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_27">
              <item>
-              <widget class="QLabel" name="chgPsswdTitle">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;Change Password&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="chgPsswdSubtitle">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change the password for your Plasmacoin Account. Remember that your password&lt;br/&gt;must be at least 6 characters long and contain at least 1 capital letter, 1 special character,&lt;br/&gt;and 1 number.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
               <layout class="QVBoxLayout" name="verticalLayout_26">
+               <item>
+                <widget class="QLabel" name="chgPsswdTitle">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Change Password&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="chgPsswdSubtitle">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change the password for your Plasmacoin Account. Remember that your password&lt;br/&gt;must be at least 6 characters long and contain at least 1 capital letter, 1 special character,&lt;br/&gt;and 1 number.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
                <item>
                 <widget class="QLineEdit" name="currPassField">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -2842,7 +2763,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                <item>
                 <widget class="QLineEdit" name="newPassField">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -2880,28 +2801,28 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                  </property>
                 </widget>
                </item>
-               <item>
-                <spacer name="verticalSpacer_14">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Fixed</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>600</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
               </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_14">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Expanding</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>575</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
           </item>
-          <item row="0" column="3">
+          <item row="0" column="4">
            <spacer name="horizontalSpacer_28">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -2918,6 +2839,199 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
            <spacer name="horizontalSpacer_29">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="3">
+           <widget class="QWidget" name="rsaKeyPath" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_25">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_23">
+               <item>
+                <widget class="QLabel" name="rsaKeySubtitle">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the path where your RSA public-private key pair will be stored.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="rsaKeyTitle">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;RSA Key Path&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_23">
+                 <item>
+                  <widget class="QTextBrowser" name="rsaKeyView">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_choosePath">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>32</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Choose Path...</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="btn_reset">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>35</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>...</string>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/reset.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/reset.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_29">
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Node Type&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_2">
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change the type of node you run. Node that full and mining nodes&lt;br/&gt;require higher committment and mandatory port forwarding. You will&lt;br/&gt;also have to download a full copy of the Plasmacoin blockchain.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <item>
+                  <widget class="QComboBox" name="comboBox">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>Light</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Full</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mining</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_38">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Expanding</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_13">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Expanding</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>700</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="horizontalSpacer_37">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
