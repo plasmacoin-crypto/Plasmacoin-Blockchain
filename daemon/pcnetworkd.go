@@ -47,6 +47,7 @@ const (
 	UserQuery
 	SyncRequest
 	PendingTrxn
+	RemovalRequest
 )
 
 // Attempt to send a message to a specified host and port
@@ -290,6 +291,8 @@ func makeStruct(dataType uint8, data []string) interface{} {
 		jsonData = bccnstrx.MakeSyncRequest(data)
 	case PendingTrxn:
 		jsonData = bccnstrx.MakePendingTrxn(data)
+	case RemovalRequest:
+		jsonData = bccnstrx.MakeRemovalRequest(data)
 	}
 
 	return jsonData

@@ -28,6 +28,7 @@ const (
 	UserQuery
 	SyncRequest
 	PendingTrxn
+	RemovalRequest
 )
 
 // Check for errors
@@ -123,6 +124,13 @@ func getStruct(data []byte, packetType uint8) interface{} {
 		check(err, 89)
 
 		return pendingTrxn
+	case RemovalRequest:
+		var remRequest bccnstrx.RemovalRequest
+
+		err := json.Unmarshal(data, &remRequest)
+		check(err, 131)
+
+		return remRequest
 	default:
 		break
 	}
