@@ -31,6 +31,7 @@ string hashing::hash(const string& input) {
 // Hash a transaction
 string hashing::hash(const Transaction& transaction) {
 	string message = transaction.m_SenderAddr + transaction.m_RecipientAddr + \
+					 std::to_string(transaction.m_CreationTime) + std::to_string(transaction.m_SignTime) + \
 					 std::to_string(transaction.m_Amount + transaction.m_Fee) + \
 					 transaction.m_Content;
 
