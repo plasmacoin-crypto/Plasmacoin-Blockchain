@@ -247,7 +247,7 @@ void connections::transactionPage(MainWindow& window) {
 		finalTransaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
 
 		if (!window.m_Wallet->IsPossible(finalTransaction)) {
-			window.m_TransactionManager->ShowWarning(window.m_Wallet->GetBalance(), finalTransaction);
+			window.m_TransactionManager->ShowWarning(window.m_Wallet->GetTotalBal(), finalTransaction);
 			return;
 		}
 
@@ -445,4 +445,10 @@ double connections::calculateFee(MainWindow& window) {
 
 	delete transaction;
 	return predictedFee;
+}
+
+void connections::updateWalletAmounts(MainWindow& window) {
+	window.connect(&window, &MainWindow::UpdateWalletAmounts, &window, [&window] {
+		window.UpdateAmounts();
+	});
 }
