@@ -99,7 +99,6 @@ public slots:
 private:
 	void AddUser(const QString& email, const QString& username, const QString& password, const QString& uid);
 	void ModUsername(const QString& username);
-	void AdjustBalance(double balance);
 
 	// HTTP Request Implementations
 	void Post(const QString& url, const QJsonDocument& payload, const QString& header = "application/json");
@@ -112,6 +111,7 @@ private:
 public:
 	void Get(); // HTTP GET request
 	bool SearchFor(QString query);
+	void AdjustBalance(double balance);
 
 private:
 	void ParseResponse(const QByteArray& response);

@@ -40,11 +40,11 @@ void Auth::SignUp(const QString& email, const QString& username, const QString& 
 	// regular expressions. NOTE: only non-empty strings are tested.
 	//
 
-	if (username != "" && !ValidateUsername(username)) {
+	if (!username.isEmpty() && !ValidateUsername(username)) {
 		AddError(ErrorCodes::INVALID_USERNAME);
 	}
 
-	if (password != "" && !ValidatePassword(password)) {
+	if (!password.isEmpty() && !ValidatePassword(password)) {
 		AddError(ErrorCodes::INVALID_PASSWORD);
 	}
 
@@ -106,6 +106,21 @@ void Auth::NetworkReplyReady() {
 	ParseResponse(response);
 }
 
+// Request that a user's ID token be regenerated. This is done by calling the Token Service
+// API with the user's refresh token, which doesn't expire. The result is a new ID token for
+// the user that lasts 3600 seconds (1 hour).
+void Auth::RequestToken() {
+	// The API URL
+	QString endpoint = "https://securetoken.googleapis.com/v1/token?key=" + m_APIKey;
+	QString header = "application/x-www-form-urlencoded";
+
+	QByteArray data;
+	data.append("grant_type=refresh_token");
+	data.append(std::string("&refresh_token=" + m_RefreshToken.toStdString()).c_str());
+
+	Post(endpoint, data, header); // Make a post request to the RTDB
+}
+
 void Auth::AddUser(const QString& email, const QString& username, const QString& password, const QString& uid) {
 	QVariantMap newUser;
 
@@ -133,25 +148,6 @@ void Auth::ModUsername(const QString& username) {
 		QVariantMap modUser;
 		modUser["idToken"] = this->m_IDToken;
 		modUser["displayName"] = username;
-		modUser["photoUrl"] = ""; // Changing account pictures won't be allowed, at least for now
-		modUser["deleteAttribute"] = "PHOTO_URL";
-		modUser["returnSecureToken"] = false; // This call is not meant to refresh tokens, despite the functionality being available
-
-		QJsonDocument jsonPayload = QJsonDocument::fromVariant(modUser); // Load the QVariant as JSON
-		Post(endpoint, jsonPayload); // Make a post request
-	});
-}
-
-void Auth::AdjustBalance(double balance) {
-	connect(this, &Auth::UserSignedIn, this, &Auth::RequestToken);
-
-	connect(this, &Auth::RequestedToken, this, [&, this, balance]() {
-		QString endpoint = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=" + this->m_APIKey;
-
-		// Add the user's new information
-		QVariantMap modUser;
-		modUser["idToken"] = this->m_IDToken;
-		modUser["balance"] = balance;
 		modUser["photoUrl"] = ""; // Changing account pictures won't be allowed, at least for now
 		modUser["deleteAttribute"] = "PHOTO_URL";
 		modUser["returnSecureToken"] = false; // This call is not meant to refresh tokens, despite the functionality being available
@@ -217,21 +213,6 @@ void Auth::Patch(const QString& url, const QJsonDocument& payload, const QString
 	// manager->sendCustomRequest(request,"PATCH",buffer);
 }
 
-// Request that a user's ID token be regenerated. This is done by calling the Token Service
-// API with the user's refresh token, which doesn't expire. The result is a new ID token for
-// the user that lasts 3600 seconds (1 hour).
-void Auth::RequestToken() {
-	// The API URL
-	QString endpoint = "https://securetoken.googleapis.com/v1/token?key=" + m_APIKey;
-	QString header = "application/x-www-form-urlencoded";
-
-	QByteArray data;
-	data.append("grant_type=refresh_token");
-	data.append(std::string("&refresh_token=" + m_RefreshToken.toStdString()).c_str());
-
-	Post(endpoint, data, header); // Make a post request to the RTDB
-}
-
 // Make an authenticated GET request to the RTDB
 void Auth::Get() {
 	connect(this, &Auth::UserSignedIn, this, &Auth::RequestToken); // Request a new ID token
@@ -251,6 +232,25 @@ bool Auth::SearchFor(QString query) {
 	QJsonObject json = doc.object();
 
 	return json.find(query) != json.end();
+}
+
+void Auth::AdjustBalance(double balance) {
+	connect(this, &Auth::UserSignedIn, this, &Auth::RequestToken);
+
+	connect(this, &Auth::RequestedToken, this, [&, this, balance]() {
+		QString endpoint = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=" + this->m_APIKey;
+
+		// Add the user's new information
+		QVariantMap modUser;
+		modUser["idToken"] = this->m_IDToken;
+		modUser["balance"] = balance;
+		modUser["photoUrl"] = ""; // Changing account pictures won't be allowed, at least for now
+		modUser["deleteAttribute"] = "PHOTO_URL";
+		modUser["returnSecureToken"] = false; // This call is not meant to refresh tokens, despite the functionality being available
+
+		QJsonDocument jsonPayload = QJsonDocument::fromVariant(modUser); // Load the QVariant as JSON
+		Post(endpoint, jsonPayload); // Make a post request
+	});
 }
 
 void Auth::ParseResponse(const QByteArray& response) {
