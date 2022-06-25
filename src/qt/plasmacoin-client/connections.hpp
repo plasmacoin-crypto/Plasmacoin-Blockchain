@@ -45,6 +45,7 @@ namespace connections {
 	void blockchainPage(MainWindow& window);
 	void addToBlock(MainWindow& window);
 	void removeFromBlock(MainWindow& window);
+	void updateWalletAmounts(MainWindow& window);
 
 	void manageSharedMem(std::atomic<bool>& running, MainWindow& window);
 	double calculateFee(MainWindow& window);
