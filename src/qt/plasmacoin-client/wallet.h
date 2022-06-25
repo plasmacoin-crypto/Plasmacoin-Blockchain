@@ -21,6 +21,7 @@ public:
 
 	double GetBalance() const;
 	double GetPendingBal() const;
+	double GetTotalBal() const;
 
 private:
 	double m_Balance = 2;

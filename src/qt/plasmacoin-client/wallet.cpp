@@ -32,6 +32,13 @@ bool Wallet::IsPossible(Transaction* transaction) const {
 double Wallet::GetBalance() const {
 	return m_Balance;
 }
+
 double Wallet::GetPendingBal() const {
 	return m_PendingBalance;
+}
+
+double Wallet::GetTotalBal() const {
+	// If you spent money, you can't respend it. If you're receiving money, you
+	// can't spend it until you actually receive it.
+	return (m_PendingBalance >= 0)? m_Balance : m_Balance + m_PendingBalance;
 }
