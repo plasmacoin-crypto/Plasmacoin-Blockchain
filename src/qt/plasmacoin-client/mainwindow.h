@@ -138,6 +138,7 @@ public:
 
 signals:
 	void BlockCompleted();
+	void UpdateWalletAmounts();
 };
 
 #endif // MAINWINDOW_H

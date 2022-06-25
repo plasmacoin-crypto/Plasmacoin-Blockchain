@@ -64,10 +64,7 @@ MainWindow::MainWindow(QWidget* parent):
 	m_MiningDialog = new MiningDialog(this);
 	m_BlockView = new BlockView(Ui::MainWindow::blockView);
 	m_BlockchainViewer = new BlockchainViewer(m_User->m_BlockchainCopy, Ui::MainWindow::blockView, Ui::MainWindow::blockTrxnView);
-	m_WalletPage =  new WalletPage(
-						Ui::MainWindow::receiptList, Ui::MainWindow::pendingList, Ui::MainWindow::balance,
-						Ui::MainWindow::pendingBalance, Ui::MainWindow::totalBalance
-					);
+	m_WalletPage =  new WalletPage(Ui::MainWindow::receiptList, Ui::MainWindow::pendingList);
 
 	// Create some temporary nodes to make transactions between
 	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
@@ -371,6 +368,7 @@ void MainWindow::ManageSharedMem() {
 
 			// If the block is received though a blockchain sync, just store it and continue listening
 			if (m_IsSyncing) {
+				std::cout << "Adding synced data" << std::endl;
 				m_SyncedData.push(block);
 				break;
 			}
@@ -394,6 +392,12 @@ void MainWindow::ManageSharedMem() {
 
 			Receipt* receipt = json::toReceipt(object);
 			m_WalletPage->AddReceipt(receipt);
+
+			// Update the user's wallet
+			m_Wallet->UpdatePendingBal(Wallet::WalletActions::WITHDRAW, receipt->m_Amount);
+			m_Wallet->UpdateBalance(Wallet::WalletActions::DEPOSIT, receipt->m_Amount);
+			emit UpdateWalletAmounts();
+
 			break;
 		}
 
@@ -441,10 +445,18 @@ void MainWindow::ManageSharedMem() {
 			break;
 		}
 
-		case go::PacketTypes::PENDING_TRXN:
+		case go::PacketTypes::PENDING_TRXN: {
 			shared_mem::writeMemory("");
-			m_WalletPage->AddPending(json::toPendingTrxn(object));
+			PendingTransaction* pendingTrxn = json::toPendingTrxn(object);
+
+			m_WalletPage->AddPending(pendingTrxn);
+
+			// Update the user's wallet
+			m_Wallet->UpdatePendingBal(Wallet::WalletActions::DEPOSIT, pendingTrxn->m_Amount);
+			emit UpdateWalletAmounts();
+
 			break;
+		}
 
 		default:
 			break;
@@ -505,6 +517,8 @@ void MainWindow::ManageSyncedData() {
 }
 
 void MainWindow::ManageSyncedData(QSplashScreen& splashScreen) {
+	std::cout << "With splashscreen" << std::endl;
+
 	if (m_SyncedData.empty()) {
 		splashScreen.showMessage("Already up to date", Qt::AlignBottom, QColorConstants::White);
 		return;
@@ -522,6 +536,7 @@ void MainWindow::ManageSyncedData(QSplashScreen& splashScreen) {
 	int percent = 0;
 
 	splashScreen.showMessage(QString("Syncing blockchain (%1\% complete)").arg(QString::number(percent, 10)), Qt::AlignBottom, QColorConstants::White);
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 
 	while (!m_SyncedData.empty()) {
 		m_User->m_BlockchainCopy->Add(m_SyncedData.front());
@@ -555,4 +570,6 @@ void MainWindow::UpdateAmounts() {
 	Ui::MainWindow::balance->setText(QString::number(balance, 'f', 10));
 	pendingBalance->setText(QString::number(pending, 'f', 10));
 	totalBalance->setText(QString::number(balance + pending, 'f', 10));
+
+	m_Authenticator->AdjustBalance(m_Wallet->GetBalance());
 }
