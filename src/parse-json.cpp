@@ -103,8 +103,6 @@ Block* json::toBlock(const QJsonObject& object) {
 	vector<Transaction*> transactions;
 	auto array = object["transactions"].toArray();
 
-	qDebug() << array;
-
 	for (auto trxn: array) {
 		transactions.push_back(json::toTransaction(trxn.toObject()));
 	}
@@ -118,8 +116,6 @@ Signature* json::toSignature(const QJsonObject& object) {
 	// Signature string `json:"signature"`
 	// PublicKey string `json:"publicKey"`
 	// Length    int    `json:"length"`
-
-	qDebug() << "Debug to:" << object;
 
 	string strSignature = object["signature"].toString().toStdString();
 	string strPublicKey = object["publicKey"].toString().toStdString();
