@@ -44,6 +44,11 @@ void connections::accountPages(MainWindow& window) {
 		QString email, username, password;
 		std::tie(email, username, password) = window.m_AccPgs->ReadText(); // Get the user's entries
 
+		// Cache the user's credentials if they checked "Remember Me"
+		if (window.s_RememberMe->isChecked()) {
+			window.m_AccPgs->CacheCredentials(email.toStdString(), password.toStdString());
+		}
+
 		window.m_Authenticator->SignIn(email, password);
 	});
 
@@ -51,6 +56,11 @@ void connections::accountPages(MainWindow& window) {
 	window.connect(window.btn_signUp, &QPushButton::released, &window, [&window]() {
 		QString email, username, password;
 		std::tie(email, username, password) = window.m_AccPgs->ReadText(); // Get the user's entries
+
+		// Cache the user's credentials if they checked "Remember Me"
+		if (window.c_RememberMe->isChecked()) {
+			window.m_AccPgs->CacheCredentials(email.toStdString(), password.toStdString());
+		}
 
 		window.m_Authenticator->SignUp(email, username, password);
 	});
@@ -79,11 +89,8 @@ void connections::accountPages(MainWindow& window) {
 						break;
 
 					case static_cast<uint8_t>(Auth::ErrorCodes::INVALID_USERNAME):
-						detailedText += "Invalid username\n";
-						break;
-
 					case static_cast<uint8_t>(Auth::ErrorCodes::INVALID_PASSWORD):
-						detailedText += "Invalid password\n";
+						detailedText += "Invalid username or password\n";
 						break;
 
 					case static_cast<uint8_t>(Auth::ErrorCodes::EMPTY_FIELD):
@@ -97,6 +104,10 @@ void connections::accountPages(MainWindow& window) {
 		}
 
 		window.m_AccPgs->DisplayErrorMsg(detailedText, page);
+	});
+
+	window.connect(window.m_Authenticator, &Auth::Authenticated, &window, [&window]() {
+		window.m_AccPgs->DisplayPage(2);
 	});
 }
 
@@ -247,7 +258,7 @@ void connections::transactionPage(MainWindow& window) {
 		finalTransaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
 
 		if (!window.m_Wallet->IsPossible(finalTransaction)) {
-			window.m_TransactionManager->ShowWarning(window.m_Wallet->GetTotalBal(), finalTransaction);
+			window.m_TransactionManager->ShowWarning(window.m_Wallet->GetAvailableBal(), finalTransaction);
 			return;
 		}
 
@@ -278,7 +289,7 @@ void connections::transactionPage(MainWindow& window) {
 				QString::number(finalTransaction->m_Amount, 'f', 10).toDouble()
 			};
 			data = transmitter->Format(&pendingTrxn);
-			transmitter->Transmit(data, std::stoi(data[0]), {"192.168.1.44"});
+			transmitter->Transmit(data, std::stoi(data[0]), {"192.168.1.58"});
 
 			delete transmitter;
 		}
