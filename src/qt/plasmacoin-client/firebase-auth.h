@@ -64,7 +64,7 @@ public:
 	void SignIn(const QString& email, const QString& password);
 
 	uint8_t GetErrors() const;
-	inline void AddError(const ErrorCodes& error);
+	inline void AddError(ErrorCodes error);
 
 private:
 	QNetworkAccessManager* m_Manager;
@@ -92,6 +92,8 @@ signals:
 	void FoundAuthErrors();
 	void FoundEmptyField();
 
+	void Authenticated();
+
 public slots:
 	void NetworkReplyReady();
 	void RequestToken();
@@ -118,7 +120,7 @@ private:
 	std::string EncryptPassword(const std::string& password) const;
 };
 
-inline void Auth::AddError(const ErrorCodes& error) {
+inline void Auth::AddError(ErrorCodes error) {
 	m_Errors |= static_cast<uint8_t>(error);
 }
 
