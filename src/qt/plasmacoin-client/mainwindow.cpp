@@ -19,10 +19,7 @@ MainWindow::MainWindow(QWidget* parent):
 	shared_mem::deleteMemory(shared_mem::READER_FILENAME);
 	shared_mem::deleteMemory(shared_mem::WRITER_FILENAME);
 
-	RegisterNode();
-
 	Ui_MainWindow::setupUi(this);
-	UpdateAmounts();
 
 	// QPushButton* button = new QPushButton("Button", this);
 	// button->setGeometry(QRect(0, 0, 100, 30));
@@ -40,8 +37,6 @@ MainWindow::MainWindow(QWidget* parent):
 	// std::future<void> manageSharedMem = std::async([this](std::atomic<bool>& running) {
 	// 	this->ManageSharedMem(running);
 	// }, std::ref(runningThread));
-
-	tabWidget->setCurrentIndex(0);
 
 	m_FormErrorAlert = new QMessageBox(); // Create a message box to display authentication errors
 	m_TransactionAlert = new QMessageBox(); // Create a message box to sign and send a transaction
@@ -64,7 +59,23 @@ MainWindow::MainWindow(QWidget* parent):
 	m_MiningDialog = new MiningDialog(this);
 	m_BlockView = new BlockView(Ui::MainWindow::blockView);
 	m_BlockchainViewer = new BlockchainViewer(m_User->m_BlockchainCopy, Ui::MainWindow::blockView, Ui::MainWindow::blockTrxnView);
-	m_WalletPage =  new WalletPage(Ui::MainWindow::receiptList, Ui::MainWindow::pendingList);
+	m_WalletPage =  new WalletPage(m_Wallet, Ui::MainWindow::receiptList, Ui::MainWindow::pendingList);
+
+	if (datfs::hasCredCache()) {
+		m_AccPgs->DisplayPage(1); // Set the account page to the sign-in page
+
+		string email, password;
+		std::tie(email, password) = datfs::loadLoginInfo();
+
+		m_Authenticator->SignIn(QString::fromStdString(email), QString::fromStdString(password));
+	}
+	else {
+		tabWidget->setCurrentIndex(5);
+		m_AccPgs->DisplayPage(0);
+	}
+
+	RegisterNode();
+	UpdateAmounts();
 
 	// Create some temporary nodes to make transactions between
 	// Node* node1 = new Node("Ryan", "ryan", "1234", "192.168.1.6");
@@ -503,7 +514,7 @@ void MainWindow::SyncBlockchain() {
 }
 
 void MainWindow::ManageSyncedData() {
-	if (m_SyncedData.size() < 0) {
+	if (m_SyncedData.empty()) {
 		return;
 	}
 
@@ -521,6 +532,7 @@ void MainWindow::ManageSyncedData(QSplashScreen& splashScreen) {
 
 	if (m_SyncedData.empty()) {
 		splashScreen.showMessage("Already up to date", Qt::AlignBottom, QColorConstants::White);
+		emit DisplayApp();
 		return;
 	}
 
@@ -536,7 +548,7 @@ void MainWindow::ManageSyncedData(QSplashScreen& splashScreen) {
 	int percent = 0;
 
 	splashScreen.showMessage(QString("Syncing blockchain (%1\% complete)").arg(QString::number(percent, 10)), Qt::AlignBottom, QColorConstants::White);
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 	while (!m_SyncedData.empty()) {
 		m_User->m_BlockchainCopy->Add(m_SyncedData.front());
@@ -545,12 +557,15 @@ void MainWindow::ManageSyncedData(QSplashScreen& splashScreen) {
 		splashScreen.showMessage(QString("Syncing blockchain (%1\% complete)").arg(QString::number(percent, 10)), Qt::AlignBottom, QColorConstants::White);
 
 		m_SyncedData.pop();
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 
 	splashScreen.showMessage("Done", Qt::AlignBottom, QColorConstants::White);
 
 	m_BlockchainViewer->Latest();
 	UpdateButtons();
+
+	emit DisplayApp();
 }
 
 void MainWindow::UpdateButtons() {
@@ -566,10 +581,13 @@ void MainWindow::UpdateButtons() {
 void MainWindow::UpdateAmounts() {
 	double balance = m_Wallet->GetBalance();
 	double pending = m_Wallet->GetPendingBal();
+	double available = m_Wallet->GetAvailableBal();
+	double total = m_Wallet->GetTotalBal();
 
 	Ui::MainWindow::balance->setText(QString::number(balance, 'f', 10));
 	pendingBalance->setText(QString::number(pending, 'f', 10));
-	totalBalance->setText(QString::number(balance + pending, 'f', 10));
+	availableBalance->setText(QString::number(available, 'f', 10));
+	totalBalance->setText(QString::number(total, 'f', 10));
 
 	m_Authenticator->AdjustBalance(m_Wallet->GetBalance());
 }

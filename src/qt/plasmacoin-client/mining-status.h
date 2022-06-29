@@ -18,8 +18,6 @@
 using std::string;
 
 class Status : public QMainWindow, public Ui_MainWindow {
-	Q_OBJECT
-
 public:
 	Status() = default;
 	Status(QTextBrowser* qtbrowser1, QTextBrowser* qtbrowser2, QTextBrowser* qtbrowser3, QTextBrowser* qtbrowser4);
