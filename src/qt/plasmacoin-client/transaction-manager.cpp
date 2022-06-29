@@ -97,7 +97,7 @@ int TransactionManager::AskForConf(Transaction* transaction) {
 }
 
 // Warn the user about an issue with their transaction
-int TransactionManager::ShowWarning(double totalBalance, Transaction* transaction) {
+int TransactionManager::ShowWarning(double balance, Transaction* transaction) {
 	m_TransactionAlert = new QMessageBox(
 		QMessageBox::Warning, "Plasmacoin Client",
 		QString::fromStdString("Insufficient funds. Please review the details, then click \"OK\"."),
@@ -106,10 +106,10 @@ int TransactionManager::ShowWarning(double totalBalance, Transaction* transactio
 	m_TransactionAlert->setStyleSheet("QLabel{max-width: 1000px;}");
 
 	const double TRXN_TOTAL = transaction->m_Amount + transaction->m_Fee;
-	const double RESULT = totalBalance - TRXN_TOTAL;
+	const double RESULT = balance - TRXN_TOTAL;
 
 	std::string detailedText = (
-		"Account balance: "	   + QString::number(totalBalance, 'f', 10).toStdString()   	+ "\n" +
+		"Account balance: "	   + QString::number(balance, 'f', 10).toStdString()   	+ "\n" +
 		"Transaction amount: " + QString::number(TRXN_TOTAL, 'f', 10).toStdString() + "\n" +
 		"Resulting balance: "  + QString::number(RESULT, 'f', 10).toStdString()		+ "\n"
 	);

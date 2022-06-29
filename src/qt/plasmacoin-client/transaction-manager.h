@@ -41,7 +41,7 @@ public:
 	void ProhibitSend();
 
 	int AskForConf(Transaction* transaction);
-	int ShowWarning(double totalBalance, Transaction* transaction);
+	int ShowWarning(double balance, Transaction* transaction);
 
 private:
 	QListWidget *m_ContactsList, *m_TransactionLog;
