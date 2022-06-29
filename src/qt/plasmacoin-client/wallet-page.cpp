@@ -7,14 +7,16 @@
 
 #include "wallet-page.h"
 
-WalletPage::WalletPage(QTableWidget* receiptList, QTableWidget* pendingList):
+WalletPage::WalletPage(Wallet* wallet, QTableWidget* receiptList, QTableWidget* pendingList):
 	m_ReceiptList(receiptList),
-	m_PendingList(pendingList)
+	m_PendingList(pendingList),
+	m_WalletCopy(wallet)
 {}
 
 WalletPage::~WalletPage() {
 	delete m_ReceiptList;
 	delete m_PendingList;
+	delete m_WalletCopy;
 }
 
 void WalletPage::AddReceipt(Receipt* receipt) {
@@ -44,6 +46,9 @@ void WalletPage::AddReceipt(Receipt* receipt) {
 		m_PendingTrxns.erase(iter);
 		m_PendingList->removeRow(std::distance(m_PendingTrxns.begin(), iter));
 	}
+
+	m_WalletCopy->UpdatePendingBal(Wallet::WalletActions::WITHDRAW, receipt->m_Amount);
+	m_WalletCopy->UpdateBalance(Wallet::WalletActions::DEPOSIT, receipt->m_Amount);
 }
 
 void WalletPage::AddPending(PendingTransaction* pendingTrxn) {
@@ -63,4 +68,6 @@ void WalletPage::AddPending(PendingTransaction* pendingTrxn) {
 	m_PendingList->setItem(m_PendingList->rowCount() - 1, 2, new QTableWidgetItem(column3));
 
 	m_PendingList->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+	m_WalletCopy->UpdatePendingBal(Wallet::WalletActions::DEPOSIT, pendingTrxn->m_Amount);
 }

@@ -17,10 +17,11 @@
 #include "ui.h"
 #include "receipt.hpp"
 #include "dat-fs.hpp"
+#include "wallet.h"
 
 class WalletPage : public QMainWindow, public Ui_MainWindow {
 public:
-	WalletPage(QTableWidget* receiptList, QTableWidget* pendingList);
+	WalletPage(Wallet* wallet, QTableWidget* receiptList, QTableWidget* pendingList);
 	~WalletPage();
 
 	void AddReceipt(Receipt* receipt);
@@ -29,6 +30,8 @@ public:
 private:
 	QTableWidget *m_ReceiptList, *m_PendingList;
 	std::vector<PendingTransaction*> m_PendingTrxns;
+
+	Wallet* m_WalletCopy;
 };
 
 #endif // WALLET_PAGE_H
