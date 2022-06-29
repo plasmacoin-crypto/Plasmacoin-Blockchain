@@ -19,10 +19,10 @@ int main(int argc, char* argv[]) {
 	QPixmap pixmap("../assets/plasmacoin-banner.png");
     QSplashScreen splashScreen(pixmap);
 
+	MainWindow window;
+
 	splashScreen.show();
 	splashScreen.showMessage("Preparing application", Qt::AlignBottom, QColorConstants::White);
-
-	MainWindow window;
 
 	window.plusSign->setIcon(QIcon("../assets/plus.png"));
 	window.minusSign->setIcon(QIcon("../assets/minus.png"));
@@ -57,23 +57,25 @@ int main(int argc, char* argv[]) {
 	connections::blockchainPage(window);
 	connections::addToBlock(window);
 	connections::removeFromBlock(window);
+	connections::updateWalletAmounts(window);
+	std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
 	std::atomic<bool> runningThread = true;
 
-	splashScreen.showMessage("Starting shared memory management", Qt::AlignBottom, QColorConstants::White);
 	QFuture<void> manageSharedMem = QtConcurrent::run([&window](std::atomic<bool>& running) {
 		while (running) {
 			window.ManageSharedMem();
 		}
 	}, std::ref(runningThread));
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 	splashScreen.showMessage("Checking for new blocks", Qt::AlignBottom, QColorConstants::White);
 	window.SyncBlockchain();
-	window.ManageSyncedData(splashScreen);
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 	splashScreen.showMessage("Launching", Qt::AlignBottom, QColorConstants::White);
-	window.show();
 	splashScreen.finish(&window);
+	window.show();
 
 	app.connect(&app, &QApplication::aboutToQuit, &window, [&runningThread, &window]() mutable {
 		runningThread = false;
