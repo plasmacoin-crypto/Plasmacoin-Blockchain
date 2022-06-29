@@ -36,6 +36,7 @@ using std::string;
 #include "packet-types.h"
 #include "parse-json.hpp"
 #include "dssize.hpp"
+#include "dat-fs.hpp"
 
 namespace connections {
 	void minePage(MainWindow& window);
