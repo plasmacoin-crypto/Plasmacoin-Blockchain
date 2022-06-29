@@ -28,8 +28,7 @@ Node::Node(
 	}
 
 	datfs::createDataPath(); // Create a place to store blockchain data
-
-	m_Address = CreateAddress(m_PublicKey);
+	m_Address = CreateAddress(m_PublicKey); // Create the user's Plasmacoin address
 }
 
 Node::Node(const string& ip, const string& address):
