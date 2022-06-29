@@ -93,7 +93,7 @@ vector<string> Transmitter::Format(IDCode* idCode) {
 
 vector<string> Transmitter::Format(Transaction* transaction) {
 	// Convert the signature to Base64
-	string signature = utility::sigToBase64(transaction->m_Signature.m_Signature);
+	string signature = utility::sbbToBase64(transaction->m_Signature.m_Signature);
 
 	// Convert the CryptoPP::RSA::PublicKey to Base64
 	string publicKey = utility::pubKeyToBase64(transaction->m_Signature.m_PublicKey);
@@ -152,7 +152,7 @@ vector<string> Transmitter::Format(Block* block) {
 
 vector<string> Transmitter::Format(Receipt* receipt) {
 	// Convert the signature to Base64
-	string signature = utility::sigToBase64(receipt->m_Signature.m_Signature);
+	string signature = utility::sbbToBase64(receipt->m_Signature.m_Signature);
 
 	// Convert the CryptoPP::RSA::PublicKey to Base64
 	string publicKey = utility::pubKeyToBase64(receipt->m_Signature.m_PublicKey);
