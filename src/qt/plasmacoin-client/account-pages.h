@@ -8,6 +8,8 @@
 #include <string>
 #include <tuple>
 
+using std::string;
+
 #include <QWidget>
 #include <QMainWindow>
 #include <QStackedWidget>
@@ -16,8 +18,11 @@
 #include <QMessageBox>
 #include <QString>
 
+#include <cryptopp/secblock.h>
+
 #include "firebase-auth.h"
 #include "ui.h"
+#include "dat-fs.hpp"
 
 class AccountPages : public QMainWindow, public Ui_MainWindow {
 public:
@@ -31,7 +36,9 @@ public:
 
 	void DisplayPage(int index) const;
 	std::tuple<QString, QString, QString> ReadText();
-	void DisplayErrorMsg(const std::string& detailedText, PageType page);
+	void DisplayErrorMsg(const string& detailedText, PageType page);
+
+	void CacheCredentials(const string& email, const string& password);
 
 	QLabel *m_EmailSignInWarning, *m_PasswordSignInWarning, *m_EmailSignUpWarning,
 		   *m_UsernameWarning, *m_PasswordSignUpWarning;

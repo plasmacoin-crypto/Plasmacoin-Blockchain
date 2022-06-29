@@ -121,8 +121,8 @@ std::tuple<QString, QString, QString> AccountPages::ReadText() {
 	return std::make_tuple("", "", ""); // The default return value
 }
 
-void AccountPages::DisplayErrorMsg(const std::string& detailedText, PageType page) {
-	std::string action = (page == PageType::SIGN_IN)? "sign in" : "sign up";
+void AccountPages::DisplayErrorMsg(const string& detailedText, PageType page) {
+	string action = (page == PageType::SIGN_IN)? "sign in" : "sign up";
 
 	m_FormErrorAlert = new QMessageBox(
 		QMessageBox::Warning, "Plasmacoin Client", QString::fromStdString("Errors occured during " + action),
@@ -131,4 +131,17 @@ void AccountPages::DisplayErrorMsg(const std::string& detailedText, PageType pag
 	m_FormErrorAlert->setDetailedText(QString::fromStdString(detailedText));
 
 	m_FormErrorAlert->exec();
+}
+
+void AccountPages::CacheCredentials(const string& email, const string& password) {
+	string encryptedPswd;
+	CryptoPP::SecByteBlock key, iv;
+
+	std::tie(encryptedPswd, key, iv) = datfs::AESEncrypt(password);
+	datfs::saveAESData(key, iv);
+
+	CryptoPP::SecByteBlock sbb = utility::sbbFromString(encryptedPswd);
+	string base64pswd = utility::sbbToBase64(sbb);
+
+	datfs::saveLoginInfo(email, base64pswd);
 }
