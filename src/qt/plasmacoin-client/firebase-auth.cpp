@@ -15,13 +15,16 @@ Auth::Auth():
 	//m_UsernameValidator(new QRegularExpressionValidator(QRegularExpression(USERNAME_REGEX), this)),
 	//m_PasswordValidator(new QRegularExpressionValidator(QRegularExpression(PASSWORD_REGEX), this))
 {
-	connect(this, &Auth::FinishedRequest, this, [this]() {
-		if (m_Errors != 0) {
+	connect(this, &Auth::FinishedRequest, this, [=] {
+		if (m_Errors == 0) {
+			emit Authenticated();
+		}
+		else {
 			emit FoundAuthErrors();
 		}
 	});
 
-	connect(this, &Auth::FoundEmptyField, this, [this]() {
+	connect(this, &Auth::FoundEmptyField, this, [=] {
 		AddError(ErrorCodes::EMPTY_FIELD);
 	});
 }
@@ -287,7 +290,10 @@ void Auth::ParseResponse(const QByteArray& response) {
 			AddError(ErrorCodes::INVALID_PASSWORD);
 		}
 	}
-	else if (jsonDocument.object().value("kind") == "identitytoolkit#VerifyPasswordResponse") {
+	else if (
+		jsonDocument.object().value("kind") == "identitytoolkit#VerifyPasswordResponse" ||
+		jsonDocument.object().value("kind") == "identitytoolkit#SignupNewUserResponse"
+	) {
 		m_IDToken = jsonDocument.object().value("idToken").toString();
 		m_RefreshToken = jsonDocument.object().value("refreshToken").toString();
 		m_UserID = jsonDocument.object().value("localId").toString();
