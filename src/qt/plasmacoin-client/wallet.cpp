@@ -14,19 +14,31 @@ void Wallet::UpdateBalance(const WalletActions& action, double amount) {
 	else if (action == WalletActions::DEPOSIT) {
 		m_Balance += amount;
 	}
+
+	m_AvailableBalance = m_Balance;
 }
 
 void Wallet::UpdatePendingBal(const WalletActions& action, double amount) {
 	if (action == WalletActions::WITHDRAW) {
 		m_PendingBalance -= amount;
+		m_AvailableBalance -= amount;
 	}
 	else if (action == WalletActions::DEPOSIT) {
 		m_PendingBalance += amount;
 	}
 }
 
+void Wallet::UpdateAvailableBal(const WalletActions& action, double amount) {
+	if (action == WalletActions::WITHDRAW) {
+		m_AvailableBalance -= amount;
+	}
+	else if (action == WalletActions::DEPOSIT) {
+		m_AvailableBalance += amount;
+	}
+}
+
 bool Wallet::IsPossible(Transaction* transaction) const {
-	return m_Balance - transaction->m_Amount - transaction->m_Fee >= 0;
+	return m_AvailableBalance - transaction->m_Amount - transaction->m_Fee >= 0;
 }
 
 double Wallet::GetBalance() const {
@@ -37,8 +49,10 @@ double Wallet::GetPendingBal() const {
 	return m_PendingBalance;
 }
 
+double Wallet::GetAvailableBal() const {
+	return m_AvailableBalance;
+}
+
 double Wallet::GetTotalBal() const {
-	// If you spent money, you can't respend it. If you're receiving money, you
-	// can't spend it until you actually receive it.
-	return (m_PendingBalance >= 0)? m_Balance : m_Balance + m_PendingBalance;
+	m_Balance + m_PendingBalance;
 }
