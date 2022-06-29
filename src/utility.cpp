@@ -81,28 +81,28 @@ CryptoPP::RSAFunction utility::pubKeyFromBase64(const string& base64key) {
 	}
 }
 
-// Encode an RSA signature (as a CryptoPP::SecByteBlock) in Base64
-string utility::sigToBase64(const CryptoPP::SecByteBlock& signature) {
-	string base64sig;
-	CryptoPP::Base64Encoder encoder(new CryptoPP::StringSink(base64sig));
+// Encode a CryptoPP::SecByteBlock in Base64
+string utility::sbbToBase64(const CryptoPP::SecByteBlock& sbb) {
+	string base64str;
+	CryptoPP::Base64Encoder encoder(new CryptoPP::StringSink(base64str));
 
-	encoder.Put(signature.begin(), signature.size());
+	encoder.Put(sbb.begin(), sbb.size());
 	encoder.MessageEnd();
 
-	return base64sig;
+	return base64str;
 }
 
-// Decode a Base64 RSA signature to a CryptoPP::SecByteBlock
-CryptoPP::SecByteBlock utility::sigFromBase64(const string& base64sig) {
-	string strSig;
+// Decode a Base64-encoded CryptoPP::SecByteBlock
+CryptoPP::SecByteBlock utility::sbbFromBase64(const string& base64str) {
+	string sbbStr;
 
-	CryptoPP::StringSource ss(base64sig, true,
+	CryptoPP::StringSource ss(base64str, true,
     	new CryptoPP::Base64Decoder(
-        	new CryptoPP::StringSink(strSig)
+        	new CryptoPP::StringSink(sbbStr)
     	) // Base64Decoder
 	); // StringSource
 
-	return utility::sbbFromString(strSig);
+	return utility::sbbFromString(sbbStr);
 }
 
 // Convert a CryptoPP::SecByteBlock to a std::string

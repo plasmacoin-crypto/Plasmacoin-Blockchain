@@ -50,8 +50,8 @@ namespace utility {
 	string pubKeyToBase64(const CryptoPP::RSAFunction& rsaKey);
 	CryptoPP::RSAFunction pubKeyFromBase64(const string& base64key);
 
-	string sigToBase64(const CryptoPP::SecByteBlock& signature);
-	CryptoPP::SecByteBlock sigFromBase64(const string& base64sig);
+	string sbbToBase64(const CryptoPP::SecByteBlock& sbb);
+	CryptoPP::SecByteBlock sbbFromBase64(const string& base64str);
 
 	string sbbToString(const CryptoPP::SecByteBlock& sbb);
 	CryptoPP::SecByteBlock sbbFromString(const string& strSbb);
