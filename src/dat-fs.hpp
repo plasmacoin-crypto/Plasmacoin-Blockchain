@@ -18,14 +18,36 @@
 	namespace fs = std::experimental::filesystem; // This way, `filesystem::exists()` (`fs::exists()`) always works
 #endif
 
+#include <string>
 #include <fstream>
+#include <tuple>
+#include <utility>
+#include <vector>
+
+using std::string;
 
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QFile>
+
+#include <cryptopp/cryptlib.h>
+#include <cryptopp/rijndael.h>
+#include <cryptopp/modes.h>
+#include <cryptopp/files.h>
+#include <cryptopp/osrng.h>
+#include <cryptopp/hex.h>
+#include <cryptopp/config_int.h>
+#include <cryptopp/secblock.h>
+
+using CryptoPP::AES;
+using CryptoPP::byte;
 
 #include "block.hpp"
 #include "receipt.hpp"
 #include "parse-json.hpp"
+#include "utility.hpp"
+#include "parse-json.hpp"
+
 
 namespace datfs {
 	#ifdef _WIN32
@@ -42,10 +64,21 @@ namespace datfs {
 
 	const string BLOCKS_LOC = APP_DATA + DELIM + "blocks";
 	const string WALLET_LOC = APP_DATA + DELIM + "wallet";
+	const string CREDS_LOC  = APP_DATA + DELIM + "credentials";
 
 	void createDataPath();
 	void saveBlock(Block* block);
 	void saveReceipt(Receipt* receipt);
+
+	void saveLoginInfo(const string& email, const string& password);
+	std::pair<string, string> loadLoginInfo();
+	bool hasCredCache();
+
+	void saveAESData(const CryptoPP::SecByteBlock& key, const CryptoPP::SecByteBlock& iv);
+	std::pair<CryptoPP::SecByteBlock, CryptoPP::SecByteBlock> loadAESData();
+
+	std::tuple<string, CryptoPP::SecByteBlock, CryptoPP::SecByteBlock> AESEncrypt(const string& message);
+	string AESDecrypt(const string& cipher, const CryptoPP::SecByteBlock& key, const CryptoPP::SecByteBlock& iv);
 }
 
 #endif // DAT_FS_HPP
