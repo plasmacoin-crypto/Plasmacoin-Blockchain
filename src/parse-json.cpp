@@ -121,7 +121,7 @@ Signature* json::toSignature(const QJsonObject& object) {
 	string strPublicKey = object["publicKey"].toString().toStdString();
 	size_t length = object["length"].toInt();
 
-	CryptoPP::SecByteBlock signature = utility::sigFromBase64(strSignature);
+	CryptoPP::SecByteBlock signature = utility::sbbFromBase64(strSignature);
 	CryptoPP::RSA::PublicKey publicKey = utility::pubKeyFromBase64(strPublicKey);
 
 	Signature* sigfield = new Signature {signature, publicKey, length};
@@ -210,7 +210,7 @@ QJsonObject json::fromBlock(Block* block) {
 QJsonObject json::fromSignature(Signature* signature) {
 	QJsonObject object;
 
-	string strSignature = utility::sigToBase64(signature->m_Signature);
+	string strSignature = utility::sbbToBase64(signature->m_Signature);
 	string strPublicKey = utility::pubKeyToBase64(signature->m_PublicKey);
 
 	object["signature"] = QString::fromStdString(strSignature);
