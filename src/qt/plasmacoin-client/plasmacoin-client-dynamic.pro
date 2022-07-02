@@ -2,7 +2,7 @@ QT += core gui network concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++17 app_bundle
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -64,18 +64,18 @@ BASE_OBJ = \
 
 INCLUDEPATH = ../../ ../../../daemon ../plasmacoin-client /usr/lib /usr/local /usr/local/plasmacoin /usr/src /usr/local/lib/plasmacoin /opt/homebrew/Cellar/boost/1.78.0_1/include
 
-macx:LIBPLASMACOIN = -L/usr/local/lib/
+macx:LIBPLASMACOIN = -L/usr/local/lib/plasmacoin
 unix:!macx:LIBPLASMACOIN = -L/usr/lib/plasmacoin
 
 unix:!macx:QTLIBS = /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Concurrent.so /usr/lib/libQt5Core.so
 
-GOLIBS = $${LIBPLASMACOIN} /usr/local/lib/libplasmacoin.a -lpcnetworkd
+GOLIBS = $${LIBPLASMACOIN} -lpcnetworkd
 GOFLAGS = -buildmode c-shared
 
-macx:DAEMON_LIBS = $${GOLIBS} -pthread
+macx:DAEMON_LIBS = $${GOLIBS} -lplasmacoin -lpthread -L/opt/homebrew/Cellar/boost/1.78.0_1/lib/ -lboost_system
 unix:!macx:DAEMON_LIBS = $${GOLIBS} -lplasmacoin -lpthread -L/usr/lib/ -lboost_system $${QTLIBS}
 
-macx:LIBS += $${GOLIBS} -pthread /usr/local/lib/libplasmacoin.a /usr/local/cryptopp/libcryptopp.a
+macx:LIBS += $${GOLIBS} -L/usr/lib -lpthread -L/usr/local/cryptopp -lcryptopp
 unix:!macx:LIBS += $${GOLIBS} -L/usr/lib -lpthread -L/usr/src/cryptopp -lcryptopp
 
 # Build the network daemon object
@@ -103,11 +103,11 @@ macx {
     $(INSTALL_FILE) ../../../lib/libpcnetworkd.dylib /usr/local/lib/
   libpcnetworkd.depends = ../../../daemon/pcnetworkd.go
 
-  libplasmacoin.target = libplasmacoin.a
+  libplasmacoin.target = libplasmacoin.dylib
   libplasmacoin.commands = \
     $(MKDIR) $${HEADER_DIR} $${NEWLINE} \
-    $(AR) ../../../lib/libplasmacoin.a $${BASE_OBJ} /usr/local/cryptopp/*.o $${NEWLINE} \
-    $(INSTALL_FILE) ../../../lib/libplasmacoin.a /usr/local/lib $${NEWLINE} \
+    $(CXX) -shared $${BASE_OBJ} -F/opt/homebrew/lib -L/usr/local/cryptopp -L/usr/local/lib/plasmacoin -o ../../../lib/libplasmacoin.dylib -lcryptopp -lpcnetworkd -framework QtCore $${NEWLINE} \
+    $(INSTALL_FILE) ../../../lib/libplasmacoin.dylib /usr/local/lib/ $${NEWLINE} \
     $${NEWLINE} \
     $(eval STANDALONE_HEADERS = ../../merkle-helpers.h ../../cryptopp-sha256-libs.h ../../../daemon/pcnetworkd.h) $${NEWLINE} \
     $(eval HEADERS := $(filter-out merkle-helpers.o, $${BASE_OBJ})) $${NEWLINE} \
@@ -149,7 +149,7 @@ unix:!macx {
 UI_HEADERS = ui_macos.h ui_linux.h ui_miningdialog.h
 QMAKE_EXTRA_TARGETS += daemon pcnetworkd libpcnetworkd libplasmacoin
 
-macx:PRE_TARGETDEPS += libpcnetworkd.dylib libplasmacoin.a
+macx:PRE_TARGETDEPS += libpcnetworkd.dylib libplasmacoin.dylib
 macx:POST_TARGETDEPS += pcnetworkd
 
 #unix:!macx:PRE_TARGETDEPS += libpcnetworkd.so libplasmacoin.so
