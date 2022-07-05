@@ -26,7 +26,7 @@ using boost::multiprecision::int256_t;
 
 class TransactionList : public QMainWindow, public Ui_MainWindow {
 public:
-	TransactionList(QListWidget*& list);
+	TransactionList(QListWidget* list);
 	~TransactionList();
 
 	void Add(Transaction* transaction);
@@ -36,7 +36,7 @@ public:
 	bool ConfirmToMempool(Transaction* transaction);
 
 private:
-	QListWidget*& m_TransactionList;
+	QListWidget* m_TransactionList;
 	vector<Transaction*> m_List; // The corresponding transactions
 };
 
