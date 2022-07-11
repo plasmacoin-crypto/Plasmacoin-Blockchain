@@ -48,7 +48,6 @@ using CryptoPP::byte;
 #include "utility.hpp"
 #include "parse-json.hpp"
 
-
 namespace datfs {
 	#ifdef _WIN32
 		// On Windows, `getenv()` is deprecated
