@@ -44,7 +44,6 @@
 #include "blockchain-viewer.h"
 #include "wallet-page.h"
 #include "wallet.h"
-//#include "settings-manager.h"
 
 #include "block.hpp"
 #include "blockchain.hpp"
@@ -60,6 +59,7 @@
 #include "mining.hpp"
 #include "user-query.hpp"
 #include "sync-request.hpp"
+#include "settings-manager.h"
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -96,6 +96,9 @@ public:
 	void UpdateButtons();
 	void UpdateAmounts();
 
+	void SaveGeometry();
+	void LoadGeometry();
+
 	QWidget* parent;
 	Status* m_Status;
 	Auth* m_Authenticator;
@@ -109,7 +112,7 @@ public:
 	BlockchainViewer* m_BlockchainViewer;
 	WalletPage* m_WalletPage;
 	Wallet* m_Wallet;
-	//SettingsManager* m_SettingsManager;
+	SettingsManager* m_SettingsManager;
 
 	QLabel* m_NameDisplay = new QLabel();
 	QLabel* m_UsernameDisplay = new QLabel();
@@ -117,6 +120,8 @@ public:
 	QLabel* m_BirthdayDisplay = new QLabel();
 
 	QMessageBox *m_FormErrorAlert, *m_TransactionAlert;
+
+	QSettings* m_Settings;
 
 	std::vector<Transaction*> m_BlockContents;
 	std::chrono::seconds m_LastMiningDur;
@@ -132,6 +137,9 @@ private:
 
 	bool m_IsSyncing = false;
 	std::queue<Block*> m_SyncedData;
+
+protected:
+	void closeEvent(QCloseEvent* event) override;
 
 public:
 	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.44"); // Temporary data

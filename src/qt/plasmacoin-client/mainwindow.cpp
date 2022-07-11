@@ -11,15 +11,19 @@ MainWindow::MainWindow(QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
 	m_Authenticator(new Auth()),
-	//m_SettingsManager(new SettingsManager()),
-	m_TransactionList(new TransactionList(Ui::MainWindow::transactionList)),
-	m_Wallet(new Wallet())
+	m_Wallet(new Wallet()),
+	m_Settings(new QSettings())
 {
 	shared_mem::deleteMemory(shared_mem::FILENAME);
 	shared_mem::deleteMemory(shared_mem::READER_FILENAME);
 	shared_mem::deleteMemory(shared_mem::WRITER_FILENAME);
 
+	QCoreApplication::setOrganizationName("Plasmacoin Cryptocurrency");
+    QCoreApplication::setOrganizationDomain("");
+    QCoreApplication::setApplicationName("Plasmacoin Client");
+
 	Ui_MainWindow::setupUi(this);
+	LoadGeometry();
 
 	// QPushButton* button = new QPushButton("Button", this);
 	// button->setGeometry(QRect(0, 0, 100, 30));
@@ -41,6 +45,7 @@ MainWindow::MainWindow(QWidget* parent):
 	m_FormErrorAlert = new QMessageBox(); // Create a message box to display authentication errors
 	m_TransactionAlert = new QMessageBox(); // Create a message box to sign and send a transaction
 
+	m_TransactionList = new TransactionList(Ui::MainWindow::transactionList);
 	m_Status = CreateMiningVisuals();
 	m_AccPgs = CreatePages();
 	m_AddressBook = new AddressBook(
@@ -60,6 +65,12 @@ MainWindow::MainWindow(QWidget* parent):
 	m_BlockView = new BlockView(Ui::MainWindow::blockView);
 	m_BlockchainViewer = new BlockchainViewer(m_User->m_BlockchainCopy, Ui::MainWindow::blockView, Ui::MainWindow::blockTrxnView);
 	m_WalletPage =  new WalletPage(m_Wallet, Ui::MainWindow::receiptList, Ui::MainWindow::pendingList);
+	m_SettingsManager = new SettingsManager(
+							m_Settings, Ui::MainWindow::rsaKeyPath, Ui::MainWindow::territorySelector, Ui::MainWindow::timeZoneSelector,
+							Ui::MainWindow::nodeTypeSelector, Ui::MainWindow::methodSelector, Ui::MainWindow::alwaysDetect
+						);
+
+	m_SettingsManager->LoadSettings();
 
 	if (datfs::hasCredCache()) {
 		m_AccPgs->DisplayPage(1); // Set the account page to the sign-in page
@@ -93,6 +104,7 @@ MainWindow::MainWindow(QWidget* parent):
 
 	m_Status->SetHeading("Building Block #" + std::to_string(m_User->m_BlockchainCopy->Size()));
 
+	Ui::MainWindow::rsaKeyPath->setText(QString::fromStdString(rsafs::RSA_KEY_PATH));
 	connect(Ui::MainWindow::btn_choosePath, &QPushButton::released, this, [=]() {
 		qDebug() << this->m_FileBrowser->getSaveFileName(
 											Ui::MainWindow::SettingsTab, QFileDialog::tr("Choose an RSA output location"),
@@ -158,7 +170,7 @@ AccountPages* MainWindow::CreatePages() {
 
 // Call block mining code and make visual changes to the GUI once it's done
 void MainWindow::StartMining() {
-	int64_t difficulty = m_User->m_BlockchainCopy->GetDifficulty();
+	double difficulty = m_User->m_BlockchainCopy->GetDifficulty();
 	Block newBlock = mining::makeBlock(m_User->m_BlockchainCopy, m_BlockContents, difficulty);
 
 	bool success = false, valid = false;
@@ -403,10 +415,6 @@ void MainWindow::ManageSharedMem() {
 
 			Receipt* receipt = json::toReceipt(object);
 			m_WalletPage->AddReceipt(receipt);
-
-			// Update the user's wallet
-			m_Wallet->UpdatePendingBal(Wallet::WalletActions::WITHDRAW, receipt->m_Amount);
-			m_Wallet->UpdateBalance(Wallet::WalletActions::DEPOSIT, receipt->m_Amount);
 			emit UpdateWalletAmounts();
 
 			break;
@@ -431,14 +439,14 @@ void MainWindow::ManageSharedMem() {
 				packet = transmitter->Format(&syncSignal);
 				transmitter->Transmit(packet, std::stoi(packet[0]), {syncRequest->m_Host});
 
-				std::this_thread::sleep_for(std::chrono::milliseconds(300));
+				std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 				// Sync the blockchain with the recipient node
 				for (auto block: m_User->m_BlockchainCopy->GetBlockchain()) {
 					packet = transmitter->Format(block);
 					transmitter->Transmit(packet, std::stoi(packet[0]), {syncRequest->m_Host});
 
-					std::this_thread::sleep_for(std::chrono::seconds(1));
+					std::this_thread::sleep_for(std::chrono::seconds(300));
 				}
 
 				std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -461,9 +469,6 @@ void MainWindow::ManageSharedMem() {
 			PendingTransaction* pendingTrxn = json::toPendingTrxn(object);
 
 			m_WalletPage->AddPending(pendingTrxn);
-
-			// Update the user's wallet
-			m_Wallet->UpdatePendingBal(Wallet::WalletActions::DEPOSIT, pendingTrxn->m_Amount);
 			emit UpdateWalletAmounts();
 
 			break;
@@ -584,10 +589,34 @@ void MainWindow::UpdateAmounts() {
 	double available = m_Wallet->GetAvailableBal();
 	double total = m_Wallet->GetTotalBal();
 
+	std::cout << "Total: " << total << std::endl;
+
 	Ui::MainWindow::balance->setText(QString::number(balance, 'f', 10));
 	pendingBalance->setText(QString::number(pending, 'f', 10));
 	availableBalance->setText(QString::number(available, 'f', 10));
 	totalBalance->setText(QString::number(total, 'f', 10));
 
 	m_Authenticator->AdjustBalance(m_Wallet->GetBalance());
+}
+
+void MainWindow::SaveGeometry() {
+	m_Settings->beginGroup("mainwindow");
+    m_Settings->setValue("geometry", saveGeometry());
+    m_Settings->endGroup();
+}
+
+void MainWindow::LoadGeometry() {
+	m_Settings->beginGroup("mainwindow");
+
+    auto geometry = m_Settings->value("geometry", QByteArray()).toByteArray();
+    if (!geometry.isEmpty()) {
+        restoreGeometry(geometry);
+	}
+
+    m_Settings->endGroup();
+}
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+	SaveGeometry();
+	m_SettingsManager->SaveSettings();
 }
