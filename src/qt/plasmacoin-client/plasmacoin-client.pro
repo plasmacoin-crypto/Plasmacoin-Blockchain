@@ -67,12 +67,9 @@ INCLUDEPATH = ../../ ../../../daemon ../plasmacoin-client /usr/lib /usr/local /u
 macx:LIBPLASMACOIN = -L/usr/local/lib/
 unix:!macx:LIBPLASMACOIN = -L/usr/lib/plasmacoin
 
-QMAKE_CXXFLAGS += -ggdb
-
 unix:!macx:QTLIBS = /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Concurrent.so /usr/lib/libQt5Core.so
 
-macx:GOLIBS = $${LIBPLASMACOIN} /usr/local/lib/libplasmacoin.a -lpcnetworkd
-unix:!macx:GOLIBS = $${LIBPLASMACOIN} -lpcnetworkd
+GOLIBS = $${LIBPLASMACOIN} /usr/local/lib/libplasmacoin.a -lpcnetworkd
 GOFLAGS = -buildmode c-shared
 
 QMAKE_CXXFLAGS += -g -O0

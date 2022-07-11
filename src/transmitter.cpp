@@ -30,7 +30,6 @@ void Transmitter::Transmit(const vector<string>& data, uint8_t type, const vecto
 	//
 
 	switch (type) {
-		case static_cast<uint8_t>(go::PacketTypes::ID_CODE):
 		case static_cast<uint8_t>(go::PacketTypes::TRANSACTION):
 		case static_cast<uint8_t>(go::PacketTypes::BLOCK): {
 			for (const std::string& ip: hosts) {

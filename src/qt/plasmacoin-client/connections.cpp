@@ -187,6 +187,7 @@ void connections::transactionPage(MainWindow& window) {
 	double amount = window.amountSelector->value();
 	double fee = window.feeSelector->value();
 	int precision = window.amountSelector->decimals();
+	Transaction* finalTransaction = nullptr;
 
 	window.total->setText(QString::number(amount + fee, 'f', precision));
 
@@ -242,7 +243,7 @@ void connections::transactionPage(MainWindow& window) {
 	});
 
 	// Create a new transaction
-	window.connect(window.btndiag_send, &QDialogButtonBox::accepted, &window, [&window]() {
+	window.connect(window.btndiag_send, &QDialogButtonBox::accepted, &window, [&window, finalTransaction]() mutable {
 		int row = window.contacts->currentRow();
 
 		// Collect transaction data
@@ -254,7 +255,7 @@ void connections::transactionPage(MainWindow& window) {
 		string content = text.isEmpty()? "" : text.toStdString();
 
 		// Create a new transaction
-		Transaction* finalTransaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
+		finalTransaction = window.m_User->MakeTransaction(recipientAddr, amount, fee, content);
 
 		if (!window.m_Wallet->IsPossible(finalTransaction)) {
 			window.m_TransactionManager->ShowWarning(window.m_Wallet->GetAvailableBal(), finalTransaction);
@@ -275,6 +276,9 @@ void connections::transactionPage(MainWindow& window) {
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
+			string result = shared_mem::readMemory(true);
+			std::cout << "Result: " << result << std::endl;
+
 			window.m_Wallet->UpdatePendingBal(Wallet::WalletActions::WITHDRAW, finalTransaction->m_Amount + finalTransaction->m_Fee);
 			window.UpdateAmounts();
 
@@ -285,7 +289,7 @@ void connections::transactionPage(MainWindow& window) {
 				QString::number(finalTransaction->m_Amount, 'f', 10).toDouble()
 			};
 			data = transmitter->Format(&pendingTrxn);
-			transmitter->Transmit(data, std::stoi(data[0]), {"192.168.1.44"});
+			transmitter->Transmit(data, std::stoi(data[0]), {"192.168.1.58"});
 
 			delete transmitter;
 		}
