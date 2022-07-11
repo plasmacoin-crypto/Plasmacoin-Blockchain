@@ -136,7 +136,9 @@ private:
 	QFileDialog* m_FileBrowser = new QFileDialog();
 
 	bool m_IsSyncing = false;
+
 	std::queue<Block*> m_SyncedData;
+	std::vector<string> m_ShMemLog;
 
 protected:
 	void closeEvent(QCloseEvent* event) override;
@@ -148,6 +150,7 @@ signals:
 	void BlockCompleted();
 	void UpdateWalletAmounts();
 	void DisplayApp();
+	void ReceivedNodeList();
 };
 
 #endif // MAINWINDOW_H
