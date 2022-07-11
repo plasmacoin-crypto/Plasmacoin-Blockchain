@@ -47,8 +47,8 @@ void WalletPage::AddReceipt(Receipt* receipt) {
 		m_PendingList->removeRow(std::distance(m_PendingTrxns.begin(), iter));
 	}
 
-	m_WalletCopy->UpdatePendingBal(Wallet::WalletActions::WITHDRAW, receipt->m_Amount);
 	m_WalletCopy->UpdateBalance(Wallet::WalletActions::DEPOSIT, receipt->m_Amount);
+	m_WalletCopy->UpdatePendingBal(Wallet::WalletActions::WITHDRAW, receipt->m_Amount);
 }
 
 void WalletPage::AddPending(PendingTransaction* pendingTrxn) {
