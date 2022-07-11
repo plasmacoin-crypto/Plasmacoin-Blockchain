@@ -8,11 +8,12 @@
 #ifndef WALLET_PAGE_H
 #define WALLET_PAGE_H
 
+#include <vector>
+#include <string>
+
 #include <QMainWindow>
 #include <QTableWidget>
 #include <QTableWidgetItem>
-
-#include <vector>
 
 #include "ui.h"
 #include "receipt.hpp"
