@@ -131,7 +131,9 @@ private:
 	QFileDialog* m_FileBrowser = new QFileDialog();
 
 	bool m_IsSyncing = false;
+
 	std::queue<Block*> m_SyncedData;
+	std::vector<string> m_ShMemLog;
 
 public:
 	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.44"); // Temporary data
@@ -140,6 +142,7 @@ signals:
 	void BlockCompleted();
 	void UpdateWalletAmounts();
 	void DisplayApp();
+	void ReceivedNodeList();
 };
 
 #endif // MAINWINDOW_H
