@@ -54,12 +54,11 @@ namespace rsafs {
 		const char DELIM	  = '/';
 	#endif
 
-	const string DIR_PATH = HOME_DIR + DELIM + ".ssh" + DELIM;
+	const string RSA_KEY_PATH = HOME_DIR + DELIM + ".ssh" + DELIM;
 	const string TMP_PATH = (TMP_DIR.back() == DELIM)? TMP_DIR + TMP_KEY_NAME : TMP_DIR + DELIM + TMP_KEY_NAME;
-	//const string RSA_PATH = /*C:\ ?*/ DIR_PATH + FILENAME;
 
-	fs::path writeKeys(const CryptoPP::InvertibleRSAFunction& keys, const string& path = DIR_PATH);
-	void readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, const string& path = DIR_PATH);
+	fs::path writeKeys(const CryptoPP::InvertibleRSAFunction& keys, const string& path = RSA_KEY_PATH);
+	void readKeys(RSA::PublicKey& pubKey, RSA::PrivateKey& privKey, const string& path = RSA_KEY_PATH);
 
 	void saveToFile(const string& filename, const CryptoPP::BufferedTransformation& bt);
 
@@ -70,7 +69,7 @@ namespace rsafs {
 	void loadBase64(const string& filename, CryptoPP::BufferedTransformation& bt);
 	string readBase64(const string& filename, CryptoPP::BufferedTransformation& bt);
 
-	void createRSAPath(const string& dirpath = DIR_PATH);
+	void createRSAPath(const string& dirpath = RSA_KEY_PATH);
 	bool pathOkay(const string& path);
 	string dirName(const string& path);
 }
