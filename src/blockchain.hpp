@@ -26,6 +26,7 @@
 #include "cryptopp-sha256-libs.h"
 
 #include <boost/multiprecision/cpp_int.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "block.hpp"
 #include "merkle-helpers.h"
@@ -35,6 +36,7 @@
 #include "parse-json.hpp"
 #include "validation.hpp"
 #include "hashing.hpp"
+#include "utility.hpp"
 
 // Include Go code
 namespace go {
@@ -64,25 +66,28 @@ public:
 	size_t Size() const;
 	bool Empty() const;
 
-	int64_t GetDifficulty() const;
+	float GetDifficulty() const;
 	int256_t GetTarget() const;
 
 	bool Find(Transaction* transaction);
 
 private:
 	// "0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-	const int256_t MAX_TARGET {"0x00000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-	int256_t m_Target = MAX_TARGET;
-	int64_t m_Difficulty = boost::lexical_cast<int64_t>(MAX_TARGET / m_Target);
+	const int256_t MAX_TARGET {"0x00fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+	double m_Difficulty = 1;
+	int256_t m_Target = MAX_TARGET / boost::lexical_cast<int256_t>(m_Difficulty);
+
+	const int DIFFICULTY_RECALC = 16;
+	const int EXPECTED_MINE_TIME = 300;
 
 	vector<Transaction*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
-	vector<Block*> m_Chain;
+	vector<Block*> m_Blockchain;
 
 	void Save(Block* block) const;
 	void Compress();
-	template<typename T> bool IsReady(const future<T>& future);
 
-	float CalcDifficulty();
+	void CalcDifficulty();
+	void SetTarget();
 
 public:
 	pair<bool, uint8_t> Mine(Block& newBlock);
@@ -92,17 +97,12 @@ public:
 
 // Get the number of blocks in the blockchain
 inline size_t Blockchain::Size() const {
-	return m_Chain.size();
+	return m_Blockchain.size();
 }
 
 // Check if the blockchain is empty
 inline bool Blockchain::Empty() const {
-	return m_Chain.empty();
-}
-
-// Check if a future is ready to have its value read
-template<typename T> bool Blockchain::IsReady(const future<T>& future) {
-	return future.wait_for(std::chrono::seconds(0)) == std::future_status::ready;
+	return m_Blockchain.empty();
 }
 
 #endif // BLOCKCHAIN_HPP

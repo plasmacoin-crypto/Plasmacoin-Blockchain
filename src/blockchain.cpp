@@ -11,7 +11,7 @@
 Blockchain::Blockchain() {}
 
 Blockchain::~Blockchain() {
-	for (auto block: m_Chain) {
+	for (const auto& block: m_Blockchain) {
 		delete block;
 	}
 }
@@ -22,7 +22,7 @@ int Blockchain::Add(Block* block) {
 		return -1;
 	}
 	else {
-		m_Chain.push_back(new Block(*block));
+		m_Blockchain.push_back(new Block(*block));
 		Save(block);
 	}
 
@@ -43,20 +43,20 @@ int Blockchain::AddToLedger(Transaction* transaction) {
 
 // Get the blockchain
 vector<Block*> Blockchain::GetBlockchain() const {
-	return m_Chain;
+	return m_Blockchain;
 }
 
 // Get the block that was most recently added to the blockchain
 Block* Blockchain::GetLatest() const {
-	return m_Chain.back();
+	return m_Blockchain.back();
 }
 
 // Get any block on the blockchain using its index
 Block* Blockchain::Get(int index) const {
-	return m_Chain[index];
+	return m_Blockchain[index];
 }
 
-int64_t Blockchain::GetDifficulty() const {
+float Blockchain::GetDifficulty() const {
 	return m_Difficulty;
 }
 
@@ -65,16 +65,16 @@ int256_t Blockchain::GetTarget() const {
 }
 
 bool Blockchain::Find(Transaction* transaction) {
-	for (auto blockchainIter = m_Chain.begin(); blockchainIter != m_Chain.end(); std::advance(blockchainIter, 1)) {
+	for (auto blockchainIter = m_Blockchain.begin(); blockchainIter != m_Blockchain.end(); std::advance(blockchainIter, 1)) {
 		for (auto trxnIter = (*blockchainIter)->m_Transactions.begin(); trxnIter != (*blockchainIter)->m_Transactions.end(); std::advance(trxnIter, 1))   {
 			if ((*trxnIter)->m_Hash == transaction->m_Hash) {
 				return true;
 			}
 
-			std::advance(trxnIter, 1);
+			//std::advance(trxnIter, 1);
 		}
 
-		std::advance(blockchainIter, 1);
+		//std::advance(blockchainIter, 1);
 	}
 
 	return false;
@@ -93,7 +93,26 @@ void Blockchain::Compress() {
 	}
 }
 
-float Blockchain::CalcDifficulty() {}
+void Blockchain::CalcDifficulty() {
+	std::vector<int64_t> miningTimes;
+	//std::vector<Block*> last16(m_Blockchain.end() - DIFFICULTY_RECALC, m_Blockchain.end());
+
+	// Get the time it took to mine the last 16 blocks
+	for (auto iter = m_Blockchain.end() - DIFFICULTY_RECALC; iter != m_Blockchain.end(); std::advance(iter, 1)) {
+		Block* block = *iter;
+		miningTimes.push_back(block->m_MineTime - block->m_CreationTime);
+	}
+
+	float medianTime = utility::median(miningTimes);
+
+	// Compute the new difficulty and set the new target hash
+	m_Difficulty *= EXPECTED_MINE_TIME / medianTime;
+	SetTarget();
+}
+
+void Blockchain::SetTarget() {
+	m_Target = MAX_TARGET / boost::lexical_cast<int256_t>(m_Difficulty);
+}
 
 // Create a new block with unconfirmed transactions and run Proof-of-Woork
 // on it.
