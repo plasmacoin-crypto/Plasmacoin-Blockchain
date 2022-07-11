@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget* parent):
 	parent(parent),
 	m_Authenticator(new Auth()),
 	//m_SettingsManager(new SettingsManager()),
-	m_TransactionList(new TransactionList(Ui::MainWindow::transactionList)),
 	m_Wallet(new Wallet())
 {
 	shared_mem::deleteMemory(shared_mem::FILENAME);
@@ -41,6 +40,7 @@ MainWindow::MainWindow(QWidget* parent):
 	m_FormErrorAlert = new QMessageBox(); // Create a message box to display authentication errors
 	m_TransactionAlert = new QMessageBox(); // Create a message box to sign and send a transaction
 
+	m_TransactionList = new TransactionList(Ui::MainWindow::transactionList);
 	m_Status = CreateMiningVisuals();
 	m_AccPgs = CreatePages();
 	m_AddressBook = new AddressBook(
@@ -277,6 +277,8 @@ void MainWindow::RegisterNode() {
 	std::cout << data[0] << std::endl;
 	transmitter->Transmit(data, std::stoi(data[0]));
 
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+
 	string result = shared_mem::readMemory(true); // Read the shared memory
 	std::cout << "Node Result: " << result << std::endl;
 
@@ -313,6 +315,7 @@ void MainWindow::ManageSharedMem() {
 	}
 
 	std::cout << data << std::endl;
+	m_ShMemLog.push_back(data);
 
 	switch (packetType) {
 		case go::PacketTypes::ID_CODE: {
@@ -334,7 +337,9 @@ void MainWindow::ManageSharedMem() {
 		}
 
 		case go::PacketTypes::TRANSACTION: {
+			std::cout << "Transaction" << std::endl;
 			Transaction* transaction = json::toTransaction(object);
+			qDebug() << object;
 			double balance = 0;
 
 			//
@@ -360,7 +365,8 @@ void MainWindow::ManageSharedMem() {
 			}
 
 			if (balance >= transaction->m_Amount + transaction->m_Fee) {
-				m_TransactionList->ConfirmToMempool(transaction);
+				bool result = m_TransactionList->ConfirmToMempool(transaction);
+				std::cout << "Confirmed: " << result << std::endl;
 				shared_mem::writeMemory("");
 			}
 
@@ -457,6 +463,7 @@ void MainWindow::ManageSharedMem() {
 		}
 
 		case go::PacketTypes::PENDING_TRXN: {
+			std::cout << "Pending notification" << std::endl;
 			shared_mem::writeMemory("");
 			PendingTransaction* pendingTrxn = json::toPendingTrxn(object);
 
@@ -469,6 +476,13 @@ void MainWindow::ManageSharedMem() {
 			break;
 		}
 
+		case go::PacketTypes::NODE_LIST:
+			#ifdef __linux__
+				emit ReceivedNodeList();
+			#endif
+
+			break;
+
 		default:
 			break;
 	}
@@ -476,42 +490,78 @@ void MainWindow::ManageSharedMem() {
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
-void MainWindow::SyncBlockchain() {
-	Transmitter* transmitter = new Transmitter();
-	std::vector<string> data;
+#ifdef __APPLE__
+	void MainWindow::SyncBlockchain() {
+		Transmitter* transmitter = new Transmitter();
+		std::vector<string> data;
 
-	// Request a list of viable nodes to sync from
-	UserQuery* userQuery = new UserQuery {"192.168.1.44", "light"};
-	data = transmitter->Format(userQuery);
-	transmitter->Transmit(data, std::stoi(data[0]));
+		// Request a list of viable nodes to sync from
+		UserQuery* userQuery = new UserQuery {"192.168.1.58", "light"};
+		data = transmitter->Format(userQuery);
+		transmitter->Transmit(data, std::stoi(data[0]));
 
-	string result;
-	QJsonObject object;
-	shared_mem::writeMemory("");
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+		string result;
+		QJsonObject object;
+		shared_mem::writeMemory("");
+		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-	// Get the resulting list of nodes
-	while (json::getPacketType(object) != static_cast<uint8_t>(go::PacketTypes::NODE_LIST)) {
-		result = shared_mem::readMemory(true); // Read the shared memory
-		std::cout << "Result: " << result << std::endl;
-		object = json::parse(result);
+		// Get the resulting list of nodes
+		while (json::getPacketType(object) != static_cast<uint8_t>(go::PacketTypes::NODE_LIST)) {
+			result = shared_mem::readMemory(true); // Read the shared memory
+			std::cout << "Result: " << result << std::endl;
+			object = json::parse(result);
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		}
+
+		std::vector<string> hosts = json::parseArray(object, "nodes");
+
+		shared_mem::writeMemory("");
+
+		if (!hosts.empty()) {
+			// Request to sync
+			SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.58"};
+			data = transmitter->Format(syncRequest);
+			transmitter->Transmit(data, std::stoi(data[0]), hosts);
+		}
+
+		delete transmitter;
 	}
+#elif defined(__linux__)
+	void MainWindow::SyncBlockchain() {
+		Transmitter* transmitter = new Transmitter();
+		std::vector<string> data;
 
-	std::vector<string> hosts = json::parseArray(object, "nodes");
+		// Request a list of viable nodes to sync from
+		UserQuery* userQuery = new UserQuery {"192.168.1.58", "light"};
+		data = transmitter->Format(userQuery);
+		transmitter->Transmit(data, std::stoi(data[0]));
 
-	shared_mem::writeMemory("");
+		shared_mem::writeMemory("");
+		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-	if (!hosts.empty()) {
-		// Request to sync
-		SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.44"};
-		data = transmitter->Format(syncRequest);
-		transmitter->Transmit(data, std::stoi(data[0]), hosts);
+		connect(this, &MainWindow::ReceivedNodeList, this, [=, &transmitter] mutable {
+			std::cout << "Here" << std::endl;
+			string packet = this->m_ShMemLog.back();
+			QJsonObject object = json::parse(packet);
+
+			std::vector<string> hosts = json::parseArray(object, "nodes");
+
+			shared_mem::writeMemory("");
+
+			if (!hosts.empty()) {
+				// Request to sync
+				SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.58"};
+				auto data = transmitter->Format(syncRequest);
+				transmitter->Transmit(data, std::stoi(data[0]), hosts);
+
+				std::this_thread::sleep_for(std::chrono::seconds(1));
+			}
+
+			transmitter = nullptr;
+		});
 	}
-
-	delete transmitter;
-}
+#endif
 
 void MainWindow::ManageSyncedData() {
 	if (m_SyncedData.empty()) {
