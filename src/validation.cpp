@@ -82,7 +82,7 @@ bool validation::validate(const Block& block, size_t chainLength) {
 	bool nonceValid = block.m_Nonce > -1;
 
 	// D = T_max / T_current => T_current = T_max / D
-	const int256_t TARGET {validation::MAX_TARGET / block.m_Difficulty};
+	const int256_t TARGET {boost::lexical_cast<cpp_dec_float_50>(validation::MAX_TARGET) / boost::lexical_cast<cpp_dec_float_50>(block.m_Difficulty)};
 
 	bool prevHashExists = !block.m_PrevHash.empty(); // Check if the previous hash exists on the block
 

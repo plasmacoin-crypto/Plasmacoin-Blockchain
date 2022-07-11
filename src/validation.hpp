@@ -15,6 +15,7 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/multiprecision/cpp_dec_float.hpp>
 
 #include <cryptopp/rsa.h> 		// Use Crypto++'s RSA functionality
 #include <cryptopp/osrng.h> 	// Use AutoSeededRandomPool
@@ -26,6 +27,7 @@
 #include "rsautil.hpp"
 
 using boost::multiprecision::int256_t;
+using boost::multiprecision::cpp_dec_float_50;
 
 class Blockchain;
 
