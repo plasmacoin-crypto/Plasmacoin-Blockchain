@@ -33,6 +33,9 @@ using std::string;
 #include "utility.hpp"
 #include "rsautil.hpp"
 #include "hashing.hpp"
+#include "enums.h"
+
+using enums::NodeType;
 
 namespace go {
 	#include "pcnetworkd.h"
@@ -40,11 +43,9 @@ namespace go {
 
 class Node {
 public:
-	enum class NodeType: uint8_t {LIGHT = 0, FULL, MINING};
-
 	Node(
-		const string& name, const string& username, const string& password,
-		const string& ip, const string& keyPath = rsafs::DIR_PATH, const Node::NodeType& type = NodeType::LIGHT
+		const string& name, const string& username, const string& password, const string& ip,
+		const string& keyPath = rsafs::RSA_KEY_PATH, NodeType type = NodeType::LIGHT
 	);
 	Node(const string& ip, const string& address);
 	~Node();
@@ -56,7 +57,7 @@ public:
 	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
 	NodeType GetType() const;
 
-	void SetType(const Node::NodeType& type);
+	void SetType(NodeType type);
 
 	std::vector<string> GetKnownHosts() const;
 	void SetKnownHosts(std::vector<string>& hosts);

@@ -8,8 +8,8 @@
 #include "node.hpp"
 
 Node::Node(
-	const string& name, const string& username, const string& password,
-	const string& ip, const string& keyPath, const Node::NodeType& type
+	const string& name, const string& username, const string& password, const string& ip,
+	const string& keyPath, NodeType type
 ):
 	// User data
 	m_Name(name),
@@ -83,11 +83,11 @@ string Node::GetAddress() const {
 	return m_Address;
 }
 
-Node::NodeType Node::GetType() const {
+NodeType Node::GetType() const {
 	return m_NodeType;
 }
 
-void Node::SetType(const Node::NodeType& type) {
+void Node::SetType(NodeType type) {
 	m_NodeType = type;
 }
 
