@@ -10,7 +10,7 @@
 
 Block::Block(
 	int index, const string& prevHash, const vector<Transaction*>& transactions,
-	int64_t difficulty, bool genesis
+	double difficulty, bool genesis
 ):
 	m_Index(index),
 	m_Difficulty(difficulty),
@@ -23,7 +23,7 @@ Block::Block(
 Block::Block(
 	int index, int nonce, const string& hash, const string& prevHash, const string& minerAddr,
 	time_t creationTime, time_t mineTime, const vector<Transaction*>& transactions,
-	int64_t difficulty, bool genesis
+	double difficulty, bool genesis
 ):
 	m_Index(index),
 	m_Nonce(nonce),
@@ -37,6 +37,6 @@ Block::Block(
 	m_Transactions(transactions)
 {}
 
-Block::Block(int index, const vector<Transaction*>& transactions, int64_t difficulty, bool genesis):
+Block::Block(int index, const vector<Transaction*>& transactions, double difficulty, bool genesis):
 	Block(index, "", transactions, difficulty, genesis)
 {}

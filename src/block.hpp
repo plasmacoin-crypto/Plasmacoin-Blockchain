@@ -23,20 +23,20 @@ using std::vector;
 class Block {
 public:
 	Block() = default;
-	Block(int index, const vector<Transaction*>& transactions, int64_t difficulty, bool genesis = true);
+	Block(int index, const vector<Transaction*>& transactions, double difficulty, bool genesis = true);
 	Block(
 		int index, const string& prevHash, const vector<Transaction*>& transactions,
-		int64_t difficulty, bool genesis = false
+		double difficulty, bool genesis = false
 	);
 	Block(
 		int index, int nonce, const string& hash, const string& prevHash, const string& minerAddr,
 		time_t creationTime, time_t mineTime, const vector<Transaction*>& transactions,
-		int64_t difficulty, bool genesis = false
+		double difficulty, bool genesis = false
 	);
 
 	// The block contents
 	int m_Index, m_Nonce = 0;
-	int64_t m_Difficulty;
+	double m_Difficulty;
 	string m_Hash, m_PrevHash;
 	string m_MinerAddr;
 	time_t m_CreationTime, m_MineTime;
