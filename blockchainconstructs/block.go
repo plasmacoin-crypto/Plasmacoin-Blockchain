@@ -12,7 +12,7 @@ import "strconv"
 type Block struct {
 	PacketType   int           `json:"type"`
 	Index        int           `json:"index"`
-	Difficulty   int64         `json:"difficulty"`
+	Difficulty   float64       `json:"difficulty"`
 	Nonce        int           `json:"nonce"`
 	Hash         string        `json:"hash"`
 	PrevHash     string        `json:"prevhash"`
@@ -58,7 +58,7 @@ func MakeBlock(data []string) *Block {
 	// Convert some stringified numeric values back to numeric values
 	packetType, _ := strconv.ParseInt(data[0], 10, 32)
 	index, _ := strconv.ParseInt(data[1], 10, 32)
-	difficulty, _ := strconv.ParseInt(data[2], 10, 64)
+	difficulty, _ := strconv.ParseFloat(data[2], 64)
 	nonce, _ := strconv.ParseInt(data[3], 10, 32)
 	creationTime, _ := strconv.ParseInt(data[7], 10, 64)
 	mineTime, _ := strconv.ParseInt(data[8], 10, 64)
@@ -78,7 +78,7 @@ func MakeBlock(data []string) *Block {
 	return &Block{
 		PacketType:   int(packetType),
 		Index:        int(index),
-		Difficulty:   int64(difficulty),
+		Difficulty:   float64(difficulty),
 		Nonce:        int(nonce),
 		Hash:         data[4],
 		PrevHash:     data[5],
