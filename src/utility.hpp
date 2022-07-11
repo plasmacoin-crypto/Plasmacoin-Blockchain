@@ -62,7 +62,6 @@ namespace utility {
 	template<typename T> bool isReady(const std::future<T>& future);
 	template<typename T, typename... Args> typename std::enable_if<std::is_arithmetic<T>::value, float>::type mean(T first, Args... nums);
 	template<typename T> typename std::enable_if<std::is_arithmetic<T>::value, float>::type median(std::vector<T>& data);
-
 }
 
 #include "utility.tpp"
