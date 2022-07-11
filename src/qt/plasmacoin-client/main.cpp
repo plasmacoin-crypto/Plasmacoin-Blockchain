@@ -1,3 +1,9 @@
+//
+// FILENAME: main.cpp | Plasmacoin Cryptocurrency
+// DESCRIPTION: Launch the client application
+// CREATED: 2021-03-21 @ 3:47 PM
+// COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
+//
 
 #include <functional>
 #include <atomic>
