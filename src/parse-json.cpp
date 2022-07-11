@@ -171,8 +171,8 @@ QJsonObject json::fromTransaction(Transaction* transaction) {
 
 	object["senderAddr"] = QString::fromStdString(transaction->m_SenderAddr);
 	object["recipientAddr"] = QString::fromStdString(transaction->m_RecipientAddr);
-	object["created"] = static_cast<int64_t>(transaction->m_CreationTime);
-	object["signed"] = static_cast<int64_t>(transaction->m_SignTime);
+	object["created"] = static_cast<qint64>(transaction->m_CreationTime);
+	object["signed"] = static_cast<qint64>(transaction->m_SignTime);
 	object["amount"] = QString::number(transaction->m_Amount, 'f', 10).toDouble();
 	object["fee"] = QString::number(transaction->m_Fee, 'f', 5).toDouble();
 	object["content"] = QString::fromStdString(transaction->m_Content);
@@ -186,7 +186,7 @@ QJsonObject json::fromBlock(Block* block) {
 	QJsonObject object;
 
 	object["index"] = block->m_Index;
-	object["difficulty"] = block->m_Difficulty;
+	object["difficulty"] = static_cast<qint64>(block->m_Difficulty);
 	object["nonce"] = block->m_Nonce;
 	object["hash"] = QString::fromStdString(block->m_Hash);
 	object["prevhash"] = QString::fromStdString(block->m_PrevHash);
@@ -215,7 +215,7 @@ QJsonObject json::fromSignature(Signature* signature) {
 
 	object["signature"] = QString::fromStdString(strSignature);
 	object["publicKey"] = QString::fromStdString(strPublicKey);
-	object["length"] = static_cast<int64_t>(signature->m_Length);
+	object["length"] = static_cast<qint64>(signature->m_Length);
 
 	return object;
 }

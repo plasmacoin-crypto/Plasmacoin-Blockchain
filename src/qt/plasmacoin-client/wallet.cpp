@@ -7,7 +7,9 @@
 
 #include "wallet.h"
 
-void Wallet::UpdateBalance(const WalletActions& action, double amount) {
+Wallet::Wallet() {};
+
+void Wallet::UpdateBalance(WalletActions action, double amount) {
 	if (action == WalletActions::WITHDRAW) {
 		m_Balance -= amount;
 	}
@@ -18,7 +20,7 @@ void Wallet::UpdateBalance(const WalletActions& action, double amount) {
 	m_AvailableBalance = m_Balance;
 }
 
-void Wallet::UpdatePendingBal(const WalletActions& action, double amount) {
+void Wallet::UpdatePendingBal(WalletActions action, double amount) {
 	if (action == WalletActions::WITHDRAW) {
 		m_PendingBalance -= amount;
 		m_AvailableBalance -= amount;
@@ -28,7 +30,7 @@ void Wallet::UpdatePendingBal(const WalletActions& action, double amount) {
 	}
 }
 
-void Wallet::UpdateAvailableBal(const WalletActions& action, double amount) {
+void Wallet::UpdateAvailableBal(WalletActions action, double amount) {
 	if (action == WalletActions::WITHDRAW) {
 		m_AvailableBalance -= amount;
 	}

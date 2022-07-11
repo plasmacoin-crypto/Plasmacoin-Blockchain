@@ -14,9 +14,11 @@ class Wallet {
 public:
 	enum class WalletActions: uint8_t {WITHDRAW, DEPOSIT};
 
-	void UpdateBalance(const WalletActions& action, double amount);
-	void UpdatePendingBal(const WalletActions& action, double amount);
-	void UpdateAvailableBal(const WalletActions& action, double amount);
+	Wallet();
+
+	void UpdateBalance(WalletActions action, double amount);
+	void UpdatePendingBal(WalletActions action, double amount);
+	void UpdateAvailableBal(WalletActions action, double amount);
 
 	bool IsPossible(Transaction* transaction) const;
 
