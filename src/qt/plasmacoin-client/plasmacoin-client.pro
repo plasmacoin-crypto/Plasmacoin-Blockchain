@@ -18,7 +18,7 @@ SOURCES += \
     main.cpp mainwindow.cpp transaction-list.cpp  mining-status.cpp recipient-list.cpp \
     firebase-auth.cpp account-pages.cpp mining-dialog.cpp transaction-manager.cpp \
     connections.cpp address-book.cpp contact.cpp transaction-view.cpp block-view.cpp \
-    blockchain-viewer.cpp wallet-page.cpp wallet.cpp
+    blockchain-viewer.cpp wallet-page.cpp wallet.cpp settings-manager.cpp
     #\
     #../../../netdial/netdial.go ../../../netlisten/netlisten.go \
     #../../../netutils/compression.go ../../../netutils/netutils.go ../../../netutils/parser.go \
@@ -37,7 +37,7 @@ HEADERS += \
     mainwindow.h transaction-list.h  mining-status.h recipient-list.h \
     firebase-auth.h account-pages.h mining-dialog.h transaction-manager.h \
     connections.hpp address-book.h contact.h transaction-view.h block-view.h \
-    blockchain-viewer.h wallet-page.h wallet.h ui.h \
+    blockchain-viewer.h wallet-page.h wallet.h ui.h settings-manager.h \
 
 FORMS += \
     ui/linux.ui \
@@ -71,6 +71,8 @@ unix:!macx:QTLIBS = /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/lib
 
 GOLIBS = $${LIBPLASMACOIN} /usr/local/lib/libplasmacoin.a -lpcnetworkd
 GOFLAGS = -buildmode c-shared
+
+QMAKE_CXXFLAGS += -g -O0
 
 macx:DAEMON_LIBS = $${GOLIBS} -pthread
 unix:!macx:DAEMON_LIBS = $${GOLIBS} -lplasmacoin -lpthread -L/usr/lib/ -lboost_system $${QTLIBS}
