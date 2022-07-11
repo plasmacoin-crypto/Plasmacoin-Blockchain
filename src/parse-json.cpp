@@ -80,7 +80,7 @@ Block* json::toBlock(const QJsonObject& object) {
 
 	// PacketType   int           `json:"type"`
 	// Index        int           `json:"index"`
-	// Difficulty   int64         `json:"difficulty"`
+	// Difficulty   float64       `json:"difficulty"`
 	// Nonce        int           `json:"nonce"`
 	// Hash         string        `json:"hash"`
 	// PrevHash     string        `json:"prevhash"`
@@ -91,7 +91,7 @@ Block* json::toBlock(const QJsonObject& object) {
 	// Transactions []Transaction `json:"transactions"`
 
 	int index = object["index"].toInt();
-	int difficulty = object["difficulty"].toInt();
+	double difficulty = object["difficulty"].toDouble();
 	int nonce = object["nonce"].toInt();
 	string hash = object["hash"].toString().toStdString();
 	string prevHash = object["prevhash"].toString().toStdString();

@@ -27,7 +27,7 @@ void MiningDialog::Display(Block* block) {
 		},
 		{
 			QTableWidgetItem(QString("Difficulty")),
-			QTableWidgetItem(QString::number(block->m_Difficulty))
+			QTableWidgetItem(QString::number(block->m_Difficulty, 'f', 10))
 		},
 		{
 			QTableWidgetItem(QString("Block Hash (Merkle Tree Root)")),
