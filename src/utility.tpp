@@ -17,7 +17,7 @@ template<typename T> bool utility::isReady(const std::future<T>& future) {
 
 // Find the mean (average) of an arbitrary number of values
 template<typename T, typename... Args>
-typename std::enable_if<std::is_arithmetic<T>::value, float>::type mean(T first, Args... nums) {
+typename std::enable_if<std::is_arithmetic<T>::value, float>::type utility::mean(T first, Args... nums) {
     constexpr size_t size = sizeof...(nums) + 1;
 
     std::array<T, size> numArray = {first, nums...}; // Unpack the arguments into a std::array
@@ -32,7 +32,7 @@ typename std::enable_if<std::is_arithmetic<T>::value, float>::type mean(T first,
 
 // Find the median of a list of values
 template<typename T>
-typename std::enable_if<std::is_arithmetic<T>::value, float>::type median(std::vector<T>& data) {
+typename std::enable_if<std::is_arithmetic<T>::value, float>::type utility::median(std::vector<T>& data) {
     std::sort(data.begin(), data.end());
     const size_t size = data.size();
 
