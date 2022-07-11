@@ -7,7 +7,7 @@
 
 #include "mining.hpp"
 
-Block mining::makeBlock(Blockchain* blockchainCopy, const vector<Transaction*>& transactions, int64_t difficulty) {
+Block mining::makeBlock(Blockchain* blockchainCopy, const vector<Transaction*>& transactions, double difficulty) {
 	if (blockchainCopy->Size() == 0) {
 		return Block(0, transactions, difficulty, true); // Create a new block
 	}

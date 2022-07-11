@@ -17,7 +17,7 @@
 #include "transmitter.hpp"
 
 namespace mining {
-	Block makeBlock(Blockchain* blockchainCopy, const vector<Transaction*>& transactions, int64_t difficulty);
+	Block makeBlock(Blockchain* blockchainCopy, const vector<Transaction*>& transactions, double difficulty);
 	std::pair<bool, uint8_t> mine(Blockchain* blockchainCopy, Block& block);
 	bool validate(Blockchain* blockchainCopy, Block* block);
 	void transmitBlock(Block* block, const std::vector<string>& hosts);
