@@ -49,6 +49,7 @@ using std::future;
 using std::string;
 
 using boost::multiprecision::int256_t;
+using boost::multiprecision::cpp_dec_float_50;
 
 class Blockchain {
 public:
@@ -67,7 +68,9 @@ public:
 	bool Empty() const;
 
 	float GetDifficulty() const;
-	int256_t GetTarget() const;
+
+	cpp_dec_float_50 GetTarget() const;
+	int256_t GetMaxTarget() const;
 
 	bool Find(Transaction* transaction);
 
@@ -75,10 +78,10 @@ private:
 	// "0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
 	const int256_t MAX_TARGET {"0x00fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
 	double m_Difficulty = 1;
-	int256_t m_Target = MAX_TARGET / boost::lexical_cast<int256_t>(m_Difficulty);
+	cpp_dec_float_50 m_Target = boost::lexical_cast<cpp_dec_float_50>(MAX_TARGET) / boost::lexical_cast<cpp_dec_float_50>(m_Difficulty);
 
-	const int DIFFICULTY_RECALC = 16;
-	const int EXPECTED_MINE_TIME = 300;
+	const int DIFF_RECALC_RATE = 1;
+	const int EXPECTED_MINE_TIME = 30;
 
 	vector<Transaction*> m_Unconfirmed; // Blocks waiting to be mined (the ledger)
 	vector<Block*> m_Blockchain;
