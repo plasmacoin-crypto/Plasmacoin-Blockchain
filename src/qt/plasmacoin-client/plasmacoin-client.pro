@@ -1,4 +1,5 @@
 QT += core gui network concurrent
+QT_MAJOR_VERSION = 6
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -69,7 +70,9 @@ unix:!macx:LIBPLASMACOIN = -L/usr/lib/plasmacoin
 
 unix:!macx:QTLIBS = /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Concurrent.so /usr/lib/libQt5Core.so
 
-GOLIBS = $${LIBPLASMACOIN} /usr/local/lib/libplasmacoin.a -lpcnetworkd
+macx:GOLIBS = $${LIBPLASMACOIN} /usr/local/lib/libplasmacoin.a -lpcnetworkd
+unix:!macx:GOLIBS = $${LIBPLASMACOIN} /usr/lib/libplasmacoin.a -lpcnetworkd
+
 GOFLAGS = -buildmode c-shared
 
 QMAKE_CXXFLAGS += -g -O0
@@ -133,18 +136,18 @@ unix:!macx {
     $(INSTALL_FILE) ../../../lib/libpcnetworkd.so /usr/lib/plasmacoin
   libpcnetworkd.depends = ../../../daemon/pcnetworkd.go
 
-  libplasmacoin.target = libplasmacoin.so
+  libplasmacoin.target = libplasmacoin.a
   libplasmacoin.commands = \
 	  $(MKDIR) $${HEADER_DIR} $${NEWLINE} \
-	  $(CXX) -shared $${BASE_OBJ} -L/usr/src/cryptopp -L/usr/lib/ -L/usr/lib/qt -L/usr/lib/plasmacoin -o ../../../lib/libplasmacoin.so /usr/src/cryptopp/libcryptopp.a /usr/lib/plasmacoin/libpcnetworkd.so /usr/lib/libboost_system.so $(QTLIBS) $${NEWLINE} \
-	  $(INSTALL_FILE) ../../../lib/libplasmacoin.so /usr/lib/plasmacoin $${NEWLINE} \
+    $(AR) ../../../lib/libplasmacoin.a $${BASE_OBJ} /usr/src/cryptopp/*.o $${NEWLINE} \
+    $(INSTALL_FILE) ../../../lib/libplasmacoin.a /usr/lib $${NEWLINE} \
     $${NEWLINE} \
-	  $(eval STANDALONE_HEADERS = ../../merkle-helpers.h ../../cryptopp-sha256-libs.h ../../../daemon/pcnetworkd.h) $${NEWLINE} \
-	  $(eval HEADERS := $(filter-out merkle-helpers.o, $${BASE_OBJ})) $${NEWLINE} \
-	  $(eval HEADERS := $(HEADERS:%o=../../%hpp)) $${NEWLINE} \
-	  $(eval HEADERS += $(STANDALONE_HEADERS)) $${NEWLINE} \
+    $(eval STANDALONE_HEADERS = ../../merkle-helpers.h ../../cryptopp-sha256-libs.h ../../../daemon/pcnetworkd.h) $${NEWLINE} \
+    $(eval HEADERS := $(filter-out merkle-helpers.o, $${BASE_OBJ})) $${NEWLINE} \
+    $(eval HEADERS := $(HEADERS:%o=../../%hpp)) $${NEWLINE} \
+    $(eval HEADERS += $(STANDALONE_HEADERS)) $${NEWLINE} \
     $${NEWLINE} \
-	  $(COPY_FILE) $(HEADERS) $${HEADER_DIR}
+    $(COPY_FILE) $(HEADERS) $${HEADER_DIR}
   libplasmacoin.depends = $${BASE_OBJ}
 }
 
@@ -155,7 +158,7 @@ macx:PRE_TARGETDEPS += libpcnetworkd.dylib libplasmacoin.a
 macx:POST_TARGETDEPS += pcnetworkd
 
 #unix:!macx:PRE_TARGETDEPS += libpcnetworkd.so libplasmacoin.so
-unix:!macx:POST_TARGETDEPS += libpcnetworkd.so libplasmacoin.so pcnetworkd
+unix:!macx:POST_TARGETDEPS += libpcnetworkd.so libplasmacoin.a pcnetworkd
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
