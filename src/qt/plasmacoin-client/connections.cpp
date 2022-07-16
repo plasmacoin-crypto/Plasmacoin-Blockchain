@@ -270,6 +270,7 @@ void connections::transactionPage(MainWindow& window) {
 
 			Transmitter* transmitter = new Transmitter();
 			auto data = transmitter->Format(finalTransaction);
+
 			transmitter->Transmit(data, std::stoi(data[0]), window.m_User->GetKnownHosts());
 
 			window.m_TransactionList->Add(finalTransaction);
@@ -385,6 +386,14 @@ void connections::removeFromBlock(MainWindow& window) {
 			window.m_BlockContents.erase(window.m_BlockContents.begin() + row); // Remove the selected item
 			window.blockContents->takeItem(row);
 		}
+	});
+}
+
+void connections::settingsPage(MainWindow& window) {
+	window.m_SettingsManager->PopulateComboBoxes();
+
+	window.connect(window.btn_autoctz, &QToolButton::released, &window, [&window]() {
+		window.m_SettingsManager->DetectLocale();
 	});
 }
 
