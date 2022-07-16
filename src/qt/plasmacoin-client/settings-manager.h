@@ -22,25 +22,31 @@
 #include "ui.h"
 #include "rsa-fs.hpp"
 #include "settings.h"
+#include "support.h"
 
 class SettingsManager : public QMainWindow, public Ui_MainWindow {
 public:
 	SettingsManager(
 		QSettings* settings, QTextBrowser* rsaKeyPath, QComboBox* territorySelector, QComboBox* timeZoneSelector,
-		QComboBox* nodeTypeSelector, QComboBox* methodSelector, QCheckBox* alwaysDetect
+		QComboBox* nodeTypeSelector, QComboBox* methodSelector, QCheckBox* autoDetect
 	);
 	~SettingsManager();
+
+	void PopulateComboBoxes();
 
 	void SaveSettings();
 	void LoadSettings();
 
+	void DetectLocale();
+
 private:
-	void PopulateComboBoxes();
+	const QByteArray SYSTEM_TIME_ZONE = QTimeZone::systemTimeZoneId();
+	const support::Territory SYSTEM_TERRITORY = QTimeZone(SYSTEM_TIME_ZONE).country();
 
 	QSettings* m_Settings;
 	QTextBrowser* m_RSAKeyPath;
 	QComboBox *m_TerritorySelector, *m_TimeZoneSelector, *m_NodeTypeSelector, *m_MethodSelector;
-	QCheckBox* m_AlwaysDetect;
+	QCheckBox* m_AutoDetect;
 };
 
 #endif // SETTINGS_MANAGER_H

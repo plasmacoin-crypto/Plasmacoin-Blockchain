@@ -14,10 +14,11 @@
 #include <QLocale>
 
 #include "enums.h"
+#include "support.h"
 
 namespace settings {
 	static std::string rsaKeyPath;
-	static QLocale::Territory territory;
+	static support::Territory territory;
 	static QByteArray timezone;
 	static bool autoDetect;
 	static enums::NodeType nodeType;
