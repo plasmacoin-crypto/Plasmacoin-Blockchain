@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget* parent):
 	m_WalletPage =  new WalletPage(m_Wallet, Ui::MainWindow::receiptList, Ui::MainWindow::pendingList);
 	m_SettingsManager = new SettingsManager(
 							m_Settings, Ui::MainWindow::rsaKeyPath, Ui::MainWindow::territorySelector, Ui::MainWindow::timeZoneSelector,
-							Ui::MainWindow::nodeTypeSelector, Ui::MainWindow::methodSelector, Ui::MainWindow::alwaysDetect
+							Ui::MainWindow::nodeTypeSelector, Ui::MainWindow::methodSelector, Ui::MainWindow::autoDetect
 						);
 
 	m_SettingsManager->LoadSettings();
@@ -669,4 +669,8 @@ void MainWindow::LoadGeometry() {
 void MainWindow::closeEvent(QCloseEvent* event) {
 	SaveGeometry();
 	m_SettingsManager->SaveSettings();
+
+	if (event != nullptr) {
+		event->accept();
+	}
 }

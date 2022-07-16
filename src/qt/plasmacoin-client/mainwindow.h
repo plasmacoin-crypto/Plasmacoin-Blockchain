@@ -30,6 +30,7 @@
 #include <QJsonObject>
 #include <QSplashScreen>
 #include <QtConcurrent/QtConcurrent>
+#include <QCloseEvent>
 
 #include "ui.h"
 
