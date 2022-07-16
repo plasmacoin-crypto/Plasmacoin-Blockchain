@@ -24,6 +24,10 @@ int Blockchain::Add(Block* block) {
 	else {
 		m_Blockchain.push_back(new Block(*block));
 		Save(block);
+
+		if (Size() % DIFF_RECALC_RATE == 0) {
+			CalcDifficulty();
+		}
 	}
 
 	return 0;
@@ -60,8 +64,12 @@ float Blockchain::GetDifficulty() const {
 	return m_Difficulty;
 }
 
-int256_t Blockchain::GetTarget() const {
+cpp_dec_float_50 Blockchain::GetTarget() const {
 	return m_Target;
+}
+
+int256_t Blockchain::GetMaxTarget() const {
+	return MAX_TARGET;
 }
 
 bool Blockchain::Find(Transaction* transaction) {
@@ -95,10 +103,10 @@ void Blockchain::Compress() {
 
 void Blockchain::CalcDifficulty() {
 	std::vector<int64_t> miningTimes;
-	//std::vector<Block*> last16(m_Blockchain.end() - DIFFICULTY_RECALC, m_Blockchain.end());
+	//std::vector<Block*> last16(m_Blockchain.end() - DIFF_RECALC_RATE, m_Blockchain.end());
 
 	// Get the time it took to mine the last 16 blocks
-	for (auto iter = m_Blockchain.end() - DIFFICULTY_RECALC; iter != m_Blockchain.end(); std::advance(iter, 1)) {
+	for (auto iter = m_Blockchain.end() - DIFF_RECALC_RATE; iter != m_Blockchain.end(); std::advance(iter, 1)) {
 		Block* block = *iter;
 		miningTimes.push_back(block->m_MineTime - block->m_CreationTime);
 	}
@@ -111,7 +119,7 @@ void Blockchain::CalcDifficulty() {
 }
 
 void Blockchain::SetTarget() {
-	m_Target = MAX_TARGET / boost::lexical_cast<int256_t>(m_Difficulty);
+	m_Target = boost::lexical_cast<cpp_dec_float_50>(MAX_TARGET) / boost::lexical_cast<cpp_dec_float_50>(m_Difficulty);
 }
 
 // Create a new block with unconfirmed transactions and run Proof-of-Woork
@@ -169,6 +177,7 @@ bool Blockchain::Consensus(Block& block) {
 		}
 
 		block.m_Nonce++; // Increase the nonce
+		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
 
 	std::cout << "Thread exited" << std::endl;
