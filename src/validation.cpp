@@ -51,7 +51,7 @@ bool validation::validate(const Transaction& transaction) {
 	return hashValid && nonEmpty && signatureValid;
 }
 
-bool validation::validate(const Transaction& transaction, int256_t target) {
+bool validation::validate(const Transaction& transaction, cpp_dec_float_50 target) {
 	// Check if the addresses are valid
 
 	// Check if the transaction hash is valid
@@ -82,7 +82,7 @@ bool validation::validate(const Block& block, size_t chainLength) {
 	bool nonceValid = block.m_Nonce > -1;
 
 	// D = T_max / T_current => T_current = T_max / D
-	const int256_t TARGET {boost::lexical_cast<cpp_dec_float_50>(validation::MAX_TARGET) / boost::lexical_cast<cpp_dec_float_50>(block.m_Difficulty)};
+	const cpp_dec_float_50 TARGET {boost::lexical_cast<cpp_dec_float_50>(validation::MAX_TARGET) / boost::lexical_cast<cpp_dec_float_50>(block.m_Difficulty)};
 
 	bool prevHashExists = !block.m_PrevHash.empty(); // Check if the previous hash exists on the block
 
@@ -120,12 +120,12 @@ bool validation::validate(const std::string& hash) {
 	return std::regex_match(hash, SHA_256_REGEX);
 }
 
-bool validation::validate(const std::string& hash, int256_t target) {
+bool validation::validate(const std::string& hash, cpp_dec_float_50 target) {
 	bool structValid = validation::validate(hash); // Check if the hash structure is valid
 
 	// Check if the hash is below the target hash for PoW
 	int256_t intHash {std::string("0x") + hash}; // Add "0x" to the hash before converting
-	bool meetsTarget = intHash < target;
+	bool meetsTarget = boost::lexical_cast<cpp_dec_float_50>(intHash) < target;
 
 	return structValid && meetsTarget;
 }
