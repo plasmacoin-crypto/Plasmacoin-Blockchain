@@ -15,10 +15,14 @@
 #include <thread>
 #include <chrono>
 
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <fcntl.h>
-#include <semaphore.h>
+#if defined(__APPLE__) || defined(__linux__)
+	#include <sys/ipc.h>
+	#include <sys/shm.h>
+	#include <fcntl.h>
+	#include <semaphore.h>
+#elif defined(WIN32)
+	// Include necessary Windows IPC/semaphore libraries
+#endif
 
 namespace shared_mem {
 	const int32_t BLOCK_SIZE = 4096;
@@ -26,6 +30,7 @@ namespace shared_mem {
 	const char* const READER_FILENAME = "/reader";
 	const char* const WRITER_FILENAME = "/writer";
 	const char* const NO_DATA = "";
+	const error_t TRYWAIT_FAILURE = -1;
 
 	const mode_t PERMISSIONS = 0666;
 

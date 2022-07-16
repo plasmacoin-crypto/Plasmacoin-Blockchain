@@ -78,14 +78,14 @@
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
 		// Access the semaphores
-		sem_t* writer = sem_open(shared_mem::WRITER_FILENAME, 0);
-		sem_t* reader = sem_open(shared_mem::READER_FILENAME, 0);
+		sem_t* writer = sem_open(shared_mem::WRITER_FILENAME, O_RDWR);
+		sem_t* reader = sem_open(shared_mem::READER_FILENAME, O_RDWR);
 
 		// Read from the shared memory block. If `immediate` is true, only read if a semaphore
 		// decrement is immediately possible.
 		if (immediate) {
 			int result = sem_trywait(writer);
-			if (result == EAGAIN) {
+			if (result == shared_mem::TRYWAIT_FAILURE) {
 				return shared_mem::NO_DATA;
 			}
 		}
@@ -116,8 +116,6 @@
 
 	// Write to a block of shared memory
 	void shared_mem::writeMemory(std::string data) {
-		std::cout << "Writing" << std::endl;
-
 		// Unlink any semaphores that may be left over
 		sem_unlink(shared_mem::READER_FILENAME);
 		sem_unlink(shared_mem::WRITER_FILENAME);
@@ -125,8 +123,6 @@
 		// Initialize new semaphores
 		sem_t* writer = sem_open(shared_mem::WRITER_FILENAME, shared_mem::SEM_CREATE, shared_mem::PERMISSIONS, 0);
 		sem_t* reader = sem_open(shared_mem::READER_FILENAME, shared_mem::SEM_CREATE, shared_mem::PERMISSIONS, 1);
-
-		std::cout << (writer == SEM_FAILED) << std::endl;
 
 		key_t key = ftok(shared_mem::FILENAME, 0);
 		int shmid = shmget(key, shared_mem::BLOCK_SIZE, shared_mem::BLOCK_CREATE);
@@ -139,8 +135,6 @@
 
 		sem_close(writer);
 		sem_close(reader);
-
-		std::cout << "Wrote: " << data << std::endl;
 
 		shared_mem::detatch(shmem); // Detatch from the memory
 	}
