@@ -25,10 +25,10 @@ int main(int argc, char* argv[]) {
 	QPixmap pixmap("../assets/plasmacoin-banner.png");
     QSplashScreen splashScreen(pixmap);
 
-	MainWindow window;
-
 	splashScreen.show();
 	splashScreen.showMessage("Preparing application", Qt::AlignBottom, QColorConstants::White);
+
+	MainWindow window;
 
 	window.plusSign->setIcon(QIcon("../assets/plus.png"));
 	window.minusSign->setIcon(QIcon("../assets/minus.png"));
@@ -63,6 +63,7 @@ int main(int argc, char* argv[]) {
 	connections::blockchainPage(window);
 	connections::addToBlock(window);
 	connections::removeFromBlock(window);
+	connections::settingsPage(window);
 	connections::updateWalletAmounts(window);
 	std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
@@ -76,8 +77,8 @@ int main(int argc, char* argv[]) {
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 	splashScreen.showMessage("Checking for new blocks", Qt::AlignBottom, QColorConstants::White);
-	window.SyncBlockchain();
-	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	//window.SyncBlockchain();
+	//window.ManageSyncedData(splashScreen);
 
 	splashScreen.showMessage("Launching", Qt::AlignBottom, QColorConstants::White);
 	splashScreen.finish(&window);
