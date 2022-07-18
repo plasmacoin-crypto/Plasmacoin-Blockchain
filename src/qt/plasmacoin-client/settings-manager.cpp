@@ -122,7 +122,6 @@ void SettingsManager::LoadSettings() {
 // Detect the user's territory and time zone from the system settings
 void SettingsManager::DetectLocale() {
 	m_TerritorySelector->setCurrentIndex(static_cast<int>(SYSTEM_TERRITORY));
-
-	auto timezones = QTimeZone::availableTimeZoneIds(SYSTEM_TERRITORY);
+	auto timezones = QTimeZone::availableTimeZoneIds();
 	m_TimeZoneSelector->setCurrentIndex(timezones.indexOf(SYSTEM_TIME_ZONE));
 }
