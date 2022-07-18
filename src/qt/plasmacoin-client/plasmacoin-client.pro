@@ -63,24 +63,23 @@ BASE_OBJ = \
   utility.o \
   rsautil.o
 
-INCLUDEPATH = ../../ ../../../daemon ../plasmacoin-client /usr/lib /usr/local /usr/local/plasmacoin /usr/src /usr/local/lib/plasmacoin /opt/homebrew/Cellar/boost/1.78.0_1/include
+INCLUDEPATH = ../../ ../../../daemon ../plasmacoin-client /usr/lib /usr/local /usr/local/plasmacoin /usr/src /opt/homebrew/Cellar/boost/1.78.0_1/include
 
 macx:LIBPLASMACOIN = -L/usr/local/lib/
 unix:!macx:LIBPLASMACOIN = -L/usr/lib/plasmacoin
 
 unix:!macx:QTLIBS = /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Network.so /usr/lib/libQt5Concurrent.so /usr/lib/libQt5Core.so
 
-macx:GOLIBS = $${LIBPLASMACOIN} /usr/local/lib/libplasmacoin.a -lpcnetworkd
+macx:GOLIBS = /usr/local/lib/libplasmacoin.a /usr/local/lib/libpcnetworkd.dylib
 unix:!macx:GOLIBS = $${LIBPLASMACOIN} /usr/lib/libplasmacoin.a -lpcnetworkd
 
 GOFLAGS = -buildmode c-shared
-
 QMAKE_CXXFLAGS += -g -O0
 
 macx:DAEMON_LIBS = $${GOLIBS} -pthread
 unix:!macx:DAEMON_LIBS = $${GOLIBS} -lplasmacoin -lpthread -L/usr/lib/ -lboost_system $${QTLIBS}
 
-macx:LIBS += $${GOLIBS} -pthread /usr/local/lib/libplasmacoin.a /usr/local/cryptopp/libcryptopp.a
+macx:LIBS += -pthread /usr/local/lib/libplasmacoin.a /usr/local/cryptopp/libcryptopp.a /usr/local/lib/libpcnetworkd.dylib
 unix:!macx:LIBS += $${GOLIBS} -L/usr/lib -lpthread -L/usr/src/cryptopp -lcryptopp
 
 # Build the network daemon object
