@@ -30,7 +30,7 @@ namespace shared_mem {
 	const char* const READER_FILENAME = "/reader";
 	const char* const WRITER_FILENAME = "/writer";
 	const char* const NO_DATA = "";
-	const error_t TRYWAIT_FAILURE = -1;
+	const int32_t TRYWAIT_FAILURE = -1;
 
 	const mode_t PERMISSIONS = 0666;
 
