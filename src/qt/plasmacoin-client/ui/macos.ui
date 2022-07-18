@@ -2767,7 +2767,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
         <item>
          <widget class="QToolBox" name="settingsMenu">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="accountStgs">
            <property name="geometry">
