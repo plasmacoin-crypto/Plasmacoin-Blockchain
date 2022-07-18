@@ -404,4 +404,51 @@ func getGlobalIP() C.cchar_t {
 	return C.CString(responseMap["query"])
 }
 
+// Get the user's local IP address
+//export getLocalIP
+func getLocalIP() C.cchar_t {
+	ifaces, err := net.Interfaces()
+
+	if err != nil {
+		return C.CString("")
+	}
+
+	for _, iface := range ifaces {
+		// Avoid iterfaces that are down or are loopback interfaces
+		if (iface.Flags & net.FlagUp == 0) || (iface.Flags & net.FlagLoopback != 0) {
+			continue
+		}
+
+		addrs, err := iface.Addrs()
+
+		if err != nil {
+			return C.CString("")
+		}
+
+		for _, addr := range addrs {
+			var ip net.IP
+
+			switch v := addr.(type) {
+			case *net.IPNet:
+				ip = v.IP
+			case *net.IPAddr:
+				ip = v.IP
+			}
+
+			if ip == nil || ip.IsLoopback() {
+				continue
+			}
+
+			ip = ip.To4()
+			if ip == nil {
+				continue // not an ipv4 address
+			}
+
+			return C.CString(ip.String())
+		}
+	}
+
+	return C.CString("")
+}
+
 func main() {}
