@@ -138,7 +138,6 @@
 
 		shared_mem::detatch(shmem); // Detatch from the memory
 	}
-
 #endif
 
 // Detatch from a block of shared memory
