@@ -4,6 +4,7 @@ QT_MAJOR_VERSION = 6
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
+PKGCONFIG += libnotify
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -14,7 +15,7 @@ SOURCES += \
     ../../receipt.cpp ../../rsa-fs.cpp ../../dat-fs.cpp ../../transmitter.cpp \
     ../../shared-mem.cpp ../../parse-json.cpp ../../validation.cpp ../../hashing.cpp \
     ../../dssize.cpp ../../utility.cpp ../../utility.tpp ../../rsautil.cpp \
-    ../../merkle-helpers.cpp ../../mining.cpp \
+    ../../merkle-helpers.cpp ../../mining.cpp ../../notification.cpp \
     \
     main.cpp mainwindow.cpp transaction-list.cpp  mining-status.cpp recipient-list.cpp \
     firebase-auth.cpp account-pages.cpp mining-dialog.cpp transaction-manager.cpp \
@@ -33,7 +34,7 @@ HEADERS += \
     ../../validation.hpp ../../hashing.hpp ../../dssize.hpp ../../utility.hpp \
     ../../rsautil.hpp ../../sync-request.hpp ../../user-query.hpp ../../signature.hpp \
     ../../merkle-helpers.h ../../idcode.hpp ../../pending-trxn.hpp ../../mining.hpp \
-    ../../removal-request.hpp \
+    ../../removal-request.hpp ../../notification.hpp \
     \
     mainwindow.h transaction-list.h  mining-status.h recipient-list.h \
     firebase-auth.h account-pages.h mining-dialog.h transaction-manager.h \
@@ -63,7 +64,28 @@ BASE_OBJ = \
   utility.o \
   rsautil.o
 
-INCLUDEPATH = ../../ ../../../daemon ../plasmacoin-client /usr/lib /usr/local /usr/local/plasmacoin /usr/src /opt/homebrew/Cellar/boost/1.78.0_1/include
+#
+# Compiler flags
+#
+GOFLAGS = -buildmode c-shared
+QMAKE_CXXFLAGS += -g -O0
+
+#
+# Include paths
+#
+
+unix:!macx:LIBNOTIFY_INCLUDE = $$system(pkg-config --cflags libnotify)
+unix:!macx:LIBNOTIFY_LIBS = $$system(pkg-config --libs libnotify)
+
+message($$LIBNOTIFY_INCLUDE)
+message($$LIBNOTIFY_LIBS)
+
+INCLUDEPATH = ../../ ../../../daemon ../plasmacoin-client \
+              /usr/lib /usr/local /usr/local/plasmacoin /usr/src \
+              /opt/homebrew/Cellar/boost/1.78.0_1/include \
+              /usr/include/gdk-pixbuf-2.0 /usr/include/glib-2.0 \
+              /usr/lib/glib-2.0/include /usr/include/sysprof-4 \
+              /usr/include/libpng16 /usr/include/libmount /usr/include/blkid
 
 macx:LIBPLASMACOIN = -L/usr/local/lib/
 unix:!macx:LIBPLASMACOIN = -L/usr/lib/plasmacoin
@@ -73,14 +95,11 @@ unix:!macx:QTLIBS = /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/lib
 macx:GOLIBS = /usr/local/lib/libplasmacoin.a /usr/local/lib/libpcnetworkd.dylib
 unix:!macx:GOLIBS = $${LIBPLASMACOIN} /usr/lib/libplasmacoin.a -lpcnetworkd
 
-GOFLAGS = -buildmode c-shared
-QMAKE_CXXFLAGS += -g -O0
-
 macx:DAEMON_LIBS = $${GOLIBS} -pthread
 unix:!macx:DAEMON_LIBS = $${GOLIBS} -lplasmacoin -lpthread -L/usr/lib/ -lboost_system $${QTLIBS}
 
 macx:LIBS += -pthread /usr/local/lib/libplasmacoin.a /usr/local/cryptopp/libcryptopp.a /usr/local/lib/libpcnetworkd.dylib
-unix:!macx:LIBS += $${GOLIBS} -L/usr/lib -lpthread -L/usr/src/cryptopp -lcryptopp
+unix:!macx:LIBS += $${GOLIBS} -L/usr/lib -lpthread -L/usr/src/cryptopp -lcryptopp $${LIBNOTIFY_LIBS}
 
 # Build the network daemon object
 daemon.target = daemon.o
@@ -94,6 +113,7 @@ pcnetworkd.depends = daemon.o
 
 NEWLINE = $$escape_expand(\n\t)
 
+# macOS-specific extra targets
 macx {
   GO = /opt/homebrew/bin/go
   HEADER_DIR = /usr/local/plasmacoin
@@ -122,6 +142,7 @@ macx {
   libplasmacoin.depends = $${BASE_OBJ}
 }
 
+# Linux-specific extra targets
 unix:!macx {
   GO = /usr/bin/go
   HEADER_DIR = /usr/include/plasmacoin
