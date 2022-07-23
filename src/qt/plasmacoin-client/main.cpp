@@ -70,6 +70,8 @@ int main(int argc, char* argv[]) {
 	std::atomic<bool> runningThread = true;
 
 	QFuture<void> manageSharedMem = QtConcurrent::run([&window](std::atomic<bool>& running) {
+		shared_mem::writeMemory("");
+
 		while (running) {
 			window.ManageSharedMem();
 		}
