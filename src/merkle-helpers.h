@@ -5,8 +5,8 @@
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
 
-#ifndef MERKLE_HELPERS_HPP
-#define MERKLE_HELPERS_HPP
+#ifndef MERKLE_HELPERS_H
+#define MERKLE_HELPERS_H
 
 #include <math.h>
 
@@ -14,4 +14,4 @@ int mh_height(int leaves);
 int mh_nodes(int height);
 int mh_pads(int leaves);
 
-#endif // MERKLE_HELPERS_HPP
+#endif // MERKLE_HELPERS_H
