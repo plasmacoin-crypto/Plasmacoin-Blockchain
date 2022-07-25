@@ -50,7 +50,7 @@ public:
 	// Functions to store class data in a format that can be converted into
 	vector<string> Format(IDCode* idCode);
 	vector<string> Format(Transaction* transaction);
-	vector<string> Format(Node* node, string senderIP, bool shouldRegister = true);
+	vector<string> Format(Node* node, const string& senderIP, int16_t senderPort, bool shouldRegister = true);
 	vector<string> Format(Block* block);
 	vector<string> Format(Receipt* receipt);
 	vector<string> Format(UserQuery* query);
