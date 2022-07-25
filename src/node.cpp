@@ -87,6 +87,10 @@ NodeType Node::GetType() const {
 	return m_NodeType;
 }
 
+int16_t Node::GetPort() const {
+	return PORT;
+}
+
 void Node::SetType(NodeType type) {
 	m_NodeType = type;
 }
@@ -119,7 +123,7 @@ string Node::CreateAddress(const RSA::PublicKey& pubKey) {
 void Node::SyncFromNetwork(const string& ip) {
 	// Get a list of high-committment nodes' IP addresses
 	Transmitter* transmitter = new Transmitter();
-	UserQuery* query = new UserQuery{"192.168.1.44", "full"};
+	UserQuery* query = new UserQuery{go::getLocalIP(), "full"};
 
 	auto data = transmitter->Format(query);
 	transmitter->Transmit(data, std::stoi(data[0]));

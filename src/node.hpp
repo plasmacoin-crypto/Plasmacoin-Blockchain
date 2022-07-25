@@ -56,6 +56,7 @@ public:
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
 	NodeType GetType() const;
+	int16_t GetPort() const;
 
 	void SetType(NodeType type);
 
@@ -74,6 +75,7 @@ private:
 	void SyncFromNetwork(const string& ip);
 
 	string m_Name, m_Username, m_Password, m_IPAddr, m_KeyPath, m_Address;
+	const int16_t PORT = 8080;
 
 	RSA::PrivateKey m_PrivateKey;
 	NodeType m_NodeType;
