@@ -395,6 +395,58 @@ void connections::settingsPage(MainWindow& window) {
 	window.connect(window.btn_autoctz, &QToolButton::released, &window, [&window]() {
 		window.m_SettingsManager->DetectLocale();
 	});
+
+	window.connect(window.enableNotifs, &QCheckBox::stateChanged, &window, [&window](int state) {
+		//
+		// Change the state the tristate button switches to after it's clicked
+		//
+		// Unchecked -> Checked
+		// Checked -> Unchecked
+		// Partially Checked -> Unchecked
+		//
+		if (state == Qt::CheckState::Unchecked) {
+			// When notifications are enabled, show the specific notification settings
+			window.pendingTrxnNotifs->setVisible(false);
+			window.receiptNotifs->setVisible(false);
+			window.miningNotifs->setVisible(false);
+			window.syncNotifs->setVisible(false);
+
+			window.pendingTrxnNotifs->setChecked(false);
+			window.receiptNotifs->setChecked(false);
+			window.miningNotifs->setChecked(false);
+			window.syncNotifs->setChecked(false);
+		}
+		else {
+			// When notifications are disabled, hide the specific notification settings
+			window.pendingTrxnNotifs->setVisible(true);
+			window.receiptNotifs->setVisible(true);
+			window.miningNotifs->setVisible(true);
+			window.syncNotifs->setVisible(true);
+
+			window.pendingTrxnNotifs->setChecked(true);
+			window.receiptNotifs->setChecked(true);
+			window.miningNotifs->setChecked(true);
+			window.syncNotifs->setChecked(true);
+		}
+	});
+
+	window.connect(window.pendingTrxnNotifs, &QCheckBox::stateChanged, &window, [&window]() {
+		uint8_t notifSettings = window.m_SettingsManager->GetNotificationSettings();
+
+		if (notifSettings == settings::NotificationSettings::NONE_CHECKED) {
+			return;
+		}
+
+		if (notifSettings == settings::NotificationSettings::CHILDREN_CHECKED) {
+			window.enableNotifs->setCheckState(Qt::CheckState::Checked);
+		}
+		else if (notifSettings == static_cast<uint8_t>(settings::NotificationSettings::Notifications::ENABLED)) {
+			window.enableNotifs->setCheckState(Qt::CheckState::Unchecked);
+		}
+		else {
+			window.enableNotifs->setCheckState(Qt::CheckState::PartiallyChecked);
+		}
+	});
 }
 
 void connections::manageSharedMem(std::atomic<bool>& running, MainWindow& window) {

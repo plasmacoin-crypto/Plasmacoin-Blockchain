@@ -24,11 +24,14 @@
 #include "settings.h"
 #include "support.h"
 
+using settings::NotificationSettings;
+
 class SettingsManager : public QMainWindow, public Ui_MainWindow {
 public:
 	SettingsManager(
 		QSettings* settings, QTextBrowser* rsaKeyPath, QComboBox* territorySelector, QComboBox* timeZoneSelector,
-		QComboBox* nodeTypeSelector, QComboBox* methodSelector, QCheckBox* autoDetect
+		QComboBox* nodeTypeSelector, QComboBox* methodSelector, QCheckBox* autoDetect, QCheckBox* enableNotifs,
+		QCheckBox* pendingTrxnNotifs, QCheckBox* receiptNotifs, QCheckBox* miningNotifs, QCheckBox* syncNotifs
 	);
 	~SettingsManager();
 
@@ -37,6 +40,7 @@ public:
 	void SaveSettings();
 	void LoadSettings();
 
+	uint8_t GetNotificationSettings() const;
 	void DetectLocale();
 
 private:
@@ -46,7 +50,7 @@ private:
 	QSettings* m_Settings;
 	QTextBrowser* m_RSAKeyPath;
 	QComboBox *m_TerritorySelector, *m_TimeZoneSelector, *m_NodeTypeSelector, *m_MethodSelector;
-	QCheckBox* m_AutoDetect;
+	QCheckBox *m_AutoDetect, *m_EnableNotifs, *m_PendingTrxnNotifs, *m_ReceiptNotifs, *m_MiningNotifs, *m_SyncNotifs;
 };
 
 #endif // SETTINGS_MANAGER_H

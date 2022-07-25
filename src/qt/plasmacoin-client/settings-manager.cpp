@@ -9,7 +9,8 @@
 
 SettingsManager::SettingsManager(
 	QSettings* settings, QTextBrowser* rsaKeyPath, QComboBox* territorySelector, QComboBox* timeZoneSelector,
-	QComboBox* nodeTypeSelector, QComboBox* methodSelector, QCheckBox* autoDetect
+	QComboBox* nodeTypeSelector, QComboBox* methodSelector, QCheckBox* autoDetect, QCheckBox* enableNotifs,
+	QCheckBox* pendingTrxnNotifs, QCheckBox* receiptNotifs, QCheckBox* miningNotifs, QCheckBox* syncNotifs
 ):
 	m_Settings(settings),
 	m_RSAKeyPath(rsaKeyPath),
@@ -17,11 +18,27 @@ SettingsManager::SettingsManager(
 	m_TimeZoneSelector(timeZoneSelector),
 	m_NodeTypeSelector(nodeTypeSelector),
 	m_MethodSelector(methodSelector),
-	m_AutoDetect(autoDetect)
+	m_AutoDetect(autoDetect),
+	m_EnableNotifs(enableNotifs),
+	m_PendingTrxnNotifs(pendingTrxnNotifs),
+	m_ReceiptNotifs(receiptNotifs),
+	m_MiningNotifs(miningNotifs),
+	m_SyncNotifs(syncNotifs)
 {}
 
 SettingsManager::~SettingsManager() {
 	delete m_Settings;
+	delete m_RSAKeyPath;
+	delete m_TerritorySelector;
+	delete m_TimeZoneSelector;
+	delete m_NodeTypeSelector;
+	delete m_MethodSelector;
+	delete m_AutoDetect;
+	delete m_EnableNotifs;
+	delete m_PendingTrxnNotifs;
+	delete m_ReceiptNotifs;
+	delete m_MiningNotifs;
+	delete m_SyncNotifs;
 }
 
 void SettingsManager::PopulateComboBoxes() {
@@ -84,10 +101,18 @@ void SettingsManager::SaveSettings() {
 
 	m_Settings->setValue("node/nodeType", m_NodeTypeSelector->currentIndex());
 	m_Settings->setValue("node/miningMethod", m_MethodSelector->currentIndex());
+
+	m_Settings->setValue("notifications/checkedData", GetNotificationSettings());
+	m_Settings->setValue("notifications/enabled", m_EnableNotifs->isChecked());
+	m_Settings->setValue("notifications/pendingTrxns", m_PendingTrxnNotifs->isChecked());
+	m_Settings->setValue("notifications/receipts", m_ReceiptNotifs->isChecked());
+	m_Settings->setValue("notifications/mining", m_MiningNotifs->isChecked());
+	m_Settings->setValue("notifications/syncResults", m_SyncNotifs->isChecked());
 }
 
 void SettingsManager::LoadSettings() {
 	m_Settings->beginGroup("account");
+
 	settings::rsaKeyPath = m_Settings->value("rsaKeyPath", QString::fromStdString(rsafs::RSA_KEY_PATH)).toString().toStdString();
 
 	if (settings::rsaKeyPath != rsafs::RSA_KEY_PATH) {
@@ -117,6 +142,75 @@ void SettingsManager::LoadSettings() {
 	settings::nodeType = static_cast<enums::NodeType>(m_Settings->value("nodeType", static_cast<int>(enums::NodeType::LIGHT)).toInt());
 	settings::miningMethod = static_cast<enums::MiningMethod>(m_Settings->value("miningMethod", static_cast<int>(enums::MiningMethod::CPU)).toInt());
 	m_Settings->endGroup();
+
+	m_Settings->beginGroup("notifications");
+	settings::notificationSettings.m_CheckedBoxes = m_Settings->value("checkedData", 0).toInt();
+	settings::notificationSettings.m_NotificationsEnabled = static_cast<Qt::CheckState>(m_Settings->value("enabled", false).toInt());
+	settings::notificationSettings.m_PendingTrxns = m_Settings->value("pendingTrxns", false).toBool();
+	settings::notificationSettings.m_Receipts = m_Settings->value("receipts", false).toBool();
+	settings::notificationSettings.m_MiningResults = m_Settings->value("mining", false).toBool();
+	settings::notificationSettings.m_SyncResults = m_Settings->value("syncResults", false).toBool();
+
+	std::cout << "Enabled: " << settings::notificationSettings.m_NotificationsEnabled << std::endl;
+	std::cout << "Settings field: " << (uint)settings::notificationSettings.m_CheckedBoxes << std::endl;
+
+	if (settings::notificationSettings.m_NotificationsEnabled) {
+		//
+		// Determine if the box is checked or partially checked based on the data saved
+		// about the user's settings:
+		//		* If the user has no boxes checked, disable everything
+		//		* If the user has all the boxes checked, or just the "enable" box checked, enable everything
+		//		* Otherwise, mark the box as partially checked
+		//
+
+		if (settings::notificationSettings.m_CheckedBoxes == settings::NotificationSettings::NONE_CHECKED) {
+			std::cout << "None" << std::endl;
+			m_EnableNotifs->setCheckState(Qt::CheckState::Unchecked);
+		}
+		else if (
+			settings::notificationSettings.m_CheckedBoxes == settings::NotificationSettings::ALL_CHECKED ||
+			settings::notificationSettings.m_CheckedBoxes == settings::NotificationSettings::CHILDREN_CHECKED
+		) {
+			std::cout << "All" << std::endl;
+			m_EnableNotifs->setCheckState(Qt::CheckState::Checked);
+		}
+		else {
+			std::cout << "Partial" << std::endl;
+			m_EnableNotifs->setCheckState(Qt::CheckState::PartiallyChecked);
+		}
+	}
+	else {
+		m_EnableNotifs->setCheckState(Qt::CheckState::Unchecked);
+	}
+	m_Settings->endGroup();
+}
+
+// Return a number representing what notification settings are checked
+uint8_t SettingsManager::GetNotificationSettings() const {
+	uint8_t result = 0;
+
+	// States larger than zero represent Qt::PartiallyChecked and Qt::Checked
+	if (static_cast<int>(m_EnableNotifs->checkState()) > 0) {
+		result |= static_cast<uint8_t>(NotificationSettings::Notifications::ENABLED);
+	}
+
+	if (m_PendingTrxnNotifs->isChecked()) {
+		result |= static_cast<uint8_t>(NotificationSettings::Notifications::PENDING_TRXNS);
+	}
+
+	if (m_ReceiptNotifs->isChecked()) {
+		result |= static_cast<uint8_t>(NotificationSettings::Notifications::RECEIPTS);
+	}
+
+	if (m_MiningNotifs->isChecked()) {
+		result |= static_cast<uint8_t>(NotificationSettings::Notifications::MINING);
+	}
+
+	if (m_SyncNotifs->isChecked()) {
+		result |= static_cast<uint8_t>(NotificationSettings::Notifications::SYNC);
+	}
+
+	return result;
 }
 
 // Detect the user's territory and time zone from the system settings
