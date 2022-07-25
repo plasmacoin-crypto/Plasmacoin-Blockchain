@@ -31,6 +31,8 @@
 #include <QSplashScreen>
 #include <QtConcurrent/QtConcurrent>
 #include <QCloseEvent>
+#include <QSystemTrayIcon>
+#include <QIcon>
 
 #include "ui.h"
 
@@ -45,6 +47,7 @@
 #include "blockchain-viewer.h"
 #include "wallet-page.h"
 #include "wallet.h"
+#include "notification.hpp"
 
 #include "block.hpp"
 #include "blockchain.hpp"
@@ -121,8 +124,8 @@ public:
 	QLabel* m_BirthdayDisplay = new QLabel();
 
 	QMessageBox *m_FormErrorAlert, *m_TransactionAlert;
-
 	QSettings* m_Settings;
+	QSystemTrayIcon* m_SysTrayIcon;
 
 	std::vector<Transaction*> m_BlockContents;
 	std::chrono::seconds m_LastMiningDur;
@@ -145,7 +148,7 @@ protected:
 	void closeEvent(QCloseEvent* event) override;
 
 public:
-	Node* m_User = new Node("Ryan", "ryan", "1234", "192.168.1.44"); // Temporary data
+	Node* m_User = new Node("Ryan", "ryan", "1234", go::getLocalIP()); // Temporary data
 
 signals:
 	void BlockCompleted();

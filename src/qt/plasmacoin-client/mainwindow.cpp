@@ -25,6 +25,9 @@ MainWindow::MainWindow(QWidget* parent):
 	Ui_MainWindow::setupUi(this);
 	LoadGeometry();
 
+	m_SysTrayIcon = new QSystemTrayIcon(QIcon("../assets/plasmacoin-icon.png"));
+	m_SysTrayIcon->show();
+
 	// QPushButton* button = new QPushButton("Button", this);
 	// button->setGeometry(QRect(0, 0, 100, 30));
 	// button->show();
@@ -67,10 +70,10 @@ MainWindow::MainWindow(QWidget* parent):
 	m_WalletPage =  new WalletPage(m_Wallet, Ui::MainWindow::receiptList, Ui::MainWindow::pendingList);
 	m_SettingsManager = new SettingsManager(
 							m_Settings, Ui::MainWindow::rsaKeyPath, Ui::MainWindow::territorySelector, Ui::MainWindow::timeZoneSelector,
-							Ui::MainWindow::nodeTypeSelector, Ui::MainWindow::methodSelector, Ui::MainWindow::autoDetect
+							Ui::MainWindow::nodeTypeSelector, Ui::MainWindow::methodSelector, Ui::MainWindow::alwaysDetect,
+							Ui::MainWindow::enableNotifs, Ui::MainWindow::pendingTrxnNotifs, Ui::MainWindow::receiptNotifs,
+							Ui::MainWindow::miningNotifs, Ui::MainWindow::syncNotifs
 						);
-
-	m_SettingsManager->LoadSettings();
 
 	if (datfs::hasCredCache()) {
 		m_AccPgs->DisplayPage(1); // Set the account page to the sign-in page
@@ -139,6 +142,8 @@ MainWindow::~MainWindow() {
 	delete m_AccPgs;
 	delete m_FileBrowser;
 	delete m_AddressBook;
+	delete m_Settings;
+	delete m_SysTrayIcon;
 
 	// Clear and free any shared memory that was used
 	shared_mem::deleteSemaphore(shared_mem::READER_FILENAME);
@@ -212,16 +217,16 @@ void MainWindow::StartMining() {
 	// Get a list of Address Lookup nodes' IP addresses
 	// NOTE: only works if Address Lookup nodes self-register or sync first
 	//
-	// UserQuery* query = new UserQuery{"192.168.1.44", "addrlookup"};
-	// data = transmitter->Format(query);
-	// transmitter->Transmit(data, std::stoi(data[0]));
-	// delete query;
-	//
+
+	UserQuery* query = new UserQuery{go::getLocalIP(), "addrlookup"};
+	data = transmitter->Format(query);
+	transmitter->Transmit(data, std::stoi(data[0]));
+	delete query;
+
 	// Parse the IPs
-	// std::string result = shared_mem::readMemory(true); // Read the shared memory
-	// std::cout << "Node Result: " << result << std::endl;
-	// std::vector<string> hosts = json::parseArray(json::parse(result), "nodes");
-	//
+	std::string result = shared_mem::readMemory(true); // Read the shared memory
+	std::cout << "Node Result: " << result << std::endl;
+	std::vector<string> hosts = json::parseArray(json::parse(result), "nodes");
 
 	Node* node = nullptr;
 
@@ -285,7 +290,7 @@ void MainWindow::ShowContact(Contact* contact) {
 void MainWindow::RegisterNode() {
 	// Register that the node is online
 	Transmitter* transmitter = new Transmitter();
-	auto data = transmitter->Format(m_User, m_User->GetIP());
+	auto data = transmitter->Format(m_User, m_User->GetIP(), m_User->GetPort());
 	std::cout << data[0] << std::endl;
 	transmitter->Transmit(data, std::stoi(data[0]));
 
@@ -309,7 +314,7 @@ void MainWindow::RegisterNode() {
 
 void MainWindow::RemoveNode() {
 	Transmitter* transmitter = new Transmitter();
-	RemovalRequest* remRequest = new RemovalRequest {"192.168.1.44"};
+	RemovalRequest* remRequest = new RemovalRequest {go::getLocalIP()};
 	auto data = transmitter->Format(remRequest);
 	transmitter->Transmit(data, std::stoi(data[0]));
 
@@ -501,7 +506,7 @@ void MainWindow::ManageSharedMem() {
 		std::vector<string> data;
 
 		// Request a list of viable nodes to sync from
-		UserQuery* userQuery = new UserQuery {"192.168.1.58", "light"};
+		UserQuery* userQuery = new UserQuery {go::getLocalIP(), "light"};
 		data = transmitter->Format(userQuery);
 		transmitter->Transmit(data, std::stoi(data[0]));
 
@@ -538,7 +543,7 @@ void MainWindow::ManageSharedMem() {
 		std::vector<string> data;
 
 		// Request a list of viable nodes to sync from
-		UserQuery* userQuery = new UserQuery {"192.168.1.58", "light"};
+		UserQuery* userQuery = new UserQuery {go::getLocalIP(), "light"};
 		data = transmitter->Format(userQuery);
 		transmitter->Transmit(data, std::stoi(data[0]));
 
@@ -556,7 +561,7 @@ void MainWindow::ManageSharedMem() {
 
 			if (!hosts.empty()) {
 				// Request to sync
-				SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.58"};
+				SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.44"};
 				auto data = transmitter->Format(syncRequest);
 				transmitter->Transmit(data, std::stoi(data[0]), hosts);
 
@@ -669,8 +674,4 @@ void MainWindow::LoadGeometry() {
 void MainWindow::closeEvent(QCloseEvent* event) {
 	SaveGeometry();
 	m_SettingsManager->SaveSettings();
-
-	if (event != nullptr) {
-		event->accept();
-	}
 }
