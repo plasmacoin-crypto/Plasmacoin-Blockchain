@@ -67,6 +67,8 @@ int main(int argc, char* argv[]) {
 	connections::updateWalletAmounts(window);
 	std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
+	window.m_SettingsManager->LoadSettings(); // Load the user's settings
+
 	std::atomic<bool> runningThread = true;
 
 	QFuture<void> manageSharedMem = QtConcurrent::run([&window](std::atomic<bool>& running) {
@@ -80,7 +82,7 @@ int main(int argc, char* argv[]) {
 
 	splashScreen.showMessage("Checking for new blocks", Qt::AlignBottom, QColorConstants::White);
 	//window.SyncBlockchain();
-	//window.ManageSyncedData(splashScreen);
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 	splashScreen.showMessage("Launching", Qt::AlignBottom, QColorConstants::White);
 	splashScreen.finish(&window);
