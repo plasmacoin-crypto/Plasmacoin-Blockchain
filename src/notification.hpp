@@ -8,22 +8,36 @@
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H
 
-#define QT_NO_KEYWORDS
-#undef signals
+#ifdef _WIN32
+	// Windows notifications
+#elif defined(__APPLE__)
+	#include <QSystemTrayIcon>
+	#include <QIcon>
+	#include <QString>
 
-#include <libnotify/notify.h>
+	namespace notification {
+		void show(QSystemTrayIcon* sysTrayIcon, const QString& title, const QString& body, const QIcon& icon);
+	}
+#elif defined(__linux__)
+	#define QT_NO_KEYWORDS
+	#undef signals
 
-namespace notification {
-	struct NotificationData {
-		gboolean m_Result;
-		GError*  m_Error;
-	};
+	#include <stdexcept>
+	#include <string>
 
-	NotifyNotification* create(const char* title, const char* body, const char* iconPath);
-	NotificationData show(NotifyNotification* notification);
-}
+	#include <libnotify/notify.h>
 
-#undef QT_NO_KEYWORDS
-#define signals Q_SIGNALS
+	namespace notification {
+		struct NotificationData {
+			gboolean m_Result;
+			GError*  m_Error;
+		};
+
+		void show(NotifyNotification* notification);
+	}
+
+	#undef QT_NO_KEYWORDS
+	#define signals Q_SIGNALS
+#endif
 
 #endif //NOTIFICATION_H
