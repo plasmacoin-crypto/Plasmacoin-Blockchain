@@ -20,10 +20,10 @@
 		NotificationData data;
 		NotifyNotification* notification = notify_notification_new(title, body, iconPath);
 
-		data.m_Result = notify_notification_show(notification, data.m_Error);
+		data.m_Result = notify_notification_show(notification, &data.m_Error);
 
 		if (data.m_Error != nullptr) {
-			throw std::runtime_error("Error: " + std::string(data.m_Error.msg));
+			throw std::runtime_error("Error: " + std::string(data.m_Error->message));
 		}
 	}
 #endif

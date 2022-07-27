@@ -33,7 +33,7 @@
 			GError*  m_Error;
 		};
 
-		void show(NotifyNotification* notification);
+		void show(const char* title, const char* body, const char* iconPath);
 	}
 
 	#undef QT_NO_KEYWORDS
