@@ -34,7 +34,7 @@ namespace settings {
 		const static uint8_t NONE_CHECKED = 0;
 		const static uint8_t CHILDREN_CHECKED = static_cast<uint8_t>(Notifications::PENDING_TRXNS) | static_cast<uint8_t>(Notifications::RECEIPTS) |
 												static_cast<uint8_t>(Notifications::MINING) 	   | static_cast<uint8_t>(Notifications::SYNC);
-		const static uint8_t CHILDREN_UNCHEKED = CHILDREN_CHECKED ^ ALL_CHECKED
+		const static uint8_t CHILDREN_UNCHEKED = CHILDREN_CHECKED ^ ALL_CHECKED;
 
 		uint8_t m_CheckedBoxes;
 
