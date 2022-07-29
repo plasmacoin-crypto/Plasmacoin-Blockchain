@@ -391,62 +391,66 @@ void connections::removeFromBlock(MainWindow& window) {
 
 void connections::settingsPage(MainWindow& window) {
 	window.m_SettingsManager->PopulateComboBoxes();
+	uint8_t settings;
+
+	auto notifClickEvent = [&window, &settings](int state) mutable {
+		settings = window.m_SettingsManager->GetNotificationSettings();
+
+		if (
+			settings == NotificationSettings::CHILDREN_CHECKED ||
+			settings == NotificationSettings::ALL_CHECKED
+		) {
+			window.enableNotifs->setCheckState(Qt::CheckState::Checked);
+		}
+		else if (
+			settings == NotificationSettings::CHILDREN_UNCHEKED ||
+			settings == NotificationSettings::NONE_CHECKED
+		) {
+			window.enableNotifs->setCheckState(Qt::CheckState::Unchecked);
+		}
+		else if (
+			state == Qt::Unchecked && (settings & static_cast<uint8_t>(NotificationSettings::Notifications::ENABLED)) &&
+			(settings < NotificationSettings::CHILDREN_CHECKED && settings > NotificationSettings::CHILDREN_UNCHEKED)
+		) {
+			window.enableNotifs->setCheckState(Qt::CheckState::PartiallyChecked);
+		}
+	};
 
 	window.connect(window.btn_autoctz, &QToolButton::released, &window, [&window]() {
 		window.m_SettingsManager->DetectLocale();
 	});
 
-	window.connect(window.enableNotifs, &QCheckBox::stateChanged, &window, [&window](int state) {
-		//
-		// Change the state the tristate button switches to after it's clicked
-		//
-		// Unchecked -> Checked
-		// Checked -> Unchecked
-		// Partially Checked -> Unchecked
-		//
-		if (state == Qt::CheckState::Unchecked) {
-			// When notifications are enabled, show the specific notification settings
-			window.pendingTrxnNotifs->setVisible(false);
-			window.receiptNotifs->setVisible(false);
-			window.miningNotifs->setVisible(false);
-			window.syncNotifs->setVisible(false);
+	window.connect(window.enableNotifs, &QCheckBox::stateChanged, &window, [&window, &settings](int state) mutable {
+		switch (state) {
+			case Qt::CheckState::Unchecked:
+				window.enableNotifs->setTristate(false);
 
-			window.pendingTrxnNotifs->setChecked(false);
-			window.receiptNotifs->setChecked(false);
-			window.miningNotifs->setChecked(false);
-			window.syncNotifs->setChecked(false);
-		}
-		else {
-			// When notifications are disabled, hide the specific notification settings
-			window.pendingTrxnNotifs->setVisible(true);
-			window.receiptNotifs->setVisible(true);
-			window.miningNotifs->setVisible(true);
-			window.syncNotifs->setVisible(true);
+				// When notifications are disabled, hide the specific notification settings
+				connections::uncheckAll(window);
+				connections::hideNotifChildren(window);
 
-			window.pendingTrxnNotifs->setChecked(true);
-			window.receiptNotifs->setChecked(true);
-			window.miningNotifs->setChecked(true);
-			window.syncNotifs->setChecked(true);
+				break;
+
+			case Qt::CheckState::Checked:
+				window.enableNotifs->setTristate(false);
+
+				// When notifications are enabled, show the specific notification settings
+				connections::checkAll(window);
+				connections::showNotifChildren(window);
+
+				break;
+
+			default:
+				break;
 		}
+
+		settings = window.m_SettingsManager->GetNotificationSettings();
 	});
 
-	window.connect(window.pendingTrxnNotifs, &QCheckBox::stateChanged, &window, [&window]() {
-		uint8_t notifSettings = window.m_SettingsManager->GetNotificationSettings();
-
-		if (notifSettings == settings::NotificationSettings::NONE_CHECKED) {
-			return;
-		}
-
-		if (notifSettings == settings::NotificationSettings::CHILDREN_CHECKED) {
-			window.enableNotifs->setCheckState(Qt::CheckState::Checked);
-		}
-		else if (notifSettings == static_cast<uint8_t>(settings::NotificationSettings::Notifications::ENABLED)) {
-			window.enableNotifs->setCheckState(Qt::CheckState::Unchecked);
-		}
-		else {
-			window.enableNotifs->setCheckState(Qt::CheckState::PartiallyChecked);
-		}
-	});
+	window.connect(window.pendingTrxnNotifs, &QCheckBox::stateChanged, &window, notifClickEvent);
+	window.connect(window.receiptNotifs, &QCheckBox::stateChanged, &window, notifClickEvent);
+	window.connect(window.miningNotifs, &QCheckBox::stateChanged, &window, notifClickEvent);
+	window.connect(window.syncNotifs, &QCheckBox::stateChanged, &window, notifClickEvent);
 }
 
 void connections::manageSharedMem(std::atomic<bool>& running, MainWindow& window) {
@@ -523,4 +527,32 @@ void connections::updateWalletAmounts(MainWindow& window) {
 	window.connect(&window, &MainWindow::UpdateWalletAmounts, &window, [&window] {
 		window.UpdateAmounts();
 	});
+}
+
+void connections::showNotifChildren(MainWindow& window) {
+	window.pendingTrxnNotifs->setVisible(true);
+	window.receiptNotifs->setVisible(true);
+	window.miningNotifs->setVisible(true);
+	window.syncNotifs->setVisible(true);
+}
+
+void connections::hideNotifChildren(MainWindow& window) {
+	window.pendingTrxnNotifs->setVisible(false);
+	window.receiptNotifs->setVisible(false);
+	window.miningNotifs->setVisible(false);
+	window.syncNotifs->setVisible(false);
+}
+
+void connections::checkAll(MainWindow& window) {
+	window.pendingTrxnNotifs->setChecked(true);
+	window.receiptNotifs->setChecked(true);
+	window.miningNotifs->setChecked(true);
+	window.syncNotifs->setChecked(true);
+}
+
+void connections::uncheckAll(MainWindow& window) {
+	window.pendingTrxnNotifs->setChecked(false);
+	window.receiptNotifs->setChecked(false);
+	window.miningNotifs->setChecked(false);
+	window.syncNotifs->setChecked(false);
 }

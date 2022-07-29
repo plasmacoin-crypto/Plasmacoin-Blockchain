@@ -37,6 +37,9 @@ using std::string;
 #include "parse-json.hpp"
 #include "dssize.hpp"
 #include "dat-fs.hpp"
+#include "settings.h"
+
+using settings::NotificationSettings;
 
 namespace connections {
 	void minePage(MainWindow& window);
@@ -51,6 +54,12 @@ namespace connections {
 
 	void manageSharedMem(std::atomic<bool>& running, MainWindow& window);
 	double calculateFee(MainWindow& window);
+
+	void showNotifChildren(MainWindow& window);
+	void hideNotifChildren(MainWindow& window);
+
+	void checkAll(MainWindow& window);
+	void uncheckAll(MainWindow& window);
 }
 
 #endif // CONNECTIONS_HPP
