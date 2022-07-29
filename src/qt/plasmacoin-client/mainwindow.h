@@ -76,7 +76,7 @@ class MainWindow : public QMainWindow, public Ui::MainWindow {
 	Q_OBJECT
 
 public:
-	MainWindow(QWidget* parent = nullptr);
+	MainWindow(bool online, QWidget* parent = nullptr);
 	~MainWindow();
 
 	Status* CreateMiningVisuals(); // Load certain content during mining operations
@@ -139,7 +139,7 @@ private:
 	Transaction* m_CurrTrans = nullptr;
 	QFileDialog* m_FileBrowser = new QFileDialog();
 
-	bool m_IsSyncing = false;
+	bool m_IsSyncing = false, m_IsOnline = false;
 
 	std::queue<Block*> m_SyncedData;
 	std::vector<string> m_ShMemLog;

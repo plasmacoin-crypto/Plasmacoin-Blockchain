@@ -7,26 +7,23 @@
 
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget* parent):
+MainWindow::MainWindow(bool online, QWidget* parent):
 	QMainWindow(parent),
 	parent(parent),
 	m_Authenticator(new Auth()),
 	m_Wallet(new Wallet()),
-	m_Settings(new QSettings())
+	m_Settings(new QSettings()),
+	m_IsOnline(online)
 {
 	shared_mem::deleteMemory(shared_mem::FILENAME);
 	shared_mem::deleteMemory(shared_mem::READER_FILENAME);
 	shared_mem::deleteMemory(shared_mem::WRITER_FILENAME);
 
-	QCoreApplication::setOrganizationName("Plasmacoin Cryptocurrency");
-    QCoreApplication::setOrganizationDomain("");
-    QCoreApplication::setApplicationName("Plasmacoin Client");
-
 	Ui_MainWindow::setupUi(this);
 	LoadGeometry();
 
-	m_SysTrayIcon = new QSystemTrayIcon(QIcon("../assets/plasmacoin-icon.png"));
-	m_SysTrayIcon->show();
+	//m_SysTrayIcon = new QSystemTrayIcon(QIcon("../assets/plasmacoin-icon.png"));
+	//m_SysTrayIcon->show();
 
 	// QPushButton* button = new QPushButton("Button", this);
 	// button->setGeometry(QRect(0, 0, 100, 30));
@@ -88,7 +85,10 @@ MainWindow::MainWindow(QWidget* parent):
 		m_AccPgs->DisplayPage(0);
 	}
 
-	RegisterNode();
+	if (m_IsOnline) {
+		RegisterNode();
+	}
+
 	UpdateAmounts();
 
 	// Create some temporary nodes to make transactions between
@@ -143,7 +143,9 @@ MainWindow::~MainWindow() {
 	delete m_FileBrowser;
 	delete m_AddressBook;
 	delete m_Settings;
-	delete m_SysTrayIcon;
+	//delete m_SysTrayIcon;
+
+	std::queue<Block*>().swap(m_SyncedData);
 
 	// Clear and free any shared memory that was used
 	shared_mem::deleteSemaphore(shared_mem::READER_FILENAME);
@@ -304,7 +306,7 @@ void MainWindow::RegisterNode() {
 	std::vector<string> hosts = json::parseArray(object, "nodes");
 	m_User->SetKnownHosts(hosts);
 
-	for (auto host: hosts) {
+	for (const auto& host: hosts) {
 		std::cout << "Host: " << host << std::endl;
 	}
 
@@ -357,7 +359,6 @@ void MainWindow::ManageSharedMem() {
 			std::cout << "Transaction" << std::endl;
 			Transaction* transaction = json::toTransaction(object);
 			qDebug() << object;
-			double balance = 0;
 
 			//
 			// Calculate the sender's balance using the blockchain. If a user's address
@@ -370,6 +371,9 @@ void MainWindow::ManageSharedMem() {
 			// balance. Balances less than zero signify a double-spend or an attempt to spend more than
 			// the user has in their wallet.
 			//
+
+			double balance = 0;
+
 			for (auto block: m_User->m_BlockchainCopy->GetBlockchain()) {
 				for (auto trxn: block->m_Transactions) {
 					if (trxn->m_RecipientAddr == transaction->m_SenderAddr) {
@@ -579,8 +583,13 @@ void MainWindow::ManageSyncedData() {
 	}
 
 	while (!m_SyncedData.empty()) {
-		m_User->m_BlockchainCopy->Add(m_SyncedData.front());
-		m_SyncedData.pop();
+		Block* nextBlock = m_SyncedData.front();
+		bool valid = mining::validate(m_User->m_BlockchainCopy, nextBlock);
+
+		if (valid) {
+			m_User->m_BlockchainCopy->Add(nextBlock);
+			m_SyncedData.pop();
+		}
 	}
 
 	m_BlockchainViewer->Latest();
@@ -601,7 +610,7 @@ void MainWindow::ManageSyncedData(QSplashScreen& splashScreen) {
 	// percentage will increase by a certain number each time a block is processed.
 	// Larger amounts of synced data require a smaller increment on the display.
 	// With a number of blocks evenly divisible by 100, eveything works out nicely.
-	// For non-multiples, we take the ceiling of the quotient an then max the display
+	// For non-multiples, we take the ceiling of the quotient and then max the display
 	// out at 100%. By taking the ceiling, we sill increment the correct number of times.
 	//
 	const int PCT_JUMP = std::ceil(100.0 / m_SyncedData.size());
