@@ -44,6 +44,8 @@ public:
 	void DetectLocale();
 
 private:
+	void SetNotifications(uint8_t settings);
+
 	const QByteArray SYSTEM_TIME_ZONE = QTimeZone::systemTimeZoneId();
 	const support::Territory SYSTEM_TERRITORY = QTimeZone(SYSTEM_TIME_ZONE).country();
 

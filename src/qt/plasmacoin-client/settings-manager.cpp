@@ -64,27 +64,27 @@ void SettingsManager::PopulateComboBoxes() {
 		territories.push_back(territory);
 	}
 
+	// Fill the time zone selector from the system's list of known IANA time zones
+	auto timeZoneIDs = QTimeZone::availableTimeZoneIds();
+	for (const auto& tzid: timeZoneIDs) {
+		m_TimeZoneSelector->addItem(QString(tzid), tzid);
+	}
+
 	if (m_Settings->value("locale/autoDetect").toBool()) {
 		m_TerritorySelector->setCurrentIndex(static_cast<int>(SYSTEM_TERRITORY));
 
 		// Fill the time zone selector with relevant time zones for the current territory
-		auto timezones = QTimeZone::availableTimeZoneIds(SYSTEM_TERRITORY);
-		for (const auto& tz: timezones) {
-			m_TimeZoneSelector->addItem(QString(tz), tz);
-		}
+		// auto timezones = QTimeZone::availableTimeZoneIds(SYSTEM_TERRITORY);
+		// for (const auto& tz: timezones) {
+		// 	m_TimeZoneSelector->addItem(QString(tz), tz);
+		// }
 
 		// If the system's detected timezone is in the list of known time zones for
 		// the detected territory, set it as the current time zone.
-		int thisTzIndex = timezones.indexOf(SYSTEM_TIME_ZONE);
+		int thisTzIndex = timeZoneIDs.indexOf(SYSTEM_TIME_ZONE);
 		m_TimeZoneSelector->setCurrentIndex(thisTzIndex);
 	}
 	else {
-		// Fill the time zone selector from the system's list of known IANA time zones
-		auto timeZoneIDs = QTimeZone::availableTimeZoneIds();
-		for (const auto& tzid: timeZoneIDs) {
-			m_TimeZoneSelector->addItem(QString(tzid), tzid);
-		}
-
 		// Set UTC as the default time zone
 		QByteArray utc = QTimeZone::availableTimeZoneIds(support::Territory::AnyCountry)[0];
 		int utcIndex = timeZoneIDs.indexOf(utc);
@@ -103,7 +103,7 @@ void SettingsManager::SaveSettings() {
 	m_Settings->setValue("node/miningMethod", m_MethodSelector->currentIndex());
 
 	m_Settings->setValue("notifications/checkedData", GetNotificationSettings());
-	m_Settings->setValue("notifications/enabled", m_EnableNotifs->isChecked());
+	m_Settings->setValue("notifications/enabled", m_EnableNotifs->checkState());
 	m_Settings->setValue("notifications/pendingTrxns", m_PendingTrxnNotifs->isChecked());
 	m_Settings->setValue("notifications/receipts", m_ReceiptNotifs->isChecked());
 	m_Settings->setValue("notifications/mining", m_MiningNotifs->isChecked());
@@ -177,9 +177,13 @@ void SettingsManager::LoadSettings() {
 		else {
 			std::cout << "Partial" << std::endl;
 			m_EnableNotifs->setCheckState(Qt::CheckState::PartiallyChecked);
+			SetNotifications(settings::notificationSettings.m_CheckedBoxes);
 		}
 	}
 	else {
+		std::cout << "Disabled" << std::endl;
+
+		m_EnableNotifs->setCheckState(Qt::CheckState::Checked);
 		m_EnableNotifs->setCheckState(Qt::CheckState::Unchecked);
 	}
 	m_Settings->endGroup();
@@ -217,5 +221,26 @@ uint8_t SettingsManager::GetNotificationSettings() const {
 void SettingsManager::DetectLocale() {
 	m_TerritorySelector->setCurrentIndex(static_cast<int>(SYSTEM_TERRITORY));
 	auto timezones = QTimeZone::availableTimeZoneIds();
+
+	qDebug() << timezones.indexOf(SYSTEM_TIME_ZONE);
 	m_TimeZoneSelector->setCurrentIndex(timezones.indexOf(SYSTEM_TIME_ZONE));
+	qDebug() << m_TimeZoneSelector->currentIndex();
+}
+
+void SettingsManager::SetNotifications(uint8_t settings) {
+	if (settings & static_cast<uint8_t>(NotificationSettings::Notifications::PENDING_TRXNS)) {
+		m_PendingTrxnNotifs->setChecked(true);
+	}
+
+	if (settings & static_cast<uint8_t>(NotificationSettings::Notifications::RECEIPTS)) {
+		m_ReceiptNotifs->setChecked(true);
+	}
+
+	if (settings & static_cast<uint8_t>(NotificationSettings::Notifications::MINING)) {
+		m_MiningNotifs->setChecked(true);
+	}
+
+	if (settings & static_cast<uint8_t>(NotificationSettings::Notifications::SYNC)) {
+		m_SyncNotifs->setChecked(true);
+	}
 }
