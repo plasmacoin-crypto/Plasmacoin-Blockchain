@@ -22,13 +22,32 @@
 int main(int argc, char* argv[]) {
 	QApplication app(argc, argv);
 
+	QCoreApplication::setOrganizationName("Plasmacoin Cryptocurrency");
+    QCoreApplication::setOrganizationDomain("");
+    QCoreApplication::setApplicationName("Plasmacoin Client");
+	QCoreApplication::setApplicationVersion("0.1.0");
+
 	QPixmap pixmap("../assets/plasmacoin-banner.png");
     QSplashScreen splashScreen(pixmap);
+
+	QCommandLineParser parser;
+	parser.setApplicationDescription("The Plasmacoin client software");
+    parser.addHelpOption();
+    parser.addVersionOption();
+
+	parser.addOptions({
+		{{"n", "no-connect"}, "Launch in offline mode."}
+	});
+
+	parser.process(app);
+	bool online = !parser.isSet("no-connect");
+	//const QStringList args = parser.positionalArguments();
+	//qDebug() << args;
 
 	splashScreen.show();
 	splashScreen.showMessage("Preparing application", Qt::AlignBottom, QColorConstants::White);
 
-	MainWindow window;
+	MainWindow window(online);
 
 	window.plusSign->setIcon(QIcon("../assets/plus.png"));
 	window.minusSign->setIcon(QIcon("../assets/minus.png"));
@@ -69,16 +88,26 @@ int main(int argc, char* argv[]) {
 
 	window.m_SettingsManager->LoadSettings(); // Load the user's settings
 
-	std::atomic<bool> runningThread = true;
+	if (online) {
+		std::atomic<bool> runningThread = true;
 
-	QFuture<void> manageSharedMem = QtConcurrent::run([&window](std::atomic<bool>& running) {
-		shared_mem::writeMemory("");
+		QFuture<void> manageSharedMem = QtConcurrent::run([&window](std::atomic<bool>& running) {
+			shared_mem::writeMemory("");
 
-		while (running) {
-			window.ManageSharedMem();
-		}
-	}, std::ref(runningThread));
-	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			while (running) {
+				window.ManageSharedMem();
+			}
+		}, std::ref(runningThread));
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+		app.connect(&app, &QApplication::aboutToQuit, &window, [&online, &runningThread, &window]() mutable {
+			runningThread = false;
+
+			if (online) {
+				window.RemoveNode();
+			}
+		});
+	}
 
 	splashScreen.showMessage("Checking for new blocks", Qt::AlignBottom, QColorConstants::White);
 	//window.SyncBlockchain();
@@ -87,11 +116,6 @@ int main(int argc, char* argv[]) {
 	splashScreen.showMessage("Launching", Qt::AlignBottom, QColorConstants::White);
 	splashScreen.finish(&window);
 	window.show();
-
-	app.connect(&app, &QApplication::aboutToQuit, &window, [&runningThread, &window]() mutable {
-		runningThread = false;
-		window.RemoveNode();
-	});
 
 	return app.exec();
 }
