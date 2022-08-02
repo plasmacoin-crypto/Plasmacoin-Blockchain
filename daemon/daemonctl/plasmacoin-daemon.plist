@@ -6,9 +6,9 @@
     <key>EnvironmentVariables</key>
     <dict>
         <key>DYLD_LIBRARY_PATH</key>
-        <string>/usr/local/cryptopp:/usr/local/lib/plasmacoin:</string>
+        <string>/usr/local/cryptopp:/usr/local/lib/:</string>
     </dict>
-    
+
     <key>Label</key>
     <string>plasmacoin-daemon</string>
     <key>ServiceDescription</key>
