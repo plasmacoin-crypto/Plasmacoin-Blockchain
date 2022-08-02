@@ -8,6 +8,8 @@
 #ifndef DAT_FS_HPP
 #define DAT_FS_HPP
 
+#include "declare-beta-release.h"
+
 // We aren't allowed to have a using directive for `std::filesystem`, so
 // I'll create an alias for the namespace called `fs`.
 #if __cplusplus >= 201703L /* C++17 or later (recommended) */
@@ -71,10 +73,18 @@ namespace datfs {
 
 	void saveLoginInfo(const string& email, const string& password);
 	std::pair<string, string> loadLoginInfo();
+
 	bool hasCredCache();
 
-	void saveAESData(const CryptoPP::SecByteBlock& key, const CryptoPP::SecByteBlock& iv);
-	std::pair<CryptoPP::SecByteBlock, CryptoPP::SecByteBlock> loadAESData();
+	#ifdef BETA_RELEASE
+		void saveBetaKey(const string& betaKey);
+		string loadBetaKey();
+
+		bool hasBetaKeyCache();
+	#endif
+
+	void saveAESData(const CryptoPP::SecByteBlock& key, const CryptoPP::SecByteBlock& iv, const string& filename = "aes_secrets.json");
+	std::pair<CryptoPP::SecByteBlock, CryptoPP::SecByteBlock> loadAESData(const string& filename = "aes_secrets.json");
 
 	std::tuple<string, CryptoPP::SecByteBlock, CryptoPP::SecByteBlock> AESEncrypt(const string& message);
 	string AESDecrypt(const string& cipher, const CryptoPP::SecByteBlock& key, const CryptoPP::SecByteBlock& iv);

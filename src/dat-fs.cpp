@@ -83,6 +83,51 @@ std::pair<string, string> datfs::loadLoginInfo() {
 	return std::make_pair(email, password);
 }
 
+#ifdef BETA_RELEASE
+	void datfs::saveBetaKey(const string& betaKey) {
+		QJsonObject object;
+		object["betaKey"] = QString::fromStdString(betaKey);
+
+		QJsonDocument document(object);
+		string jsonData = document.toJson(QJsonDocument::Indented).toStdString();
+
+		// Make a new AES data file
+		string path = datfs::CREDS_LOC + DELIM + "beta_key.json";
+		std::ofstream dataFile(path);
+
+		dataFile.write(jsonData.c_str(), jsonData.size()); // Write the JSON to the file
+	}
+
+	string datfs::loadBetaKey() {
+		// Read the credentials file as a JSON document
+		string path = datfs::CREDS_LOC + DELIM + "beta_key.json";
+		QFile jsonFile(QString::fromStdString(path));
+		jsonFile.open(QFile::ReadOnly);
+		QJsonDocument document(QJsonDocument::fromJson(jsonFile.readAll()));
+
+		// Convert the document to a JSON object
+		QJsonObject object = document.object();
+
+		// Read the data. The beta key is Base64-encoded binary.
+		CryptoPP::SecByteBlock sbbkey = utility::sbbFromBase64(object["betaKey"].toString().toStdString());
+
+		// Load the AES key and initialization vector
+		CryptoPP::SecByteBlock key, iv;
+		std::tie(key, iv) = datfs::loadAESData("aes_bkey_secrets.json");
+
+		string betaKey = datfs::AESDecrypt(utility::sbbToString(sbbkey), key, iv); // Decrypt the beta key
+
+		return betaKey;
+	}
+
+	bool datfs::hasBetaKeyCache() {
+		return (
+			fs::exists(datfs::CREDS_LOC + datfs::DELIM + "beta_key.json") &&
+			fs::exists(datfs::CREDS_LOC + datfs::DELIM + "aes_bkey_secrets.json")
+		);
+	}
+#endif
+
 bool datfs::hasCredCache() {
 	return (
 		fs::exists(datfs::CREDS_LOC + datfs::DELIM + "credentials.json") &&
@@ -90,7 +135,7 @@ bool datfs::hasCredCache() {
 	);
 }
 
-void datfs::saveAESData(const CryptoPP::SecByteBlock& key, const CryptoPP::SecByteBlock& iv) {
+void datfs::saveAESData(const CryptoPP::SecByteBlock& key, const CryptoPP::SecByteBlock& iv, const string& filename) {
 	// Convert the secret key and initialization vector to Base64 strings
 	string base64key = utility::sbbToBase64(key);
 	string base64iv = utility::sbbToBase64(iv);
@@ -103,15 +148,15 @@ void datfs::saveAESData(const CryptoPP::SecByteBlock& key, const CryptoPP::SecBy
 	string jsonData = document.toJson(QJsonDocument::Indented).toStdString();
 
 	// Make a new AES data file
-	string path = datfs::CREDS_LOC + DELIM + "aes_secrets.json";
+	string path = datfs::CREDS_LOC + DELIM + filename;
 	std::ofstream dataFile(path);
 
 	dataFile.write(jsonData.c_str(), jsonData.size()); // Write the JSON to the file
 }
 
-std::pair<CryptoPP::SecByteBlock, CryptoPP::SecByteBlock> datfs::loadAESData() {
+std::pair<CryptoPP::SecByteBlock, CryptoPP::SecByteBlock> datfs::loadAESData(const string& filename) {
 	// Read the data file as a JSON document
-	string path = datfs::CREDS_LOC + DELIM + "aes_secrets.json";
+	string path = datfs::CREDS_LOC + DELIM + filename;
 	QFile jsonFile(QString::fromStdString(path));
     jsonFile.open(QFile::ReadOnly);
 	QJsonDocument document(QJsonDocument::fromJson(jsonFile.readAll()));
