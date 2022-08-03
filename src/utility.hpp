@@ -58,6 +58,7 @@ namespace utility {
 
 	string IPv4(uint8_t o1, uint8_t o2, uint8_t o3, uint8_t o4);
 	string IPv4(uint8_t o1, uint8_t o2, uint8_t o3, uint8_t o4, uint16_t port);
+	string IPv4(string ip, uint16_t port);
 
 	template<typename T> bool isReady(const std::future<T>& future);
 	template<typename T, typename... Args> typename std::enable_if<std::is_arithmetic<T>::value, float>::type mean(T first, Args... nums);
