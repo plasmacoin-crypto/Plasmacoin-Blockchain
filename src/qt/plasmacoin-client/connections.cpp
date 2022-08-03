@@ -29,14 +29,34 @@ void connections::minePage(MainWindow& window) {
 // Allow the user to type information in forms (QLineEdits) and be authenticated to
 // the app through the Firebase REST API
 void connections::accountPages(MainWindow& window) {
+	#ifdef BETA_RELEASE
+		window.btn_continue->setEnabled(false);
+
+		// Take a user from the beta key entry screen to the sign up screen
+		window.connect(window.btn_continue, &QPushButton::released, &window, [&window]() {
+			window.m_AccPgs->DisplayPage(2);
+		});
+
+		window.connect(window.betaKeyField, &QLineEdit::textEdited, &window, [&window](const QString& text) {
+			if (text.size() > 4 && !text.isEmpty()) {
+				window.btn_continue->setEnabled(true);
+			}
+			else {
+				window.btn_continue->setEnabled(false);
+			}
+
+			window.betaKeyField->setText(text.toUpper());
+		});
+	#endif
+
 	// Take a user from the sign in screen to the sign up screen
 	window.connect(window.btn_create, &QPushButton::released, &window, [&window]() {
-		window.m_AccPgs->DisplayPage(1);
+		window.m_AccPgs->DisplayPage(2);
 	});
 
 	// Take a user from the sign up screen back to the sign in screen
 	window.connect(window.btn_back, &QPushButton::released, &window, [&window]() {
-		window.m_AccPgs->DisplayPage(0);
+		window.m_AccPgs->DisplayPage(1);
 	});
 
 	// Sign a user into their account
@@ -107,7 +127,7 @@ void connections::accountPages(MainWindow& window) {
 	});
 
 	window.connect(window.m_Authenticator, &Auth::Authenticated, &window, [&window]() {
-		window.m_AccPgs->DisplayPage(2);
+		window.m_AccPgs->DisplayPage(3);
 	});
 }
 
@@ -453,51 +473,15 @@ void connections::settingsPage(MainWindow& window) {
 	window.connect(window.syncNotifs, &QCheckBox::stateChanged, &window, notifClickEvent);
 }
 
-void connections::manageSharedMem(std::atomic<bool>& running, MainWindow& window) {
-	std::cout << "Running" << std::endl;
+void connections::aboutPage(MainWindow& window) {
+	auto openLink = [](const QString& link) {
+		QDesktopServices::openUrl(QUrl(link));
+	};
 
-	while (running) {
-		string data = shared_mem::readMemory(true);
-		QJsonObject object = json::parse(data);
-
-		go::PacketTypes packetType = static_cast<go::PacketTypes>(json::getPacketType(object));
-
-		switch (packetType) {
-			case go::PacketTypes::TRANSACTION:
-				window.m_TransactionList->ConfirmToMempool(json::toTransaction(object));
-				break;
-
-			case go::PacketTypes::BLOCK: {
-				// If a new block is received, stop trying to solve the current block.
-				if (!object.empty() && !data.empty()) {
-					window.m_User->m_BlockchainCopy->StopMining(std::move(window.m_ExitSignal));
-					std::cout << "Stopping" << std::endl;
-				}
-
-				Block* block = json::toBlock(object);
-
-				emit window.BlockCompleted();
-
-				for (auto transaction: block->m_Transactions) {
-					if (window.m_User->GetAddress() == transaction->m_SenderAddr) {
-						Receipt* receipt = transaction->GetReceipt();
-
-						// Transmit the receipt to the recipient
-						Transmitter* transmitter = new Transmitter();
-						auto data = transmitter->Format(transaction);
-						transmitter->Transmit(data, std::stoi(data[0]));
-					}
-				}
-
-				break;
-			}
-
-			default:
-				break;
-		}
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
-	}
+	window.connect(window.titleInfo, &QLabel::linkActivated, &window, openLink);
+	window.connect(window.qtLink, &QLabel::linkActivated, &window, openLink);
+	window.connect(window.boostLink, &QLabel::linkActivated, &window, openLink);
+	window.connect(window.cryptoppLink, &QLabel::linkActivated, &window, openLink);
 }
 
 double connections::calculateFee(MainWindow& window) {

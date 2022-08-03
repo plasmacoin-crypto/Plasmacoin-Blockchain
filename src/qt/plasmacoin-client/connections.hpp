@@ -8,6 +8,8 @@
 #ifndef CONNECTIONS_HPP
 #define CONNECTIONS_HPP
 
+#include "declare-beta-release.h"
+
 #include <string>
 #include <atomic>
 #include <thread>
@@ -27,6 +29,7 @@ using std::string;
 #include <QLineEdit>
 #include <QAbstractButton>
 #include <QMessageBox>
+#include <QDesktopServices>
 
 #include "mainwindow.h"
 #include "ui.h"
@@ -50,9 +53,9 @@ namespace connections {
 	void addToBlock(MainWindow& window);
 	void removeFromBlock(MainWindow& window);
 	void settingsPage(MainWindow& window);
+	void aboutPage(MainWindow& window);
 	void updateWalletAmounts(MainWindow& window);
 
-	void manageSharedMem(std::atomic<bool>& running, MainWindow& window);
 	double calculateFee(MainWindow& window);
 
 	void showNotifChildren(MainWindow& window);
