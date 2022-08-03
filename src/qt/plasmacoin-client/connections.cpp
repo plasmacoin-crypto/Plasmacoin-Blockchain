@@ -374,41 +374,6 @@ void connections::blockchainPage(MainWindow& window) {
 	});
 }
 
-// Allow the user to add transactions to their block
-void connections::addToBlock(MainWindow& window) {
-	window.connect(window.plusSign, &QToolButton::released, &window, [&window]() {
-		auto selected = window.transactionList->selectedItems();
-		int row = window.transactionList->currentRow();
-
-		// A user will only be able to add a transaction if:
-		//
-		// 1) They have selected a transaction from the list on the right (no blank selections)
-		// 2) They have not added that transaction previously (no adding duplicate elements)
-		//
-		if ((selected.size() != 0) && (window.blockContents->findItems(selected.front()->text(), Qt::MatchFixedString).size() == 0)) {
-			QListWidgetItem* item = window.transactionList->item(row); // Get the item at the currently selected row
-
-			window.m_BlockContents.push_back(window.m_TransactionList->At(row)); // Record the selected item
-			window.blockContents->addItem(item->text());
-		}
-	});
-}
-
-// Allow the user to remove transactions from their block
-void connections::removeFromBlock(MainWindow& window) {
-	window.connect(window.minusSign, &QToolButton::released, &window, [&window]() {
-		// To remove a transaction, the only requirement is that it's been selected on
-		// the list of transactions in user's block
-		if (window.blockContents->selectedItems().size() != 0) {
-			int row = window.blockContents->currentRow();
-			QListWidgetItem* item = window.blockContents->item(row); // get the item at the currently selected row
-
-			window.m_BlockContents.erase(window.m_BlockContents.begin() + row); // Remove the selected item
-			window.blockContents->takeItem(row);
-		}
-	});
-}
-
 void connections::settingsPage(MainWindow& window) {
 	window.m_SettingsManager->PopulateComboBoxes();
 	uint8_t settings;
@@ -474,14 +439,58 @@ void connections::settingsPage(MainWindow& window) {
 }
 
 void connections::aboutPage(MainWindow& window) {
+	connections::updateTitles(window);
+
+	// Open a link in the user's web browser
 	auto openLink = [](const QString& link) {
 		QDesktopServices::openUrl(QUrl(link));
 	};
 
-	window.connect(window.titleInfo, &QLabel::linkActivated, &window, openLink);
+	window.connect(window.licenseInfo, &QLabel::linkActivated, &window, openLink);
 	window.connect(window.qtLink, &QLabel::linkActivated, &window, openLink);
 	window.connect(window.boostLink, &QLabel::linkActivated, &window, openLink);
 	window.connect(window.cryptoppLink, &QLabel::linkActivated, &window, openLink);
+}
+
+void connections::updateWalletAmounts(MainWindow& window) {
+	window.connect(&window, &MainWindow::UpdateWalletAmounts, &window, [&window] {
+		window.UpdateAmounts();
+	});
+}
+
+// Allow the user to add transactions to their block
+void connections::addToBlock(MainWindow& window) {
+	window.connect(window.plusSign, &QToolButton::released, &window, [&window]() {
+		auto selected = window.transactionList->selectedItems();
+		int row = window.transactionList->currentRow();
+
+		// A user will only be able to add a transaction if:
+		//
+		// 1) They have selected a transaction from the list on the right (no blank selections)
+		// 2) They have not added that transaction previously (no adding duplicate elements)
+		//
+		if ((selected.size() != 0) && (window.blockContents->findItems(selected.front()->text(), Qt::MatchFixedString).size() == 0)) {
+			QListWidgetItem* item = window.transactionList->item(row); // Get the item at the currently selected row
+
+			window.m_BlockContents.push_back(window.m_TransactionList->At(row)); // Record the selected item
+			window.blockContents->addItem(item->text());
+		}
+	});
+}
+
+// Allow the user to remove transactions from their block
+void connections::removeFromBlock(MainWindow& window) {
+	window.connect(window.minusSign, &QToolButton::released, &window, [&window]() {
+		// To remove a transaction, the only requirement is that it's been selected on
+		// the list of transactions in user's block
+		if (window.blockContents->selectedItems().size() != 0) {
+			int row = window.blockContents->currentRow();
+			QListWidgetItem* item = window.blockContents->item(row); // get the item at the currently selected row
+
+			window.m_BlockContents.erase(window.m_BlockContents.begin() + row); // Remove the selected item
+			window.blockContents->takeItem(row);
+		}
+	});
 }
 
 double connections::calculateFee(MainWindow& window) {
@@ -505,12 +514,6 @@ double connections::calculateFee(MainWindow& window) {
 
 	delete transaction;
 	return predictedFee;
-}
-
-void connections::updateWalletAmounts(MainWindow& window) {
-	window.connect(&window, &MainWindow::UpdateWalletAmounts, &window, [&window] {
-		window.UpdateAmounts();
-	});
 }
 
 void connections::showNotifChildren(MainWindow& window) {
@@ -539,4 +542,27 @@ void connections::uncheckAll(MainWindow& window) {
 	window.receiptNotifs->setChecked(false);
 	window.miningNotifs->setChecked(false);
 	window.syncNotifs->setChecked(false);
+}
+
+void connections::updateTitles(MainWindow& window) {
+	string year = utility::formatEpoch(utility::getUnixEpoch(), "%Y");
+	string releaseYear = std::to_string(INITIAL_RELEASE_YEAR);
+	string dateRange = (std::stoi(year) > INITIAL_RELEASE_YEAR)? releaseYear + "-" + year : releaseYear;
+
+	// Set the about page titles from the version info macros
+	window.versionInfo->setText(
+		QString(
+			"<html><head/><body><p align=\"center\"><span style=\"font-size:24pt;\">"
+			"Plasmacoin Client (%1)"
+			"</span></p></body></html>"
+		).arg(QString::fromStdString(PLASMACOIN_FULL_VERSION))
+	);
+
+	window.copyrightNotice->setText(
+		QString(
+			"<html><head/><body><p align=\"center\"><span style=\"font-size:24pt;\">Copyright</span>"
+			"<span style=\"font-size:18pt; vertical-align:super;\">©</span>"
+			"<span style=\"font-size:24pt;\"> %1 Ryan Smith</span></p></body></html>"
+		).arg(QString::fromStdString(dateRange))
+	);
 }

@@ -8,6 +8,7 @@
 #ifndef CONNECTIONS_HPP
 #define CONNECTIONS_HPP
 
+#include "version-info.h"
 #include "declare-beta-release.h"
 
 #include <string>
@@ -50,11 +51,13 @@ namespace connections {
 	void addressBook(MainWindow& window);
 	void transactionPage(MainWindow& window);
 	void blockchainPage(MainWindow& window);
-	void addToBlock(MainWindow& window);
-	void removeFromBlock(MainWindow& window);
 	void settingsPage(MainWindow& window);
 	void aboutPage(MainWindow& window);
+
 	void updateWalletAmounts(MainWindow& window);
+
+	void addToBlock(MainWindow& window);
+	void removeFromBlock(MainWindow& window);
 
 	double calculateFee(MainWindow& window);
 
@@ -63,6 +66,8 @@ namespace connections {
 
 	void checkAll(MainWindow& window);
 	void uncheckAll(MainWindow& window);
+
+	void updateTitles(MainWindow& window);
 }
 
 #endif // CONNECTIONS_HPP
