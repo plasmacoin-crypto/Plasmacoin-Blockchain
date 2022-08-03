@@ -45,7 +45,7 @@ namespace utility {
 
 	string getUTCTime();
 	time_t getUnixEpoch();
-	string formatEpoch(time_t sinceEpoch);
+	string formatEpoch(time_t sinceEpoch, const char* format = "%Y-%m-%d %X");
 
 	string pubKeyToBase64(const CryptoPP::RSAFunction& rsaKey);
 	CryptoPP::RSAFunction pubKeyFromBase64(const string& base64key);
