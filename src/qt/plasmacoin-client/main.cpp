@@ -5,6 +5,7 @@
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
 
+#include "version-info.h"
 #include "declare-beta-release.h"
 
 #include <functional>
@@ -28,7 +29,7 @@ int main(int argc, char* argv[]) {
 	QCoreApplication::setOrganizationName("Plasmacoin Cryptocurrency");
     QCoreApplication::setOrganizationDomain("");
     QCoreApplication::setApplicationName("Plasmacoin Client");
-	QCoreApplication::setApplicationVersion("0.1.0");
+	QCoreApplication::setApplicationVersion(QString::fromStdString(PLASMACOIN_FULL_VERSION));
 
 	QPixmap pixmap(":assets/plasmacoin-banner.png");
     QSplashScreen* splashScreen = new QSplashScreen(pixmap);
