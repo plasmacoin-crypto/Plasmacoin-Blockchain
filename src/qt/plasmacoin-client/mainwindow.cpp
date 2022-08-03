@@ -72,18 +72,7 @@ MainWindow::MainWindow(bool online, QWidget* parent):
 							Ui::MainWindow::miningNotifs, Ui::MainWindow::syncNotifs
 						);
 
-	if (datfs::hasCredCache()) {
-		m_AccPgs->DisplayPage(1); // Set the account page to the sign-in page
-
-		string email, password;
-		std::tie(email, password) = datfs::loadLoginInfo();
-
-		m_Authenticator->SignIn(QString::fromStdString(email), QString::fromStdString(password));
-	}
-	else {
-		tabWidget->setCurrentIndex(5);
-		m_AccPgs->DisplayPage(0);
-	}
+	Authentication();
 
 	if (m_IsOnline) {
 		RegisterNode();
@@ -534,7 +523,7 @@ void MainWindow::ManageSharedMem() {
 
 		if (!hosts.empty()) {
 			// Request to sync
-			SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.58"};
+			SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.44"};
 			data = transmitter->Format(syncRequest);
 			transmitter->Transmit(data, std::stoi(data[0]), hosts);
 		}
@@ -678,6 +667,30 @@ void MainWindow::LoadGeometry() {
 	}
 
     m_Settings->endGroup();
+}
+
+void MainWindow::Authentication() {
+	tabWidget->setCurrentIndex(5);
+
+	#ifdef BETA_RELEASE
+		m_AccPgs->DisplayPage(0); // Display beta key entry page
+
+		if (!datfs::hasBetaKeyCache()) {
+			return;
+		}
+
+	#endif
+
+	m_AccPgs->DisplayPage(1); // Display the sign-in page
+
+	if (!datfs::hasCredCache()) {
+		return;
+	}
+
+	string email, password;
+	std::tie(email, password) = datfs::loadLoginInfo();
+
+	m_Authenticator->SignIn(QString::fromStdString(email), QString::fromStdString(password));
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {

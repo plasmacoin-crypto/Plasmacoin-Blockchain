@@ -8,6 +8,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "declare-beta-release.h"
+
 #include <thread>
 #include <functional>
 #include <vector>
@@ -134,6 +136,8 @@ public:
 	std::future<void> m_ExitFuture = m_ExitSignal.get_future();
 
 private:
+	void Authentication();
+
 	QTabWidget* m_TabBar = Ui::MainWindow::tabWidget;
 
 	Transaction* m_CurrTrans = nullptr;
