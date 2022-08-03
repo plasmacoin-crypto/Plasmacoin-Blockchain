@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/arrow-left.png</file>
+        <file>assets/arrow-right.png</file>
+        <file>assets/boost-logo.png</file>
+        <file>assets/clipboard.png</file>
+        <file>assets/contact-default.png</file>
+        <file>assets/cpp-logo.png</file>
+        <file>assets/double-left-arrow.png</file>
+        <file>assets/double-right-arrow.png</file>
+        <file>assets/go-logo.png</file>
+        <file>assets/minus.png</file>
+        <file>assets/no-view.png</file>
+        <file>assets/plasmacoin-banner.png</file>
+        <file>assets/plasmacoin-logo.png</file>
+        <file>assets/plus.png</file>
+        <file>assets/qt-logo.png</file>
+        <file>assets/reset.png</file>
+        <file>assets/sync.png</file>
+        <file>assets/view.png</file>
+    </qresource>
+</RCC>
