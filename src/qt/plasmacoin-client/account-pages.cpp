@@ -145,3 +145,18 @@ void AccountPages::CacheCredentials(const string& email, const string& password)
 
 	datfs::saveLoginInfo(email, base64pswd);
 }
+
+#ifdef BETA_RELEASE
+	void AccountPages::CacheBetaKey(const string& betaKey) {
+		string encryptedBetaKey;
+		CryptoPP::SecByteBlock key, iv;
+
+		std::tie(encryptedBetaKey, key, iv) = datfs::AESEncrypt(betaKey);
+		datfs::saveAESData(key, iv, "aes_bkey_secrets.json");
+
+		CryptoPP::SecByteBlock sbb = utility::sbbFromString(encryptedBetaKey);
+		string base64bkey = utility::sbbToBase64(sbb);
+
+		datfs::saveBetaKey(base64bkey);
+	}
+#endif

@@ -5,6 +5,11 @@
 // COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
 //
 
+#ifndef ACCOUNT_PAGES_H
+#define ACCOUNT_PAGES_H
+
+#include "declare-beta-release.h"
+
 #include <string>
 #include <tuple>
 
@@ -40,6 +45,10 @@ public:
 
 	void CacheCredentials(const string& email, const string& password);
 
+	#ifdef BETA_RELEASE
+		void CacheBetaKey(const string& betaKey);
+	#endif
+
 	QLabel *m_EmailSignInWarning, *m_PasswordSignInWarning, *m_EmailSignUpWarning,
 		   *m_UsernameWarning, *m_PasswordSignUpWarning;
 
@@ -49,3 +58,5 @@ private:
 
 	const QString STYLE = "font-size: 11pt; font-style: italic; color: rgba(255,0,0,0.784314);";
 };
+
+#endif // ACCOUNT_PAGES_H
