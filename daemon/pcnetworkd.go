@@ -25,7 +25,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -67,9 +66,11 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 
 	// Determine what is being sent over TCP
 	jsonData := makeStruct(dataType, goData)
+	if jsonData == nil {
+		return
+	}
 
-	conn, err := net.DialTimeout(goProtocol, net.JoinHostPort(goHost, goPort), time.Second * 5)
-
+	conn, err := net.DialTimeout(goProtocol, net.JoinHostPort(goHost, goPort), time.Second*5)
 	if err != nil {
 		log.Println(err.Error())
 		return
@@ -271,10 +272,7 @@ func makeStruct(dataType uint8, data []string) interface{} {
 
 	switch dataType {
 	case IDCode:
-		id, _ := strconv.ParseInt(data[1], 10, 32)
-		jsonData = &struct {
-			Code int `json:"code"`
-		}{Code: int(id)}
+		jsonData = bccnstrx.MakeIDCode(data)
 	case Transaction:
 		jsonData = bccnstrx.MakeTransaction(data)
 	case Block:
@@ -293,6 +291,8 @@ func makeStruct(dataType uint8, data []string) interface{} {
 		jsonData = bccnstrx.MakePendingTrxn(data)
 	case RemovalRequest:
 		jsonData = bccnstrx.MakeRemovalRequest(data)
+	default:
+		jsonData = nil
 	}
 
 	return jsonData
@@ -415,7 +415,7 @@ func getLocalIP() C.cchar_t {
 
 	for _, iface := range ifaces {
 		// Avoid iterfaces that are down or are loopback interfaces
-		if (iface.Flags & net.FlagUp == 0) || (iface.Flags & net.FlagLoopback != 0) {
+		if (iface.Flags&net.FlagUp == 0) || (iface.Flags&net.FlagLoopback != 0) {
 			continue
 		}
 

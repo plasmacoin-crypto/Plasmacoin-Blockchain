@@ -7,6 +7,29 @@
 
 package blockchainconstructs
 
+import "strconv"
+
 type IDCode struct {
-	Code int `json:"code"`
+	PacketType int `json:"packetType"`
+	Code       int `json:"code"`
+}
+
+func MakeIDCode(data []string) *IDCode {
+	//
+	// About the data slice
+	//
+	// When this function receives the data, all data points will be strings and
+	// are guaranteed be in the following order:
+	//
+	// 1.  The packet type (as an integer)					(data[0])
+	// 2.  The ID code			  							(data[1])
+	//
+
+	packetType, _ := strconv.ParseInt(data[0], 10, 32)
+	code, _ := strconv.ParseInt(data[1], 10, 32)
+
+	return &IDCode{
+		PacketType: int(packetType),
+		Code:       int(code),
+	}
 }

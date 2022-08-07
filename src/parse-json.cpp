@@ -37,8 +37,8 @@ IDCode* json::toIDCode(const QJsonObject& object) {
 	auto value = object.value("code");
 
 	if (value == QJsonValue::Undefined) {
-		IDCode* idCode = new IDCode {static_cast<uint8_t>(go::IDCodes::ERROR)};
-		return idCode;
+		IDCode* errorCode = new IDCode {static_cast<uint8_t>(go::IDCodes::ERROR)};
+		return errorCode;
 	}
 
 	uint8_t code = object.value("code").toInt();
