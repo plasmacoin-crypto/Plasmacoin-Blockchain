@@ -71,19 +71,6 @@ void Transmitter::Transmit(const vector<string>& data, uint8_t type, const vecto
 	}
 }
 
-void Transmitter::Multicast(const vector<string>& data, uint8_t type, const string& host, uint16_t port) {
-	const size_t SIZE = data.size();
-	const char* carray[SIZE];
-
-	// Copy the vector of strings to an array of const char*
-	for (unsigned int i = 0; i < SIZE; i++) {
-		carray[i] = data[i].c_str();
-	}
-
-	go::GoSlice slice = {carray, static_cast<go::GoInt>(SIZE), static_cast<go::GoInt>(SIZE)};
-	go::sendMulticast(host.c_str(), port, type, slice);
-}
-
 vector<string> Transmitter::Format(IDCode* idCode) {
 	return vector<string> {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::ID_CODE)),
