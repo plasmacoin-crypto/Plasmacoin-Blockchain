@@ -115,6 +115,39 @@ CryptoPP::SecByteBlock utility::sbbFromString(const string& strSbb) {
 	return CryptoPP::SecByteBlock(reinterpret_cast<const CryptoPP::byte*>(&strSbb[0]), strSbb.size());
 }
 
+// Get the number of digits following the decimal point of a floating point number
+int utility::getDecimals(double fpointnum) {
+	//
+	// Steps
+	// 1. Convert the floating point number to a string
+	// 2. Get the index of the decimal point
+	// 3. Get the index of the last digit before padding begins
+	// 4. Find the substring of the original string that contains the digits between those indices
+	//
+	// In the case that there are no decimals after the point, the number had no decimal point, or
+	// The number can be expressed as an integer of the (with no decimal point), zero is returned.
+	// Otherwise, the length of the final substring is returned.
+	//
+
+	if (static_cast<int>(fpointnum) == fpointnum) {
+        return 0;
+    }
+
+	const string NON_ZERO_DIGITS = "123456789";
+	string strValue = std::to_string(123.567);
+
+	int decPointIndex = strValue.find('.');
+	int paddingIndex = strValue.find_last_of(NON_ZERO_DIGITS, decPointIndex);
+
+	if (decPointIndex == string::npos || paddingIndex == string::npos) {
+		return 0;
+	}
+
+	string decimals = strValue.substr(decPointIndex + 1, paddingIndex + 1);
+
+	return decimals.size();
+}
+
 // Format an IPv4 address
 string utility::IPv4(uint8_t o1, uint8_t o2, uint8_t o3, uint8_t o4) {
 	//
