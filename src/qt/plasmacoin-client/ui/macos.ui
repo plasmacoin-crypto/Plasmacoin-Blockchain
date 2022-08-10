@@ -62,7 +62,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>7</number>
       </property>
       <widget class="QWidget" name="WalletTab">
        <attribute name="title">
@@ -2563,8 +2563,8 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>550</width>
-                   <height>550</height>
+                   <width>1298</width>
+                   <height>803</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -2957,7 +2957,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
              <x>0</x>
              <y>0</y>
              <width>1324</width>
-             <height>204</height>
+             <height>545</height>
             </rect>
            </property>
            <attribute name="label">
@@ -3220,8 +3220,8 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1324</width>
-             <height>545</height>
+             <width>1309</width>
+             <height>517</height>
             </rect>
            </property>
            <attribute name="label">
@@ -3549,8 +3549,8 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>1324</width>
+             <height>545</height>
             </rect>
            </property>
            <attribute name="label">
@@ -3672,8 +3672,8 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>509</width>
-             <height>277</height>
+             <width>1324</width>
+             <height>545</height>
             </rect>
            </property>
            <attribute name="label">
@@ -3841,8 +3841,8 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>461</width>
-             <height>274</height>
+             <width>1324</width>
+             <height>545</height>
             </rect>
            </property>
            <attribute name="label">
@@ -3994,8 +3994,8 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>512</width>
-             <height>280</height>
+             <width>1324</width>
+             <height>545</height>
             </rect>
            </property>
            <attribute name="label">
@@ -4186,6 +4186,40 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_39">
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_64">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="text">
+             <string>Reset page settings to default</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>Reset settings to default</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -4539,7 +4573,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
          </layout>
         </item>
         <item>
-         <spacer name="verticalSpacer_30">
+         <spacer name="verticalSpacer_37">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -4547,6 +4581,62 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
            <size>
             <width>20</width>
             <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_40">
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_65">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_14">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Qt® and the Qt logo are registered trademarks of The Qt Company Ltd. Logo usage is classified as &amp;quot;fair use&amp;quot; by The Qt Company. For more information, see &lt;a href=&quot;https://www.qt.io/trademark/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3586ff;&quot;&gt;https://www.qt.io/trademark/&lt;/span&gt;&lt;/a&gt;&lt;a href=&quot;https://www.qt.io/trademark/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_66">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_30">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>10</height>
            </size>
           </property>
          </spacer>
