@@ -32,8 +32,6 @@ import (
 	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/handler"
 	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/netlisten"
 	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/netutils"
-
-	"golang.org/x/net/ipv4"
 )
 
 const (
@@ -137,135 +135,6 @@ func receive(protocol, host, port C.cchar_t) C.cchar_t {
 	return C.CString(connData.string)
 }
 
-//export joinGroup
-func joinGroup(iface, host C.cchar_t, port uint16) {
-	var (
-		goIface = C.GoString(iface)
-		goHost  = C.GoString(host)
-	)
-
-	connectMulticast(goIface, goHost, port)
-}
-
-//export sendMulticast
-func sendMulticast(host C.cchar_t, port uint16, dataType uint8, data []C.cchar_t) {
-	var (
-		goHost = C.GoString(host)
-		goData = make([]string, len(data))
-	)
-
-	for i, str := range data {
-		goData[i] = C.GoString(str)
-	}
-
-	dialMulticast(goHost, port, dataType, goData)
-}
-
-// Attempt to join a multicast group
-//export listenMulticast
-func listenMulticast(iface, host C.cchar_t, port uint16) {
-	var (
-		goIface = C.GoString(iface)
-		goHost  = C.GoString(host)
-	)
-
-	ipv4conn := connectMulticast(goIface, goHost, port)
-	packet := make([]byte, 1500)
-
-	type connData struct {
-		NumBytes int
-		Sender   *net.UDPAddr
-		Err      error
-	}
-
-	var data connData
-
-	//go func(ch chan<- connData, ipv4conn *net.UDPConn, packet []byte) {}(ch, ipv4conn, packet)
-
-	fmt.Println("Here1")
-
-	if n, sender, err := ipv4conn.ReadFromUDP(packet); err == nil && n > 0 {
-		data = connData{n, sender, err}
-	}
-
-	if data.Err == nil && data.NumBytes > 0 {
-		log.Printf("Recieved %d bytes from %s\n", data.NumBytes, data.Sender.String())
-		fmt.Println(string(packet))
-	}
-}
-
-// Attempt to join a multicast group
-func connectMulticast(iface string, host string, port uint16) *net.UDPConn {
-	en0, err := net.InterfaceByName(iface)
-	if err != nil {
-		log.Fatalf("Couldn't find interface %s", iface)
-	}
-
-	group := net.ParseIP(host)
-	udpaddr := &net.UDPAddr{IP: group, Port: int(port)}
-
-	ipv4conn, err := net.ListenMulticastUDP("udp", nil, udpaddr)
-	if err != nil {
-		log.Fatalf("Failed to bind to udp port: %d", udpaddr.Port)
-	}
-
-	packetConn := ipv4.NewPacketConn(ipv4conn)
-
-	if err := packetConn.JoinGroup(en0, &net.UDPAddr{IP: group}); err != nil {
-		log.Fatalf("Couldn't join multicast group %s", group.String())
-	}
-
-	return ipv4conn
-}
-
-// Send a multicast packet to a multicast group
-func dialMulticast(host string, port uint16, dataType uint8, data []string) {
-	// Get the recipient's multicast address
-	group := net.ParseIP(host)
-	udpaddr := &net.UDPAddr{IP: group, Port: int(port)}
-
-	jsonData := makeStruct(dataType, data) // Get the structure
-
-	// Marshall the struct to JSON
-	jsonBytes, _ := json.Marshal(jsonData)
-	fmt.Println(string(jsonBytes))
-
-	// Send the data
-	recipient, _ := net.ResolveUDPAddr("udp", udpaddr.String())
-	udpconn, _ := net.DialUDP("udp", nil, recipient)
-	udpconn.Write(jsonBytes)
-}
-
-func getInterface() *net.Interface {
-	var ifaceNames []string
-
-	// Get the user's network interfaces
-	if interfaces, err := net.Interfaces(); err == nil {
-		for _, inter := range interfaces {
-			if strings.Contains(inter.Flags.String(), "multicast") {
-				ifaceNames = append(ifaceNames, inter.Name)
-			}
-		}
-	} else {
-		fmt.Println(err)
-	}
-
-	ifaceName := ifaceNames[0]
-
-	// Get the corresponding interface from the name
-	ifaceFromName, err := net.InterfaceByName(ifaceName)
-	if err != nil {
-		panic(fmt.Sprintf("Couldn't find %s", ifaceName))
-	}
-
-	return ifaceFromName
-}
-
-//export getStrIface
-func getStrIface() C.cchar_t {
-	return C.CString(getInterface().Name)
-}
-
 // Convert a data slice into a struct that can be marshalled into JSON
 func makeStruct(dataType uint8, data []string) interface{} {
 	var jsonData interface{}
@@ -291,8 +160,6 @@ func makeStruct(dataType uint8, data []string) interface{} {
 		jsonData = bccnstrx.MakePendingTrxn(data)
 	case RemovalRequest:
 		jsonData = bccnstrx.MakeRemovalRequest(data)
-	default:
-		jsonData = nil
 	}
 
 	return jsonData
