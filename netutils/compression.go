@@ -12,13 +12,13 @@ import (
 	"bytes"
 	"compress/gzip"
 	"io"
-	"io/ioutil"
 	"os"
 	"strings"
 	"time"
 )
 
 // Compress a file using gzip
+//
 //export GzipCompress
 func GzipCompress(filename string) string {
 	// Open the file
@@ -27,7 +27,7 @@ func GzipCompress(filename string) string {
 
 	// Read the contents of the file
 	reader := bufio.NewReader(file)
-	contents, err := ioutil.ReadAll(reader)
+	contents, err := io.ReadAll(reader)
 	Check(err, 31)
 
 	// Create the compressed file (.gz)
@@ -51,6 +51,7 @@ func GzipCompress(filename string) string {
 }
 
 // Decompress a gzip-compressed file
+//
 //export GzipDecompress
 func GzipDecompress(filename string) string {
 	// Open the file for reading and writing
@@ -60,7 +61,7 @@ func GzipDecompress(filename string) string {
 	defer input.Close()
 
 	// Read the file as a byte slice
-	b, err := ioutil.ReadFile(input.Name())
+	b, err := os.ReadFile(input.Name())
 	Check(err, 66)
 
 	// Create a byte reader and use it to make a gzip reader
