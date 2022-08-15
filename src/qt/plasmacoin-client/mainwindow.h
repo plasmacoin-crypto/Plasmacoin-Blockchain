@@ -66,6 +66,7 @@
 #include "user-query.hpp"
 #include "sync-request.hpp"
 #include "settings-manager.h"
+#include "enums.h"
 
 namespace go {
 	#include "pcnetworkd.h"

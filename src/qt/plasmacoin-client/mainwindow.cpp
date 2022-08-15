@@ -65,19 +65,9 @@ MainWindow::MainWindow(bool online, QWidget* parent):
 	m_BlockView = new BlockView(Ui::MainWindow::blockView);
 	m_BlockchainViewer = new BlockchainViewer(m_User->m_BlockchainCopy, Ui::MainWindow::blockView, Ui::MainWindow::blockTrxnView);
 	m_WalletPage =  new WalletPage(m_Wallet, Ui::MainWindow::receiptList, Ui::MainWindow::pendingList);
-	m_SettingsManager = new SettingsManager(
-							m_Settings, Ui::MainWindow::rsaKeyPath, Ui::MainWindow::territorySelector, Ui::MainWindow::timeZoneSelector,
-							Ui::MainWindow::nodeTypeSelector, Ui::MainWindow::methodSelector, Ui::MainWindow::alwaysDetect,
-							Ui::MainWindow::enableNotifs, Ui::MainWindow::pendingTrxnNotifs, Ui::MainWindow::receiptNotifs,
-							Ui::MainWindow::miningNotifs, Ui::MainWindow::syncNotifs
-						);
+	m_SettingsManager = new SettingsManager(this, m_Settings);
 
 	Authentication();
-
-	if (m_IsOnline) {
-		RegisterNode();
-	}
-
 	UpdateAmounts();
 
 	// Create some temporary nodes to make transactions between
@@ -480,8 +470,9 @@ void MainWindow::ManageSharedMem() {
 		}
 
 		case go::PacketTypes::NODE_LIST:
-			#ifdef __linux__
+			#if defined(__linux__) || defined(__APPLE__)
 				emit ReceivedNodeList();
+				shared_mem::writeMemory("");
 			#endif
 
 			break;
@@ -493,44 +484,7 @@ void MainWindow::ManageSharedMem() {
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
-#ifdef __APPLE__
-	void MainWindow::SyncBlockchain() {
-		Transmitter* transmitter = new Transmitter();
-		std::vector<string> data;
-
-		// Request a list of viable nodes to sync from
-		UserQuery* userQuery = new UserQuery {go::getLocalIP(), "light"};
-		data = transmitter->Format(userQuery);
-		transmitter->Transmit(data, std::stoi(data[0]));
-
-		string result;
-		QJsonObject object;
-		shared_mem::writeMemory("");
-		std::this_thread::sleep_for(std::chrono::milliseconds(300));
-
-		// Get the resulting list of nodes
-		while (json::getPacketType(object) != static_cast<uint8_t>(go::PacketTypes::NODE_LIST)) {
-			result = shared_mem::readMemory(true); // Read the shared memory
-			std::cout << "Result: " << result << std::endl;
-			object = json::parse(result);
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		}
-
-		std::vector<string> hosts = json::parseArray(object, "nodes");
-
-		shared_mem::writeMemory("");
-
-		if (!hosts.empty()) {
-			// Request to sync
-			SyncRequest* syncRequest = new SyncRequest {static_cast<int>(go::PacketTypes::BLOCK), "192.168.1.44"};
-			data = transmitter->Format(syncRequest);
-			transmitter->Transmit(data, std::stoi(data[0]), hosts);
-		}
-
-		delete transmitter;
-	}
-#elif defined(__linux__)
+#if defined(__APPLE__) || defined(__linux__)
 	void MainWindow::SyncBlockchain() {
 		Transmitter* transmitter = new Transmitter();
 		std::vector<string> data;
@@ -564,6 +518,8 @@ void MainWindow::ManageSharedMem() {
 			transmitter = nullptr;
 		});
 	}
+#else
+	// Windows
 #endif
 
 void MainWindow::ManageSyncedData() {
@@ -640,14 +596,14 @@ void MainWindow::UpdateAmounts() {
 	double balance = m_Wallet->GetBalance();
 	double pending = m_Wallet->GetPendingBal();
 	double available = m_Wallet->GetAvailableBal();
-	double total = m_Wallet->GetTotalBal();
+	double total = m_Wallet->GetFutureBal();
 
 	std::cout << "Total: " << total << std::endl;
 
 	Ui::MainWindow::balance->setText(QString::number(balance, 'f', 10));
 	pendingBalance->setText(QString::number(pending, 'f', 10));
 	availableBalance->setText(QString::number(available, 'f', 10));
-	totalBalance->setText(QString::number(total, 'f', 10));
+	futureBalance->setText(QString::number(total, 'f', 10));
 
 	m_Authenticator->AdjustBalance(m_Wallet->GetBalance());
 }
