@@ -9,10 +9,11 @@
 #define ENUMS_H
 
 namespace enums {
-	enum NodeType 	  	 {LIGHT, FULL, MINING};
-	enum MiningMethod 	 {CPU, GPU};
-	enum PaddingType  	 {MAXIMUM, NONE, CUSTOM};
-	enum NodeListPurpose {REGISTRATION, SYNC};
+	enum NodeType 	  	 	 {LIGHT, FULL, MINING};
+	enum MiningMethod 	 	 {CPU, GPU};
+	enum PaddingType  	 	 {MAXIMUM, NONE, CUSTOM};
+	enum NodeListPurpose 	 {REGISTRATION, SYNC};
+	enum PortMappingProtocol {UPNP, PORT_FORWARDING};
 }
 
 #endif // ENUMS_H
