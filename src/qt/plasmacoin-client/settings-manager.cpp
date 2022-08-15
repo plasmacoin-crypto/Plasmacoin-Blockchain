@@ -7,41 +7,32 @@
 
 #include "settings-manager.h"
 
-SettingsManager::SettingsManager(
-	QSettings* settings, QTextBrowser* rsaKeyPath, QComboBox* territorySelector, QComboBox* timeZoneSelector,
-	QComboBox* nodeTypeSelector, QComboBox* methodSelector, QCheckBox* autoDetect, QCheckBox* enableNotifs,
-	QCheckBox* pendingTrxnNotifs, QCheckBox* receiptNotifs, QCheckBox* miningNotifs, QCheckBox* syncNotifs
-):
-	m_Settings(settings),
-	m_RSAKeyPath(rsaKeyPath),
-	m_TerritorySelector(territorySelector),
-	m_TimeZoneSelector(timeZoneSelector),
-	m_NodeTypeSelector(nodeTypeSelector),
-	m_MethodSelector(methodSelector),
-	m_AutoDetect(autoDetect),
-	m_EnableNotifs(enableNotifs),
-	m_PendingTrxnNotifs(pendingTrxnNotifs),
-	m_ReceiptNotifs(receiptNotifs),
-	m_MiningNotifs(miningNotifs),
-	m_SyncNotifs(syncNotifs)
+SettingsManager::SettingsManager(Ui_MainWindow* window, QSettings* settings):
+	m_Window(window),
+	m_Settings(settings)
 {}
 
 SettingsManager::~SettingsManager() {
 	delete m_Settings;
-	delete m_RSAKeyPath;
-	delete m_TerritorySelector;
-	delete m_TimeZoneSelector;
-	delete m_NodeTypeSelector;
-	delete m_MethodSelector;
-	delete m_AutoDetect;
-	delete m_EnableNotifs;
-	delete m_PendingTrxnNotifs;
-	delete m_ReceiptNotifs;
-	delete m_MiningNotifs;
-	delete m_SyncNotifs;
 }
 
 void SettingsManager::PopulateComboBoxes() {
+	// Fill the UPnP device list with service IDs. Because this process tends to
+	// be computationally expensive, perform this operation on a separate thread.
+	std::thread getSIDs([=] {
+		for (const string& serviceID: upnp::getServiceIDs()) {
+			std::cout << serviceID << std::endl;
+			this->m_Window->upnpDevSelector->addItem(QString::fromStdString(serviceID));
+		}
+
+		this->m_Window->upnpDevSelector->setCurrentIndex(0); // Auto-select the first service ID
+		settings::serviceIDIndex = this->m_Window->upnpDevSelector->currentIndex();
+
+		std::cout << "In thread: " << settings::upnpServiceID << std::endl;
+		this->cond.notify_all();
+	});
+	getSIDs.detach();
+
 	// Fill the territory selector with territory names. This can be done
 	// by iterating from 0 to 261 and converting each integer to
 	// support::Territory. The territory name as a string is then added
@@ -51,63 +42,69 @@ void SettingsManager::PopulateComboBoxes() {
 	// information, the time zone list will only show relavant time zones for their
 	// territory.
 	//
-
 	std::vector<support::Territory> territories;
 
 	const int FIRST_TERRITORY = QLocale::AnyCountry;
-	const int LAST_TERRITORY  = QLocale::Zimbabwe;
+	const int LAST_TERRITORY = QLocale::Zimbabwe;
 
 	// Fill the territory list
 	for (int i = FIRST_TERRITORY; i <= LAST_TERRITORY; i++) {
 		support::Territory territory = static_cast<support::Territory>(i);
-		m_TerritorySelector->addItem(QLocale::countryToString(territory), territory);
+		m_Window->territorySelector->addItem(QLocale::countryToString(territory), territory);
 		territories.push_back(territory);
 	}
 
 	// Fill the time zone selector from the system's list of known IANA time zones
 	auto timeZoneIDs = QTimeZone::availableTimeZoneIds();
 	for (const auto& tzid: timeZoneIDs) {
-		m_TimeZoneSelector->addItem(QString(tzid), tzid);
+		m_Window->timeZoneSelector->addItem(QString(tzid), tzid);
 	}
 
 	if (m_Settings->value("locale/autoDetect").toBool()) {
-		m_TerritorySelector->setCurrentIndex(static_cast<int>(SYSTEM_TERRITORY));
+		m_Window->territorySelector->setCurrentIndex(static_cast<int>(SYSTEM_TERRITORY));
 
 		// Fill the time zone selector with relevant time zones for the current territory
 		// auto timezones = QTimeZone::availableTimeZoneIds(SYSTEM_TERRITORY);
 		// for (const auto& tz: timezones) {
-		// 	m_TimeZoneSelector->addItem(QString(tz), tz);
+		// 	m_Window->timeZoneSelector->addItem(QString(tz), tz);
 		// }
 
 		// If the system's detected timezone is in the list of known time zones for
 		// the detected territory, set it as the current time zone.
 		int thisTzIndex = timeZoneIDs.indexOf(SYSTEM_TIME_ZONE);
-		m_TimeZoneSelector->setCurrentIndex(thisTzIndex);
+		m_Window->timeZoneSelector->setCurrentIndex(thisTzIndex);
 	}
 	else {
 		// Set UTC as the default time zone
 		QByteArray utc = QTimeZone::availableTimeZoneIds(support::Territory::AnyCountry)[0];
 		int utcIndex = timeZoneIDs.indexOf(utc);
-		m_TimeZoneSelector->setCurrentIndex(utcIndex);
+		m_Window->timeZoneSelector->setCurrentIndex(utcIndex);
 	}
 }
 
 void SettingsManager::SaveSettings() {
-	m_Settings->setValue("account/rsaKeyPath", m_RSAKeyPath->toPlainText());
+	m_Settings->setValue("account/rsaKeyPath", m_Window->rsaKeyPath->toPlainText());
 
-	m_Settings->setValue("locale/territory", static_cast<support::Territory>(m_TerritorySelector->currentIndex()));
-	m_Settings->setValue("locale/timezone", m_TimeZoneSelector->currentData());
-	m_Settings->setValue("locale/autoDetect", m_AutoDetect->isChecked());
+	m_Settings->setValue("network/portMappingProtocol", m_Window->portMapSelector->currentIndex());
+	m_Settings->setValue("network/upnpServiceID", m_Window->upnpDevSelector->currentIndex());
 
-	m_Settings->setValue("node/nodeType", m_NodeTypeSelector->currentIndex());
-	m_Settings->setValue("node/miningMethod", m_MethodSelector->currentIndex());
+	m_Settings->setValue("wallet/paddingType", m_Window->padTypeSelector->currentIndex());
+	m_Settings->setValue("wallet/customPadAmount", m_Window->paddingSelector->value());
+	m_Settings->setValue("wallet/walletView", m_Window->walletViewSelector->currentIndex());
+
+	m_Settings->setValue("locale/territory", static_cast<support::Territory>(m_Window->territorySelector->currentIndex()));
+	m_Settings->setValue("locale/timezone", m_Window->timeZoneSelector->currentData());
+	m_Settings->setValue("locale/alwaysDetect", m_Window->alwaysDetect->isChecked());
+
+	m_Settings->setValue("node/nodeType", m_Window->nodeTypeSelector->currentIndex());
+	m_Settings->setValue("node/miningMethod", m_Window->methodSelector->currentIndex());
 
 	m_Settings->setValue("notifications/checkedData", GetNotificationSettings());
-	m_Settings->setValue("notifications/enabled", m_EnableNotifs->checkState());
-	m_Settings->setValue("notifications/pendingTrxns", m_PendingTrxnNotifs->isChecked());
-	m_Settings->setValue("notifications/receipts", m_ReceiptNotifs->isChecked());
-	m_Settings->setValue("notifications/mining", m_MiningNotifs->isChecked());
-	m_Settings->setValue("notifications/syncResults", m_SyncNotifs->isChecked());
+	m_Settings->setValue("notifications/enabled", m_Window->enableNotifs->checkState());
+	m_Settings->setValue("notifications/pendingTrxns", m_Window->pendingTrxnNotifs->isChecked());
+	m_Settings->setValue("notifications/receipts", m_Window->receiptNotifs->isChecked());
+	m_Settings->setValue("notifications/mining", m_Window->miningNotifs->isChecked());
+	m_Settings->setValue("notifications/syncResults", m_Window->syncNotifs->isChecked());
 }
 
 void SettingsManager::LoadSettings() {
@@ -116,7 +113,60 @@ void SettingsManager::LoadSettings() {
 	settings::rsaKeyPath = m_Settings->value("rsaKeyPath", QString::fromStdString(rsafs::RSA_KEY_PATH)).toString().toStdString();
 
 	if (settings::rsaKeyPath != rsafs::RSA_KEY_PATH) {
-		m_RSAKeyPath->setPlainText(QString::fromStdString(settings::rsaKeyPath));
+		m_Window->rsaKeyPath->setPlainText(QString::fromStdString(settings::rsaKeyPath));
+	}
+
+	m_Settings->endGroup();
+
+	m_Settings->beginGroup("network");
+
+	settings::portMappingProtocol = static_cast<enums::PortMappingProtocol>(m_Settings->value("portMappingProtocol", 0).toInt());
+	settings::upnpServiceID = m_Settings->value("upnpServiceID", m_Window->upnpDevSelector->itemText(0)).toString().toStdString();
+
+	switch (settings::portMappingProtocol) {
+		case enums::PortMappingProtocol::UPNP:
+			m_Window->portMapSelector->setCurrentIndex(1);
+			m_Window->portMapSelector->setCurrentIndex(static_cast<int>(settings::portMappingProtocol));
+			break;
+
+		case enums::PortMappingProtocol::PORT_FORWARDING:
+			m_Window->portMapSelector->setCurrentIndex(0);
+			m_Window->portMapSelector->setCurrentIndex(static_cast<int>(settings::portMappingProtocol));
+			break;
+	}
+
+	if (int index = m_Window->upnpDevSelector->findText(QString::fromStdString(settings::upnpServiceID)); index != -1) {
+		m_Window->upnpDevSelector->setCurrentIndex(index);
+		settings::upnpServiceID = m_Window->upnpDevSelector->currentText().toStdString();
+	}
+
+	m_Settings->endGroup();
+
+	m_Settings->beginGroup("wallet");
+
+	settings::paddingType = static_cast<enums::PaddingType>(m_Settings->value("paddingType", 0).toInt());
+	settings::customPadAmount = m_Settings->value("customPadAmount", 0).toInt();
+	settings::walletView = m_Settings->value("walletView", 0).toInt();
+
+	m_Window->padTypeSelector->setCurrentIndex(static_cast<int>(settings::paddingType));
+	m_Window->paddingSelector->setValue(settings::customPadAmount);
+	m_Window->walletViewSelector->setCurrentIndex(settings::walletView);
+
+	switch (settings::paddingType) {
+		case enums::PaddingType::MAXIMUM:
+			m_Window->padTypeSelector->setCurrentIndex(1);
+			m_Window->padTypeSelector->setCurrentIndex(static_cast<int>(enums::PaddingType::MAXIMUM));
+			break;
+
+		case enums::PaddingType::NONE:
+			m_Window->padTypeSelector->setCurrentIndex(0);
+			m_Window->padTypeSelector->setCurrentIndex(static_cast<int>(enums::PaddingType::NONE));
+			break;
+
+		case enums::PaddingType::CUSTOM:
+			m_Window->padTypeSelector->setCurrentIndex(1);
+			m_Window->padTypeSelector->setCurrentIndex(static_cast<int>(enums::PaddingType::CUSTOM));
+			break;
 	}
 
 	m_Settings->endGroup();
@@ -124,18 +174,17 @@ void SettingsManager::LoadSettings() {
 	m_Settings->beginGroup("locale");
 	settings::territory = static_cast<support::Territory>(m_Settings->value("territory", support::Territory::AnyCountry).toInt());
 	settings::timezone = m_Settings->value("timezone", QTimeZone::utc().id()).toByteArray();
-	settings::autoDetect = m_Settings->value("autoDetect", false).toBool();
+	settings::alwaysDetect = m_Settings->value("alwaysDetect", false).toBool();
 
 	// Display any previously checked boxes as checked
-	if (settings::autoDetect) {
-		m_AutoDetect->setChecked(true);
+	if (settings::alwaysDetect) {
+		m_Window->alwaysDetect->setChecked(true);
 	}
 
 	// Load the user's territory and time zone in the combo boxes
 	auto timezones = QTimeZone::availableTimeZoneIds();
-	m_TerritorySelector->setCurrentIndex(static_cast<int>(settings::territory));
-	m_TimeZoneSelector->setCurrentIndex(timezones.indexOf(settings::timezone));
-
+	m_Window->territorySelector->setCurrentIndex(static_cast<int>(settings::territory));
+	m_Window->timeZoneSelector->setCurrentIndex(timezones.indexOf(settings::timezone));
 	m_Settings->endGroup();
 
 	m_Settings->beginGroup("node");
@@ -165,26 +214,26 @@ void SettingsManager::LoadSettings() {
 
 		if (settings::notificationSettings.m_CheckedBoxes == settings::NotificationSettings::NONE_CHECKED) {
 			std::cout << "None" << std::endl;
-			m_EnableNotifs->setCheckState(Qt::CheckState::Unchecked);
+			m_Window->enableNotifs->setCheckState(Qt::CheckState::Unchecked);
 		}
 		else if (
 			settings::notificationSettings.m_CheckedBoxes == settings::NotificationSettings::ALL_CHECKED ||
 			settings::notificationSettings.m_CheckedBoxes == settings::NotificationSettings::CHILDREN_CHECKED
 		) {
 			std::cout << "All" << std::endl;
-			m_EnableNotifs->setCheckState(Qt::CheckState::Checked);
+			m_Window->enableNotifs->setCheckState(Qt::CheckState::Checked);
 		}
 		else {
 			std::cout << "Partial" << std::endl;
-			m_EnableNotifs->setCheckState(Qt::CheckState::PartiallyChecked);
+			m_Window->enableNotifs->setCheckState(Qt::CheckState::PartiallyChecked);
 			SetNotifications(settings::notificationSettings.m_CheckedBoxes);
 		}
 	}
 	else {
 		std::cout << "Disabled" << std::endl;
 
-		m_EnableNotifs->setCheckState(Qt::CheckState::Checked);
-		m_EnableNotifs->setCheckState(Qt::CheckState::Unchecked);
+		m_Window->enableNotifs->setCheckState(Qt::CheckState::Checked);
+		m_Window->enableNotifs->setCheckState(Qt::CheckState::Unchecked);
 	}
 	m_Settings->endGroup();
 }
@@ -194,23 +243,23 @@ uint8_t SettingsManager::GetNotificationSettings() const {
 	uint8_t result = 0;
 
 	// States larger than zero represent Qt::PartiallyChecked and Qt::Checked
-	if (static_cast<int>(m_EnableNotifs->checkState()) > 0) {
+	if (static_cast<int>(m_Window->enableNotifs->checkState()) > 0) {
 		result |= static_cast<uint8_t>(NotificationSettings::Notifications::ENABLED);
 	}
 
-	if (m_PendingTrxnNotifs->isChecked()) {
+	if (m_Window->pendingTrxnNotifs->isChecked()) {
 		result |= static_cast<uint8_t>(NotificationSettings::Notifications::PENDING_TRXNS);
 	}
 
-	if (m_ReceiptNotifs->isChecked()) {
+	if (m_Window->receiptNotifs->isChecked()) {
 		result |= static_cast<uint8_t>(NotificationSettings::Notifications::RECEIPTS);
 	}
 
-	if (m_MiningNotifs->isChecked()) {
+	if (m_Window->miningNotifs->isChecked()) {
 		result |= static_cast<uint8_t>(NotificationSettings::Notifications::MINING);
 	}
 
-	if (m_SyncNotifs->isChecked()) {
+	if (m_Window->syncNotifs->isChecked()) {
 		result |= static_cast<uint8_t>(NotificationSettings::Notifications::SYNC);
 	}
 
@@ -219,28 +268,28 @@ uint8_t SettingsManager::GetNotificationSettings() const {
 
 // Detect the user's territory and time zone from the system settings
 void SettingsManager::DetectLocale() {
-	m_TerritorySelector->setCurrentIndex(static_cast<int>(SYSTEM_TERRITORY));
+	m_Window->territorySelector->setCurrentIndex(static_cast<int>(SYSTEM_TERRITORY));
 	auto timezones = QTimeZone::availableTimeZoneIds();
 
 	qDebug() << timezones.indexOf(SYSTEM_TIME_ZONE);
-	m_TimeZoneSelector->setCurrentIndex(timezones.indexOf(SYSTEM_TIME_ZONE));
-	qDebug() << m_TimeZoneSelector->currentIndex();
+	m_Window->timeZoneSelector->setCurrentIndex(timezones.indexOf(SYSTEM_TIME_ZONE));
+	qDebug() << m_Window->timeZoneSelector->currentIndex();
 }
 
 void SettingsManager::SetNotifications(uint8_t settings) {
 	if (settings & static_cast<uint8_t>(NotificationSettings::Notifications::PENDING_TRXNS)) {
-		m_PendingTrxnNotifs->setChecked(true);
+		m_Window->pendingTrxnNotifs->setChecked(true);
 	}
 
 	if (settings & static_cast<uint8_t>(NotificationSettings::Notifications::RECEIPTS)) {
-		m_ReceiptNotifs->setChecked(true);
+		m_Window->receiptNotifs->setChecked(true);
 	}
 
 	if (settings & static_cast<uint8_t>(NotificationSettings::Notifications::MINING)) {
-		m_MiningNotifs->setChecked(true);
+		m_Window->miningNotifs->setChecked(true);
 	}
 
 	if (settings & static_cast<uint8_t>(NotificationSettings::Notifications::SYNC)) {
-		m_SyncNotifs->setChecked(true);
+		m_Window->syncNotifs->setChecked(true);
 	}
 }

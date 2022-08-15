@@ -377,6 +377,7 @@ void connections::blockchainPage(MainWindow& window) {
 void connections::settingsPage(MainWindow& window) {
 	window.m_SettingsManager->PopulateComboBoxes();
 	uint8_t settings;
+	constexpr double exampleValue = 123.456l;
 
 	auto notifClickEvent = [&window, &settings](int state) mutable {
 		settings = window.m_SettingsManager->GetNotificationSettings();
@@ -400,6 +401,48 @@ void connections::settingsPage(MainWindow& window) {
 			window.enableNotifs->setCheckState(Qt::CheckState::PartiallyChecked);
 		}
 	};
+
+	window.connect(window.portMapSelector, &QComboBox::currentIndexChanged, &window, [&window](int index) {
+		switch (index) {
+			case enums::PortMappingProtocol::UPNP:
+				window.portfSubmenu->setVisible(false);
+				window.upnpSubmenu->setVisible(true);
+				break;
+
+			case enums::PortMappingProtocol::PORT_FORWARDING:
+				window.upnpSubmenu->setVisible(false);
+				window.portfSubmenu->setVisible(true);
+				break;
+		}
+	});
+
+	window.connect(window.padTypeSelector, &QComboBox::currentIndexChanged, &window, [&window](int index) {
+		switch (index) {
+			case enums::PaddingType::MAXIMUM:
+				window.customPrecision->setVisible(false);
+				window.exampleBalance->setText(QString("Example: %1").arg(QString::number(exampleValue, 'f', 10)));
+				break;
+
+			case enums::PaddingType::NONE:
+				window.customPrecision->setVisible(false);
+				window.exampleBalance->setText(QString("Example: %1").arg(QString::number(exampleValue, 'f', utility::getDecimals(exampleValue))));
+				break;
+
+			case enums::PaddingType::CUSTOM:
+				window.customPrecision->setVisible(true);
+				break;
+
+			default:
+				break;
+		}
+	});
+
+	window.connect(window.paddingSelector, &QSpinBox::valueChanged, &window, [&window](int padding) {
+		int decimals = utility::getDecimals(exampleValue);
+		int zeros = (decimals < 10 && decimals + padding <= 10)? decimals + padding : 10;
+
+		window.exampleBalance->setText(QString("Example: %1").arg(QString::number(exampleValue, 'f', zeros)));
+	});
 
 	window.connect(window.btn_autoctz, &QToolButton::released, &window, [&window]() {
 		window.m_SettingsManager->DetectLocale();
@@ -555,7 +598,7 @@ void connections::updateTitles(MainWindow& window) {
 			"<html><head/><body><p align=\"center\"><span style=\"font-size:24pt;\">"
 			"Plasmacoin Client (%1)"
 			"</span></p></body></html>"
-		).arg(QString::fromStdString(PLASMACOIN_FULL_VERSION))
+		).arg("v" + QCoreApplication::applicationVersion())
 	);
 
 	window.copyrightNotice->setText(
