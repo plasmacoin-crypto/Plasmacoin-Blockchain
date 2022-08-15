@@ -16,7 +16,7 @@ SOURCES += \
 	../../receipt.cpp ../../rsa-fs.cpp ../../dat-fs.cpp ../../transmitter.cpp \
 	../../shared-mem.cpp ../../parse-json.cpp ../../validation.cpp ../../hashing.cpp \
 	../../dssize.cpp ../../utility.cpp ../../utility.tpp ../../rsautil.cpp \
-	../../merkle-helpers.cpp ../../mining.cpp ../../notification.cpp \
+	../../merkle-helpers.cpp ../../mining.cpp ../../notification.cpp ../../upnp.cpp \
 	\
 	main.cpp mainwindow.cpp transaction-list.cpp  mining-status.cpp recipient-list.cpp \
 	firebase-auth.cpp account-pages.cpp mining-dialog.cpp transaction-manager.cpp \
@@ -35,7 +35,7 @@ HEADERS += \
 	../../validation.hpp ../../hashing.hpp ../../dssize.hpp ../../utility.hpp \
 	../../rsautil.hpp ../../sync-request.hpp ../../user-query.hpp ../../signature.hpp \
 	../../merkle-helpers.h ../../idcode.hpp ../../pending-trxn.hpp ../../mining.hpp \
-	../../removal-request.hpp ../../notification.hpp \
+	../../removal-request.hpp ../../notification.hpp ../../upnp.hpp ../../net-constants.hpp \
 	\
 	mainwindow.h transaction-list.h  mining-status.h recipient-list.h \
 	firebase-auth.h account-pages.h mining-dialog.h transaction-manager.h \
@@ -63,7 +63,9 @@ BASE_OBJ = \
 	hashing.o \
 	dssize.o \
 	utility.o \
-	rsautil.o
+	rsautil.o \
+  mining.o \
+  upnp.o
 
 #
 # Compiler flags
