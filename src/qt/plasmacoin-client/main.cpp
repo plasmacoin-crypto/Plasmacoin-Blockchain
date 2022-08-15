@@ -10,6 +10,7 @@
 
 #include <functional>
 #include <atomic>
+#include <chrono>
 
 #include <QApplication>
 #include <QSplashScreen>
@@ -21,6 +22,7 @@
 #include "ui.h"
 #include "connections.hpp"
 #include "pc-splash-screen.h"
+#include "net-constants.hpp"
 
 // Run the application
 int main(int argc, char* argv[]) {
@@ -66,24 +68,53 @@ int main(int argc, char* argv[]) {
 	connections::settingsPage(window);
 	connections::aboutPage(window);
 	connections::updateWalletAmounts(window);
-	std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
 	window.m_SettingsManager->LoadSettings(); // Load the user's settings
 
 	if (online) {
+		window.RegisterNode();
 		std::atomic<bool> runningThread = true;
 
-		QFuture<void> manageSharedMem = QtConcurrent::run([&window](std::atomic<bool>& running) {
+		QFuture<void> manageSharedMem = QtConcurrent::run([&window, &runningThread] {
 			shared_mem::writeMemory("");
 
-			while (running) {
+			while (runningThread) {
 				window.ManageSharedMem();
 			}
-		}, std::ref(runningThread));
+		});
+
+		QFuture<void> manageUPnP = QtConcurrent::run([&window, &runningThread](QPromise<void>& endExec) {
+			endExec.suspendIfRequested();
+
+			// Wait for the settings data to be populated so it can be used to get the
+			// UPnP device.
+			std::unique_lock<std::mutex> guard(window.m_SettingsManager->settingsMutex);
+			window.m_SettingsManager->cond.wait(guard);
+
+			settings::upnpServiceID = window.upnpDevSelector->itemText(settings::serviceIDIndex).toStdString();
+
+			upnp::openPort(settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP);
+			auto threadStart = std::chrono::system_clock::now();
+
+			do {
+				if (endExec.isCanceled()) {
+					break;
+				}
+
+				if (auto now = std::chrono::system_clock::now(); threadStart + std::chrono::seconds(10) <= now) {
+					std::thread(upnp::openPort, settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP).detach();
+					threadStart = now;
+				}
+			} while (runningThread);
+		});
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-		app.connect(&app, &QApplication::aboutToQuit, &window, [&online, &runningThread, &window]() mutable {
+		app.connect(&app, &QApplication::aboutToQuit, &window, [&online, &runningThread, &manageUPnP, &window]() mutable {
 			runningThread = false;
+
+			manageUPnP.suspend();
+			manageUPnP.cancel();
 
 			if (online) {
 				window.RemoveNode();
@@ -91,8 +122,11 @@ int main(int argc, char* argv[]) {
 		});
 	}
 
-	splashScreen->showMessage("Checking for new blocks", Qt::AlignBottom, QColorConstants::White);
-	window.SyncBlockchain();
+	if (online) {
+		splashScreen->showMessage("Checking for new blocks", Qt::AlignBottom, QColorConstants::White);
+		window.SyncBlockchain();
+	}
+
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 	splashScreen->showMessage("Launching", Qt::AlignBottom, QColorConstants::White);
