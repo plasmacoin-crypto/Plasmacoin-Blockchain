@@ -88,8 +88,8 @@ int main(int argc, char* argv[]) {
 
 			// Wait for the settings data to be populated so it can be used to get the
 			// UPnP device.
-			std::unique_lock<std::mutex> guard(window.m_SettingsManager->settingsMutex);
-			window.m_SettingsManager->cond.wait(guard);
+			std::unique_lock<std::mutex> guard(window.m_SettingsManager->m_SettingsMutex);
+			window.m_SettingsManager->m_CondVar.wait(guard);
 
 			settings::upnpServiceID = window.upnpDevSelector->itemText(settings::serviceIDIndex).toStdString();
 
