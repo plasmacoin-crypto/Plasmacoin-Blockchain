@@ -9,6 +9,7 @@
 #define SETTINGS_H
 
 #include <string>
+#include <atomic>
 
 #include <QByteArray>
 #include <QLocale>
@@ -47,11 +48,22 @@ namespace settings {
 	};
 
 	static std::string rsaKeyPath;
+
+	static enums::PortMappingProtocol portMappingProtocol;
+	static std::string upnpServiceID;
+	static std::atomic<int> serviceIDIndex;
+
+	static enums::PaddingType paddingType;
+	static int customPadAmount;
+	static int walletView;
+
 	static support::Territory territory;
 	static QByteArray timezone;
-	static bool autoDetect;
+	static bool alwaysDetect;
+
 	static enums::NodeType nodeType;
 	static enums::MiningMethod miningMethod;
+
 	static NotificationSettings notificationSettings;
 }
 
