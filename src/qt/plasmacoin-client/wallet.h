@@ -23,13 +23,12 @@ public:
 	double GetBalance() const;
 	double GetPendingBal() const;
 	double GetAvailableBal() const;
-	double GetTotalBal() const;
+	double GetFutureBal() const;
 
 private:
 	double m_Balance = 2;
 	double m_PendingBalance = 0;
 	double m_AvailableBalance = m_Balance;
-	double m_TotalBalance = 0;
 };
 
 #endif // WALLET_H

@@ -53,6 +53,6 @@ double Wallet::GetAvailableBal() const {
 	return m_AvailableBalance;
 }
 
-double Wallet::GetTotalBal() const {
+double Wallet::GetFutureBal() const {
 	return m_Balance + m_PendingBalance;
 }
