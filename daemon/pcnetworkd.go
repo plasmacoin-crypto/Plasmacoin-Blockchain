@@ -27,6 +27,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"unsafe"
 
 	bccnstrx "github.com/plasmacoin-crypto/Plasmacoin-Blockchain/blockchainconstructs"
 	"github.com/plasmacoin-crypto/Plasmacoin-Blockchain/handler"
@@ -48,8 +49,9 @@ const (
 )
 
 // Attempt to send a message to a specified host and port
+//
 //export dial
-func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
+func dial(protocol, host C.cchar_t, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 	// Convert the C strings to Go strings
 	var (
 		goProtocol = C.GoString(protocol)
@@ -84,6 +86,7 @@ func dial(protocol, host, port C.cchar_t, dataType uint8, data []C.cchar_t) {
 }
 
 // Listen for and accept TCP/UDP connections
+//
 //export receive
 func receive(protocol, host, port C.cchar_t) C.cchar_t {
 	// Convert the C strings to Go strings
@@ -166,6 +169,7 @@ func makeStruct(dataType uint8, data []string) interface{} {
 }
 
 // Compress a file using gzip
+//
 //export gzipCompress
 func gzipCompress(filename C.cchar_t) C.cchar_t {
 	goFilename := C.GoString(filename) // Convert from a C string to a Go string
@@ -200,6 +204,7 @@ func gzipCompress(filename C.cchar_t) C.cchar_t {
 }
 
 // Decompress a gzip-compressed file
+//
 //export gzipDecompress
 func gzipDecompress(filename C.cchar_t) C.cchar_t {
 	goFilename := C.GoString(filename) // Convert from a C string to a Go string
@@ -236,6 +241,7 @@ func gzipDecompress(filename C.cchar_t) C.cchar_t {
 }
 
 // Check if a port is open on a certain host
+//
 //export portIsOpen
 func portIsOpen(host, port C.cchar_t) bool {
 	var (
@@ -254,6 +260,7 @@ func portIsOpen(host, port C.cchar_t) bool {
 }
 
 // Get the user's global IP address by making a call to http://ip-api.com/json/.
+//
 //export getGlobalIP
 func getGlobalIP() C.cchar_t {
 	resp, err := http.Get("http://ip-api.com/json/") // make a GET request
@@ -272,6 +279,7 @@ func getGlobalIP() C.cchar_t {
 }
 
 // Get the user's local IP address
+//
 //export getLocalIP
 func getLocalIP() C.cchar_t {
 	ifaces, err := net.Interfaces()
@@ -316,6 +324,38 @@ func getLocalIP() C.cchar_t {
 	}
 
 	return C.CString("")
+}
+
+//export openUPnPPort
+func openUPnPPort(serviceID, protocol C.cchar_t, port uint16, host C.cchar_t) {
+	var (
+		goServiceID = C.GoString(serviceID)
+		goProtocol  = C.GoString(protocol)
+		goHost      = C.GoString(host)
+	)
+
+	netutils.OpenPort(goServiceID, goProtocol, port, goHost)
+}
+
+//export getServiceIDs
+func getServiceIDs() **C.char {
+	ch := make(chan []string)
+	go func(ch chan<- []string) {
+		ch <- netutils.GetServiceIDs()
+	}(ch)
+
+	serviceIDs := <-ch
+
+	ret := C.malloc(C.size_t(len(serviceIDs)) * C.size_t(unsafe.Sizeof(uintptr(0))))
+
+	// convert to usable format so we are able to fill it with data
+	pRet := (*[1<<30 - 1]*C.char)(ret)
+
+	for i, item := range serviceIDs {
+		pRet[i] = C.CString(item)
+	}
+
+	return (**C.char)(ret)
 }
 
 func main() {}
