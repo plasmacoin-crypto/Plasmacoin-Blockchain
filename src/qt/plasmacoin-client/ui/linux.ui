@@ -16,7 +16,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
+    <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plasmacoin-logo.png</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -641,7 +641,7 @@ p, li { white-space: pre-wrap; }
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
+                 <normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</normaloff>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../.designer/assets/plus.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -737,7 +737,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../assets/contact-default.png</pixmap>
+                <pixmap>../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../assets/contact-default.png</pixmap>
                </property>
               </widget>
              </item>
@@ -1865,7 +1865,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QStackedWidget" name="accountView">
           <property name="currentIndex">
-           <number>0</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="keyEntry">
            <layout class="QHBoxLayout" name="horizontalLayout_28">
@@ -2563,8 +2563,8 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>550</width>
-                   <height>550</height>
+                   <width>1298</width>
+                   <height>803</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -2957,7 +2957,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
              <x>0</x>
              <y>0</y>
              <width>1324</width>
-             <height>204</height>
+             <height>503</height>
             </rect>
            </property>
            <attribute name="label">
@@ -2966,143 +2966,35 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
            <layout class="QHBoxLayout" name="horizontalLayout_7">
             <item>
              <layout class="QGridLayout" name="gridLayout">
-              <property name="rightMargin">
-               <number>0</number>
+              <property name="leftMargin">
+               <number>20</number>
               </property>
               <property name="horizontalSpacing">
                <number>50</number>
               </property>
-              <item row="0" column="0">
-               <layout class="QVBoxLayout" name="verticalLayout_23">
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="rsaKeyTitle">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;RSA Key Path&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="rsaKeySubtitle">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the path where your RSA public-private key pair will be stored.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_23">
-                  <item>
-                   <widget class="QTextBrowser" name="rsaKeyPath">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="btn_choosePath">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>32</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Choose Path...</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QToolButton" name="btn_reset">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>35</width>
-                      <height>35</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>...</string>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="../../resources.qrc">
-                      <normaloff>:/assets/reset.png</normaloff>:/assets/reset.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_14">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item row="0" column="1">
+              <item row="0" column="4">
                <spacer name="horizontalSpacer_28">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
                 <property name="sizeType">
-                 <enum>QSizePolicy::Fixed</enum>
+                 <enum>QSizePolicy::Expanding</enum>
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>241</width>
+                  <width>40</width>
                   <height>20</height>
                  </size>
                 </property>
                </spacer>
               </item>
-              <item row="0" column="2">
+              <item row="0" column="3">
                <layout class="QVBoxLayout" name="verticalLayout_26">
                 <property name="rightMargin">
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="chgPsswdTitle">
+                 <widget class="QLabel" name="accountTitle2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -3115,7 +3007,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="chgPsswdSubtitle">
+                 <widget class="QLabel" name="accountSubtitle2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -3211,6 +3103,304 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                 </item>
                </layout>
               </item>
+              <item row="0" column="1">
+               <layout class="QVBoxLayout" name="verticalLayout_23">
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="accountTitle1">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;RSA Key Path&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="accountSubtitle1">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the path where your RSA public-private key pair will be stored.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_23">
+                  <item>
+                   <widget class="QTextBrowser" name="rsaKeyPath">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btn_choosePath">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>32</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Choose Path...</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QToolButton" name="btn_reset">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>35</width>
+                      <height>35</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>...</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../../resources.qrc">
+                      <normaloff>:/assets/reset.png</normaloff>:/assets/reset.png</iconset>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_14">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item row="0" column="0">
+               <spacer name="horizontalSpacer_69">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="networkStgs">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1324</width>
+             <height>503</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Network</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_52">
+            <item>
+             <layout class="QGridLayout" name="gridLayout_4">
+              <property name="bottomMargin">
+               <number>20</number>
+              </property>
+              <item row="0" column="1">
+               <spacer name="horizontalSpacer_67">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout_46">
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="networkTitle1">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;Port Mapping Protocol&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="networkSubtitle1">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the port mapping method for the client to use. Unless you know that you want to use port forwarding, it's&lt;br/&gt;reccomended that your use UPnP.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_34">
+                  <item>
+                   <widget class="QComboBox" name="portMapSelector">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <item>
+                     <property name="text">
+                      <string>Universal Plug-and-Play (UPnP)</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Port Forwarding</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_58">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                     <enum>QSizePolicy::Expanding</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>100</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_45">
+                  <item>
+                   <widget class="QWidget" name="portfSubmenu" native="true">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_51">
+                     <item>
+                      <widget class="QLabel" name="networkInfo1">
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Warning&lt;/span&gt;: when using port forwarding, public ports will be open on your router &lt;span style=&quot; font-weight:700;&quot;&gt;at all times&lt;/span&gt;. This is a major&lt;br/&gt;security vulnerability, and can lead to Distributed Denial-of-Service (DDoS) attacks.&lt;/p&gt;&lt;p&gt;In order to connect to the Plasmacoin network, you need to forward the node discovery port, 14400. If you're&lt;br/&gt;also running an Address Lookup node on the same network (i.e., same router), you also need to forward the&lt;br/&gt;Address Lookup discovery port, 34300. This can be done in your router settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QWidget" name="upnpSubmenu" native="true">
+                    <layout class="QVBoxLayout" name="verticalLayout_54">
+                     <item>
+                      <widget class="QLabel" name="networkInfo2">
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;UPnP Device&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select the UPnP device you would like to use below. For most routers, you'll likely only have one option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_43">
+                       <item>
+                        <widget class="QComboBox" name="upnpDevSelector"/>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_68">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <spacer name="verticalSpacer_33">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
              </layout>
             </item>
            </layout>
@@ -3220,8 +3410,8 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1324</width>
-             <height>545</height>
+             <width>1309</width>
+             <height>517</height>
             </rect>
            </property>
            <attribute name="label">
@@ -3266,7 +3456,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_50">
                     <item>
-                     <widget class="QLabel" name="rsaKeyTitle_4">
+                     <widget class="QLabel" name="walletTitle2">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                         <horstretch>0</horstretch>
@@ -3279,7 +3469,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLabel" name="rsaKeySubtitle_4">
+                     <widget class="QLabel" name="walletSubtitle2">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                         <horstretch>0</horstretch>
@@ -3342,7 +3532,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_48">
                     <item>
-                     <widget class="QLabel" name="rsaKeyTitle_3">
+                     <widget class="QLabel" name="walletTitle1">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                         <horstretch>0</horstretch>
@@ -3355,7 +3545,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLabel" name="rsaKeySubtitle_3">
+                     <widget class="QLabel" name="walletSubtitle1">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                         <horstretch>0</horstretch>
@@ -3544,136 +3734,13 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="trxnStgs">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>100</width>
-             <height>30</height>
-            </rect>
-           </property>
-           <attribute name="label">
-            <string>Transactions</string>
-           </attribute>
-           <widget class="QWidget" name="verticalLayoutWidget_7">
-            <property name="geometry">
-             <rect>
-              <x>12</x>
-              <y>12</y>
-              <width>551</width>
-              <height>311</height>
-             </rect>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_45"/>
-           </widget>
-           <widget class="QWidget" name="layoutWidget">
-            <property name="geometry">
-             <rect>
-              <x>640</x>
-              <y>80</y>
-              <width>478</width>
-              <height>241</height>
-             </rect>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_46">
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="rsaKeyTitle_2">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;Rejected Transactions&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="rsaKeySubtitle_2">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify how you would like to manage rejected by your node during verification.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_34">
-               <item>
-                <widget class="QComboBox" name="nodeTypeSelector_2">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>Light</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Full</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Mining</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_58">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Expanding</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>100</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_33">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-          </widget>
           <widget class="QWidget" name="localeStgs">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>509</width>
-             <height>277</height>
+             <width>1324</width>
+             <height>503</height>
             </rect>
            </property>
            <attribute name="label">
@@ -3688,14 +3755,14 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_11">
+                 <widget class="QLabel" name="localeTitle1">
                   <property name="text">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Country/Territory&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_12">
+                 <widget class="QLabel" name="localeSubtitle1">
                   <property name="text">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selecting your country or territory helps determine your other locale information.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
@@ -3739,14 +3806,14 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_9">
+                 <widget class="QLabel" name="localeTitle2">
                   <property name="text">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Time Zone&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_10">
+                 <widget class="QLabel" name="localeSubtitle2">
                   <property name="text">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Your time zone helps display timestamps, where applicable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
@@ -3841,8 +3908,8 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>461</width>
-             <height>274</height>
+             <width>1324</width>
+             <height>503</height>
             </rect>
            </property>
            <attribute name="label">
@@ -3860,14 +3927,14 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label">
+                 <widget class="QLabel" name="nodeTitle1">
                   <property name="text">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Node Type&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_2">
+                 <widget class="QLabel" name="nodeSubtitle1">
                   <property name="text">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change the type of node you run. Node that full and mining nodes&lt;br/&gt;require higher committment and mandatory port forwarding. You will&lt;br/&gt;also have to download a full copy of the Plasmacoin blockchain.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
@@ -3926,14 +3993,14 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_3">
+                 <widget class="QLabel" name="nodeTitle2">
                   <property name="text">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Mining Method&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_4">
+                 <widget class="QLabel" name="nodeSubtitle2">
                   <property name="text">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Using GPU mining will allow you to hash blocks faster. Even slower GPUs&lt;br/&gt;can mine Plasamcoin blocks. If you don't have a GPU, use CPU mining.&lt;br/&gt;GPU mining is preferablea and more efficient.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
@@ -3994,15 +4061,15 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>512</width>
-             <height>280</height>
+             <width>1324</width>
+             <height>503</height>
             </rect>
            </property>
            <attribute name="label">
             <string>Notifications</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_4">
-            <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_42">
+            <item>
              <layout class="QVBoxLayout" name="verticalLayout_36">
               <property name="bottomMargin">
                <number>0</number>
@@ -4010,7 +4077,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_35">
                 <item>
-                 <widget class="QLabel" name="label_13">
+                 <widget class="QLabel" name="notifsTitle1">
                   <property name="text">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Notifications&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Enable/disable desktop notifications for the application. Note that you may have&lt;br&gt;to enable notifications for the application in your system settings to see them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
@@ -4186,6 +4253,40 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_39">
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_64">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="text">
+             <string>Reset page settings to default</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>Reset settings to default</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -4539,7 +4640,7 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
          </layout>
         </item>
         <item>
-         <spacer name="verticalSpacer_30">
+         <spacer name="verticalSpacer_37">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -4547,6 +4648,62 @@ QScrollArea &gt; QWidget &gt; QScrollBar { background: palette(base); }</string>
            <size>
             <width>20</width>
             <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_40">
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_65">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_14">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Qt® and the Qt logo are registered trademarks of The Qt Company Ltd. Logo usage is classified as &amp;quot;fair use&amp;quot; by The Qt Company. For more information, see &lt;a href=&quot;https://www.qt.io/trademark/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3586ff;&quot;&gt;https://www.qt.io/trademark/&lt;/span&gt;&lt;/a&gt;&lt;a href=&quot;https://www.qt.io/trademark/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_66">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_30">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>10</height>
            </size>
           </property>
          </spacer>
