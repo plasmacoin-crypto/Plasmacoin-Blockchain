@@ -29,7 +29,7 @@ void SettingsManager::PopulateComboBoxes() {
 		settings::serviceIDIndex = this->m_Window->upnpDevSelector->currentIndex();
 
 		std::cout << "In thread: " << settings::upnpServiceID << std::endl;
-		this->cond.notify_all();
+		this->m_CondVar.notify_all();
 	});
 	getSIDs.detach();
 

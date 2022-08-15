@@ -43,8 +43,8 @@ public:
 	uint8_t GetNotificationSettings() const;
 	void DetectLocale();
 
-	mutable std::mutex settingsMutex;
-	std::condition_variable cond;
+	mutable std::mutex m_SettingsMutex;
+	std::condition_variable m_CondVar;
 
 private:
 	void SetNotifications(uint8_t settings);
