@@ -29,11 +29,8 @@
 class AddressBook : public QMainWindow, public Ui_MainWindow {
 public:
 	AddressBook(
-		QTableWidget*& tableWidget, QLabel* nameDisplay, QLineEdit* nameField,
-		QLabel* usernameDisplay, QLineEdit* usernameField, QLabel* addressDisplay,
-		QLineEdit* addressField, QLabel* birthdayDisplay, QDateEdit* birthday,
-		QDialogButtonBox* buttonBox, QLayout* nameLayout, QLayout* usernameLayout,
-		QLayout* addressLayout, QLayout* birthdayLayout
+		Ui_MainWindow* window, QLabel* nameDisplay, QLabel* usernameDisplay,
+		QLabel* addressDisplay, QLabel* birthdayDisplay
 	);
 	~AddressBook();
 
@@ -57,12 +54,8 @@ private:
 
 	void Regenerate();
 
-	QTableWidget*& m_ContactsList;
+	Ui_MainWindow* m_Window;
 	QLabel *m_NameDisplay, *m_UsernameDisplay, *m_AddressDisplay, *m_BirthdayDisplay;
-	QLineEdit *m_NameField, *m_UsernameField, *m_AddressField;
-	QDateEdit* m_Birthday;
-	QDialogButtonBox* m_ButtonBox;
-	QLayout *m_NameLayout, *m_UsernameLayout, *m_AddressLayout, *m_BirthdayLayout;
 
 	QPushButton* m_EditButton = new QPushButton("Edit Contact");
 	QPushButton* m_DeleteButton = new QPushButton("Delete Contact");
@@ -72,7 +65,7 @@ private:
 };
 
 inline size_t AddressBook::Size() const {
-	return m_ContactsList->rowCount();
+	return m_Window->contactsList->rowCount();
 }
 
 #endif // ADDRESS_BOOK_H

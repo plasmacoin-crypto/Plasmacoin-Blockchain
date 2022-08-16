@@ -45,26 +45,16 @@ MainWindow::MainWindow(bool online, QWidget* parent):
 	m_FormErrorAlert = new QMessageBox(); // Create a message box to display authentication errors
 	m_TransactionAlert = new QMessageBox(); // Create a message box to sign and send a transaction
 
-	m_TransactionList = new TransactionList(Ui::MainWindow::transactionList);
+	m_TransactionList = new TransactionList(this);
 	m_Status = CreateMiningVisuals();
 	m_AccPgs = CreatePages();
-	m_AddressBook = new AddressBook(
-						Ui::MainWindow::contactsList, m_NameDisplay, Ui::MainWindow::nameField,
-						m_UsernameDisplay, Ui::MainWindow::usernameField, m_AddressDisplay,
-						Ui::MainWindow::addressField, m_BirthdayDisplay, Ui::MainWindow::birthday,
-						Ui::MainWindow::btndiag_confirm, Ui::MainWindow::field1, Ui::MainWindow::field2,
-						Ui::MainWindow::field3, Ui::MainWindow::field4
-					);
-	m_TransactionManager =  new TransactionManager(
-								Ui::MainWindow::contacts, Ui::MainWindow::transactionLog, Ui::MainWindow::messageField,
-								Ui::MainWindow::amountSelector, Ui::MainWindow::feeSelector, Ui::MainWindow::btndiag_send,
-								m_TransactionAlert
-						    );
+	m_AddressBook = new AddressBook(this, m_NameDisplay, m_UsernameDisplay, m_AddressDisplay, m_BirthdayDisplay);
+	m_TransactionManager =  new TransactionManager(this, m_TransactionAlert);
 	m_TransactionView = new TransactionView(Ui::MainWindow::transactionView, amountSelector->decimals(), feeSelector->decimals());
 	m_MiningDialog = new MiningDialog(this);
 	m_BlockView = new BlockView(Ui::MainWindow::blockView);
-	m_BlockchainViewer = new BlockchainViewer(m_User->m_BlockchainCopy, Ui::MainWindow::blockView, Ui::MainWindow::blockTrxnView);
-	m_WalletPage =  new WalletPage(m_Wallet, Ui::MainWindow::receiptList, Ui::MainWindow::pendingList);
+	m_BlockchainViewer = new BlockchainViewer(this, m_User->m_BlockchainCopy);
+	m_WalletPage =  new WalletPage(this, m_Wallet);
 	m_SettingsManager = new SettingsManager(this, m_Settings);
 
 	Authentication();
@@ -119,6 +109,12 @@ MainWindow::~MainWindow() {
 	delete m_Authenticator;
 	delete m_TransactionList;
 	delete m_AccPgs;
+	delete m_TransactionManager;
+	delete m_TransactionView;
+	delete m_MiningDialog;
+	delete m_BlockView;
+	delete m_BlockchainViewer;
+	delete m_WalletPage;
 	delete m_FileBrowser;
 	delete m_AddressBook;
 	delete m_Settings;

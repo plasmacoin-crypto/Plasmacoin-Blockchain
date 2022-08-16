@@ -7,16 +7,16 @@
 
 #include "blockchain-viewer.h"
 
-BlockchainViewer::BlockchainViewer(Blockchain* blockchain, QTableWidget* blockView, QTableWidget* transactionView):
+BlockchainViewer::BlockchainViewer(Ui_MainWindow* window, Blockchain* blockchain):
+	m_Window(window),
 	m_BlockchainCopy(blockchain)
 {
-	m_BlockView = new BlockView(blockView);
-	m_TransactionView = new TransactionView(transactionView);
+	m_BlockView = new BlockView(window->blockView);
+	m_TransactionView = new TransactionView(window->blockTrxnView);
 }
 
 BlockchainViewer::~BlockchainViewer() {
 	delete m_BlockView;
-	delete m_TransactionView;
 }
 
 // View a block on the blockchain

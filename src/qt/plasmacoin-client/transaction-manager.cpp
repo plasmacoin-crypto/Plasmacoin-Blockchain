@@ -7,33 +7,18 @@
 
 #include "transaction-manager.h"
 
-TransactionManager::TransactionManager(
-	QListWidget* contactsList, QListWidget* transactionLog, QLineEdit* lineEdit,
-	QDoubleSpinBox* amountSelector, QDoubleSpinBox* feeSelector, QDialogButtonBox* dialog,
-	QMessageBox* messageBox
-):
-	m_ContactsList(contactsList),
-	m_TransactionLog(transactionLog),
-	m_MessageField(lineEdit),
-	m_AmountSelector(amountSelector),
-	m_FeeSelector(feeSelector),
-	m_Dialog(dialog),
+TransactionManager::TransactionManager(Ui_MainWindow* window, QMessageBox* messageBox):
+	m_Window(window),
 	m_TransactionAlert(messageBox)
 {
 	// Add a button to calculate the transaction fees
 	QPushButton* calcButton = new QPushButton("Calculate Fee");
-	m_Dialog->addButton(calcButton, QDialogButtonBox::ActionRole);
+	m_Window->btndiag_send->addButton(calcButton, QDialogButtonBox::ActionRole);
 
 	ProhibitSend();
 }
 
 TransactionManager::~TransactionManager() {
-	delete m_ContactsList;
-	delete m_TransactionLog;
-	delete m_MessageField;
-	delete m_AmountSelector;
-	delete m_FeeSelector;
-	delete m_Dialog;
 	delete m_TransactionAlert;
 }
 
@@ -42,36 +27,36 @@ void TransactionManager::UpdateContactsList(AddressBook* addressBook) {
 		Contact* contact = addressBook->At(i);
 
 		m_Contacts.push_back(contact);
-		m_ContactsList->addItem(new QListWidgetItem(QString::fromStdString(contact->GetUsername())));
+		m_Window->contacts->addItem(new QListWidgetItem(QString::fromStdString(contact->GetUsername())));
 	}
 }
 
 bool TransactionManager::CheckFields() {
-	int row = m_ContactsList->currentRow();
+	int row = m_Window->contacts->currentRow();
 
 	// Collect transaction data
 	string recipientAddr = m_Contacts[row]->GetAddress();
-	double amount = m_AmountSelector->value();
-	double fee = m_FeeSelector->value();
+	double amount = m_Window->amountSelector->value();
+	double fee = m_Window->feeSelector->value();
 
-	QString text = m_MessageField->text();
+	QString text = m_Window->messageField->text();
 	string content = text.isEmpty()? "" : text.toStdString();
 
 	return (
-		(row >= 0 && row <= m_ContactsList->count()) &&
+		(row >= 0 && row <= m_Window->contacts->count()) &&
 		amount > 0 &&
 		fee > 0
 	);
 }
 
 void TransactionManager::AllowSend() {
-	m_Dialog->button(QDialogButtonBox::Ok)->setEnabled(true); // Enable the OK button
-	m_Dialog->button(QDialogButtonBox::Ok)->setAutoDefault(true);
+	m_Window->btndiag_send->button(QDialogButtonBox::Ok)->setEnabled(true); // Enable the OK button
+	m_Window->btndiag_send->button(QDialogButtonBox::Ok)->setAutoDefault(true);
 }
 
 void TransactionManager::ProhibitSend() {
-	m_Dialog->button(QDialogButtonBox::Ok)->setEnabled(false); // Disable the OK button
-	m_Dialog->button(QDialogButtonBox::Ok)->setAutoDefault(true);
+	m_Window->btndiag_send->button(QDialogButtonBox::Ok)->setEnabled(false); // Disable the OK button
+	m_Window->btndiag_send->button(QDialogButtonBox::Ok)->setAutoDefault(true);
 }
 
 // Ask the user to confirm the data of the transaction they're currently working on

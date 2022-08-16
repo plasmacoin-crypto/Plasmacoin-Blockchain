@@ -11,9 +11,7 @@ BlockView::BlockView(QTableWidget* blockView):
 	m_BlockView(blockView)
 {}
 
-BlockView::~BlockView() {
-	delete m_BlockView;
-}
+BlockView::~BlockView() {}
 
 void BlockView::Display(Block* block) {
 	//

@@ -10,13 +10,8 @@
 
 #include <vector>
 
-#include <QListWidget>
-#include <QListWidgetItem>
 #include <QString>
-#include <QDialogButtonBox>
-#include <QDoubleSpinBox>
 #include <QPushButton>
-#include <QLineEdit>
 #include <QMessageBox>
 
 #include "ui.h"
@@ -27,11 +22,7 @@
 
 class TransactionManager : public QMainWindow, public Ui_MainWindow {
 public:
-	TransactionManager(
-		QListWidget* contactsList, QListWidget* transactionLog, QLineEdit* lineEdit,
-		QDoubleSpinBox* amountSelector, QDoubleSpinBox* feeSelector, QDialogButtonBox* dialog,
-		QMessageBox* messageBox
-	);
+	TransactionManager(Ui_MainWindow* window, QMessageBox* messageBox);
 	~TransactionManager();
 
 	void UpdateContactsList(AddressBook* addressBook);
@@ -44,10 +35,7 @@ public:
 	int ShowWarning(double balance, Transaction* transaction);
 
 private:
-	QListWidget *m_ContactsList, *m_TransactionLog;
-	QLineEdit* m_MessageField;
-	QDoubleSpinBox *m_AmountSelector, *m_FeeSelector;
-	QDialogButtonBox* m_Dialog;
+	Ui_MainWindow* m_Window;
 	QMessageBox* m_TransactionAlert;
 
 	std::vector<Contact*> m_Contacts;

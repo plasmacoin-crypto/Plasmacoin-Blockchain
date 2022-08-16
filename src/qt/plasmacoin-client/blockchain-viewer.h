@@ -8,11 +8,10 @@
 #ifndef BLOCKCHAIN_VIEWER_H
 #define BLOCKCHAIN_VIEWER_H
 
-#include <QMainWindow>
-#include <QTableWidget>
-#include <QTableWidgetItem>
-
 #include <tuple>
+
+#include <QMainWindow>
+#include <QTableWidgetItem>
 
 #include "ui.h"
 
@@ -24,7 +23,7 @@
 
 class BlockchainViewer : public QMainWindow, public Ui_MainWindow {
 public:
-	BlockchainViewer(Blockchain* blockchain, QTableWidget* blockView, QTableWidget* transactionView);
+	BlockchainViewer(Ui_MainWindow* window, Blockchain* blockchain);
 	~BlockchainViewer();
 
 	uint64_t GetIndex() const;
@@ -44,10 +43,10 @@ public:
 private:
 	uint64_t m_CurrentBlock = 0;
 
-	Blockchain* m_BlockchainCopy;
-
-	TransactionView* m_TransactionView;
+	Ui_MainWindow* m_Window;
 	BlockView* m_BlockView;
+	TransactionView* m_TransactionView;
+	Blockchain* m_BlockchainCopy;
 };
 
 inline uint64_t BlockchainViewer::GetIndex() const {

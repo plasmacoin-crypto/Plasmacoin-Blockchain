@@ -22,17 +22,17 @@
 
 class WalletPage : public QMainWindow, public Ui_MainWindow {
 public:
-	WalletPage(Wallet* wallet, QTableWidget* receiptList, QTableWidget* pendingList);
+	WalletPage(Ui_MainWindow* window, Wallet* wallet);
 	~WalletPage();
 
 	void AddReceipt(Receipt* receipt);
 	void AddPending(PendingTransaction* pendingTrxn);
 
 private:
-	QTableWidget *m_ReceiptList, *m_PendingList;
-	std::vector<PendingTransaction*> m_PendingTrxns;
-
+	Ui_MainWindow* m_Window;
 	Wallet* m_WalletCopy;
+
+	std::vector<PendingTransaction*> m_PendingTrxns;
 };
 
 #endif // WALLET_PAGE_H

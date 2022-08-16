@@ -8,75 +8,51 @@
 #include "address-book.h"
 
 AddressBook::AddressBook(
-	QTableWidget*& tableWidget, QLabel* nameDisplay, QLineEdit* nameField,
-	QLabel* usernameDisplay, QLineEdit* usernameField, QLabel* addressDisplay,
-	QLineEdit* addressField, QLabel* birthdayDisplay, QDateEdit* birthday,
-	QDialogButtonBox* buttonBox, QLayout* nameLayout, QLayout* usernameLayout,
-	QLayout* addressLayout, QLayout* birthdayLayout
+	Ui_MainWindow* window, QLabel* nameDisplay, QLabel* usernameDisplay,
+	QLabel* addressDisplay, QLabel* birthdayDisplay
 ):
-	m_ContactsList(tableWidget),
+	m_Window(window),
 	m_NameDisplay(nameDisplay),
 	m_UsernameDisplay(usernameDisplay),
 	m_AddressDisplay(addressDisplay),
-	m_BirthdayDisplay(birthdayDisplay),
-	m_NameField(nameField),
-	m_UsernameField(usernameField),
-	m_AddressField(addressField),
-	m_Birthday(birthday),
-	m_ButtonBox(buttonBox),
-	m_NameLayout(nameLayout),
-	m_UsernameLayout(usernameLayout),
-	m_AddressLayout(addressLayout),
-	m_BirthdayLayout(birthdayLayout)
+	m_BirthdayDisplay(birthdayDisplay)
 {
-	m_ContactsList->setRowCount(0);
+	m_Window->contactsList->setRowCount(0);
 	SetEditing(false);
 
-	m_NameDisplay->setGeometry(m_NameField->x(), m_NameField->y(), m_NameField->width(), m_NameField->height());
-	m_UsernameDisplay->setGeometry(m_UsernameField->x(), m_UsernameField->y(), m_UsernameField->width(), m_UsernameField->height());
-	m_AddressDisplay->setGeometry(m_AddressField->x(), m_AddressField->y(), m_AddressField->width(), m_AddressField->height());
-	m_BirthdayDisplay->setGeometry(m_Birthday->x(), m_Birthday->y(), m_Birthday->width(), m_Birthday->height());
+	m_NameDisplay->setGeometry(m_Window->nameField->x(), m_Window->nameField->y(), m_Window->nameField->width(), m_Window->nameField->height());
+	m_UsernameDisplay->setGeometry(m_Window->usernameField->x(), m_Window->usernameField->y(), m_Window->usernameField->width(), m_Window->usernameField->height());
+	m_AddressDisplay->setGeometry(m_Window->addressField->x(), m_Window->addressField->y(), m_Window->addressField->width(), m_Window->addressField->height());
+	m_BirthdayDisplay->setGeometry(m_Window->birthday->x(), m_Window->birthday->y(), m_Window->birthday->width(), m_Window->birthday->height());
 }
 
 AddressBook::~AddressBook() {
-	m_ContactsList->clear();
-	m_ContactsList->setRowCount(0);
+	m_Window->contactsList->clear();
+	m_Window->contactsList->setRowCount(0);
 
-	delete m_ContactsList;
 	delete m_NameDisplay;
 	delete m_UsernameDisplay;
 	delete m_AddressDisplay;
 	delete m_BirthdayDisplay;
-	delete m_NameField;
-	delete m_UsernameField;
-	delete m_AddressField;
-	delete m_Birthday;
-	delete m_ButtonBox;
-	delete m_NameLayout;
-	delete m_UsernameLayout;
-	delete m_AddressLayout;
-	delete m_BirthdayLayout;
-	delete m_EditButton;
-	delete m_DeleteButton;
 }
 
 // Add a row to the contacts list
 void AddressBook::Add(Contact* contact) {
-	int rowNum = m_ContactsList->rowCount() + 1;
-	m_ContactsList->setRowCount(rowNum);
+	int rowNum = m_Window->contactsList->rowCount() + 1;
+	m_Window->contactsList->setRowCount(rowNum);
 
-	m_ContactsList->setItem(rowNum - 1, 0, new QTableWidgetItem(QString::fromStdString(contact->GetUsername())));
-	m_ContactsList->setItem(rowNum - 1, 1, new QTableWidgetItem(QString::fromStdString(contact->GetAddress())));
+	m_Window->contactsList->setItem(rowNum - 1, 0, new QTableWidgetItem(QString::fromStdString(contact->GetUsername())));
+	m_Window->contactsList->setItem(rowNum - 1, 1, new QTableWidgetItem(QString::fromStdString(contact->GetAddress())));
 
 	m_Contacts.push_back(contact);
 }
 
 void AddressBook::Delete(int row) {
 	// Remove the row
-	m_ContactsList->removeRow(row);
+	m_Window->contactsList->removeRow(row);
 	m_Contacts.erase(m_Contacts.begin() + row);
 
-	m_ContactsList->selectRow(row - 1); // Shift to the row above
+	m_Window->contactsList->selectRow(row - 1); // Shift to the row above
 }
 
 void AddressBook::Update(Contact* contact, int row) {
@@ -120,7 +96,7 @@ bool AddressBook::IsInserting() const {
 
 // Hide all writable fields and make sure everything is read only
 void AddressBook::Lock() {
-	m_ButtonBox->clear();
+	m_Window->btndiag_confirm->clear();
 
 	// Copy the edit button
 	QPushButton* editButton = new QPushButton(m_EditButton);
@@ -131,8 +107,8 @@ void AddressBook::Lock() {
 	deleteButton->setText(m_DeleteButton->text());
 
 	// Add the buttons to the widget
-	m_ButtonBox->addButton(editButton, QDialogButtonBox::ActionRole);
-	m_ButtonBox->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
+	m_Window->btndiag_confirm->addButton(editButton, QDialogButtonBox::ActionRole);
+	m_Window->btndiag_confirm->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
 
 	// Make the birthday field read only
 	// m_Birthday->setReadOnly(true);
@@ -145,32 +121,32 @@ void AddressBook::Lock() {
 	m_BirthdayDisplay->setVisible(true);
 
 	// Hide the writable fields
-	m_NameField->setVisible(false);
-	m_UsernameField->setVisible(false);
-	m_AddressField->setVisible(false);
-	m_Birthday->setVisible(false);
+	m_Window->nameField->setVisible(false);
+	m_Window->usernameField->setVisible(false);
+	m_Window->addressField->setVisible(false);
+	m_Window->birthday->setVisible(false);
 
 	// Replace the writable widgets with the read only widgets in the layouts
-	m_NameLayout->replaceWidget(m_NameField, m_NameDisplay);
-	m_UsernameLayout->replaceWidget(m_UsernameField, m_UsernameDisplay);
-	m_AddressLayout->replaceWidget(m_AddressField, m_AddressDisplay);
-	m_BirthdayLayout->replaceWidget(m_Birthday, m_BirthdayDisplay);
+	m_Window->nameLayout->replaceWidget(m_Window->nameField, m_NameDisplay);
+	m_Window->usernameLayout->replaceWidget(m_Window->usernameField, m_UsernameDisplay);
+	m_Window->addressLayout->replaceWidget(m_Window->addressField, m_AddressDisplay);
+	m_Window->birthdayLayout->replaceWidget(m_Window->birthday, m_BirthdayDisplay);
 
-	m_ContactsList->setSelectionMode(QAbstractItemView::SingleSelection); // Allow selecting contacts
+	m_Window->contactsList->setSelectionMode(QAbstractItemView::SingleSelection); // Allow selecting contacts
 }
 
 // Show writable fields and allow write access
 void AddressBook::Unlock() {
-	m_ButtonBox->clear();
+	m_Window->btndiag_confirm->clear();
 
 	// Copy the delete button
 	QPushButton* deleteButton = new QPushButton(m_DeleteButton);
 	deleteButton->setText(m_DeleteButton->text());
 
 	// Add the delete button along with Qt's default "Ok" and "Cancel" buttons
-	m_ButtonBox->addButton(QDialogButtonBox::Ok);
-	m_ButtonBox->addButton(QDialogButtonBox::Cancel);
-	m_ButtonBox->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
+	m_Window->btndiag_confirm->addButton(QDialogButtonBox::Ok);
+	m_Window->btndiag_confirm->addButton(QDialogButtonBox::Cancel);
+	m_Window->btndiag_confirm->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
 
 	// Hide the read only fields
 	m_NameDisplay->setVisible(false);
@@ -179,29 +155,29 @@ void AddressBook::Unlock() {
 	m_BirthdayDisplay->setVisible(false);
 
 	// Show the writable fields
-	m_NameField->setVisible(true);
-	m_UsernameField->setVisible(true);
-	m_AddressField->setVisible(true);
-	m_Birthday->setVisible(true);
+	m_Window->nameField->setVisible(true);
+	m_Window->usernameField->setVisible(true);
+	m_Window->addressField->setVisible(true);
+	m_Window->birthday->setVisible(true);
 
 	// Replace the read only widgets with the writable widgets in the layouts
-	m_NameLayout->replaceWidget(m_NameDisplay, m_NameField);
-	m_UsernameLayout->replaceWidget(m_UsernameDisplay, m_UsernameField);
-	m_AddressLayout->replaceWidget(m_AddressDisplay, m_AddressField);
-	m_BirthdayLayout->replaceWidget(m_BirthdayDisplay, m_Birthday);
+	m_Window->nameLayout->replaceWidget(m_NameDisplay, m_Window->nameField);
+	m_Window->usernameLayout->replaceWidget(m_UsernameDisplay, m_Window->usernameField);
+	m_Window->addressLayout->replaceWidget(m_AddressDisplay, m_Window->addressField);
+	m_Window->birthdayLayout->replaceWidget(m_BirthdayDisplay, m_Window->birthday);
 
 	// Allow write access to the birthday field
 	// m_Birthday->setReadOnly(false);
 	// m_Birthday->setCalendarPopup(true);
 
-	m_ContactsList->setSelectionMode(QAbstractItemView::NoSelection); // Disallow selecting contacts
+	m_Window->contactsList->setSelectionMode(QAbstractItemView::NoSelection); // Disallow selecting contacts
 }
 
 // Clear and add back all contacts to the address book
 void AddressBook::Regenerate() {
 	// Clear the table
-	m_ContactsList->clear();
-	m_ContactsList->setRowCount(0);
+	m_Window->contactsList->clear();
+	m_Window->contactsList->setRowCount(0);
 
 	// Copy the user's contacts
 	std::vector<Contact*> contactsCopy;
@@ -214,5 +190,5 @@ void AddressBook::Regenerate() {
 		Add(contact);
 	}
 
-	m_ContactsList->setHorizontalHeaderLabels(QStringList() << "Username" << "Address");
+	m_Window->contactsList->setHorizontalHeaderLabels(QStringList() << "Username" << "Address");
 }

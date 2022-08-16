@@ -8,28 +8,26 @@
 #include "transaction-list.h"
 #include <iostream>
 
-TransactionList::TransactionList(QListWidget* list):
-	m_TransactionList(list)
+TransactionList::TransactionList(Ui_MainWindow* window):
+	m_Window(window)
 {}
 
 TransactionList::~TransactionList() {
 	for (auto trxn: m_List) {
 		delete trxn;
 	}
-
-	delete m_TransactionList;
 }
 
 void TransactionList::Add(Transaction* transaction) {
 	m_List.push_back(transaction);
 
-	QListWidgetItem item(QString::fromStdString(transaction->m_Hash), m_TransactionList);
-	item.setData(Qt::UserRole, m_TransactionList->count() + 1);
-	m_TransactionList->addItem(new QListWidgetItem(item));
+	QListWidgetItem item(QString::fromStdString(transaction->m_Hash), m_Window->transactionList);
+	item.setData(Qt::UserRole, m_Window->transactionList->count() + 1);
+	m_Window->transactionList->addItem(new QListWidgetItem(item));
 }
 
 void TransactionList::Delete(int row) {
-	m_TransactionList->takeItem(row);
+	m_Window->transactionList->takeItem(row);
 }
 
 Transaction* TransactionList::At(int row) {

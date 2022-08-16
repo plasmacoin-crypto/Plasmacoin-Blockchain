@@ -7,20 +7,17 @@
 
 #include "wallet-page.h"
 
-WalletPage::WalletPage(Wallet* wallet, QTableWidget* receiptList, QTableWidget* pendingList):
-	m_ReceiptList(receiptList),
-	m_PendingList(pendingList),
+WalletPage::WalletPage(Ui_MainWindow* window, Wallet* wallet):
+	m_Window(window),
 	m_WalletCopy(wallet)
 {}
 
 WalletPage::~WalletPage() {
-	delete m_ReceiptList;
-	delete m_PendingList;
 	delete m_WalletCopy;
 }
 
 void WalletPage::AddReceipt(Receipt* receipt) {
-	m_ReceiptList->setRowCount(m_ReceiptList->rowCount() + 1);
+	m_Window->receiptList->setRowCount(m_Window->receiptList->rowCount() + 1);
 
 	auto column1 = QTableWidgetItem(QString::fromStdString(utility::formatEpoch(receipt->m_TransactionTime)));
 	auto column2 = QTableWidgetItem(QString::fromStdString(receipt->m_Hash));
@@ -30,11 +27,11 @@ void WalletPage::AddReceipt(Receipt* receipt) {
 	column2.setData(Qt::TextAlignmentRole, Qt::AlignCenter);
 	column3.setData(Qt::TextAlignmentRole, Qt::AlignCenter);
 
-	m_ReceiptList->setItem(m_ReceiptList->rowCount() - 1, 0, new QTableWidgetItem(column1));
-	m_ReceiptList->setItem(m_ReceiptList->rowCount() - 1, 1, new QTableWidgetItem(column2));
-	m_ReceiptList->setItem(m_ReceiptList->rowCount() - 1, 2, new QTableWidgetItem(column3));
+	m_Window->receiptList->setItem(m_Window->receiptList->rowCount() - 1, 0, new QTableWidgetItem(column1));
+	m_Window->receiptList->setItem(m_Window->receiptList->rowCount() - 1, 1, new QTableWidgetItem(column2));
+	m_Window->receiptList->setItem(m_Window->receiptList->rowCount() - 1, 2, new QTableWidgetItem(column3));
 
-	m_ReceiptList->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	m_Window->receiptList->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	datfs::saveReceipt(receipt);
 
 	// Remove the corresponding pending transaction
@@ -44,7 +41,7 @@ void WalletPage::AddReceipt(Receipt* receipt) {
 
 	if (iter != m_PendingTrxns.end()) {
 		m_PendingTrxns.erase(iter);
-		m_PendingList->removeRow(std::distance(m_PendingTrxns.begin(), iter));
+		m_Window->pendingList->removeRow(std::distance(m_PendingTrxns.begin(), iter));
 	}
 
 	m_WalletCopy->UpdateBalance(Wallet::WalletActions::DEPOSIT, receipt->m_Amount);
@@ -53,7 +50,7 @@ void WalletPage::AddReceipt(Receipt* receipt) {
 
 void WalletPage::AddPending(PendingTransaction* pendingTrxn) {
 	m_PendingTrxns.push_back(pendingTrxn);
-	m_PendingList->setRowCount(m_PendingList->rowCount() + 1);
+	m_Window->pendingList->setRowCount(m_Window->pendingList->rowCount() + 1);
 
 	auto column1 = QTableWidgetItem(QString::fromStdString(utility::formatEpoch(pendingTrxn->m_Timestamp)));
 	auto column2 = QTableWidgetItem(QString::fromStdString(pendingTrxn->m_Hash));
@@ -63,11 +60,11 @@ void WalletPage::AddPending(PendingTransaction* pendingTrxn) {
 	column2.setData(Qt::TextAlignmentRole, Qt::AlignCenter);
 	column2.setData(Qt::TextAlignmentRole, Qt::AlignCenter);
 
-	m_PendingList->setItem(m_PendingList->rowCount() - 1, 0, new QTableWidgetItem(column1));
-	m_PendingList->setItem(m_PendingList->rowCount() - 1, 1, new QTableWidgetItem(column2));
-	m_PendingList->setItem(m_PendingList->rowCount() - 1, 2, new QTableWidgetItem(column3));
+	m_Window->pendingList->setItem(m_Window->pendingList->rowCount() - 1, 0, new QTableWidgetItem(column1));
+	m_Window->pendingList->setItem(m_Window->pendingList->rowCount() - 1, 1, new QTableWidgetItem(column2));
+	m_Window->pendingList->setItem(m_Window->pendingList->rowCount() - 1, 2, new QTableWidgetItem(column3));
 
-	m_PendingList->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	m_Window->pendingList->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
 	m_WalletCopy->UpdatePendingBal(Wallet::WalletActions::DEPOSIT, pendingTrxn->m_Amount);
 }
