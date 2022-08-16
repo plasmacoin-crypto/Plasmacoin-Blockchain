@@ -12,6 +12,7 @@
 
 #include <QString>
 #include <QPushButton>
+#include <QLineEdit>
 #include <QMessageBox>
 
 #include "ui.h"
