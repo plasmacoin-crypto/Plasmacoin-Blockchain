@@ -290,15 +290,9 @@ void connections::transactionPage(MainWindow& window) {
 
 			Transmitter* transmitter = new Transmitter();
 			auto data = transmitter->Format(finalTransaction);
-
 			transmitter->Transmit(data, std::stoi(data[0]), window.m_User->GetKnownHosts());
 
 			window.m_TransactionList->Add(finalTransaction);
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(300));
-
-			string result = shared_mem::readMemory(true);
-			std::cout << "Result: " << result << std::endl;
 
 			window.m_Wallet->UpdatePendingBal(Wallet::WalletActions::WITHDRAW, finalTransaction->m_Amount + finalTransaction->m_Fee);
 			window.UpdateAmounts();
