@@ -67,6 +67,7 @@
 #include "sync-request.hpp"
 #include "settings-manager.h"
 #include "enums.h"
+#include "net-constants.hpp"
 
 namespace go {
 	#include "pcnetworkd.h"

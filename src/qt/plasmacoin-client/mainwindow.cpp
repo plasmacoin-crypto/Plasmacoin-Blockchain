@@ -291,11 +291,12 @@ void MainWindow::RegisterNode() {
 
 void MainWindow::RemoveNode() {
 	Transmitter* transmitter = new Transmitter();
-	RemovalRequest* remRequest = new RemovalRequest {go::getLocalIP()};
+	RemovalRequest* remRequest = new RemovalRequest {netconsts::LOCAL_IP};
 	auto data = transmitter->Format(remRequest);
 	transmitter->Transmit(data, std::stoi(data[0]));
 
 	delete remRequest;
+	delete transmitter;
 }
 
 void MainWindow::ManageSharedMem() {
