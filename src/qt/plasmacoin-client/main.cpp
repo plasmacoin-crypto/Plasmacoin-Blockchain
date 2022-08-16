@@ -88,8 +88,8 @@ int main(int argc, char* argv[]) {
 
 			// Wait for the settings data to be populated so it can be used to get the
 			// UPnP device.
-			std::unique_lock<std::mutex> guard(window.m_SettingsManager->m_SettingsMutex);
-			window.m_SettingsManager->m_CondVar.wait(guard);
+			std::unique_lock<std::mutex> lock(window.m_SettingsManager->m_SettingsMutex);
+			window.m_SettingsManager->m_CondVar.wait(lock);
 
 			settings::upnpServiceID = window.upnpDevSelector->itemText(settings::serviceIDIndex).toStdString();
 
@@ -101,7 +101,7 @@ int main(int argc, char* argv[]) {
 					break;
 				}
 
-				if (auto now = std::chrono::system_clock::now(); threadStart + std::chrono::seconds(10) <= now) {
+				if (auto now = std::chrono::system_clock::now(); threadStart + std::chrono::seconds(900) <= now) {
 					std::thread(upnp::openPort, settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP).detach();
 					threadStart = now;
 				}
