@@ -92,12 +92,12 @@ MainWindow::MainWindow(bool online, QWidget* parent):
 
 	// Add a contact to the list
 	Contact* contact1 = new Contact("Ryan", "rmsmith", "74E53206EC86B36DB2616EFD81C48419E3F85D4A", QDate(2005, 2, 16));
-	Contact* contact2 = new Contact("John", "jdoe", "pca67890", QDate(1999, 9, 9));
-	Contact* contact3 = new Contact("Alexander", "alex", "pca31415", QDate(2000, 1, 1));
+	Contact* contact2 = new Contact("Laptop", "laptop", "6A956A233B5DC113F2BE28ED546E1EF984AB4A8C", QDate(1970, 1, 1));
+	//Contact* contact3 = new Contact("Alexander", "alex", "pca31415", QDate(2000, 1, 1));
 
 	m_AddressBook->Add(contact1);
 	m_AddressBook->Add(contact2);
-	m_AddressBook->Add(contact3);
+	//m_AddressBook->Add(contact3);
 
 	m_AddressBook->Sort();
 
@@ -264,29 +264,48 @@ void MainWindow::ShowContact(Contact* contact) {
 	birthday->setDate(contact->GetBirthday()); // Set the birthday
 }
 
+void MainWindow::FindAddrLookupNodes() {}
+
 void MainWindow::RegisterNode() {
 	// Register that the node is online
 	Transmitter* transmitter = new Transmitter();
-	auto data = transmitter->Format(m_User, m_User->GetIP(), m_User->GetPort());
+	auto data = transmitter->Format(m_User, m_User->GetIP(), netconsts::TEST_PORT);
 	std::cout << data[0] << std::endl;
 	transmitter->Transmit(data, std::stoi(data[0]));
+	std::vector<string> hosts;
 
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	NodeListPurpose purpose = NodeListPurpose::REGISTRATION;
+	connect(this, &MainWindow::ReceivedNodeList, this, [=, &transmitter, &purpose] mutable {
+		if (purpose != NodeListPurpose::REGISTRATION) {
+			return;
+		}
 
-	string result = shared_mem::readMemory(true); // Read the shared memory
-	std::cout << "Node Result: " << result << std::endl;
+		std::cout << "Here" << std::endl;
+		string packet = this->m_ShMemLog.back();
 
-	// Parse the JSON string
-	QJsonObject object = json::parse(result);
-	std::vector<string> hosts = json::parseArray(object, "nodes");
-	m_User->SetKnownHosts(hosts);
+		// Parse the JSON string
+		QJsonObject object = json::parse(packet);
+		hosts = json::parseArray(object, "nodes");
+		m_User->AddKnownHosts(hosts);
 
-	for (const auto& host: hosts) {
-		std::cout << "Host: " << host << std::endl;
-	}
+		shared_mem::writeMemory("");
+		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-	shared_mem::writeMemory("");
-	delete transmitter;
+		for (unsigned int i = 0; i < static_cast<unsigned int>(m_AddressBook->Size()); i++) {
+			Contact* contact = m_AddressBook->At(i);
+
+			auto data = transmitter->Format(contact->MakeNode(), m_User->GetIP(), netconsts::TEST_PORT, false);
+			transmitter->Transmit(data, std::stoi(data[0]));
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		}
+	});
+
+	connect(this, &MainWindow::ReceivedNodeData, this, [=](NodeData* node) mutable {
+		if (node != nullptr) {
+			this->m_User->AddKnownHost(node->m_IPAddress);
+		}
+	});
 }
 
 void MainWindow::RemoveNode() {
@@ -400,6 +419,25 @@ void MainWindow::ManageSharedMem() {
 			break;
 		}
 
+		case go::PacketTypes::NODE:
+			#if defined(__linux__) || defined(__APPLE__)
+				emit ReceivedNodeData(json::toNodeData(object));
+				shared_mem::writeMemory("");
+			#endif
+
+			break;
+
+		case go::PacketTypes::NODE_LIST:
+			#if defined(__linux__) || defined(__APPLE__)
+				emit ReceivedNodeList();
+				shared_mem::writeMemory("");
+			#endif
+
+			break;
+
+		default:
+			break;
+
 		case go::PacketTypes::RECEIPT: {
 			shared_mem::writeMemory("");
 			std::cout << "Here" << std::endl;
@@ -465,17 +503,6 @@ void MainWindow::ManageSharedMem() {
 
 			break;
 		}
-
-		case go::PacketTypes::NODE_LIST:
-			#if defined(__linux__) || defined(__APPLE__)
-				emit ReceivedNodeList();
-				shared_mem::writeMemory("");
-			#endif
-
-			break;
-
-		default:
-			break;
 	}
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
@@ -494,7 +521,12 @@ void MainWindow::ManageSharedMem() {
 		shared_mem::writeMemory("");
 		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-		connect(this, &MainWindow::ReceivedNodeList, this, [=, &transmitter] mutable {
+		NodeListPurpose purpose = NodeListPurpose::SYNC;
+		connect(this, &MainWindow::ReceivedNodeList, this, [=, &transmitter, &purpose] mutable {
+			if (purpose != NodeListPurpose::SYNC) {
+				return;
+			}
+
 			std::cout << "Here" << std::endl;
 			string packet = this->m_ShMemLog.back();
 			QJsonObject object = json::parse(packet);

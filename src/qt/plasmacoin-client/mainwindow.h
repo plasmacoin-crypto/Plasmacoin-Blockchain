@@ -75,6 +75,7 @@ namespace go {
 
 using std::chrono::high_resolution_clock;
 using std::chrono::seconds;
+using enums::NodeListPurpose;
 
 class MainWindow : public QMainWindow, public Ui::MainWindow {
 	Q_OBJECT
@@ -86,11 +87,14 @@ public:
 	Status* CreateMiningVisuals(); // Load certain content during mining operations
 	AccountPages* CreatePages();   // Create warning labels for authentication pages
 
+	void CreateNode();
+
 	void StartMining(); // Initiate the mining process
 	void ResetBlock();	// Reset the user's block
 	void UpdateStatus(const Block& block, std::chrono::seconds time); // Update the mining status while a block is being mined
 	void ShowContact(Contact* contact);
 
+	void FindAddrLookupNodes();
 	void RegisterNode();
 	void RemoveNode();
 
@@ -160,7 +164,9 @@ signals:
 	void BlockCompleted();
 	void UpdateWalletAmounts();
 	void DisplayApp();
+
 	void ReceivedNodeList();
+	void ReceivedNodeData(NodeData* node);
 };
 
 #endif // MAINWINDOW_H
