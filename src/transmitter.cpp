@@ -104,13 +104,13 @@ vector<string> Transmitter::Format(Transaction* transaction) {
 	};
 }
 
-vector<string> Transmitter::Format(Node* node, const string& senderIP, int16_t senderPort, bool shouldRegister) {
+vector<string> Transmitter::Format(Node* node, const string& senderIP, uint16_t senderPort, bool shouldRegister) {
 	return vector<string> {
 		std::to_string(static_cast<uint8_t>(go::PacketTypes::NODE)),
 		senderIP,
 		std::to_string(senderPort),
 		node->GetIP(),
-		std::to_string(node->GetPort()),
+		std::to_string(netconsts::TEST_PORT),
 		node->GetAddress(),
 		std::to_string(static_cast<uint8_t>(node->GetType())),
 		std::to_string(shouldRegister)
