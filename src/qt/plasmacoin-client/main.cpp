@@ -17,6 +17,7 @@
 #include <QPixmap>
 #include <QIcon>
 #include <QColor>
+#include <QFuture>
 
 #include "mainwindow.h"
 #include "ui.h"
