@@ -259,10 +259,10 @@ func portIsOpen(host, port C.cchar_t) bool {
 	return false
 }
 
-// Get the user's global IP address by making a call to http://ip-api.com/json/.
+// Get the user's public IP address by making a call to http://ip-api.com/json/.
 //
-//export getGlobalIP
-func getGlobalIP() C.cchar_t {
+//export getPublicIP
+func getPublicIP() C.cchar_t {
 	resp, err := http.Get("http://ip-api.com/json/") // make a GET request
 	body, _ := ioutil.ReadAll(resp.Body)             // Get the response as JSON
 
@@ -271,7 +271,7 @@ func getGlobalIP() C.cchar_t {
 	json.Unmarshal(body, &responseMap)
 
 	if err != nil || responseMap["status"] == "fail" {
-		panic(errors.New("could not get user's global IP address: " + responseMap["message"]))
+		panic(errors.New("could not get user's public IP address: " + responseMap["message"]))
 	}
 
 	defer resp.Body.Close()

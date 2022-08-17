@@ -158,7 +158,7 @@ protected:
 	void closeEvent(QCloseEvent* event) override;
 
 public:
-	Node* m_User = new Node("Ryan", "ryan", "1234", go::getGlobalIP()); // Temporary data
+	Node* m_User = new Node("Ryan", "ryan", "1234", go::getPublicIP()); // Temporary data
 
 signals:
 	void BlockCompleted();

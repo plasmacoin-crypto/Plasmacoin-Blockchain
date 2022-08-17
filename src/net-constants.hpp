@@ -17,7 +17,7 @@ namespace netconsts {
 	const char* const UDP = "udp";
 
 	const char* const LOCAL_IP = go::getLocalIP();
-	const char* const GLOBAL_IP = go::getGlobalIP();
+	const char* const PUBLIC_IP = go::getPublicIP();
 
 	const uint16_t TEST_PORT = 8080;
 	const uint16_t CLIENT_PORT = 14400;
