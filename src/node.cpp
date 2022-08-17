@@ -87,16 +87,20 @@ NodeType Node::GetType() const {
 	return m_NodeType;
 }
 
-int16_t Node::GetPort() const {
-	return PORT;
-}
-
 void Node::SetType(NodeType type) {
 	m_NodeType = type;
 }
 
-void Node::SetKnownHosts(std::vector<string>& hosts) {
-	std::copy(hosts.begin(), hosts.end(), std::back_inserter(m_KnownHosts));
+void Node::AddKnownHost(const string& host) {
+	if (std::find(m_KnownHosts.begin(), m_KnownHosts.end(), host) != m_KnownHosts.end()) {
+		m_KnownHosts.push_back(host);
+	}
+}
+
+void Node::AddKnownHosts(std::vector<string>& hosts) {
+	std::copy_if(hosts.begin(), hosts.end(), std::back_inserter(m_KnownHosts), [&hosts](const string& host) {
+		return std::find(hosts.begin(), hosts.end(), host) == hosts.end();
+	});
 }
 
 std::vector<string> Node::GetKnownHosts() const {
@@ -128,7 +132,7 @@ void Node::SyncFromNetwork(const string& ip) {
 	auto data = transmitter->Format(query);
 	transmitter->Transmit(data, std::stoi(data[0]));
 
-	std::string result = shared_mem::readMemory(true); // Read the shared memory
+	string result = shared_mem::readMemory(true); // Read the shared memory
 	std::cout << "Node Result: " << result << std::endl;
 
 	delete transmitter;

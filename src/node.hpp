@@ -15,6 +15,7 @@
 #include <functional>
 #include <vector>
 #include <iterator>
+#include <algorithm>
 
 using std::string;
 
@@ -56,12 +57,12 @@ public:
 	// Some getters
 	string GetName() const, GetUsrName() const, GetIP() const, GetAddress() const;
 	NodeType GetType() const;
-	int16_t GetPort() const;
 
 	void SetType(NodeType type);
 
 	std::vector<string> GetKnownHosts() const;
-	void SetKnownHosts(std::vector<string>& hosts);
+	void AddKnownHost(const string& host);
+	void AddKnownHosts(std::vector<string>& hosts);
 
 	void Sign(Transaction& transaction);
 	void Sign(Receipt& receipt);
@@ -75,7 +76,6 @@ private:
 	void SyncFromNetwork(const string& ip);
 
 	string m_Name, m_Username, m_Password, m_IPAddr, m_KeyPath, m_Address;
-	const int16_t PORT = 8080;
 
 	RSA::PrivateKey m_PrivateKey;
 	NodeType m_NodeType;
@@ -83,7 +83,7 @@ private:
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer m_Signer;
 	CryptoPP::InvertibleRSAFunction m_Keys;
 
-	std::vector<string> m_KnownHosts;
+	std::vector<string> m_KnownHosts, m_AddrLookupNodes;
 };
 
 #endif // NODE_HPP
