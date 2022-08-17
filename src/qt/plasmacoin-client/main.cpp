@@ -83,9 +83,7 @@ int main(int argc, char* argv[]) {
 			}
 		});
 
-		QFuture<void> manageUPnP = QtConcurrent::run([&window, &runningThread](QPromise<void>& endExec) {
-			endExec.suspendIfRequested();
-
+		QFuture<void> manageUPnP = QtConcurrent::run([&window, &runningThread]() {
 			// Wait for the settings data to be populated so it can be used to get the
 			// UPnP device.
 			std::unique_lock<std::mutex> lock(window.m_SettingsManager->m_SettingsMutex);
@@ -93,16 +91,12 @@ int main(int argc, char* argv[]) {
 
 			settings::upnpServiceID = window.upnpDevSelector->itemText(settings::serviceIDIndex).toStdString();
 
-			upnp::openPort(settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP);
+			//upnp::openPort(settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP);
 			auto threadStart = std::chrono::system_clock::now();
 
 			do {
-				if (endExec.isCanceled()) {
-					break;
-				}
-
 				if (auto now = std::chrono::system_clock::now(); threadStart + std::chrono::seconds(900) <= now) {
-					std::thread(upnp::openPort, settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP).detach();
+					//std::thread(upnp::openPort, settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP).detach();
 					threadStart = now;
 				}
 			} while (runningThread);
@@ -110,11 +104,8 @@ int main(int argc, char* argv[]) {
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-		app.connect(&app, &QApplication::aboutToQuit, &window, [&online, &runningThread, &manageUPnP, &window]() mutable {
+		app.connect(&app, &QApplication::aboutToQuit, &window, [&online, &runningThread, &window]() mutable {
 			runningThread = false;
-
-			manageUPnP.suspend();
-			manageUPnP.cancel();
 
 			if (online) {
 				window.RemoveNode();
