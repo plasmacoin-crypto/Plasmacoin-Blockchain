@@ -2,7 +2,7 @@
 // FILENAME: parse-json.hpp | Plasmacoin Cryptocurrency
 // DESCRIPTION: Get data about packets sent/received by Plasmacoin
 // CREATED: 2022-01-15 @ 11:45 AM
-// COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
+// COPYRIGHT: Copyright (c) 2022 by Ryan Smith <rysmith2113@gmail.com>
 //
 
 #ifndef PARSE_JSON_HPP
@@ -25,10 +25,12 @@
 #include "idcode.hpp"
 #include "transaction.hpp"
 #include "block.hpp"
+#include "node-data.hpp"
 #include "sync-request.hpp"
 #include "utility.hpp"
 #include "pending-trxn.hpp"
 #include "removal-request.hpp"
+#include "enums.h"
 
 using std::vector;
 using std::string;
@@ -44,6 +46,7 @@ namespace json {
 	IDCode* toIDCode(const QJsonObject& object);
 	Transaction* toTransaction(const QJsonObject& object);
 	Block* toBlock(const QJsonObject& object);
+	NodeData* toNodeData(const QJsonObject& object);
 	Signature* toSignature(const QJsonObject& object);
 	Receipt* toReceipt(const QJsonObject& object);
 	SyncRequest* toSyncRequest(const QJsonObject& object);

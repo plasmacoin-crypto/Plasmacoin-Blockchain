@@ -111,6 +111,23 @@ Block* json::toBlock(const QJsonObject& object) {
 	return block;
 }
 
+NodeData* json::toNodeData(const QJsonObject& object) {
+	// IP         string `json:"ip"`
+	// Port       int    `json:"port"`
+	// Address    string `json:"address"`
+	// NodeType   int    `json:"nodetype"`
+	// Register   bool   `json:"register"`
+
+	// Because the first two fields provide information about the sender, they
+	// can be omitted.
+	string ipAddress = object["ip"].toString().toStdString();
+	uint16_t port = static_cast<uint16_t>(object["port"].toInt());
+	string address = object["address"].toString().toStdString();
+	enums::NodeType nodeType = static_cast<enums::NodeType>(object["nodetype"].toInt());
+
+	NodeData* nodeData = new NodeData {ipAddress, port, address, nodeType};
+	return nodeData;
+}
 
 Signature* json::toSignature(const QJsonObject& object) {
 	// Signature string `json:"signature"`
