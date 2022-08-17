@@ -28,14 +28,7 @@ void networkDaemon() {
 }
 
 void process() {
-	auto start = std::chrono::high_resolution_clock::now(); // Begin timing the function
-
-	std::thread receive(networkDaemon);
-	std::this_thread::sleep_for(std::chrono::seconds(1));
-	receive.join();
-
-	auto stop = std::chrono::high_resolution_clock::now(); // End timing
-	auto duration = std::chrono::duration_cast<std::chrono::seconds>(stop - start); // Find the duration
+	std::thread(networkDaemon).join();
 }
 
 int main() {
