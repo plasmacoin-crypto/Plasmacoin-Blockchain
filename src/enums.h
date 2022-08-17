@@ -9,7 +9,7 @@
 #define ENUMS_H
 
 namespace enums {
-	enum NodeType 	  	 	 {LIGHT, FULL, MINING};
+	enum NodeType 	  	 	 {LIGHT, FULL, MINING, ADDRESS_LOOKUP};
 	enum MiningMethod 	 	 {CPU, GPU};
 	enum PaddingType  	 	 {MAXIMUM, NONE, CUSTOM};
 	enum NodeListPurpose 	 {REGISTRATION, SYNC};
