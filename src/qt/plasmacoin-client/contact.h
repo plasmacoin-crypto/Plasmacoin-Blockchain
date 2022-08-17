@@ -8,23 +8,27 @@
 #ifndef CONTACT_H
 #define CONTACT_H
 
-#include <QString>
-#include <QDate>
-
 #include <string>
 
 using std::string;
 
+#include <QString>
+#include <QDate>
+
+#include "node.hpp"
+
 class Contact {
 public:
-	Contact(std::string name, std::string username, std::string address, const QDate& birthday);
+	Contact(const string& name, const string& username, const string& address, const QDate& birthday);
 
 	string GetName() const;
 	string GetUsername() const;
 	string GetAddress() const;
 	QDate GetBirthday() const;
 
-	void Update(std::string name, std::string username, std::string address, const QDate& birthday);
+	Node* MakeNode() const;
+
+	void Update(const string& name, const string& username, const string& address, const QDate& birthday);
 
 private:
 	string m_Name, m_Username, m_Address;

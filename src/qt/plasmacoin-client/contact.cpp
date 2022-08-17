@@ -7,7 +7,7 @@
 
 #include "contact.h"
 
-Contact::Contact(std::string name, std::string username, std::string address, const QDate& birthday):
+Contact::Contact(const string& name, const string& username, const string& address, const QDate& birthday):
 	m_Name(name),
 	m_Username(username),
 	m_Address(address),
@@ -30,7 +30,12 @@ QDate Contact::GetBirthday() const {
 	return m_Birthday;
 }
 
-void Contact::Update(std::string name, std::string username, std::string address, const QDate& birthday) {
+Node* Contact::MakeNode() const {
+	Node* node = new Node("", GetAddress());
+	return node;
+}
+
+void Contact::Update(const string& name, const string& username, const string& address, const QDate& birthday) {
 	m_Name = name;
 	m_Username = username;
 	m_Address = address;
