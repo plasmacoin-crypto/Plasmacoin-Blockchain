@@ -7,7 +7,9 @@
 
 package blockchainconstructs
 
-import "strconv"
+import (
+	"strconv"
+)
 
 type NodeData struct {
 	PacketType int    `json:"type"`
@@ -41,8 +43,23 @@ func MakeNode(data []string) *NodeData {
 	packetType, _ := strconv.ParseInt(data[0], 10, 32)
 	senderPort, _ := strconv.ParseInt(data[2], 10, 16)
 	port, _ := strconv.ParseInt(data[4], 10, 16)
-	nodeType, _ := strconv.ParseInt(data[6], 10, 32)
+	nodeType, err := strconv.ParseInt(data[6], 10, 32)
 	register, _ := strconv.ParseBool(data[7])
+
+	// In case the node type is a text string (rather than an integer as a string),
+	// assign nodeType the correct value.
+	if err != nil {
+		switch data[6] {
+		case "light":
+			nodeType = 0
+		case "full":
+			nodeType = 1
+		case "mining":
+			nodeType = 2
+		case "addrlookup":
+			nodeType = 3
+		}
+	}
 
 	// Construct the node data
 	return &NodeData{
