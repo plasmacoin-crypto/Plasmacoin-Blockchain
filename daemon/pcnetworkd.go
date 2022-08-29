@@ -127,10 +127,12 @@ func receive(protocol, host, port C.cchar_t) C.cchar_t {
 		uint8
 	}, conn net.Conn) {
 		out, packetType := handler.HandleConnection(conn)
-		ch <- struct {
-			string
-			uint8
-		}{string(out), packetType}
+		if out != nil {
+			ch <- struct {
+				string
+				uint8
+			}{string(out), packetType}
+		}
 	}(ch, conn)
 
 	connData := <-ch

@@ -52,6 +52,10 @@ func HandleConnection(conn net.Conn) ([]byte, uint8) {
 
 	fullPacket := getStruct(data, packet.Type) // Convert the packet to the correct Go struct
 
+	if fullPacket == nil {
+		return nil, 0
+	}
+
 	// Marshal the data
 	jsonBytes, _ := json.Marshal(fullPacket)
 	return jsonBytes, packet.Type
@@ -59,6 +63,10 @@ func HandleConnection(conn net.Conn) ([]byte, uint8) {
 
 // Unmarshal a TCP packet (as JSON) into its corresponding Go struct
 func getStruct(data []byte, packetType uint8) interface{} {
+	if len(data) == 0 {
+		return nil
+	}
+
 	switch packetType {
 	case IDCode:
 		var idCode bccnstrx.IDCode
