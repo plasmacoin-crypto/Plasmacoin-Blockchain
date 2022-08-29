@@ -78,11 +78,7 @@ bool Blockchain::Find(Transaction* transaction) {
 			if ((*trxnIter)->m_Hash == transaction->m_Hash) {
 				return true;
 			}
-
-			//std::advance(trxnIter, 1);
 		}
-
-		//std::advance(blockchainIter, 1);
 	}
 
 	return false;
@@ -102,6 +98,7 @@ void Blockchain::Compress() {
 }
 
 void Blockchain::CalcDifficulty() {
+	std::cout << "New difficulty" << std::endl;
 	std::vector<int64_t> miningTimes;
 	//std::vector<Block*> last16(m_Blockchain.end() - DIFF_RECALC_RATE, m_Blockchain.end());
 
@@ -115,6 +112,7 @@ void Blockchain::CalcDifficulty() {
 
 	// Compute the new difficulty and set the new target hash
 	m_Difficulty *= EXPECTED_MINE_TIME / medianTime;
+	std::cout << m_Difficulty << std::endl;
 	SetTarget();
 }
 
