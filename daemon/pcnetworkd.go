@@ -266,7 +266,7 @@ func portIsOpen(host, port C.cchar_t) bool {
 //export getPublicIP
 func getPublicIP() C.cchar_t {
 	resp, err := http.Get("http://ip-api.com/json/") // make a GET request
-	body, _ := ioutil.ReadAll(resp.Body)             // Get the response as JSON
+	body, _ := io.ReadAll(resp.Body)                 // Get the response as JSON
 
 	// Convert the JSON string to a map
 	responseMap := make(map[string]string)
