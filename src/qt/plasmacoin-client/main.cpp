@@ -18,6 +18,7 @@
 #include <QIcon>
 #include <QColor>
 #include <QFuture>
+#include <QVariant>
 
 #include "mainwindow.h"
 #include "ui.h"
@@ -40,13 +41,15 @@ int main(int argc, char* argv[]) {
 	splashScreen->show();
 	splashScreen->showMessage("Preparing application", Qt::AlignBottom, QColorConstants::White);
 
+	std::cout << "Here" << std::endl;
 	QCommandLineParser parser;
 	parser.setApplicationDescription("The Plasmacoin client software");
     parser.addHelpOption();
     parser.addVersionOption();
 
 	parser.addOptions({
-		{{"n", "no-connect"}, "Launch in offline mode."}
+		{{"n", "no-connect"}, "Launch in offline mode."},
+		{{"u", "upnp"}, "Enable/disable UPnP. This flag defaults to true if no value is provided."}
 		#ifdef BETA_RELEASE
 			, {{"s", "skip-key"}, "Skip beta key entry (developer only)."}
 		#endif
@@ -54,6 +57,9 @@ int main(int argc, char* argv[]) {
 
 	parser.process(app);
 	bool online = !parser.isSet("no-connect");
+	bool upnp = parser.value("upnp").isEmpty()? true : QVariant(parser.value("upnp")).toBool();
+
+	std::cout << upnp << std::endl;
 
 	MainWindow window(online);
 
@@ -92,12 +98,12 @@ int main(int argc, char* argv[]) {
 
 			settings::upnpServiceID = window.upnpDevSelector->itemText(settings::serviceIDIndex).toStdString();
 
-			//upnp::openPort(settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP);
+			upnp::openPort(settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP);
 			auto threadStart = std::chrono::system_clock::now();
 
 			do {
 				if (auto now = std::chrono::system_clock::now(); threadStart + std::chrono::seconds(900) <= now) {
-					//std::thread(upnp::openPort, settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP).detach();
+					std::thread(upnp::openPort, settings::upnpServiceID.c_str(), netconsts::TCP, netconsts::TEST_PORT, netconsts::LOCAL_IP).detach();
 					threadStart = now;
 				}
 			} while (runningThread);
