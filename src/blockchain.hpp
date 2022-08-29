@@ -76,7 +76,7 @@ public:
 
 private:
 	// "0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-	const int256_t MAX_TARGET {"0x00fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+	const int256_t MAX_TARGET {"0x00000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
 	double m_Difficulty = 1;
 	cpp_dec_float_50 m_Target = boost::lexical_cast<cpp_dec_float_50>(MAX_TARGET) / boost::lexical_cast<cpp_dec_float_50>(m_Difficulty);
 
