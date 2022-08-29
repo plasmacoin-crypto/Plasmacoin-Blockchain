@@ -2,7 +2,7 @@
 // FILENAME: shared-mem.cpp | Plasmacoin Cryptocurrency
 // DESCRIPTION: The source file for shared-mem.hpp
 // CREATED: 2022-01-10 @ 9:58 PM
-// COPYRIGHT: Copyright (c) 2021 by Ryan Smith <rysmith2113@gmail.com>
+// COPYRIGHT: Copyright (c) 2022 by Ryan Smith <rysmith2113@gmail.com>
 //
 
 #include "shared-mem.hpp"
