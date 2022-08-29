@@ -21,27 +21,7 @@ MainWindow::MainWindow(bool online, QWidget* parent):
 
 	Ui_MainWindow::setupUi(this);
 	LoadGeometry();
-
-	//m_SysTrayIcon = new QSystemTrayIcon(QIcon("../assets/plasmacoin-icon.png"));
-	//m_SysTrayIcon->show();
-
-	// QPushButton* button = new QPushButton("Button", this);
-	// button->setGeometry(QRect(0, 0, 100, 30));
-	// button->show();
-
-	// QPropertyAnimation* animation = new QPropertyAnimation(button, "geometry");
-	// animation->setDuration(10000);
-	// animation->setStartValue(QRect(0, 0, 100, 30));
-	// animation->setEndValue(QRect(250, 250, 100, 30));
-
-	// animation->start();
-	// connect(animation, &QPropertyAnimation::finished, button, &QPushButton::deleteLater);
-
-
-	// std::future<void> manageSharedMem = std::async([this](std::atomic<bool>& running) {
-	// 	this->ManageSharedMem(running);
-	// }, std::ref(runningThread));
-
+	
 	m_FormErrorAlert = new QMessageBox(); // Create a message box to display authentication errors
 	m_TransactionAlert = new QMessageBox(); // Create a message box to sign and send a transaction
 
@@ -291,14 +271,14 @@ void MainWindow::RegisterNode() {
 		shared_mem::writeMemory("");
 		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-		for (unsigned int i = 0; i < static_cast<unsigned int>(m_AddressBook->Size()); i++) {
-			Contact* contact = m_AddressBook->At(i);
+		// for (unsigned int i = 0; i < static_cast<unsigned int>(m_AddressBook->Size()); i++) {
+		// 	Contact* contact = m_AddressBook->At(i);
 
-			auto data = transmitter->Format(contact->MakeNode(), m_User->GetIP(), netconsts::TEST_PORT, false);
-			transmitter->Transmit(data, std::stoi(data[0]));
+		// 	auto data = transmitter->Format(contact->MakeNode(), m_User->GetIP(), netconsts::TEST_PORT, false);
+		// 	transmitter->Transmit(data, std::stoi(data[0]));
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-		}
+		// 	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		// }
 	});
 
 	connect(this, &MainWindow::ReceivedNodeData, this, [=](NodeData* node) mutable {
@@ -310,7 +290,7 @@ void MainWindow::RegisterNode() {
 
 void MainWindow::RemoveNode() {
 	Transmitter* transmitter = new Transmitter();
-	RemovalRequest* remRequest = new RemovalRequest {netconsts::LOCAL_IP};
+	RemovalRequest* remRequest = new RemovalRequest {netconsts::PUBLIC_IP};
 	auto data = transmitter->Format(remRequest);
 	transmitter->Transmit(data, std::stoi(data[0]));
 
@@ -367,24 +347,24 @@ void MainWindow::ManageSharedMem() {
 			// the user has in their wallet.
 			//
 
-			double balance = 0;
+			// double balance = 0;
 
-			for (auto block: m_User->m_BlockchainCopy->GetBlockchain()) {
-				for (auto trxn: block->m_Transactions) {
-					if (trxn->m_RecipientAddr == transaction->m_SenderAddr) {
-						balance += trxn->m_Amount;
-					}
-					else if (trxn->m_SenderAddr == transaction->m_SenderAddr) {
-						balance -= trxn->m_Amount + trxn->m_Fee;
-					}
-				}
-			}
+			// for (auto block: m_User->m_BlockchainCopy->GetBlockchain()) {
+			// 	for (auto trxn: block->m_Transactions) {
+			// 		if (trxn->m_RecipientAddr == transaction->m_SenderAddr) {
+			// 			balance += trxn->m_Amount;
+			// 		}
+			// 		else if (trxn->m_SenderAddr == transaction->m_SenderAddr) {
+			// 			balance -= trxn->m_Amount + trxn->m_Fee;
+			// 		}
+			// 	}
+			// }
 
-			if (balance >= transaction->m_Amount + transaction->m_Fee) {
+			//if (balance >= transaction->m_Amount + transaction->m_Fee) {
 				bool result = m_TransactionList->ConfirmToMempool(transaction);
 				std::cout << "Confirmed: " << result << std::endl;
 				shared_mem::writeMemory("");
-			}
+			//}
 
 			break;
 		}
