@@ -15,7 +15,7 @@ lib
 *.o
 moc_*
 pcnetworkd.h
-src/qt/build-plasmacoin-ui-Desktop-Debug/
+src/qt/build/
 
 # Ignore makefiles
 Makefile
