@@ -4,7 +4,7 @@ RESOURCES = ../resources.qrc
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++17 sdk_no_version_check
 PKGCONFIG += libnotify
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -66,6 +66,8 @@ BASE_OBJ = \
 	rsautil.o \
   mining.o \
   upnp.o
+
+BASE_HEADERS = ../../net-constants.hpp
 
 #
 # Compiler flags
@@ -138,7 +140,7 @@ macx {
 	$(eval HEADERS := $(HEADERS:%o=../../%hpp)) $${NEWLINE} \
 	$(eval HEADERS += $(STANDALONE_HEADERS)) $${NEWLINE} \
 	$${NEWLINE} \
-	$(COPY_FILE) $(HEADERS) $${HEADER_DIR}
+	$(COPY_FILE) $(HEADERS) $${BASE_HEADERS} $${HEADER_DIR}
 	libplasmacoin.depends = $${BASE_OBJ}
 }
 
@@ -167,7 +169,7 @@ unix:!macx {
 	$(eval HEADERS := $(HEADERS:%o=../../%hpp)) $${NEWLINE} \
 	$(eval HEADERS += $(STANDALONE_HEADERS)) $${NEWLINE} \
 	$${NEWLINE} \
-	$(COPY_FILE) $(HEADERS) $${HEADER_DIR}
+	$(COPY_FILE) $(HEADERS) $${BASE_HEADERS} $${HEADER_DIR}
 	libplasmacoin.depends = $${BASE_OBJ}
 }
 
